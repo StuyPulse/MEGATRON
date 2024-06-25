@@ -16,8 +16,10 @@ final String STUYLIB_VERSION = 'v2024.1.5'
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
@@ -89,7 +91,14 @@ spotless {
     enforceCheck = false
     java {
         targetExclude("src/main/java/com/stuypulse/robot/commands/autons/*.java")
-        licenseHeaderFile "LICENSE"
+        licenseHeader '''
+/************************ PROJECT IZZI *************************/
+/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
+
+'''
 
         googleJavaFormat().aosp()
         
