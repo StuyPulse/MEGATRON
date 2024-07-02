@@ -9,7 +9,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
-import static com.revrobotics.CANSparkMax.IdleMode;
+
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.revrobotics.CANSparkBase;
 
 /*-
  * File containing all of the configurations that different motors require.
@@ -21,6 +24,24 @@ import static com.revrobotics.CANSparkMax.IdleMode;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
+
+    public enum StatusFrame {
+        APPLIED_OUTPUT_FAULTS,
+        MOTOR_VEL_VOLTS_AMPS,
+        MOTOR_POSITION,
+        ANALOG_SENSOR,
+        ALTERNATE_ENCODER,
+        ABS_ENCODER_POSIITION,
+        ABS_ENCODER_VELOCITY
+    }
+
+    public static void disableStatusFrames(CANSparkBase motor, StatusFrame... ids) {
+        final int kDisableStatusFrame = 500;
+
+        for (StatusFrame id : ids) {
+            motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id.ordinal()), kDisableStatusFrame);
+        }
+    }
 
     /** Classes to store all of the values a motor needs */
 
@@ -126,5 +147,10 @@ public interface Motors {
             motor.follow(follows);
             motor.burnFlash();
          }
+     }
+
+     public interface Shooter {
+        CANSparkMaxConfig LEFT_SHOOTER = new CANSparkMaxConfig(false, IdleMode.kBrake, 50, 0.5);
+        CANSparkMaxConfig RIGHT_SHOOTER = new CANSparkMaxConfig(true, IdleMode.kBrake, 500, 0.5);
      }
 }
