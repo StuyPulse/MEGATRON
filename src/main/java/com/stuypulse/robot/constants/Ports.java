@@ -12,4 +12,11 @@ public interface Ports {
         int OPERATOR = 1;
         int DEBUGGER = 2;
     }
+
+    public interface Intake { // no idea if this the right numbers
+        int FUNNEL_HIGH = 3;
+        int FUNNEL_LOW = 4;
+        int INTAKE_MOTOR = 5;
+    }
+
 }
