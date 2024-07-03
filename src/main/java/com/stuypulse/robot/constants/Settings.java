@@ -16,7 +16,9 @@ import edu.wpi.first.math.util.Units;
  * values that we can edit on Shuffleboard.
  */
 public interface Settings {
-    public interface Swerve {
+    
+    double DT = 1.0/50.0; // IZZI CONSTANT
+    public interface SWERVE {
         // TODO: Change and tune these values. Change to SmartNumber if necessary
         double WIDTH = Units.inchesToMeters(0.0);
         double LENGTH = Units.inchesToMeters(0.0);

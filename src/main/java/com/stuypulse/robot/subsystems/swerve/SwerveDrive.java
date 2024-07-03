@@ -11,8 +11,10 @@ import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import com.kauailabs.navx.frc.AHRS;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Ports.Swerve;
 import com.stuypulse.robot.subsystems.swerve.modules.KrakenSwerveModule;
 import com.stuypulse.stuylib.math.Vector2D;
 
@@ -25,6 +27,7 @@ import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,8 +61,88 @@ public class SwerveDrive extends SubsystemBase {
         modules2D = new FieldObject2d[modules.length];
     }
 
-    private Translation2d getModuleOffsets() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModuleOffsets'");
+    public Translation2d[] getModuleOffsets() {
+        Translation2d[] offsets = new Translation2d[modules.length];
+        for (int i = 0; i < modules.length; i++) {
+            offsets[i] = modules[i].getPositionOffset();
+        }
+        return offsets;
     }
+
+    public SwerveModulePosition[] getModulePositions() {
+        SwerveModulePosition[] offsets = new SwerveModulePosition[modules.length];
+        for (int i = 0; i < modules.length; i++) {
+            offsets[i] = modules[i].getModulePosition();
+        }
+        return offsets;
+    }
+
+    public SwerveDriveKinematics getKinematics() {
+        return kinematics;
+    }
+
+    public SwerveModuleState[] getModuleStates() {
+        SwerveModuleState[] offsets = new SwerveModuleState[modules.length];
+        for (int i = 0; i < modules.length; i++) {
+            offsets[i] = modules[i].getState();
+        }
+        return offsets;
+    }
+   
+    public ChassisSpeeds getChassisSpeeds() {
+        return kinematics.toChassisSpeeds(getModuleStates());
+    }
+
+    /** Setters **/
+
+    public void setModuleStates(SwerveModuleState[] states) {
+        if (states.length != modules.length) {
+            throw new IllegalArgumentException("Number of states and number of modules do not match");
+        }
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Settings.Swerve.MAX_MODULE_SPEED);
+
+        for (int i = 0; i < modules.length; i++) {
+            modules[i].setTargetState(states[i]);
+        }
+    }
+
+    public void setFieldRelativeSpeeds(ChassisSpeeds chassisSpeeds) {
+        setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
+            chassisSpeeds,
+            Odometry.getInstance().getPose().getRotation())); //ODOMETRY
+    }
+
+    public void setChassisSpeeds(ChassisSpeeds robotSpeeds) {
+        SmartDashboard.putNumber("Swerve/Chassis Target X", robotSpeeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Y", robotSpeeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Omega", robotSpeeds.omegaRadiansPerSecond);
+
+        setModuleStates(kinematics.toSwerveModuleStates(robotSpeeds));
+    }
+    
+    /** Drive Functions * */
+    public void drive(Vector2D velocity, double rotation) {
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            velocity.y, -velocity.x,
+            -rotation,
+            Odometry.getInstance().getPose().getRotation()); //ADD ODOMETRY
+
+        Pose2d robotVel = new Pose2d(
+            Settings.DT * speeds.vxMetersPerSecond,
+            Settings.DT * speeds.vyMetersPerSecond,
+            Rotation2d.fromRadians(Settings.DT * speeds.omegaRadiansPerSecond));
+        Twist2d twistVel = new Pose2d().log(robotVel);
+
+        setChassisSpeeds(new ChassisSpeeds(
+            twistVel.dx / Settings.DT,
+            twistVel.dy / Settings.DT,
+            twistVel.dtheta / Settings.DT
+        ));
+    }
+
+    public void stop() {
+        setChassisSpeeds(new ChassisSpeeds());
+    }
+
 }

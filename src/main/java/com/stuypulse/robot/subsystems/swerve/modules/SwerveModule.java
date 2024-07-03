@@ -22,10 +22,10 @@ public abstract class SwerveModule extends SubsystemBase {
     // TODO: figure out if we need a translation offset for the swerve modules
     //       and if we do, how we will use it
 
-    public SwerveModule(String id, Rotation2d angleOffset, Translation2d positionOfffset, boolean inverted) {
+    public SwerveModule(String id, Rotation2d angleOffset, Translation2d positionOffset, boolean inverted) {
         this.id = id;
         this.angleOffset = angleOffset;
-        this.positionOffset = positionOfffset;
+        this.positionOffset = positionOffset;
         this.inverted = inverted;
 
         targetState = new SwerveModuleState();
@@ -49,7 +49,7 @@ public abstract class SwerveModule extends SubsystemBase {
 
     public abstract double getVelocity();
 
-    public abstract double getPosition();
+    public abstract Translation2d getPosition();
 
     public abstract Rotation2d getAngle();
 
