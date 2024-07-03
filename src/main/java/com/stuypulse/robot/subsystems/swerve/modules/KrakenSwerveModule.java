@@ -1,197 +1,212 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.subsystems.swerve.modules;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.stuypulse.robot.constants.Motors;
+import com.stuypulse.robot.constants.Motors.StatusFrame;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Swerve;
-import com.stuypulse.robot.constants.Settings.Swerve.Turn;
-import com.stuypulse.robot.constants.Settings.Swerve.Drive;
 import com.stuypulse.robot.constants.Settings.Swerve.Encoder;
+import com.stuypulse.robot.constants.Settings.Swerve.Turn;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
+import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.streams.numbers.filters.Derivative;
+import com.stuypulse.stuylib.streams.numbers.filters.IFilter;
+import com.stuypulse.stuylib.streams.numbers.filters.TimedMovingAverage;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.VoltageOut;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class KrakenSwerveModule extends SwerveModule {
-    // TODO: Implement this later (maybe Kalimul)
-    // public static SwerveModule[] getModules() {
-    //     return new SwerveModule[] {
-    //         // new KrakenSwerveModule("Front Right", Settings.Swerve.FrontRight.ABSOLUTE_OFFSET )
-    //     }
-    // }
+
+    public static SwerveModule[] getTumblerModules() {
+        return new SwerveModule[] {
+            new KrakenSwerveModule("Front Right", Swerve.FrontRight.MODULE_OFFSET, Rotation2d.fromDegrees(-153.632812 + 180), 12, 15, 4),
+            new KrakenSwerveModule("Front Left",  Swerve.FrontLeft.MODULE_OFFSET,  Rotation2d.fromDegrees(147.919922 + 180),  10, 17, 2),
+            new KrakenSwerveModule("Back Left",   Swerve.BackLeft.MODULE_OFFSET,   Rotation2d.fromDegrees(73.125 + 180),      14, 11, 3),
+            new KrakenSwerveModule("Back Right",  Swerve.BackRight.MODULE_OFFSET,  Rotation2d.fromDegrees(-2.02184 + 180),    16, 13, 1)
+        };
+    }
 
     private final Rotation2d angleOffset;
 
     private final TalonFX driveMotor;
-    private final TalonFX turnMotor;
+    private final CANSparkMax pivotMotor;
+    private final CANcoder pivotEncoder;
 
-    private final CANcoder turnEncoder;  // TODO: Replace with AnalogInput
-    
-    // private final AngleController angleController;
+    private final AngleController pivotController;
 
-    // TODO: Look at IFilter targetAcceleration implementation
-    // TODO: Add records for nicer, more ceExecutor = Executors.newer code
-
-    private final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-    private final TalonFXConfiguration turnConfig = new TalonFXConfiguration();
-    private static final Executor brakeModeExecutor = Executors.newFixedThreadPool(8); // idk how many threads necessary
-
-    // TODO: Add control from 6328
-    private final VoltageOut voltageControl = new VoltageOut(0).withUpdateFreqHz(0);
-    private final TorqueCurrentFOC currentControl = new TorqueCurrentFOC(0).withUpdateFreqHz(0);
-    private final VelocityTorqueCurrentFOC driveVelocityControl =
-      new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
-    private final PositionTorqueCurrentFOC turnPositionControl =
-      new PositionTorqueCurrentFOC(0).withUpdateFreqHz(0);
-    private final NeutralOut neutralControl = new NeutralOut().withUpdateFreqHz(0);
+    private final IFilter targetAcceleration;
 
     public KrakenSwerveModule(
-        String id,
-        Rotation2d angleOffset,
-        int driveMotorID,
-        int turnMotorID,
-        int turnEncoderID,
-        boolean inverted
+        String id, 
+        Translation2d location, 
+        Rotation2d angleOffset, 
+        int driveMotorID, 
+        int pivotMotorID, 
+        int pivotEncoderID
     ) {
-        
-    super(id, angleOffset, inverted);
+        super(id, location);
 
-       this.angleOffset = angleOffset;
+        this.angleOffset = angleOffset;
 
-       driveMotor = new TalonFX(driveMotorID, "*");
-       turnMotor = new TalonFX(turnMotorID, "*");
-       turnEncoder = new CANcoder(turnEncoderID);
+        driveMotor = new TalonFX(driveMotorID);
+        pivotMotor = new CANSparkMax(pivotMotorID, MotorType.kBrushless);
+        pivotEncoder = new CANcoder(pivotEncoderID);
 
+        TalonFXConfiguration driveConfig = new TalonFXConfiguration();
 
-        // TODO: CONFIGURE BOTH DRIVE AND TURN MOTORS !!! from 6328 code
-        driveConfig.MotorOutput.Inverted = 
-            Drive.INVERTED
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive;
+        // PIDF values
+        Slot0Configs slot0 = new Slot0Configs();
+
+        slot0.kS = 0.14304; 
+        slot0.kV = 0.10884; 
+        slot0.kA = 0.023145; 
+        slot0.kP = 0.07; 
+        slot0.kI = 0; 
+        slot0.kD = 0; 
+
+        driveConfig.Slot0 = slot0;
+
+        // Direction and neutral mode
+        driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-            
-        turnConfig.MotorOutput.Inverted = 
-            Turn.INVERTED
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive; 
-        turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        
-        driveConfig.Feedback.SensorToMechanismRatio = Drive.L4;
-        turnConfig.Feedback.SensorToMechanismRatio = Turn.TURN;
-        turnConfig.ClosedLoopGeneral.ContinuousWrap = true;
 
-        // TODO: APPLY CONFIGS ??? USING A FOR LOOP LIKE 6328
-        
-        // TODO: Add signals for motor information, apply to both drive and turn motors, optimize but utilization
+        // Ramp rates
+        driveConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.0; // 100ms
 
-    //  angleController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD);
-    //  Using turnTalonConfig to set PID values
+        // Motion magic
+        // MotionMagicConfigs motionMagicConfigs = driveConfig.MotionMagic;
+        // motionMagicConfigs.MotionMagicCruiseVelocity = 0; // Unlimited cruise velocity
+        // motionMagicConfigs.MotionMagicExpo_kV = 0.12; // kV is around 0.12 V/rps
+        // motionMagicConfigs.MotionMagicExpo_kA = 0.1; // Use a slower kA of 0.1 V/(rps/s)
+        // driveConfig.MotionMagic.MotionMagicAcceleration = 400.0;
+        // driveConfig.MotionMagic.MotionMagicJerk = 4000.0;
+
+        // Gear ratio
+        driveConfig.Feedback.SensorToMechanismRatio = 1.0; // 1:1 sensor to mechanism ratio
+
+        // Current limits
+        driveConfig.CurrentLimits.StatorCurrentLimit = 65; // 65A stator current limit
+        driveConfig.CurrentLimits.StatorCurrentLimitEnable = true; // Enable stator current limiting
+
+        // driveConfig.CurrentLimits.SupplyCurrentLimit = 40; // 40A supply current limit
+        // driveConfig.CurrentLimits.SupplyCurrentThreshold = 40; // 40A supply current threshold
+        // driveConfig.CurrentLimits.SupplyCurrentLimitEnable = false; // Enable supply current limiting
+        // driveConfig.CurrentLimits.SupplyTimeThreshold = 0.2; // 200ms supply time threshold
+
+        driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = +400; // 40A peak forward torque current
+        driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -400; // 40A peak reverse torque current
+        driveConfig.TorqueCurrent.TorqueNeutralDeadband = 0.05; // 5% torque neutral deadband
+
+        // driveConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        // driveConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+
+        // driveConfig.HardwareLimitSwitch.ForwardLimitEnable = false;
+        // driveConfig.HardwareLimitSwitch.ReverseLimitEnable = false;
+
+        driveMotor.getConfigurator().apply(driveConfig);
+        driveMotor.setPosition(0);
+
+        pivotController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD)
+            .setOutputFilter(x -> -x);
+
+        targetAcceleration = new Derivative()
+            .then(new TimedMovingAverage(0.1))
+            .then(x -> MathUtil.clamp(x, 0, Settings.Swerve.MAX_MODULE_ACCEL));
+
+        Motors.disableStatusFrames(pivotMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_POSIITION, StatusFrame.ABS_ENCODER_VELOCITY);
+
+        Motors.Swerve.TURN_CONFIG.configure(pivotMotor);
     }
 
-    @Override
-    public double getVelocity() {
-        return driveMotor.getVelocity().getValueAsDouble() * Encoder.Drive.VELOCITY_CONVERSION;
-    }
-
-    @Override
     public double getPosition() {
         return driveMotor.getPosition().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
     }
 
     @Override
+    public double getVelocity() {
+        return driveMotor.getVelocity().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
+    }
+
+    @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRotations(turnEncoder.getAbsolutePosition().getValueAsDouble())
+        return Rotation2d.fromRotations(pivotEncoder.getAbsolutePosition().getValueAsDouble())
             .minus(angleOffset);
     }
 
-
-    // TODO?: Update inputs
-    // TODO: Add set drive and turn voltage
-    // TODO: Add set characteriztion
-    // TODO: Add set turn positionm and drive velocity
-
-    public void setDriveVolts(double voltage) {
-        driveMotor.setControl(voltageControl.withOutput(voltage));
+    @Override
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(getPosition(), getAngle());
     }
 
-    public void setTurnVolts(double voltage) {
-        turnMotor.setControl(voltageControl.withOutput(voltage));
+    private double convertDriveVel(double speedMetersPerSecond) {
+        return speedMetersPerSecond / Encoder.Drive.POSITION_CONVERSION;
     }
 
-    public void setCharacterization(double input) {
-        driveMotor.setControl(currentControl.withOutput(input));
+    @Override
+    public void periodic() {
+        super.periodic();
+
+        final boolean USE_ACCEL = true;
+        final boolean USE_ACCEL_IN_AUTON = true;
+        final boolean USE_FOC_IN_AUTON = true;
+
+        double velocity = convertDriveVel(getTargetState().speedMetersPerSecond);
+        double acceleration = targetAcceleration.get(velocity);
+        boolean useFOC = true;
+
+        if (!USE_ACCEL) {
+            acceleration = 0;
+        }
+
+        if (DriverStation.isAutonomousEnabled()) {
+            if (!USE_ACCEL_IN_AUTON) {
+                acceleration = 0;
+            }
+
+            if (!USE_FOC_IN_AUTON) {
+                useFOC = false;
+            }
+        }
+
+        VelocityVoltage driveOutput = new VelocityVoltage(velocity)
+            .withAcceleration(acceleration)
+            .withEnableFOC(useFOC);
+
+        pivotController.update(Angle.fromRotation2d(getTargetState().angle), Angle.fromRotation2d(getAngle()));
+
+        if (Math.abs(getTargetState().speedMetersPerSecond) < Settings.Swerve.MODULE_VELOCITY_DEADBAND) {
+            driveMotor.setControl(new VelocityVoltage(0));
+            pivotMotor.setVoltage(0);
+        } else {
+            driveMotor.setControl(driveOutput);
+            pivotMotor.setVoltage(pivotController.getOutput());
+        }
+
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Target Acceleration", acceleration * Encoder.Drive.POSITION_CONVERSION);
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Drive Current", driveMotor.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Drive Position", getPosition());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Velocity", getVelocity());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Drive Voltage", driveMotor.getMotorVoltage().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Turn Voltage", pivotController.getOutput());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Turn Current", pivotMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Angle Error", pivotController.getError().toDegrees());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Raw Encoder Angle", Units.rotationsToDegrees(pivotEncoder.getAbsolutePosition().getValueAsDouble()));
     }
     
-    public void setDriveVelocity(double velocityRadsPerrSec, double feedforward) {
-        driveMotor.setControl(
-            driveVelocityControl
-                .withVelocity(Units.radiansToRotations(velocityRadsPerrSec))
-                .withFeedForward(feedforward));
-    }
-
-    public void setTurnPosition(double angleRads) {
-        turnMotor.setControl(turnPositionControl.withPosition(Units.radiansToRotations(angleRads)));
-    }
-
-    public void setDrivePID(double kP, double kI, double kD) {
-        driveConfig.Slot0.kP = kP;
-        driveConfig.Slot0.kI = kI;
-        driveConfig.Slot0.kD = kD;
-        driveMotor.getConfigurator().apply(driveConfig, 0.01);
-    }
-    
-    public void setTurnPID(double kP, double kI, double kD) {
-        turnConfig.Slot0.kP = kP;
-        turnConfig.Slot0.kI = kI;
-        turnConfig.Slot0.kD = kD;
-    }
-
-    // TODO: Change timeout values?
-    public void setDriveBrakeMode(boolean enable) {
-        brakeModeExecutor.execute(
-            () -> {
-                synchronized (driveConfig) {
-                    driveConfig.MotorOutput.NeutralMode = 
-                        enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-                    driveMotor.getConfigurator().apply(driveConfig, 0.25); // maybe use timeout value
-                }
-        });
-    }
-
-    public void setTurnBrakeMode(boolean enable) {
-        brakeModeExecutor.execute(
-            () -> {
-                synchronized(turnConfig) {
-                    turnConfig.MotorOutput.NeutralMode = 
-                        enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-                    turnMotor.getConfigurator().apply(turnConfig, 0.25);
-                }
-        });
-    }
-
-    public void stop() {
-        driveMotor.setControl(neutralControl);
-        turnMotor.setControl(neutralControl);
-    }
 }
-

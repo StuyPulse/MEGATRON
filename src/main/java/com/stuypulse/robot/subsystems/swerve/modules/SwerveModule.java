@@ -1,7 +1,8 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
+/************************ PROJECT IZZI *************************/
+/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 
 package com.stuypulse.robot.subsystems.swerve.modules;
 
@@ -9,45 +10,36 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class SwerveModule extends SubsystemBase {
-    private String id;
-    protected final Rotation2d angleOffset;
-    private final boolean inverted;
+
+    private final String id;
+    private final Translation2d offset;
 
     private SwerveModuleState targetState;
 
-    // TODO: figure out if we need a translation offset for the swerve modules
-    //       and if we do, how we will use it
-
-    public SwerveModule(String id, Rotation2d angleOffset, boolean inverted) {
+    public SwerveModule(String id, Translation2d offset) {
         this.id = id;
-        this.angleOffset = angleOffset;
-        this.inverted = inverted;
+        this.offset = offset;
 
         targetState = new SwerveModuleState();
     }
 
-    public final String getID() {
+    public final String getId() {
         return this.id;
     }
 
-    public final Rotation2d getModuleOffset() {
-        return this.angleOffset;
-    }
-
-    public final boolean getInverted() {
-        return this.inverted;
+    public final Translation2d getModuleOffset() {
+        return this.offset;
     }
 
     public abstract double getVelocity();
 
-    public abstract double getPosition();
-
     public abstract Rotation2d getAngle();
 
-    // public abstract SwerveModulePosition getModulePosition();
+    public abstract SwerveModulePosition getModulePosition();
 
     public final SwerveModuleState getState() {
         return new SwerveModuleState(getVelocity(), getAngle());
@@ -61,4 +53,11 @@ public abstract class SwerveModule extends SubsystemBase {
         return targetState;
     }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Target Angle", targetState.angle.getDegrees());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Angle", getAngle().getDegrees());
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Target Velocity", targetState.speedMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Velocity", getVelocity());
+    }
 }
