@@ -12,6 +12,10 @@ public interface Ports {
         int OPERATOR = 1;
         int DEBUGGER = 2;
     }
+    
+    public interface Gyro {
+        int ID = 5;
+    }
 
     public interface Swerve {
         public interface BackRight {

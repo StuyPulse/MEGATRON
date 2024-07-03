@@ -20,6 +20,7 @@ import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
@@ -49,6 +50,8 @@ public class KrakenSwerveModule extends SwerveModule {
     
     // private final AngleController angleController;
 
+    // TODO: Add status signals + odometry queues
+
     // TODO: Look at IFilter targetAcceleration implementation
     // TODO: Add records for nicer, more ceExecutor = Executors.newer code
 
@@ -68,28 +71,36 @@ public class KrakenSwerveModule extends SwerveModule {
     public KrakenSwerveModule(
         String id,
         Rotation2d angleOffset,
+        Translation2d positionOffset,
         int driveMotorID,
         int turnMotorID,
         int turnEncoderID,
         boolean inverted
     ) {
         
-    super(id, angleOffset, inverted);
+    super(id, angleOffset, positionOffset, inverted);
 
-       this.angleOffset = angleOffset;
+        this.angleOffset = angleOffset;
 
-       driveMotor = new TalonFX(driveMotorID, "*");
-       turnMotor = new TalonFX(turnMotorID, "*");
-       turnEncoder = new CANcoder(turnEncoderID);
+        driveMotor = new TalonFX(driveMotorID, "*");
+        turnMotor = new TalonFX(turnMotorID, "*");
+        turnEncoder = new CANcoder(turnEncoderID);
 
 
         // TODO: CONFIGURE BOTH DRIVE AND TURN MOTORS !!! from 6328 code
+        driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = Drive.MAX_FORWARD_TORQUE;
+        driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = Drive.MIN_REVERSE_TORQUE;
+        driveConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = Drive.TORQUE_RAMP_RATE;
+
         driveConfig.MotorOutput.Inverted = 
-            Drive.INVERTED
+            inverted
             ? InvertedValue.Clockwise_Positive
             : InvertedValue.CounterClockwise_Positive;
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             
+        turnConfig.TorqueCurrent.PeakForwardTorqueCurrent = Turn.MAX_FORWARD_TORQUE;
+        turnConfig.TorqueCurrent.PeakReverseTorqueCurrent = Turn.MIN_REVERSE_TORQUE;
+
         turnConfig.MotorOutput.Inverted = 
             Turn.INVERTED
             ? InvertedValue.Clockwise_Positive
@@ -100,12 +111,13 @@ public class KrakenSwerveModule extends SwerveModule {
         turnConfig.Feedback.SensorToMechanismRatio = Turn.TURN;
         turnConfig.ClosedLoopGeneral.ContinuousWrap = true;
 
-        // TODO: APPLY CONFIGS ??? USING A FOR LOOP LIKE 6328
+        for (int i = 0; i < 4; i++) {
+            boolean error = driveMotor.getConfigurator().apply(driveConfig, 0.1) == StatusCode.OK;
+            error = error && (turnMotor.getConfigurator().apply(turnConfig, 0.1) == StatusCode.OK);
+            if (!error) break;
+        }
         
         // TODO: Add signals for motor information, apply to both drive and turn motors, optimize but utilization
-
-    //  angleController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD);
-    //  Using turnTalonConfig to set PID values
     }
 
     @Override
@@ -123,12 +135,6 @@ public class KrakenSwerveModule extends SwerveModule {
         return Rotation2d.fromRotations(turnEncoder.getAbsolutePosition().getValueAsDouble())
             .minus(angleOffset);
     }
-
-
-    // TODO?: Update inputs
-    // TODO: Add set drive and turn voltage
-    // TODO: Add set characteriztion
-    // TODO: Add set turn positionm and drive velocity
 
     public void setDriveVolts(double voltage) {
         driveMotor.setControl(voltageControl.withOutput(voltage));
@@ -153,6 +159,12 @@ public class KrakenSwerveModule extends SwerveModule {
         turnMotor.setControl(turnPositionControl.withPosition(Units.radiansToRotations(angleRads)));
     }
 
+    @Override
+    public SwerveModulePosition getModulePosition() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getModulePosition'");
+    }
+
     public void setDrivePID(double kP, double kI, double kD) {
         driveConfig.Slot0.kP = kP;
         driveConfig.Slot0.kI = kI;
@@ -166,7 +178,6 @@ public class KrakenSwerveModule extends SwerveModule {
         turnConfig.Slot0.kD = kD;
     }
 
-    // TODO: Change timeout values?
     public void setDriveBrakeMode(boolean enable) {
         brakeModeExecutor.execute(
             () -> {
@@ -192,6 +203,13 @@ public class KrakenSwerveModule extends SwerveModule {
     public void stop() {
         driveMotor.setControl(neutralControl);
         turnMotor.setControl(neutralControl);
+    }
+    
+     // TODO: Update inputs in periodic
+
+    @Override
+    public void periodic() {
+
     }
 }
 
