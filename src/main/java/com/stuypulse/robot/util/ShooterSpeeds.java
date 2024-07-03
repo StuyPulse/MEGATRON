@@ -27,7 +27,7 @@ public class ShooterSpeeds {
     //     return rightRPM;
     // }
 
-    //TODO make sense of this hahahahfhahfahgjkashdvhjkgasyhayhujhbgyJAUSWZk,ujmfhtyb gmjn,huyaSEkm,tbghjnuy f6,kmnh jla34
+    //TODO make sense of this
 
     public ShooterSpeeds() {
         this(0, 0);

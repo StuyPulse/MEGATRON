@@ -5,12 +5,11 @@
 
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.robot.util.ShooterSpeeds;
-import com.stuypulse.stuylib.network.SmartNumber;
-
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
-import com.revrobotics.CANSparkBase;
+import com.stuypulse.robot.util.ShooterSpeeds;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -52,12 +51,6 @@ public interface Settings {
         SmartNumber RPM_CHANGE_RC = new SmartNumber("Shooter/RPM Change RC", 0.2);
         double RPM_CHANGE_DIP_THRESHOLD = 300;
 
-        public interface Feedforward {
-            double kS = 0.11873;
-            double kV = 0.0017968;
-            double kA = 0.00024169;
-        }
-
         public interface PID {
             double kP = 0.00034711;
             double kI = 0;
@@ -69,11 +62,12 @@ public interface Settings {
         double GEARING = 18.0 / 30.0;
         double POSITION_CONVERSION = GEARING;
         double VELOCITY_CONVERSION = POSITION_CONVERSION / 60;
+        double FEEDER_ON = 12.0;
 
         public interface Feedforward {
-            double kS = 0.71611;
-            double kV = 0.00335;
-            double kA = 0.076981;
+            double kS = 0.11873;
+            double kV = 0.0017968;
+            double kA = 0.00024169;
         }
 
         public interface PID {
