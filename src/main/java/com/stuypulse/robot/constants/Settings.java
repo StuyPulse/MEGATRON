@@ -38,6 +38,12 @@ public interface Settings {
         
         ShooterSpeeds REVERSE = new ShooterSpeeds(-3000, -3000);
 
+        ShooterSpeeds AMPING = new ShooterSpeeds(-3000, 3100);
+
+        ShooterSpeeds FEEDER_STOP = new ShooterSpeeds(0,0);
+
+        ShooterSpeeds FEEDER_GET = new ShooterSpeeds(0, 3100);
+
         ShooterSpeeds FERRY = new ShooterSpeeds(
             new SmartNumber("Shooter/Ferry Shooter RPM", 6000), // 5500
             500,
@@ -59,10 +65,8 @@ public interface Settings {
     }
 
     public interface Feeder {
-        double GEARING = 18.0 / 30.0;
-        double POSITION_CONVERSION = GEARING;
-        double VELOCITY_CONVERSION = POSITION_CONVERSION / 60;
-        double FEEDER_ON = 12.0;
+        
+        double FEEDER_ON = 1.0;
 
         public interface Feedforward {
             double kS = 0.11873;
@@ -97,38 +101,5 @@ public interface Settings {
         }
 
         }
-        public static class CANSparkConfig {
-        public final boolean INVERTED;
-        public final IdleMode IDLE_MODE;
-        public final int CURRENT_LIMIT_AMPS;
-        public final double OPEN_LOOP_RAMP_RATE;
-
-        public CANSparkConfig(
-                boolean inverted,
-                IdleMode idleMode,
-                int currentLimitAmps,
-                double openLoopRampRate) {
-            this.INVERTED = inverted;
-            this.IDLE_MODE = idleMode;
-            this.CURRENT_LIMIT_AMPS = currentLimitAmps;
-            this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
-        }
-
-        public CANSparkConfig(boolean inverted, IdleMode idleMode, int currentLimitAmps) {
-            this(inverted, idleMode, currentLimitAmps, 0.0);
-        }
-
-        public CANSparkConfig(boolean inverted, IdleMode idleMode) {
-            this(inverted, idleMode, 500);
-        }
-
-        public void configure(CANSparkBase motor) {
-            motor.setInverted(INVERTED);
-            motor.setIdleMode(IDLE_MODE);
-            motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
-            motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
-            motor.burnFlash();
-        }
     }
-}
 }

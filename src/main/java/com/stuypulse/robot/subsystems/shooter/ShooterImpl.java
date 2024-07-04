@@ -1,12 +1,11 @@
 package com.stuypulse.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.Feeder;
 import com.stuypulse.robot.constants.Settings.Feeder.Feedforward;
 import com.stuypulse.robot.constants.Motors.StatusFrame;
 import com.stuypulse.robot.constants.Settings.Shooter.PID;
@@ -28,7 +27,6 @@ public class ShooterImpl extends Shooter {
 
     private final RelativeEncoder leftEncoder;
     private final RelativeEncoder rightEncoder;
-    private final RelativeEncoder feederEncoder;
     private final DigitalInput feederBeam;
 
     private final Controller leftController;
@@ -43,13 +41,11 @@ public class ShooterImpl extends Shooter {
 
         leftEncoder = new FilteredRelativeEncoder(leftMotor);
         rightEncoder = new FilteredRelativeEncoder(rightMotor);
-        feederEncoder = new FilteredRelativeEncoder(feederMotor);
 
         feederBeam = new DigitalInput(Ports.Shooter.RECIEVER_IR);
         
         leftEncoder.setVelocityConversionFactor(1.0);
         rightEncoder.setVelocityConversionFactor(1.0);
-        feederEncoder.setVelocityConversionFactor(Settings.Feeder.GEARING);
         
         leftController = new MotorFeedforward(Feedforward.kS, Feedforward.kV, Feedforward.kA).velocity()
             .add(new PIDController(PID.kP, PID.kI, PID.kD)
@@ -60,18 +56,13 @@ public class ShooterImpl extends Shooter {
         
         hasNote = BStream.create(feederBeam).filtered(new BDebounce.Both(Settings.Shooter.HAS_NOTE_DEBOUNCE));
 
-        feederEncoder.setPositionConversionFactor(Feeder.POSITION_CONVERSION);
-        feederEncoder.setPositionConversionFactor(Feeder.VELOCITY_CONVERSION);
-
         Motors.disableStatusFrames(leftMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
         Motors.disableStatusFrames(rightMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
         Motors.disableStatusFrames(feederMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
 
         Motors.Shooter.LEFT_SHOOTER.configure(leftMotor);
         Motors.Shooter.RIGHT_SHOOTER.configure(rightMotor);
-        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor); 
-        //needs to be added by Conveyor 
-        
+        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor);   
     }
 
     @Override
@@ -85,12 +76,17 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public void feederOn() {
+    public void runFeeder() {
         feederMotor.set(+Settings.Feeder.FEEDER_ON);
     }
 
     @Override
-    public void amperOn() {
+    public void feederOff() {
+        feederMotor.stopMotor();
+    }
+
+    @Override
+    public void amp() {
         feederMotor.set(-Settings.Feeder.FEEDER_ON);
     }
 
@@ -128,7 +124,7 @@ public class ShooterImpl extends Shooter {
             SmartDashboard.putNumber("Shooter/Right Requested Voltage", rightController.getOutput());
         }
 
-        SmartDashboard.putNumber("Shooter/Left RPM",getLeftShooterRPM());
+        SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
         SmartDashboard.putNumber("Shooter/Right RPM",getRightShooterRPM());
 
         SmartDashboard.putNumber("Shooter/Left Error", leftController.getError());

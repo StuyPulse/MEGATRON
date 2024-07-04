@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands.shooter;
 
 import com.stuypulse.robot.constants.Settings.Shooter;
 
-public class AmperOn extends ShooterSetRPM {
+public class AmperScore extends ShooterSetRPM {
 
-    public AmperOn() {
+    public AmperScore() {
         super(Shooter.AMPING);
     }
 

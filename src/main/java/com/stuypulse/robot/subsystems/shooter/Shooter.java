@@ -44,7 +44,7 @@ public abstract class Shooter extends SubsystemBase {
     
     public final boolean atTargetSpeeds() {
         return 
-        Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < 200.0 
+        Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < 200.0
         && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < 200.0;
     }
 
@@ -52,9 +52,11 @@ public abstract class Shooter extends SubsystemBase {
     
     public abstract double getRightShooterRPM();
 
-    public abstract void feederOn();
+    public abstract void runFeeder();
 
-    public abstract void amperOn();
+    public abstract void feederOff();
+
+    public abstract void amp();
 
     public final double getAvgRPM() {
         return (getLeftShooterRPM() + getRightShooterRPM()) / 2.0;
