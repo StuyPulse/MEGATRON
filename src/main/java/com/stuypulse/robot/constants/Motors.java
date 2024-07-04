@@ -8,6 +8,9 @@ package com.stuypulse.robot.constants;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import static com.revrobotics.CANSparkMax.IdleMode;
 
@@ -22,8 +25,30 @@ import static com.revrobotics.CANSparkMax.IdleMode;
  */
 public interface Motors {
 
-    /** Classes to store all of the values a motor needs */
+    public enum StatusFrame {
+        APPLIED_OUTPUT_FAULTS,
+        MOTOR_VEL_VOLTS_AMPS,
+        MOTOR_POSITION,
+        ANALOG_SENSOR,
+        ALTERNATE_ENCODER,
+        ABS_ENCODER_POSIITION,
+        ABS_ENCODER_VELOCITY
+    }
 
+    public static void disableStatusFrames(CANSparkBase motor, StatusFrame... ids) {
+        final int kDisableStatusFrame = 500;
+
+        for (StatusFrame id : ids) {
+            motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id.ordinal()), kDisableStatusFrame);
+        }
+    }
+
+    /** Classes to store all of the values a motor needs */
+    public interface Arm {
+        CANSparkConfig LEFT_SHOULDER = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); // check if inverted 
+        CANSparkConfig RIGHT_SHOULDER = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); // check if inverted
+    }
+    
     public static class TalonSRXConfig {
         public final boolean INVERTED;
         public final NeutralMode NEUTRAL_MODE;
@@ -85,13 +110,13 @@ public interface Motors {
         }
     }
 
-    public static class CANSparkMaxConfig {
+    public static class CANSparkConfig {
         public final boolean INVERTED;
         public final IdleMode IDLE_MODE;
         public final int CURRENT_LIMIT_AMPS;
         public final double OPEN_LOOP_RAMP_RATE;
 
-        public CANSparkMaxConfig(
+        public CANSparkConfig(
                 boolean inverted,
                 IdleMode idleMode,
                 int currentLimitAmps,
@@ -102,11 +127,11 @@ public interface Motors {
             this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
         }
 
-        public CANSparkMaxConfig(boolean inverted, IdleMode idleMode, int currentLimitAmps) {
+        public CANSparkConfig(boolean inverted, IdleMode idleMode, int currentLimitAmps) {
             this(inverted, idleMode, currentLimitAmps, 0.0);
         }
 
-        public CANSparkMaxConfig(boolean inverted, IdleMode idleMode) {
+        public CANSparkConfig(boolean inverted, IdleMode idleMode) {
             this(inverted, idleMode, 80);
         }
 
