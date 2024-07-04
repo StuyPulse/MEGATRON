@@ -35,7 +35,10 @@ public interface Settings {
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90);
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.1);
-        
+        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 1);
+        SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", 90);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", -70);
+
         public interface PID {
             SmartNumber kP = new SmartNumber("Arm/kP", 1.3);
             SmartNumber kI = new SmartNumber("Arm/kI", 0);
