@@ -5,9 +5,6 @@
 
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.network.SmartBoolean;
-import com.stuypulse.stuylib.network.SmartNumber;
-
 /*-
  * File containing tunable settings for every subsystem on the robot.
  *
@@ -16,11 +13,11 @@ import com.stuypulse.stuylib.network.SmartNumber;
  */
 public interface Settings {
     public interface Intake {
-        double ACQUIRE_SPEED = 1.0;
-        double DEACQUIRE_SPEED = 1.0;
-        double TOP_FUNNEL_ACQUIRE = 1.0;
-        double TOP_FUNNEL_DEACQUIRE = 1.0;
-        double BOTTOM_FUNNEL_ACQUIRE = 1.0;
-        double BOTTOM_FUNNEL_DEACQUIRE = 1.0;
+        double INTAKE_ACQUIRE_SPEED = 1.0;
+        double INTAKE_DEACQUIRE_SPEED = 1.0;
+        double FUNNEL_ACQUIRE = 1.0;
+        double FUNNEL_DEACQUIRE = 1.0;
+
+        double IRSensorTriggerTime = .03;
     }
 }

@@ -14,9 +14,11 @@ public interface Ports {
     }
 
     public interface Intake {
-        int FUNNEL_HIGH = 21; // Left Funnel
-        int FUNNEL_LOW = 22; // Right Funnel
+        int FUNNEL_LEFT = 21; 
+        int FUNNEL_RIGHT = 22;
         int INTAKE_MOTOR = 20;
+
+        int IRSensor = 0; // TO DO: FIND IR SENSOR PORT
     }
 
 }

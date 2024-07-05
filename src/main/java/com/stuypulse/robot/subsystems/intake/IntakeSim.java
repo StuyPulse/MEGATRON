@@ -1,76 +1,55 @@
 package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeSim extends Intake {
 
-    private double funnelMotorHigh;
-    private double funnelMotorLow;
+    private double funnelMotorLeft;
+    private double funnelMotorRight;
     private double intakeMotor;
 
     public IntakeSim() {
-        funnelMotorHigh = 0;
-        funnelMotorLow = 0;
+        funnelMotorLeft = 0;
+        funnelMotorRight = 0;
         intakeMotor = 0;
     }
 
     @Override
     public void acquire() {
-        intakeMotor = +Settings.Intake.ACQUIRE_SPEED;
+        intakeMotor = +Settings.Intake.INTAKE_ACQUIRE_SPEED;
+        funnelMotorLeft = +Settings.Intake.FUNNEL_ACQUIRE;
+        funnelMotorRight = +Settings.Intake.FUNNEL_ACQUIRE;
     }
 
     @Override
     public void deacquire(){
-        intakeMotor = -Settings.Intake.DEACQUIRE_SPEED;
+        intakeMotor = -Settings.Intake.INTAKE_DEACQUIRE_SPEED;
+        funnelMotorLeft = -Settings.Intake.FUNNEL_DEACQUIRE;
+        funnelMotorRight = -Settings.Intake.FUNNEL_DEACQUIRE;
     }
 
     @Override
-    public void stopIntake() {
+    public void stop() {
         intakeMotor = 0;
+        funnelMotorLeft = 0;
+        funnelMotorRight = 0;
     }
 
     @Override
-    public void funnel() {
-        funnelMotorHigh = +Settings.Intake.TOP_FUNNEL_ACQUIRE;
-        funnelMotorLow = +Settings.Intake.BOTTOM_FUNNEL_ACQUIRE;
+    public boolean hasNote() {
+        return false;
     }
-
+    
     @Override
-    public void defunnel() {
-        funnelMotorHigh = -Settings.Intake.TOP_FUNNEL_DEACQUIRE;
-        funnelMotorLow = -Settings.Intake.BOTTOM_FUNNEL_DEACQUIRE;
+    public void periodic() {
+        super.periodic();
+
+        SmartDashboard.putNumber("Intake/Intake Speed", intakeMotor);
+        SmartDashboard.putNumber("Intake/Funnel/Left Funnel Speed", funnelMotorLeft);
+        SmartDashboard.putNumber("Intake/Funnel/Right Funnel Speed", funnelMotorRight);
     }
-
-    @Override
-    public void stopFunnel() {
-        funnelMotorHigh = 0;
-        funnelMotorLow = 0;
-    }
-
-    @Override
-    public double getIntakeRollerSpeed() {
-        return intakeMotor;
-    }
-
-    @Override
-    public double getTopFunnelRollerSpeed() {
-        return funnelMotorHigh;
-    }
-
-    @Override
-    public double getLowFunnelRollerSpeed() {
-        return funnelMotorLow;
-    }
-
-@Override
-public void periodic() {
-    super.periodic();
-
-    SmartDashboard.putNumber("Intake/Intake Speed", intakeMotor);
-    SmartDashboard.putNumber("Intake/Funnel/Top-Funnel Speed", funnelMotorHigh);
-    SmartDashboard.putNumber("Intake/Funnel/Low-Funnel Speed", funnelMotorLow);
-}
 
 }

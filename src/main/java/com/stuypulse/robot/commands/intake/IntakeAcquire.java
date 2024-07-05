@@ -4,11 +4,11 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeAcquireAndFunnel extends Command {
+public class IntakeAcquire extends Command {
 
     private final Intake intake;
 
-    public IntakeAcquireAndFunnel() {
+    public IntakeAcquire() {
         intake = Intake.getInstance();
         addRequirements(intake);
     }
@@ -16,19 +16,15 @@ public class IntakeAcquireAndFunnel extends Command {
     @Override
     public void initialize() {
         intake.acquire();
-        intake.funnel();
     }
 
     @Override
     public void end(boolean interrupted) {
-        intake.stopIntake();
-        intake.stopFunnel();
+        intake.stop();
     }
 
     @Override
     public boolean isFinished() {
-        // idk 100% abt this return
-        return super.isFinished();
+        return intake.hasNote();
     }
-    
 }
