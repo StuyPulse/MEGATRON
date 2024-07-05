@@ -6,41 +6,21 @@ public class ShooterSpeeds {
 
     private final Number shooterRPM;
     private final double shooterDifferential;
-    private final Number feederRPM;
 
     private double leftRPM;
     private double rightRPM;
-
-    // public ShooterSpeeds(Number ShooterRPM, double shooterDifferential, Number feederRPM) {
-    //     this.shooterRPM = shooterRPM;
-    //     this.shooterDifferential = shooterDifferential;
-    //     this.feederRPM = feederRPM;
-
-        
-    // }
-
-    // public double getLeftRPM(){
-    //     return leftRPM;
-    // }
-
-    // public double getRightRPM() {
-    //     return rightRPM;
-    // }
-
-    //TODO make sense of this
 
     public ShooterSpeeds() {
         this(0, 0);
     }
 
-    public ShooterSpeeds(Number shooterRPM, Number feederRPM) {
-        this(shooterRPM.doubleValue(), 0, feederRPM.doubleValue());
+    public ShooterSpeeds(Number shooterRPM) {
+        this(shooterRPM.doubleValue(), 0);
     }
 
-    public ShooterSpeeds(Number shooterRPM, double shooterDifferential, Number feederRPM) {
+    public ShooterSpeeds(Number shooterRPM, double shooterDifferential) {
         this.shooterRPM = shooterRPM;
         this.shooterDifferential = shooterDifferential;
-        this.feederRPM = feederRPM;
 
         // update(Odometry.getInstance().getPose());
     }
@@ -69,9 +49,5 @@ public class ShooterSpeeds {
 
     public double getRightRPM() {
         return rightRPM;
-    }
-
-    public double getFeederRPM() {
-        return feederRPM.doubleValue();
     }
 }

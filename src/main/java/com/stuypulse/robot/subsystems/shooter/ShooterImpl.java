@@ -125,7 +125,7 @@ public class ShooterImpl extends Shooter {
         }
 
         SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
-        SmartDashboard.putNumber("Shooter/Right RPM",getRightShooterRPM());
+        SmartDashboard.putNumber("Shooter/Right RPM", getRightShooterRPM());
 
         SmartDashboard.putNumber("Shooter/Left Error", leftController.getError());
         SmartDashboard.putNumber("Shooter/Right Error", rightController.getError());

@@ -1,11 +1,21 @@
 package com.stuypulse.robot.commands.shooter;
 
-import com.stuypulse.robot.constants.Settings.Shooter;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 
-public class FeederStop extends ShooterSetRPM {
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
+public class FeederStop extends InstantCommand {
+
+    private Shooter shooter;
 
     public FeederStop() {
-        super(Shooter.FEEDER_STOP);
+        shooter = Shooter.getInstance();
+            addRequirements(shooter);
+    }
+        
+    public void initalize() {
+        shooter.feederOff();
+    }
+           
     }
 
-}

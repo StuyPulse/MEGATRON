@@ -6,7 +6,6 @@
 package com.stuypulse.robot.constants;
 
 import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -27,12 +26,12 @@ public interface Settings {
         double TELEOP_SHOOTER_STARTUP_DELAY = 0.5;
 
         // MAX RPM
-        // LEFT/RIGHT: 5900
+        // LEFT: 6500
+        // RIGHT: 3250
         // FEEDER: 3100
         ShooterSpeeds PODIUM_SHOT = new ShooterSpeeds(
             new SmartNumber("Shooter/Podium Shooter RPM", 5500),
-            500,
-            new SmartNumber("Shooter/Podium Feeder RPM", 3000));
+            500);
 
         ShooterSpeeds HANDOFF = new ShooterSpeeds(3000, 3000);
         
@@ -40,14 +39,9 @@ public interface Settings {
 
         ShooterSpeeds AMPING = new ShooterSpeeds(-3000, 3100);
 
-        ShooterSpeeds FEEDER_STOP = new ShooterSpeeds(0,0);
-
-        ShooterSpeeds FEEDER_GET = new ShooterSpeeds(0, 3100);
-
         ShooterSpeeds FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Ferry Shooter RPM", 6000), // 5500
-            500,
-            new SmartNumber("Shooter/Ferry Feeder RPM", 3500)); // 3000
+            new SmartNumber("Shooter/Ferry Shooter RPM", 6000), 
+            500);
 
         ShooterSpeeds WING_FERRY = new ShooterSpeeds(2000, 2500);
 
