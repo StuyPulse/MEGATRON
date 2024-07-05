@@ -5,10 +5,7 @@
 
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounceRC;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -39,7 +36,8 @@ public interface Settings {
         SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -70);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Ferry Angle", -80);
-        //feed angle is the furthest position the arm can be to still receive notes from the intake
+
+        // feed angle is the furthest position the arm can be to still receive notes from the intake
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", -87);
 
         public interface PID {
@@ -52,9 +50,9 @@ public interface Settings {
             SmartNumber kS = new SmartNumber("Arm/kS", 0.061);
             SmartNumber kV = new SmartNumber("Arm/kV", 1.2);
             SmartNumber kA = new SmartNumber("Arm/kA", 0.038097);
-            SmartNumber kGEmpty = new SmartNumber("Arm/kG Empty", 0.7);
 
-            SmartNumber kGNote = new SmartNumber("Arm/kG Note", 0.7); // TODO: determine kGNote
+            SmartNumber kGEmpty = new SmartNumber("Arm/kG Empty", 0.7); // TODO: determine kG
+            SmartNumber kGNote = new SmartNumber("Arm/kG Note", 0.7);
         }
 
         public interface Encoder {

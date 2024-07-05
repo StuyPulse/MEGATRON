@@ -14,8 +14,8 @@ public interface Ports {
     }
 
     public interface Arm {
-        int LEFT_SHOULDER = 31;
-        int RIGHT_SHOULDER = 32;
+        int LEFT_MOTOR = 31;
+        int RIGHT_MOTOR = 32;
         int BUMP_SWITCH = 0;
     }
 }

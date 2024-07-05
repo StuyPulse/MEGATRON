@@ -3,14 +3,9 @@ package com.stuypulse.robot.subsystems.arm;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import java.util.Optional;
-
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
-import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
-import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -18,23 +13,24 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmImpl extends Arm {
     
-    private final CANSparkMax leftShoulder;
-    private final CANSparkMax rightShoulder;
+    private final CANSparkMax leftMotor;
+    private final CANSparkMax rightMotor;
     private final RelativeEncoder armEncoder;
     
     private final DigitalInput bumpSwitch;
     private final BStream bumpSwitchOn;
 
-    private final SmartNumber shoulderMaxVelocity;
-    private final SmartNumber shoulderMaxAcceleration;
+    private final SmartNumber maxVelocity;
+    private final SmartNumber maxAcceleration;
 
     protected ArmImpl() {
-        leftShoulder = new CANSparkMax(Ports.Arm.LEFT_SHOULDER, MotorType.kBrushless);
-        rightShoulder = new CANSparkMax(Ports.Arm.RIGHT_SHOULDER, MotorType.kBrushless);
-        armEncoder = new FilteredRelativeEncoder(leftShoulder);
+        leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
+        rightMotor = new CANSparkMax(Ports.Arm.RIGHT_MOTOR, MotorType.kBrushless);
+        armEncoder = new FilteredRelativeEncoder(leftMotor);
 
         bumpSwitch = new DigitalInput(Ports.Arm.BUMP_SWITCH);
         bumpSwitchOn = BStream.create(bumpSwitch).filtered(new BDebounce.Rising(Settings.Arm.BUMP_SWITCH_DEBOUNCE_TIME));
@@ -42,11 +38,11 @@ public class ArmImpl extends Arm {
         armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
         armEncoder.setVelocityConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
 
-        shoulderMaxVelocity = new SmartNumber("Arm/Max Velocity", Settings.Arm.TELEOP_MAX_VELOCITY.doubleValue());
-        shoulderMaxAcceleration = new SmartNumber("Arm/Max Acceleration", Settings.Arm.TELEOP_MAX_ACCELERATION.doubleValue());
+        maxVelocity = new SmartNumber("Arm/Max Velocity", Settings.Arm.TELEOP_MAX_VELOCITY.doubleValue());
+        maxAcceleration = new SmartNumber("Arm/Max Acceleration", Settings.Arm.TELEOP_MAX_ACCELERATION.doubleValue());
         
-        Motors.Arm.LEFT_SHOULDER.configure(leftShoulder);
-        Motors.Arm.RIGHT_SHOULDER.configure(rightShoulder);
+        Motors.Arm.LEFT_MOTOR.configure(leftMotor);
+        Motors.Arm.RIGHT_MOTOR.configure(rightMotor);
     }
 
     @Override
@@ -56,27 +52,42 @@ public class ArmImpl extends Arm {
 
     @Override
     public double getDegrees() {
-        return (360 * armEncoder.getPosition());
+        return (360 * armEncoder.getPosition()) % 360;
     }
 
     @Override
     public void stop() {
-        leftShoulder.setVoltage(0);
-        rightShoulder.setVoltage(0);
+        leftMotor.setVoltage(0);
+        rightMotor.setVoltage(0);
         enableLimp();
     }
 
-    // kinematic constraints
     @Override
     public void setConstraints(double maxVelocity, Number maxAcceleration) {
-        shoulderMaxVelocity.set(maxVelocity);
-        shoulderMaxAcceleration.set(maxAcceleration);
+        this.maxVelocity.set(maxVelocity);
+        this.maxAcceleration.set(maxAcceleration);
     }
 
     @Override
     protected void setVoltageImpl(double voltage) {
-        leftShoulder.setVoltage(voltage);
-        rightShoulder.setVoltage(voltage);
+        leftMotor.setVoltage(voltage);
+        rightMotor.setVoltage(voltage);
     }
 
+    @Override
+    public void periodic() {
+        super.periodic();
+
+        SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
+        SmartDashboard.putNumber("Arm/Raw Encoder Angle (rot)", armEncoder.getPosition());
+
+        SmartDashboard.putNumber("Arm/Left Bus Voltage (V)", leftMotor.getBusVoltage());
+        SmartDashboard.putNumber("Arm/Right Bus Voltage (V)", rightMotor.getBusVoltage());
+
+        SmartDashboard.putNumber("Arm/Left Current (amps)", leftMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Arm/Right Current (amps)", rightMotor.getOutputCurrent());
+
+        SmartDashboard.putNumber("Arm/Left Duty Cycle", leftMotor.get());
+        SmartDashboard.putNumber("Arm/Right Duty Cycle", rightMotor.get());
+    }
 }

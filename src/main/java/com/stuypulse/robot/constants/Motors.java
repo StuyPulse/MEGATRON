@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import static com.revrobotics.CANSparkMax.IdleMode;
@@ -45,8 +44,8 @@ public interface Motors {
 
     /** Classes to store all of the values a motor needs */
     public interface Arm {
-        CANSparkConfig LEFT_SHOULDER = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); // check if inverted 
-        CANSparkConfig RIGHT_SHOULDER = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); // check if inverted
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); // check if inverted 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); // check if inverted
     }
     
     public static class TalonSRXConfig {

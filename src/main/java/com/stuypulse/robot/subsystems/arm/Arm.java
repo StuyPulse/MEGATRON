@@ -3,17 +3,15 @@ package com.stuypulse.robot.subsystems.arm;
 import java.util.Optional;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.Robot;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.angle.feedforward.AngleArmFeedforward;
 import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class Arm extends SubsystemBase {
@@ -31,25 +29,25 @@ public abstract class Arm extends SubsystemBase {
     
     private final SmartNumber targetDegrees;
 
-    private final SmartBoolean shoulderLimp;
+    private final SmartBoolean armLimp;
 
-    private Optional<Double> shoulderVoltageOverride;
+    private Optional<Double> voltageOverride;
 
-    private final Controller shoulderController;
+    private final Controller controller;
 
     protected Arm() {
         targetDegrees = new SmartNumber("Arm/Target Angle (deg)", -90);
         
-        shoulderLimp = new SmartBoolean("Arm/Is Shoulder Limp?", false);
+        armLimp = new SmartBoolean("Arm/Is Limp?", false);
 
-        shoulderVoltageOverride = Optional.empty();
+        voltageOverride = Optional.empty();
 
-        shoulderController = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
+        controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
         .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kGNote))
         .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
         .setOutputFilter(x -> {
-            if (shoulderLimp()) return 0;
-            else return shoulderVoltageOverride.orElse(x); 
+            if (isLimp()) return 0;
+            else return voltageOverride.orElse(x); 
         });
     }
 
@@ -73,18 +71,18 @@ public abstract class Arm extends SubsystemBase {
 
     // voltage control
     public void setVoltage(double voltage) {
-        shoulderVoltageOverride = Optional.of(voltage);
+        voltageOverride = Optional.of(voltage);
     }
 
     protected abstract void setVoltageImpl(double voltage);
 
     // limp (voltage = 0)
-    public boolean shoulderLimp() {
-        return shoulderLimp.get();
+    public boolean isLimp() {
+        return armLimp.get();
     }
 
-    public final void setLimp(boolean shoulderLimp) {
-        this.shoulderLimp.set(shoulderLimp);
+    public final void setLimp(boolean limp) {
+        this.armLimp.set(limp);
     }
     
     public final void enableLimp() {
@@ -101,20 +99,19 @@ public abstract class Arm extends SubsystemBase {
 
     public abstract void reset();
 
-    // public abstract boolean bumpSwitch();
-
-    // public abstract double getVelocityRadiansPerSecond();
-
-    // kinematic constraints
     public abstract void setConstraints(double maxVelocity, Number maxAcceleration);
 
     @Override
     public void periodic() {
-        double shoulderTarget = getTargetDegrees();
-        shoulderTarget = SLMath.clamp(shoulderTarget, Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE.doubleValue());
-        setTargetDegrees(shoulderTarget);
+        double target = getTargetDegrees();
+        target = SLMath.clamp(target, Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE.doubleValue());
+        setTargetDegrees(target);
         
-        shoulderController.update(getTargetDegrees(), getDegrees());
-        setVoltageImpl(shoulderController.getOutput());
+        controller.update(getTargetDegrees(), getDegrees());
+        setVoltageImpl(controller.getOutput());
+
+        SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
+        SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
+        SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
     }
 }
