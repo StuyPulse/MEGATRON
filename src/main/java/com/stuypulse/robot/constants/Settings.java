@@ -21,14 +21,13 @@ public interface Settings {
     public interface Shooter {
         double SHOOT_TIME_DEBOUNCE = 0.4;
 
-        double MOMENT_OF_INERTIA = 0.01;
-
-        double TELEOP_SHOOTER_STARTUP_DELAY = 0.5;
-
         // MAX RPM
         // LEFT: 6500
         // RIGHT: 3250
         // FEEDER: 3100
+
+        ShooterSpeeds OPTIMAL_SPEED = new ShooterSpeeds(4875);
+        
         ShooterSpeeds PODIUM_SHOT = new ShooterSpeeds(
             new SmartNumber("Shooter/Podium Shooter RPM", 4875), 500);
 
@@ -51,7 +50,7 @@ public interface Settings {
 
     public interface Feeder {
         
-        double FEEDER_ON = 1.0;
+        double FEEDER_SPEED = 1.0;
 
         public interface Feedforward {
             double kS = 0.11873;

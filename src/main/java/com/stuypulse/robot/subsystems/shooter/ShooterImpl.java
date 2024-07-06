@@ -77,7 +77,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public void runFeeder() {
-        feederMotor.set(+Settings.Feeder.FEEDER_ON);
+        feederMotor.set(+Settings.Feeder.FEEDER_SPEED);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public void amp() {
-        feederMotor.set(-Settings.Feeder.FEEDER_ON);
+        feederMotor.set(-Settings.Feeder.FEEDER_SPEED);
     }
 
     @Override
