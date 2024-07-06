@@ -5,8 +5,6 @@
 
 package com.stuypulse.robot.constants;
 
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -28,22 +26,21 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double SHOOT_TIME_DEBOUNCE = 0.4;
-
-        ShooterSpeeds OPTIMAL_SPEED = new ShooterSpeeds(4875);
+        double TARGET_RPM_THRESHOLD = 300;
         
-        ShooterSpeeds PODIUM_SHOT = new ShooterSpeeds(
-            new SmartNumber("Shooter/Podium Shooter RPM", 4875), 500);
+        ShooterSpeeds SPEAKER = new ShooterSpeeds(
+            new SmartNumber("Shooter/Speaker RPM", 4875), 
+            new SmartNumber("Shooter/Speaker RPM differential", 500)
+        );
 
-        ShooterSpeeds AMPING = new ShooterSpeeds(-3000, 500);
+        ShooterSpeeds AMPING = new ShooterSpeeds(-1000);
 
-        ShooterSpeeds FERRY = new ShooterSpeeds(new SmartNumber("Shooter/Ferry Shooter RPM", 4875), 500);
-
-        ShooterSpeeds WING_FERRY = new ShooterSpeeds(4875, 2500);
+        ShooterSpeeds FERRY = new ShooterSpeeds(
+            new SmartNumber("Shooter/Ferry RPM", 4875), 
+            new SmartNumber("Shooter/Ferry RPM differential", 500)
+        );
 
         SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.2);
-        SmartNumber RPM_CHANGE_RC = new SmartNumber("Shooter/RPM Change RC", 0.2);
-        double RPM_CHANGE_DIP_THRESHOLD = 300;
 
         public interface PID {
             double kP = 0.00034711;
@@ -66,28 +63,6 @@ public interface Settings {
             double kP = 0.00020863;
             double kI = 0.0;
             double kD = 0.0;
-        }
-    }
-
-    public interface Motors {
-
-        public enum StatusFrame {
-        APPLIED_OUTPUT_FAULTS,
-        MOTOR_VEL_VOLTS_AMPS,
-        MOTOR_POSITION,
-        ANALOG_SENSOR,
-        ALTERNATE_ENCODER,
-        ABS_ENCODER_POSIITION,
-        ABS_ENCODER_VELOCITY
-        }
-        public static void disableStatusFrames(CANSparkBase motor, StatusFrame... ids) {
-        
-        final int kDisableStatusFrame = 500;
-
-        for (StatusFrame id : ids) {
-            motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id.ordinal()), kDisableStatusFrame);
-        }
-
         }
     }
 }
