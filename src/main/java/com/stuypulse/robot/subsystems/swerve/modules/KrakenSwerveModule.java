@@ -87,8 +87,8 @@ public class KrakenSwerveModule extends SwerveModule {
         turnMotor = new TalonFX(turnMotorID, "*");
         turnEncoder = new CANcoder(turnEncoderID);
 
-        setDrivePID(Swerve.Drive.kP.doubleValue(), Swerve.Drive.kI, Swerve.Drive.kD);
-        setTurnPID(Swerve.Turn.kP, Swerve.Turn.kI, Swerve.Turn.kD);
+        setDrivePID(Swerve.Drive.kP.doubleValue(), Swerve.Drive.kI.doubleValue(), Swerve.Drive.kD.doubleValue());
+        setTurnPID(Swerve.Turn.kP.doubleValue(), Swerve.Turn.kI.doubleValue(), Swerve.Turn.kD.doubleValue());
 
         // Config Motors
         driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80.0;
@@ -105,7 +105,7 @@ public class KrakenSwerveModule extends SwerveModule {
         turnConfig.TorqueCurrent.PeakReverseTorqueCurrent = -40.0;
         turnConfig.TorqueCurrent.TorqueNeutralDeadband = 0.05;
         turnConfig.MotorOutput.Inverted =
-            Swerve.Turn.INVERTED
+            Swerve.Turn.INVERTED.get()
                 ? InvertedValue.Clockwise_Positive
                 : InvertedValue.CounterClockwise_Positive;
         turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;

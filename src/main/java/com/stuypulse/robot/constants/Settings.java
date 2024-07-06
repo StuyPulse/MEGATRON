@@ -7,6 +7,7 @@ package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.PIDConstants;
+import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -112,25 +113,25 @@ public interface Settings {
         }
 
         public interface Turn {
-            double kP = 7.0;
-            double kI = 0.0;
-            double kD = 0.05;
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 7.0);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.05);
 
-            double kS = 0.25582;
-            double kV = 0.00205;
-            double kA = 0.00020123;
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.25582);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.00205);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.00020123);
 
-            boolean INVERTED = true;
+            SmartBoolean INVERTED = new SmartBoolean("Swerve/Turn/INVERTED", true);
 
             double TURN_REDUCTION = (150.0 / 7.0); // 21.4285714286
         }
 
         public interface Drive {
             SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 0.31399);
-            double kI = 0.0;
-            double kD = 0.0;
+            SmartNumber kI = new SmartNumber("Swerve/Drive/PID/kI", 0);
+            SmartNumber kD = new SmartNumber("Swerve/Drive/PID/kD", 0);
 
-            double kS = 0.15618;
+            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.00012288);
             SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.00012288);
             SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0000259);
 
