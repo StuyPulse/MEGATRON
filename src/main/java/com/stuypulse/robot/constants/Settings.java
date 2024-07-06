@@ -7,6 +7,8 @@ package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.PIDConstants;
+
+import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -21,7 +23,12 @@ import edu.wpi.first.math.util.Units;
  * values that we can edit on Shuffleboard.
  */
 public interface Settings {
+  
+    double DT = 1.0 / 50.0;
 
+    double WIDTH = Units.inchesToMeters(32);
+    double LENGTH = Units.inchesToMeters(36);
+  
     // checks the current RIO's serial number to determine which robot is running
     public enum RobotType {
         // TODO: Add serial numbers from RIOs
@@ -46,10 +53,62 @@ public interface Settings {
         }
     }
 
-    double DT = 1.0 / 50.0;
+    public interface Intake {
+        double INTAKE_ACQUIRE_SPEED = 1.0;
+        double INTAKE_DEACQUIRE_SPEED = 1.0;
+        double FUNNEL_ACQUIRE = 1.0;
+        double FUNNEL_DEACQUIRE = 1.0;
 
-    double WIDTH = Units.inchesToMeters(32);
-    double LENGTH = Units.inchesToMeters(36);
+        double IRSensorTriggerTime = .03;
+    }
+
+    public interface Shooter {
+        double TARGET_RPM_THRESHOLD = 300;
+        
+        ShooterSpeeds SPEAKER = new ShooterSpeeds(
+            new SmartNumber("Shooter/Speaker RPM", 4875), 
+            new SmartNumber("Shooter/Speaker RPM differential", 500)
+        );
+
+        ShooterSpeeds AMPING = new ShooterSpeeds(-1000, -1);
+
+        ShooterSpeeds FERRY = new ShooterSpeeds(
+            new SmartNumber("Shooter/Ferry RPM", 4875), 
+            new SmartNumber("Shooter/Ferry RPM differential", 500)
+        );
+
+        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.2);
+
+        public interface LEFT {
+            public interface PID {
+                double kP = 0.00034711;
+                double kI = 0;
+                double kD = 0.0;
+            }
+
+            public interface FF {
+                double kS = 0;
+                double kV = 0;
+                double kA = 0;
+            }
+        }
+
+        public interface RIGHT {
+            public interface PID {
+                double kP = 0.00034711;
+                double kI = 0;
+                double kD = 0.0;
+            }
+
+            public interface FF {
+                double kS = 0;
+                double kV = 0;
+                double kA = 0;
+            }
+        }
+
+        double FEEDER_SPEED = 1.0;
+    }
     
     public interface Swerve {
         // between wheel centers
