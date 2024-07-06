@@ -33,7 +33,7 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
-        ShooterSpeeds AMPING = new ShooterSpeeds(-1000);
+        ShooterSpeeds AMPING = new ShooterSpeeds(-1000, -1);
 
         ShooterSpeeds FERRY = new ShooterSpeeds(
             new SmartNumber("Shooter/Ferry RPM", 4875), 

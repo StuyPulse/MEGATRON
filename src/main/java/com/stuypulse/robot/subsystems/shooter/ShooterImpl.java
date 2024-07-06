@@ -76,22 +76,22 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public void runFeeder() {
+    public void runFeederForwards() {
         feederMotor.set(+Settings.Feeder.FEEDER_SPEED);
     }
 
     @Override
-    public void feederOff() {
-        feederMotor.stopMotor();
-    }
-
-    @Override
-    public void amp() {
+    public void runFeederBackwards() {
         feederMotor.set(-Settings.Feeder.FEEDER_SPEED);
     }
 
     @Override
-    public boolean noteInFeeder() {
+    public void stopFeeder() {
+        feederMotor.stopMotor();
+    }
+
+    @Override
+    public boolean hasNote() {
         return feederBeam.get();
     }
 
@@ -137,10 +137,6 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
 
         SmartDashboard.putBoolean("Shooter/Note Shot", noteShot());
-
-        // SmartDashboard.putNumber("Shooter/Angle", )
-        // SmartDashboard.putNumber("Shooter/Distance", ) need odometry
-        
     }
 
 }
