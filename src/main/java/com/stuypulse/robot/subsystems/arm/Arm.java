@@ -97,9 +97,7 @@ public abstract class Arm extends SubsystemBase {
 
     public abstract void stop();
 
-    public abstract void reset();
-
-    public abstract void setConstraints(double maxVelocity, Number maxAcceleration);
+    public abstract void setConstraints(double maxVelocity, double maxAcceleration);
 
     @Override
     public void periodic() {

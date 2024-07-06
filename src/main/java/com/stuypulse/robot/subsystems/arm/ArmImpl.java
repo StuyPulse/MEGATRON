@@ -22,7 +22,7 @@ public class ArmImpl extends Arm {
     private final RelativeEncoder armEncoder;
     
     private final DigitalInput bumpSwitch;
-    private final BStream bumpSwitchOn;
+    // private final BStream bumpSwitchOn;
 
     private final SmartNumber maxVelocity;
     private final SmartNumber maxAcceleration;
@@ -33,9 +33,9 @@ public class ArmImpl extends Arm {
         armEncoder = new FilteredRelativeEncoder(leftMotor);
 
         bumpSwitch = new DigitalInput(Ports.Arm.BUMP_SWITCH);
-        bumpSwitchOn = BStream.create(bumpSwitch).filtered(new BDebounce.Rising(Settings.Arm.BUMP_SWITCH_DEBOUNCE_TIME));
+        // bumpSwitchOn = BStream.create(bumpSwitch).filtered(new BDebounce.Rising(Settings.Arm.BUMP_SWITCH_DEBOUNCE_TIME));
 
-        armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
+        armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO); // in rotations
         armEncoder.setVelocityConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
 
         maxVelocity = new SmartNumber("Arm/Max Velocity", Settings.Arm.TELEOP_MAX_VELOCITY.doubleValue());
@@ -43,16 +43,12 @@ public class ArmImpl extends Arm {
         
         Motors.Arm.LEFT_MOTOR.configure(leftMotor);
         Motors.Arm.RIGHT_MOTOR.configure(rightMotor);
-    }
-
-    @Override
-    public void reset() {
-        if (bumpSwitchOn.get()) armEncoder.setPosition(0);
-    }    
+    } 
 
     @Override
     public double getDegrees() {
-        return (360 * armEncoder.getPosition()) % 360;
+        double angle = (360 * armEncoder.getPosition()) % 360;
+        return (angle > 180 && angle < 360) ? angle - 360 : angle; // returns degrees (-180,180]
     }
 
     @Override
@@ -63,7 +59,7 @@ public class ArmImpl extends Arm {
     }
 
     @Override
-    public void setConstraints(double maxVelocity, Number maxAcceleration) {
+    public void setConstraints(double maxVelocity, double maxAcceleration) {
         this.maxVelocity.set(maxVelocity);
         this.maxAcceleration.set(maxAcceleration);
     }
@@ -77,6 +73,7 @@ public class ArmImpl extends Arm {
     @Override
     public void periodic() {
         super.periodic();
+        if (bumpSwitch.get()) armEncoder.setPosition(0); // find rest position
 
         SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
         SmartDashboard.putNumber("Arm/Raw Encoder Angle (rot)", armEncoder.getPosition());
