@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 public class ShooterSpeeds {
 
     private final Number shooterRPM; //the average RPM of left and right shooters
-    private final double shooterDifferential;
+    private final Number shooterDifferential;
 
     private double leftRPM;
     private double rightRPM;
@@ -15,14 +15,12 @@ public class ShooterSpeeds {
     }
 
     public ShooterSpeeds(Number shooterRPM) {
-        this(shooterRPM.doubleValue(), 0);
+        this(shooterRPM, 0);
     }
 
-    public ShooterSpeeds(Number shooterRPM, double shooterDifferential) {
+    public ShooterSpeeds(Number shooterRPM, Number shooterDifferential) {
         this.shooterRPM = shooterRPM;
         this.shooterDifferential = shooterDifferential;
-
-        // update(Odometry.getInstance().getPose());
     }
 
     public ShooterSpeeds update(Pose2d robotPose) {
@@ -37,8 +35,8 @@ public class ShooterSpeeds {
         //     leftRPM = higher;
         // }
         
-        leftRPM = shooterRPM.doubleValue() + shooterDifferential / 2.0;
-        rightRPM = shooterRPM.doubleValue() - shooterDifferential / 2.0;
+        leftRPM = shooterRPM.doubleValue() + shooterDifferential.doubleValue() / 2.0;
+        rightRPM = shooterRPM.doubleValue() - shooterDifferential.doubleValue() / 2.0;
 
         return this;
     }
