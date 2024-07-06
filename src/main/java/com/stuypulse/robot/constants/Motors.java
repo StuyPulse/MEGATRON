@@ -45,49 +45,21 @@ public interface Motors {
 
     /** Classes to store all of the values a motor needs */
 
-    public static class TalonSRXConfig {
-        public final boolean INVERTED;
-        public final NeutralMode NEUTRAL_MODE;
-        public final int PEAK_CURRENT_LIMIT_AMPS;
-        public final double OPEN_LOOP_RAMP_RATE;
-
-
-        public static void disableStatusFrames(CANSparkBase motor, StatusFrame... ids) {
-            final int kDisableStatusFrame = 500;
-
-            for (StatusFrame id : ids) {
-                motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id.ordinal()), kDisableStatusFrame);
-        }
-    }
-
-    /** Classes to store all of the values a motor needs */
-    public interface Amper {
-        CANSparkConfig LIFT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 80);
-        CANSparkConfig SCORE_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 500, 0.1);
-    }
-
     public interface Swerve {
         CANSparkConfig DRIVE_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 60, 0.1);
         CANSparkConfig TURN_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 80);
     }
 
     public interface Intake {
-        CANSparkConfig MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
     }
 
     public interface Shooter {
-        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 500, 0.5);
-        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.5);
-    }
-
-    public interface Conveyor {
-        CANSparkConfig GANDALF_MOTOR = new CANSparkConfig(true, IdleMode.kBrake,500, 0.25);
-        CANSparkConfig SHOOTER_FEEDER_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.1);
-    }
-
-    public interface Climber {
-        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 80, 0.1);
-        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 80, 0.1);
+        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
+        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
+        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
     }
 
     public static class CANSparkConfig {
@@ -130,19 +102,6 @@ public interface Motors {
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
             motor.follow(follows);
             motor.burnFlash();
-         }
-     }
-
-     public interface Intake {
-        CANSparkMaxConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
-        CANSparkMaxConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
-        CANSparkMaxConfig INTAKE_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
-     }
-
-     public interface Shooter {
-        CANSparkMaxConfig LEFT_SHOOTER = new CANSparkMaxConfig(false, IdleMode.kCoast, 40, 1.0);
-        CANSparkMaxConfig RIGHT_SHOOTER = new CANSparkMaxConfig(true, IdleMode.kCoast, 40, 1.0);
-        CANSparkMaxConfig FEEDER_MOTOR = new CANSparkMaxConfig(false, IdleMode.kCoast, 40, 1.0);
-     }
-
+        }
+    }
 }

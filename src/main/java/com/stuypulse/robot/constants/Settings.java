@@ -79,28 +79,35 @@ public interface Settings {
 
         SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.2);
 
-        public interface PID {
-            double kP = 0.00034711;
-            double kI = 0;
-            double kD = 0.0;
-        }
-      
-        public interface Feeder {
-        
-          double FEEDER_SPEED = 1.0;
+        public interface LEFT {
+            public interface PID {
+                double kP = 0.00034711;
+                double kI = 0;
+                double kD = 0.0;
+            }
 
-          public interface Feedforward {
-              double kS = 0.11873;
-              double kV = 0.0017968;
-              double kA = 0.00024169;
-          }
-
-          public interface PID {
-              double kP = 0.00020863;
-              double kI = 0.0;
-              double kD = 0.0;
-          }
+            public interface FF {
+                double kS = 0;
+                double kV = 0;
+                double kA = 0;
+            }
         }
+
+        public interface RIGHT {
+            public interface PID {
+                double kP = 0.00034711;
+                double kI = 0;
+                double kD = 0.0;
+            }
+
+            public interface FF {
+                double kS = 0;
+                double kV = 0;
+                double kA = 0;
+            }
+        }
+
+        double FEEDER_SPEED = 1.0;
     }
     
     public interface Swerve {
