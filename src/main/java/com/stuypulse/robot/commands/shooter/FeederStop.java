@@ -17,5 +17,5 @@ public class FeederStop extends InstantCommand {
         shooter.feederOff();
     }
            
-    }
+}
 

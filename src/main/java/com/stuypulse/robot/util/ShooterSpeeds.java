@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 
 public class ShooterSpeeds {
 
-    private final Number shooterRPM;
+    private final Number shooterRPM; //the average RPM of left and right
     private final double shooterDifferential;
 
     private double leftRPM;

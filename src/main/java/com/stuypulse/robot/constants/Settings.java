@@ -30,22 +30,13 @@ public interface Settings {
         // RIGHT: 3250
         // FEEDER: 3100
         ShooterSpeeds PODIUM_SHOT = new ShooterSpeeds(
-            new SmartNumber("Shooter/Podium Shooter RPM", 5500),
-            500);
+            new SmartNumber("Shooter/Podium Shooter RPM", 4875), 500);
 
-        ShooterSpeeds HANDOFF = new ShooterSpeeds(3000, 3000);
-        
-        ShooterSpeeds REVERSE = new ShooterSpeeds(-3000, -3000);
+        ShooterSpeeds AMPING = new ShooterSpeeds(-3000, 500);
 
-        ShooterSpeeds AMPING = new ShooterSpeeds(-3000, 3100);
+        ShooterSpeeds FERRY = new ShooterSpeeds(new SmartNumber("Shooter/Ferry Shooter RPM", 4875), 500);
 
-        ShooterSpeeds FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Ferry Shooter RPM", 6000), 
-            500);
-
-        ShooterSpeeds WING_FERRY = new ShooterSpeeds(2000, 2500);
-
-        double AT_RPM_EPSILON = 200;
+        ShooterSpeeds WING_FERRY = new ShooterSpeeds(4875, 2500);
 
         SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.2);
         SmartNumber RPM_CHANGE_RC = new SmartNumber("Shooter/RPM Change RC", 0.2);

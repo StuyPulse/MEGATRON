@@ -44,7 +44,7 @@ public class ShooterImpl extends Shooter {
 
         feederBeam = new DigitalInput(Ports.Shooter.RECIEVER_IR);
         
-        leftEncoder.setVelocityConversionFactor(1.0);
+        leftEncoder.setVelocityConversionFactor(1.2);
         rightEncoder.setVelocityConversionFactor(1.0);
         
         leftController = new MotorFeedforward(Feedforward.kS, Feedforward.kV, Feedforward.kA).velocity()
@@ -97,9 +97,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public boolean noteShot() {
-        return getLeftTargetRPM() > 0 &&
-               getRightTargetRPM() > 0 &&
-               hasNote.get() == false; 
+        return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
     }
 
     @Override
