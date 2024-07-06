@@ -14,7 +14,7 @@ public interface Ports {
     }
     
     public interface Gyro {
-        int ID = 5;
+        int PIGEON2 = 5;
     }
 
     public interface Swerve {
