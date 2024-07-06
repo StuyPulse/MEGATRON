@@ -8,6 +8,7 @@ package com.stuypulse.robot.constants;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMax;
 
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -149,9 +150,17 @@ public interface Motors {
          }
      }
 
+
+     public interface Intake {
+        CANSparkMaxConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkMaxConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkMaxConfig INTAKE_MOTOR_CONFIG = new CANSparkMaxConfig(false, IdleMode.kBrake, 500, 0.25);
+     }
+
      public interface Shooter {
         CANSparkMaxConfig LEFT_SHOOTER = new CANSparkMaxConfig(false, IdleMode.kCoast, 40, 1.0);
         CANSparkMaxConfig RIGHT_SHOOTER = new CANSparkMaxConfig(true, IdleMode.kCoast, 40, 1.0);
         CANSparkMaxConfig FEEDER_MOTOR = new CANSparkMaxConfig(false, IdleMode.kCoast, 40, 1.0);
      }
+
 }

@@ -13,12 +13,23 @@ public interface Ports {
         int DEBUGGER = 2;
     }
 
+
+    public interface Intake {
+        int FUNNEL_LEFT = 21; 
+        int FUNNEL_RIGHT = 22;
+        int INTAKE_MOTOR = 20;
+
+        int IRSensor = 0; // TO DO: FIND IR SENSOR PORT
+    }
+
+
     public interface Shooter {
         int LEFT_MOTOR = 41;
         int RIGHT_MOTOR = 42;
         int FEEDER_MOTOR = 40;
         int RECIEVER_IR = 2;
     }
+
 }
 
 

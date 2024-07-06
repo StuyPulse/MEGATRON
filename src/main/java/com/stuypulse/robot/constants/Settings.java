@@ -18,13 +18,17 @@ import com.stuypulse.stuylib.network.SmartNumber;
  */
 public interface Settings {
 
+    public interface Intake {
+        double INTAKE_ACQUIRE_SPEED = 1.0;
+        double INTAKE_DEACQUIRE_SPEED = 1.0;
+        double FUNNEL_ACQUIRE = 1.0;
+        double FUNNEL_DEACQUIRE = 1.0;
+
+        double IRSensorTriggerTime = .03;
+    }
+
     public interface Shooter {
         double SHOOT_TIME_DEBOUNCE = 0.4;
-
-        // MAX RPM
-        // LEFT: 6500
-        // RIGHT: 3250
-        // FEEDER: 3100
 
         ShooterSpeeds OPTIMAL_SPEED = new ShooterSpeeds(4875);
         
