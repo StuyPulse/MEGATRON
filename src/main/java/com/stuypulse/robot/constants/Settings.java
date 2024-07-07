@@ -119,6 +119,9 @@ public interface Settings {
         double MAX_MODULE_SPEED = 4.9;
         double MAX_MODULE_ACCEL = 15.0;
 
+        double MAX_LINEAR_VELOCITY = 15.0;
+        double MAX_ANGULAR_VELOCITY = 12.0;
+
         double MODULE_VELOCITY_DEADBAND = 0.05;
 
         SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05); // TODO: make 0.25 and test
