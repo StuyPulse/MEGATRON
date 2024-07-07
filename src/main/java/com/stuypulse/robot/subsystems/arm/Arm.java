@@ -1,13 +1,5 @@
 package com.stuypulse.robot.subsystems.arm;
 
-import java.util.Optional;
-
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.util.ArmEncoderFeedforward;
-import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
-import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -31,24 +23,9 @@ public abstract class Arm extends SubsystemBase {
 
     private final SmartBoolean armLimp;
 
-    private Optional<Double> voltageOverride;
-
-    private final Controller controller;
-
     protected Arm() {
         targetDegrees = new SmartNumber("Arm/Target Angle (deg)", -90);
-        
         armLimp = new SmartBoolean("Arm/Is Limp?", false);
-
-        voltageOverride = Optional.empty();
-
-        controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
-        .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kGNote))
-        .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
-        .setOutputFilter(x -> {
-            if (isLimp()) return 0;
-            else return voltageOverride.orElse(x); 
-        });
     }
 
     // target degrees
@@ -65,14 +42,12 @@ public abstract class Arm extends SubsystemBase {
     }
 
     // check if at target
-    public boolean atTargetDegrees(double toleranceDegrees) {
-        return Math.abs(getTargetDegrees() - getDegrees()) < toleranceDegrees;
+    public boolean atTargetDegrees(double epsilon) {
+        return Math.abs(getTargetDegrees() - getDegrees()) < epsilon;
     }
 
     // voltage control
-    public void setVoltage(double voltage) {
-        voltageOverride = Optional.of(voltage);
-    }
+    public abstract void setVoltage(double voltage);
 
     protected abstract void setVoltageImpl(double voltage);
 
@@ -101,15 +76,5 @@ public abstract class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double target = getTargetDegrees();
-        target = SLMath.clamp(target, Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE.doubleValue());
-        setTargetDegrees(target);
-        
-        controller.update(getTargetDegrees(), getDegrees());
-        setVoltageImpl(controller.getOutput());
-
-        SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
-        SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
-        SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
     }
 }

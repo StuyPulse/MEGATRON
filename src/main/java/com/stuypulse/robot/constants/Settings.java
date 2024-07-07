@@ -56,7 +56,7 @@ public interface Settings {
         }
 
         public interface Encoder {
-            double GEAR_RATIO = 1.0 / 85.33;
+            double GEAR_RATIO = 1.0 / (85 + 1.0/3); // 1 arm rotation (360 degrees) per 85.33 encoder ticks
         }
     }
 }
