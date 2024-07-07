@@ -13,6 +13,12 @@ public interface Ports {
         int DEBUGGER = 2;
     }
 
+    public interface Arm {
+        int LEFT_MOTOR = 31;
+        int RIGHT_MOTOR = 32;
+        int BUMP_SWITCH = 0;
+    }
+  
     public interface Intake {
         int FUNNEL_LEFT = 21; 
         int FUNNEL_RIGHT = 22;
@@ -56,6 +62,7 @@ public interface Ports {
             int TURN = 17;
             int ENCODER = 4;
         }
+
     }
 }
 

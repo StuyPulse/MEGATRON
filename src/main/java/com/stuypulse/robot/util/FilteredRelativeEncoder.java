@@ -96,8 +96,8 @@ public class FilteredRelativeEncoder implements RelativeEncoder {
     }
 
     @Override
-    public REVLibError setInverted(boolean invert) {
-        return encoder.setInverted(invert);
+    public REVLibError setInverted(boolean inverted) {
+        return encoder.setInverted(inverted);
     }
 
     @Override

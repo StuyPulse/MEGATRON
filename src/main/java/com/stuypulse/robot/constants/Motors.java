@@ -6,12 +6,10 @@
 package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.stuypulse.robot.constants.Motors.TalonSRXConfig.CANSparkConfig;
 import com.revrobotics.CANSparkBase;
 
 /*-
@@ -45,6 +43,11 @@ public interface Motors {
 
     /** Classes to store all of the values a motor needs */
 
+    public interface Arm {
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); // check if inverted 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); // check if inverted
+    }
+
     public interface Swerve {
         CANSparkConfig DRIVE_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 60, 0.1);
         CANSparkConfig TURN_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 80);
@@ -60,6 +63,37 @@ public interface Motors {
         CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
         CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
         CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
+    }
+  
+    /* Configurations */
+    
+    public static class TalonSRXConfig {
+        public final boolean INVERTED;
+        public final NeutralMode NEUTRAL_MODE;
+        public final int PEAK_CURRENT_LIMIT_AMPS;
+        public final double OPEN_LOOP_RAMP_RATE;
+
+        public TalonSRXConfig(
+                boolean inverted,
+                NeutralMode neutralMode,
+                int peakCurrentLimitAmps,
+                double openLoopRampRate) {
+            this.INVERTED = inverted;
+            this.NEUTRAL_MODE = neutralMode;
+            this.PEAK_CURRENT_LIMIT_AMPS = peakCurrentLimitAmps;
+            this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
+        }
+
+        public TalonSRXConfig(boolean inverted, NeutralMode neutralMode, int peakCurrentLimitAmps) {
+            this(inverted, neutralMode, peakCurrentLimitAmps, 0.0);
+        }
+
+    public static void disableStatusFrames(CANSparkBase motor, StatusFrame... ids) {
+        final int kDisableStatusFrame = 500;
+
+        for (StatusFrame id : ids) {
+            motor.setPeriodicFramePeriod(PeriodicFrame.fromId(id.ordinal()), kDisableStatusFrame);
+        }
     }
 
     public static class CANSparkConfig {
@@ -84,7 +118,7 @@ public interface Motors {
         }
 
         public CANSparkConfig(boolean inverted, IdleMode idleMode) {
-            this(inverted, idleMode, 500);
+            this(inverted, idleMode, 80);
         }
 
         public void configure(CANSparkBase motor) {
@@ -104,4 +138,5 @@ public interface Motors {
             motor.burnFlash();
         }
     }
+}
 }
