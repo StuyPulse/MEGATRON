@@ -6,12 +6,10 @@
 package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.stuypulse.robot.constants.Motors.TalonSRXConfig.CANSparkConfig;
 import com.revrobotics.CANSparkBase;
 
 /*-
@@ -121,7 +119,6 @@ public interface Motors {
 
         public CANSparkConfig(boolean inverted, IdleMode idleMode) {
             this(inverted, idleMode, 80);
-            this(inverted, idleMode, 500);
         }
 
         public void configure(CANSparkBase motor) {
@@ -141,4 +138,5 @@ public interface Motors {
             motor.burnFlash();
         }
     }
+}
 }

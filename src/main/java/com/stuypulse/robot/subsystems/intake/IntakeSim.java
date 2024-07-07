@@ -1,8 +1,6 @@
 package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.stuylib.network.SmartBoolean;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeSim extends Intake {
