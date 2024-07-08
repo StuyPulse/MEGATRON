@@ -79,16 +79,12 @@ public class SwerveDrive extends SubsystemBase {
     private static final SwerveDrive instance;
 
     static {
-        if (Robot.ROBOT == RobotType.SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER) {
-            instance = new SwerveDrive(
-                new KrakenSwerveModule(FrontRight.ID, FrontRight.MODULE_OFFSET, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
-                new KrakenSwerveModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET, FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
-                new KrakenSwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
-                new KrakenSwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
-            );
-        } else {
-            instance = null; // TODO: Change this to something. Just !nothing.
-        }
+        instance = new SwerveDrive(
+            new KrakenSwerveModule(FrontRight.ID, FrontRight.MODULE_OFFSET, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
+            new KrakenSwerveModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET, FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
+            new KrakenSwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
+            new KrakenSwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
+        );
     }
 
     public static SwerveDrive getInstance() {
@@ -97,7 +93,7 @@ public class SwerveDrive extends SubsystemBase {
 
     private final SwerveModule[] modules;
     private final SwerveDriveKinematics kinematics;
-    private final Pigeon2 gyro;
+    // private final Pigeon2 gyro;
     private final FieldObject2d[] modules2D;
 
     private final StructArrayPublisher<SwerveModuleState> statesPub;
@@ -110,7 +106,7 @@ public class SwerveDrive extends SubsystemBase {
     protected SwerveDrive(SwerveModule... modules) {
         this.modules = modules;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
-        gyro = new Pigeon2(Ports.Gyro.PIGEON2);
+        // gyro = new Pigeon2(Ports.Gyro.PIGEON2);
         modules2D = new FieldObject2d[modules.length];
 
         statesPub = NetworkTableInstance.getDefault()
@@ -220,28 +216,29 @@ public class SwerveDrive extends SubsystemBase {
 
     /** Gyro **/
     public Rotation2d getGyroAngle() {
-        return gyro.getRotation2d();
+        // return gyro.getRotation2d();
+        return new Rotation2d();
     }
 
-    public StatusSignal<Double> getGyroYaw() {
-        return gyro.getYaw();
-    }
+    // public StatusSignal<Double> getGyroYaw() {
+    //     return gyro.getYaw();
+    // }
 
-    public StatusSignal<Double> getGyroYawVelocity() {
-        return gyro.getAngularVelocityZWorld();
-    }
+    // public StatusSignal<Double> getGyroYawVelocity() {
+    //     return gyro.getAngularVelocityZWorld();
+    // }
     
     @Override
     public void periodic() {
         statesPub.set(getModuleStates());
 
-        SmartDashboard.putNumber("Swerve/Gyro/Angle (deg)", getGyroAngle().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", getGyroYaw().getValueAsDouble());
-        SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", getGyroYawVelocity().getValueAsDouble());
+        // SmartDashboard.putNumber("Swerve/Gyro/Angle (deg)", getGyroAngle().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", getGyroYaw().getValueAsDouble());
+        // SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", getGyroYawVelocity().getValueAsDouble());
         
-        SmartDashboard.putNumber("Swerve/X Acceleration (Gs)", gyro.getAccelerationX().getValueAsDouble());
-        SmartDashboard.putNumber("Swerve/Y Acceleration (Gs)", gyro.getAccelerationY().getValueAsDouble());
-        SmartDashboard.putNumber("Swerve/Z Acceleration (Gs)", gyro.getAccelerationZ().getValueAsDouble());
+        // SmartDashboard.putNumber("Swerve/X Acceleration (Gs)", gyro.getAccelerationX().getValueAsDouble());
+        // SmartDashboard.putNumber("Swerve/Y Acceleration (Gs)", gyro.getAccelerationY().getValueAsDouble());
+        // SmartDashboard.putNumber("Swerve/Z Acceleration (Gs)", gyro.getAccelerationZ().getValueAsDouble());
 
         SmartDashboard.putNumber("Swerve/Chassis X Speed", getChassisSpeeds().vxMetersPerSecond);
         SmartDashboard.putNumber("Swerve/Chassis Y Speed", getChassisSpeeds().vyMetersPerSecond);

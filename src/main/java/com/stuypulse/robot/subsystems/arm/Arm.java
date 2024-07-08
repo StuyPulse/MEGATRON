@@ -23,7 +23,7 @@ public abstract class Arm extends SubsystemBase {
     private final SmartBoolean armLimp;
 
     protected Arm() {
-        targetDegrees = new SmartNumber("Arm/Target Angle (deg)", -90);
+        targetDegrees = new SmartNumber("Arm/Target Angle (deg)", 20);
         armLimp = new SmartBoolean("Arm/Is Limp?", false);
     }
 

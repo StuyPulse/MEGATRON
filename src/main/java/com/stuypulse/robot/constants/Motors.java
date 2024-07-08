@@ -44,8 +44,8 @@ public interface Motors {
     /** Classes to store all of the values a motor needs */
 
     public interface Arm {
-        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); // check if inverted 
-        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); // check if inverted
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); 
     }
 
     public interface Swerve {

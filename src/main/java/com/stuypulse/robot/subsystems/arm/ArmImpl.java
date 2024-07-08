@@ -29,7 +29,7 @@ public class ArmImpl extends Arm {
     private final RelativeEncoder armEncoder;
     
     private final DigitalInput bumpSwitch;
-    private final BStream bumpSwitchOn;
+    private final BStream bumpSwitchTriggered;
 
     private final SmartNumber maxVelocity;
     private final SmartNumber maxAcceleration;
@@ -42,11 +42,12 @@ public class ArmImpl extends Arm {
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Ports.Arm.RIGHT_MOTOR, MotorType.kBrushless);
         armEncoder = new FilteredRelativeEncoder(leftMotor);
+        armEncoder.setPosition((-90 + 12.25)/360);
 
         bumpSwitch = new DigitalInput(Ports.Arm.BUMP_SWITCH);
-        bumpSwitchOn = BStream.create(bumpSwitch).filtered(new BDebounce.Rising(Settings.Arm.BUMP_SWITCH_DEBOUNCE_TIME));
+        bumpSwitchTriggered = BStream.create(bumpSwitch).not().filtered(new BDebounce.Rising(Settings.Arm.BUMP_SWITCH_DEBOUNCE_TIME));
 
-        armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO); // in rotations
+        armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
         armEncoder.setVelocityConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
 
         maxVelocity = new SmartNumber("Arm/Max Velocity", Settings.Arm.TELEOP_MAX_VELOCITY.doubleValue());
@@ -58,14 +59,14 @@ public class ArmImpl extends Arm {
         voltageOverride = Optional.empty();
 
         controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
-        .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kGNote))
-        .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
-        .setOutputFilter(x -> isLimp() ? 0 : voltageOverride.orElse(x));
+            .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
+            .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
+            .setOutputFilter(x -> isLimp() ? 0 : voltageOverride.orElse(x));
     } 
 
     @Override
     public double getDegrees() {
-        double angle = (360 * armEncoder.getPosition()) % 360;
+        double angle = (360 * armEncoder.getPosition());
         return (angle > 180 && angle < 360) ? angle - 360 : angle; // returns degrees (-180,180]
     }
 
@@ -100,13 +101,16 @@ public class ArmImpl extends Arm {
         setTargetDegrees(target);
         
         controller.update(getTargetDegrees(), getDegrees());
-        setVoltageImpl(controller.getOutput());
+        setVoltageImpl(SLMath.clamp(controller.getOutput(), -6, 6));
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
         SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
         SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
 
-        if (bumpSwitchOn.get()) armEncoder.setPosition(0); // find rest position
+        if (bumpSwitchTriggered.get()) {
+            armEncoder.setPosition((-90 + 12.25)/360);
+        }
+
         SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", bumpSwitch.get());
 
         SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
