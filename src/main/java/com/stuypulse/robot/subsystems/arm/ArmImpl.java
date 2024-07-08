@@ -61,7 +61,7 @@ public class ArmImpl extends Arm {
         controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
             .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
-            .setOutputFilter(x -> isLimp() ? 0 : voltageOverride.orElse(x));
+            .setOutputFilter(x -> voltageOverride.orElse(x));
     } 
 
     @Override
@@ -74,7 +74,6 @@ public class ArmImpl extends Arm {
     public void stop() {
         leftMotor.setVoltage(0);
         rightMotor.setVoltage(0);
-        enableLimp();
     }
 
     @Override
@@ -128,7 +127,5 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Target Angle", getTargetDegrees());
         SmartDashboard.putNumber("Arm/Arm Angle", getDegrees());
         SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)
-        
-        SmartDashboard.putBoolean("Arm/Is Limp?", isLimp());
     }
 }

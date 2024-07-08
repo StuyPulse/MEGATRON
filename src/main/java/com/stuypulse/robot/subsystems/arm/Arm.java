@@ -20,11 +20,8 @@ public abstract class Arm extends SubsystemBase {
     
     private final SmartNumber targetDegrees;
 
-    private final SmartBoolean armLimp;
-
     protected Arm() {
-        targetDegrees = new SmartNumber("Arm/Target Angle (deg)", 20);
-        armLimp = new SmartBoolean("Arm/Is Limp?", false);
+        targetDegrees = new SmartNumber("Arm/Target Angle (deg)", -52.25);
     }
 
     // target degrees
@@ -49,23 +46,6 @@ public abstract class Arm extends SubsystemBase {
     public abstract void setVoltage(double voltage);
 
     protected abstract void setVoltageImpl(double voltage);
-
-    // limp (voltage = 0)
-    public boolean isLimp() {
-        return armLimp.get();
-    }
-
-    public final void setLimp(boolean limp) {
-        this.armLimp.set(limp);
-    }
-    
-    public final void enableLimp() {
-        setLimp(true);
-    }
-
-    public final void disableLimp() {
-        setLimp(false);
-    }
 
     public abstract double getDegrees();
 
