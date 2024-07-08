@@ -39,15 +39,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class KrakenSwerveModule extends SwerveModule {
 
-    // public static SwerveModule[] getTumblerModules() {
-    //     return new SwerveModule[] {
-    //         new KrakenSwerveModule("Front Right", Swerve.FrontRight.MODULE_OFFSET, Rotation2d.fromDegrees(-153.632812 + 180), 12, 15, 4),
-    //         new KrakenSwerveModule("Front Left",  Swerve.FrontLeft.MODULE_OFFSET,  Rotation2d.fromDegrees(147.919922 + 180),  10, 17, 2),
-    //         new KrakenSwerveModule("Back Left",   Swerve.BackLeft.MODULE_OFFSET,   Rotation2d.fromDegrees(73.125 + 180),      14, 11, 3),
-    //         new KrakenSwerveModule("Back Right",  Swerve.BackRight.MODULE_OFFSET,  Rotation2d.fromDegrees(-2.02184 + 180),    16, 13, 1)
-    //     };
-    // }
-
     private final Rotation2d angleOffset;
 
     private final TalonFX driveMotor;
@@ -114,8 +105,8 @@ public class KrakenSwerveModule extends SwerveModule {
         turnConfig.Feedback.SensorToMechanismRatio = Swerve.Turn.TURN_REDUCTION;
         turnConfig.ClosedLoopGeneral.ContinuousWrap = true;
 
-        driveMotor.getConfigurator().apply(driveConfig, 0.1);
-        turnMotor.getConfigurator().apply(turnConfig, 0.1);
+        driveMotor.getConfigurator().apply(driveConfig);
+        turnMotor.getConfigurator().apply(turnConfig);
 
         // TODO: Add current limits?
         // driveConfig.CurrentLimits.StatorCurrentLimit = 65; // 65A stator current limit

@@ -35,7 +35,7 @@ public class RobotContainer {
     
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();
-    public final Arm arm = Arm.getInstance();
+    // public final Arm arm = Arm.getInstance();
     public final SwerveDrive swerve = SwerveDrive.getInstance();
 
     // Autons
@@ -54,7 +54,7 @@ public class RobotContainer {
     /****************/
 
     private void configureDefaultCommands() {
-        // swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
     }
 
     /***************/
