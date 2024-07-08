@@ -267,6 +267,52 @@ public interface Settings {
         }
     }
 
+    public interface Alignment {
+        double DEBOUNCE_TIME = 0.05;
+
+        SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
+        SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
+
+        SmartNumber AMP_WALL_SETUP_DISTANCE = new SmartNumber("Alignment/Amp/Setup Pose Distance to Wall", Units.inchesToMeters(25.5));
+        SmartNumber AMP_WALL_SCORE_DISTANCE = new SmartNumber("Alignment/Amp/Score Pose Distance to Wall", Units.inchesToMeters(22.5 - 1.75));
+
+        SmartNumber TRAP_SETUP_DISTANCE = new SmartNumber("Alignment/Trap/Setup Pose Distance", Units.inchesToMeters(21.0));
+        SmartNumber TRAP_CLIMB_DISTANCE = new SmartNumber("Alignment/Trap/Climb Distance", Units.inchesToMeters(18.0));
+
+        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Trap/Into Chain Speed", 0.25);
+
+		double NOTE_TO_GOAL_TIME = 0.4;
+
+        double MAX_ALIGNMENT_SPEED = 2.5;
+
+        public interface Translation {
+            SmartNumber kP = new SmartNumber("Alignment/Translation/kP", 6.0);
+            SmartNumber kI = new SmartNumber("Alignment/Translation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Alignment/Translation/kD", 0.2);
+        }
+
+        public interface Rotation {
+            SmartNumber kP = new SmartNumber("Alignment/Rotation/kP", 6.0);
+            SmartNumber kI = new SmartNumber("Alignment/Rotation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
+        }
+
+        public interface Shoot {
+            public interface Translation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
+                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
+            }
+    
+            public interface Rotation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
+                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
+            }
+        }
+    }
+
     public interface Driver {
         public interface Drive {
             double BUZZ_DURATION = 0.2;
@@ -286,6 +332,34 @@ public interface Settings {
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
 
             SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Turn/Max Turning", 6.0);
+        }
+    }
+
+    public interface NoteDetection {
+        double X_ANGLE_RC = 0.05;
+
+        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Note Detection/Has Note Debounce", 0.2);
+
+        SmartNumber THRESHOLD_X = new SmartNumber("Note Detection/X Threshold", 0.2);
+        SmartNumber THRESHOLD_Y = new SmartNumber("Note Detection/Y Threshold", Units.inchesToMeters(2));
+        SmartNumber THRESHOLD_ANGLE = new SmartNumber("Note Detection/Angle Threshold", 1);
+
+        SmartNumber DRIVE_SPEED = new SmartNumber("Note Detection/Drive Speed", 1);
+
+        SmartNumber INTAKE_THRESHOLD_DISTANCE = new SmartNumber("Note Detection/In Intake Path Distance", 0.9);
+
+        double MAX_FULLY_IN_VIEW_ANGLE = 20;
+        
+        public interface Translation {
+            SmartNumber kP = new SmartNumber("Note Detection/Translation/kP", 8.0);
+            SmartNumber kI = new SmartNumber("Note Detection/Translation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Note Detection/Translation/kD", 0.0);
+        }
+
+        public interface Rotation {
+            SmartNumber kP = new SmartNumber("Note Detection/Rotation/kP", 2.0);
+            SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
         }
     }
 }

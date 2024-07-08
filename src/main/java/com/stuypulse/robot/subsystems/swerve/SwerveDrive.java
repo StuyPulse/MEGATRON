@@ -15,6 +15,7 @@ import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
+import com.stuypulse.robot.subsystems.odometry.Odometry;
 import com.stuypulse.robot.subsystems.swerve.modules.KrakenSwerveModule;
 import com.stuypulse.robot.subsystems.swerve.modules.SwerveModule;
 
@@ -171,7 +172,7 @@ public class SwerveDrive extends SubsystemBase {
     public void setFieldRelativeSpeeds(ChassisSpeeds chassisSpeeds) {
         setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
             chassisSpeeds,
-            getGyroAngle())); // TODO: Replace with Odometry.getPose().getRotation()
+            Odometry.getInstance().getPose().getRotation()));
     }
 
     public void setChassisSpeeds(ChassisSpeeds robotSpeeds) {
@@ -198,7 +199,7 @@ public class SwerveDrive extends SubsystemBase {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             velocity.y, -velocity.x,
             -rotation,
-            getGyroAngle()); // TODO: Replace with Odometry.getPose().getRotation()
+            Odometry.getInstance().getPose().getRotation());
 
         Pose2d robotVel = new Pose2d(
             Settings.DT * speeds.vxMetersPerSecond,
