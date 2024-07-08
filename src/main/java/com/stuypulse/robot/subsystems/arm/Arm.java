@@ -23,7 +23,7 @@ public abstract class Arm extends SubsystemBase {
     private final SmartNumber targetDegrees;
 
     protected Arm() {
-        targetDegrees = new SmartNumber("Arm/Target Angle", 60);
+        targetDegrees = new SmartNumber("Arm/Target Angle", -90 + 12.25);
     }
 
     // target degrees
