@@ -1,5 +1,7 @@
 package com.stuypulse.robot.subsystems.arm;
 
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -21,16 +23,12 @@ public abstract class Arm extends SubsystemBase {
     private final SmartNumber targetDegrees;
 
     protected Arm() {
-        targetDegrees = new SmartNumber("Arm/Target Angle (deg)", -52.25);
+        targetDegrees = new SmartNumber("Arm/Target Angle", 60);
     }
 
     // target degrees
     public void setTargetDegrees(double degrees) {
-        targetDegrees.set(degrees);
-    }
-
-    public void changeTargetDegrees(double deltaDegrees) {
-        setTargetDegrees(getTargetDegrees() + deltaDegrees);
+        targetDegrees.set(SLMath.clamp(degrees, Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE.doubleValue()));
     }
 
     public double getTargetDegrees() {

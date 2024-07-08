@@ -66,8 +66,7 @@ public class ArmImpl extends Arm {
 
     @Override
     public double getDegrees() {
-        double angle = (360 * armEncoder.getPosition());
-        return (angle > 180 && angle < 360) ? angle - 360 : angle; // returns degrees (-180,180]
+        return 360 * armEncoder.getPosition();
     }
 
     @Override
@@ -95,10 +94,6 @@ public class ArmImpl extends Arm {
 
     @Override
     public void periodic() {
-        double target = getTargetDegrees();
-        target = SLMath.clamp(target, Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE.doubleValue());
-        setTargetDegrees(target);
-        
         controller.update(getTargetDegrees(), getDegrees());
         setVoltageImpl(SLMath.clamp(controller.getOutput(), -6, 6));
 
@@ -124,7 +119,6 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Left Duty Cycle", leftMotor.get());
         SmartDashboard.putNumber("Arm/Right Duty Cycle", rightMotor.get());
 
-        SmartDashboard.putNumber("Arm/Target Angle", getTargetDegrees());
         SmartDashboard.putNumber("Arm/Arm Angle", getDegrees());
         SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)
     }
