@@ -73,13 +73,12 @@ public class KrakenSwerveModule extends SwerveModule {
 
     public KrakenSwerveModule(
         String id, 
-        Translation2d location, 
         Rotation2d angleOffset, 
         int driveMotorID, 
         int turnMotorID, 
         int turnEncoderID
     ) {
-        super(id, location);
+        super(id);
 
         this.angleOffset = angleOffset;
 

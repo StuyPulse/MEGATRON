@@ -36,43 +36,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
-/*
- *  Fields:
- *    - swerveModules:  AbstractSwerveModule...
- *    - kinematics:  SwerveDriveKinematics
- *    - gyro: AHRS
- *    - modules2D: FieldObject2D[]
- *
- *   Tasks:
- *    - drive
- *    - followDrive
- *    - trackingDrive
- *    - aligning (Trap, Speaker, Amp)
- *    - GTADrive (shooting while driving)
- *
- *   Methods:
- *    + singleton
- *    + initFieldObject(Field2D field): void
- *    + getModulePositions(): Translation2D[]
- *    + getModuleStates(): SwerveModuleStates[]
- *    + getModuleOffsets(): Rotation2D[]
- *    + getChassisSpeeds(): ChassisSpeed[]
- *    + setModuleStates(SwerveModuleState... states): void
- *    + setChassisSpeed(ChassisSpeed): void
- *    + drive(double, Rotation2D)
- *    + stop(double, Rotation2D)
- *
- *  SwerveDrive.java
- *   Methods:
- *    - getGyroAngle(): Rotation2D
- *    - getGyroYaw(): Rotation2D
- *    - getGyroPitch(): Rotation2D
- *    - getGyroRoll(): Rotation2D
- *    - getKinematics(): SwerveDriveKinematics
- *    + periodic(): void
- *
- *
- */
 public class SwerveDrive extends SubsystemBase {
 
     private static final SwerveDrive instance;
@@ -80,10 +43,10 @@ public class SwerveDrive extends SubsystemBase {
     static {
         if (Robot.ROBOT == RobotType.SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER) {
             instance = new SwerveDrive(
-                new KrakenSwerveModule(FrontRight.ID, FrontRight.MODULE_OFFSET, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
-                new KrakenSwerveModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET, FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
-                new KrakenSwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
-                new KrakenSwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
+                new KrakenSwerveModule(FrontRight.ID, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
+                new KrakenSwerveModule(FrontLeft.ID,  FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
+                new KrakenSwerveModule(BackLeft.ID,  BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
+                new KrakenSwerveModule(BackRight.ID, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
             );
         } else {
             instance = null; // TODO: Change this to something. Just !nothing.
@@ -109,7 +72,7 @@ public class SwerveDrive extends SubsystemBase {
     protected SwerveDrive(SwerveModule... modules) {
         this.modules = modules;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
-        gyro = new Pigeon2(Ports.Gyro.PIGEON2);
+        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
         modules2D = new FieldObject2d[modules.length];
 
         statesPub = NetworkTableInstance.getDefault()
@@ -143,12 +106,14 @@ public class SwerveDrive extends SubsystemBase {
         return offsets;
     }
 
+    // TODO: Offset should be to the center of wheels, not corner of robot
     public Translation2d[] getModuleOffsets() {
-        Translation2d[] offsets = new Translation2d[modules.length];
-        for (int i = 0; i < modules.length; i++) {
-            offsets[i] = modules[i].getModuleOffset();
-        }
-        return offsets;
+        return new Translation2d[] {
+            new Translation2d(Swerve.WIDTH / 2.0, Swerve.LENGTH / 2.0),
+            new Translation2d(-Swerve.WIDTH / 2.0, Swerve.LENGTH / 2.0),
+            new Translation2d(-Swerve.WIDTH / 2.0, -Swerve.LENGTH / 2.0),
+            new Translation2d(Swerve.WIDTH / 2.0, -Swerve.LENGTH / 2.0)
+        };
     }
 
     public ChassisSpeeds getChassisSpeeds() {

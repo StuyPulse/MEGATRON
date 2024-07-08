@@ -15,6 +15,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 /*-
@@ -152,9 +153,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        // between wheel centers
-        double WIDTH = Units.inchesToMeters(20.75);
-        double LENGTH = Units.inchesToMeters(20.75);
+        double WIDTH = Units.inchesToMeters(32.5);
+        double LENGTH = Units.inchesToMeters(27.375);
         double CENTER_TO_INTAKE_FRONT = Units.inchesToMeters(13.0);
 
         double MAX_MODULE_SPEED = 4.9;
@@ -167,37 +167,37 @@ public interface Settings {
 
         SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05); // TODO: make 0.25 and test
 
-        public interface Assist {
-            SmartNumber ALIGN_MIN_SPEAKER_DIST = new SmartNumber("SwerveAssist/Minimum Distance to Speaker", 4); //change
+        // public interface Assist {
+        //     SmartNumber ALIGN_MIN_SPEAKER_DIST = new SmartNumber("SwerveAssist/Minimum Distance to Speaker", 4); //change
 
-            double BUZZ_INTENSITY = 1;
+        //     double BUZZ_INTENSITY = 1;
 
-            // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 6.0);
-            SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.0);
+        //     // angle PID
+        //     SmartNumber kP = new SmartNumber("SwerveAssist/kP", 6.0);
+        //     SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
+        //     SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.0);
 
-            double ANGLE_DERIV_RC = 0.05;
-            double REDUCED_FF_DIST = 0.75;
-        }
+        //     double ANGLE_DERIV_RC = 0.05;
+        //     double REDUCED_FF_DIST = 0.75;
+        // }
 
-        // TODO: Tune these values
-        public interface Motion {
-            SmartNumber MAX_VELOCITY = new SmartNumber("Swerve/Motion/Max Velocity", 3.0);
-            SmartNumber MAX_ACCELERATION = new SmartNumber("Swerve/Motion/Max Acceleration", 4.0);
-            SmartNumber MAX_ANGULAR_VELOCITY = new SmartNumber("Swerve/Motion/Max Angular Velocity", Units.degreesToRadians(540));
-            SmartNumber MAX_ANGULAR_ACCELERATION = new SmartNumber("Swerve/Motion/Max Angular Acceleration", Units.degreesToRadians(720));
+        // // TODO: Tune these values
+        // public interface Motion {
+        //     SmartNumber MAX_VELOCITY = new SmartNumber("Swerve/Motion/Max Velocity", 3.0);
+        //     SmartNumber MAX_ACCELERATION = new SmartNumber("Swerve/Motion/Max Acceleration", 4.0);
+        //     SmartNumber MAX_ANGULAR_VELOCITY = new SmartNumber("Swerve/Motion/Max Angular Velocity", Units.degreesToRadians(540));
+        //     SmartNumber MAX_ANGULAR_ACCELERATION = new SmartNumber("Swerve/Motion/Max Angular Acceleration", Units.degreesToRadians(720));
 
-            PathConstraints DEFAULT_CONSTRAINTS =
-                new PathConstraints(
-                    MAX_VELOCITY.get(),
-                    MAX_ACCELERATION.get(),
-                    MAX_ANGULAR_VELOCITY.get(),
-                    MAX_ANGULAR_ACCELERATION.get());
+        //     PathConstraints DEFAULT_CONSTRAINTS =
+        //         new PathConstraints(
+        //             MAX_VELOCITY.get(),
+        //             MAX_ACCELERATION.get(),
+        //             MAX_ANGULAR_VELOCITY.get(),
+        //             MAX_ANGULAR_ACCELERATION.get());
 
-            PIDConstants XY = new PIDConstants(2.5, 0, 0.02);
-            PIDConstants THETA = new PIDConstants(4, 0, 0.1);
-        }
+        //     PIDConstants XY = new PIDConstants(2.5, 0, 0.02);
+        //     PIDConstants THETA = new PIDConstants(4, 0, 0.1);
+        // }
 
         public interface Encoder {
             public interface Drive {
@@ -223,6 +223,7 @@ public interface Settings {
             SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.25582);
             SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.00205);
             SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.00020123);
+            double kT = 1.0 / DCMotor.getKrakenX60Foc(1).KtNMPerAmp;
 
             SmartBoolean INVERTED = new SmartBoolean("Swerve/Turn/INVERTED", true);
 
