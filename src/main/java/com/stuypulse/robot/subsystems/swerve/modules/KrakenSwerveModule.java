@@ -208,7 +208,7 @@ public class KrakenSwerveModule extends SwerveModule {
                 .withFeedForward(feedForward));
     }
     
-    public void runTurnPositionSetpoint(double angleRads) {
+    public void setTurnPosition(double angleRads) {
         turnMotor.setControl(positionControl.withPosition(Units.radiansToRotations(angleRads)));
     }
 
