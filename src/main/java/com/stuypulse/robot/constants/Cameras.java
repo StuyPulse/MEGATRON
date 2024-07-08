@@ -10,6 +10,7 @@ import edu.wpi.first.math.util.Units;
 public interface Cameras {
 
     public interface Limelight {
+        // TO DO: find position
         Pose3d[] POSITIONS = new Pose3d[] {
             new Pose3d(
                 new Translation3d(Units.inchesToMeters(3), 0, Units.inchesToMeters(13.75)),
@@ -22,6 +23,7 @@ public interface Cameras {
     }
 
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
+        // TO DO: find positions
         new CameraConfig("samera0", new Pose3d(
             new Translation3d(),
             new Rotation3d()),
