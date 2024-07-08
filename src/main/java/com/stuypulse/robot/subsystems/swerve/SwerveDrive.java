@@ -33,7 +33,9 @@ import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 public class SwerveDrive extends SubsystemBase {
@@ -64,6 +66,10 @@ public class SwerveDrive extends SubsystemBase {
 
     private final StructArrayPublisher<SwerveModuleState> statesPub;
 
+    // Status Signals
+    private final StatusSignal<Double> yaw;
+    private final StatusSignal<Double> yawVelocity;
+
     /**
      * Creates a new Swerve Drive using the provided modules
      *
@@ -72,11 +78,19 @@ public class SwerveDrive extends SubsystemBase {
     protected SwerveDrive(SwerveModule... modules) {
         this.modules = modules;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
-        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
         modules2D = new FieldObject2d[modules.length];
+        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
 
         statesPub = NetworkTableInstance.getDefault()
             .getStructArrayTopic("SmartDashboard/Swerve/States", SwerveModuleState.struct).publish();
+
+        yaw = gyro.getYaw();
+        yawVelocity = gyro.getAngularVelocityZWorld();
+        gyro.getConfigurator().apply(new Pigeon2Configuration());
+        gyro.getConfigurator().setYaw(0.0);
+        yaw.setUpdateFrequency(250);
+        yawVelocity.setUpdateFrequency(100);
+        gyro.optimizeBusUtilization();
     }
 
     public void initFieldObject(Field2d field) {
@@ -188,20 +202,22 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public StatusSignal<Double> getGyroYaw() {
-        return gyro.getYaw();
+        return yaw;
     }
 
     public StatusSignal<Double> getGyroYawVelocity() {
-        return gyro.getAngularVelocityZWorld();
+        return yawVelocity;
     }
     
     @Override
     public void periodic() {
         statesPub.set(getModuleStates());
 
+        BaseStatusSignal.refreshAll(yaw, yawVelocity);
+
         SmartDashboard.putNumber("Swerve/Gyro/Angle (deg)", getGyroAngle().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", getGyroYaw().getValueAsDouble());
-        SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", getGyroYawVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", yaw.getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", yawVelocity.getValueAsDouble());
         
         SmartDashboard.putNumber("Swerve/X Acceleration (Gs)", gyro.getAccelerationX().getValueAsDouble());
         SmartDashboard.putNumber("Swerve/Y Acceleration (Gs)", gyro.getAccelerationY().getValueAsDouble());
