@@ -1,8 +1,3 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.subsystems.swerve.modules;
 
 import java.util.concurrent.Executor;
@@ -76,7 +71,7 @@ public class KrakenSwerveModule extends SwerveModule {
 
         driveMotor = new TalonFX(driveMotorID, "*");
         turnMotor = new TalonFX(turnMotorID, "*");
-        turnEncoder = new CANcoder(turnEncoderID);
+        turnEncoder = new CANcoder(turnEncoderID, "*");
 
         setDrivePID(Swerve.Drive.kP.doubleValue(), Swerve.Drive.kI.doubleValue(), Swerve.Drive.kD.doubleValue());
         setTurnPID(Swerve.Turn.kP.doubleValue(), Swerve.Turn.kI.doubleValue(), Swerve.Turn.kD.doubleValue());

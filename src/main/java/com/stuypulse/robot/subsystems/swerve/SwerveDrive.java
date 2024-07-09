@@ -1,15 +1,8 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.subsystems.swerve;
 
 import com.stuypulse.stuylib.math.Vector2D;
-import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.RobotType;
 import com.stuypulse.robot.constants.Settings.Swerve;
 import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
@@ -93,7 +86,7 @@ public class SwerveDrive extends SubsystemBase {
 
     private final SwerveModule[] modules;
     private final SwerveDriveKinematics kinematics;
-    // private final Pigeon2 gyro;
+    private final Pigeon2 gyro;
     private final FieldObject2d[] modules2D;
 
     private final StructArrayPublisher<SwerveModuleState> statesPub;
@@ -106,7 +99,7 @@ public class SwerveDrive extends SubsystemBase {
     protected SwerveDrive(SwerveModule... modules) {
         this.modules = modules;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
-        // gyro = new Pigeon2(Ports.Gyro.PIGEON2);
+        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
         modules2D = new FieldObject2d[modules.length];
 
         statesPub = NetworkTableInstance.getDefault()
@@ -216,29 +209,28 @@ public class SwerveDrive extends SubsystemBase {
 
     /** Gyro **/
     public Rotation2d getGyroAngle() {
-        // return gyro.getRotation2d();
-        return new Rotation2d();
+        return gyro.getRotation2d();
     }
 
-    // public StatusSignal<Double> getGyroYaw() {
-    //     return gyro.getYaw();
-    // }
+    public StatusSignal<Double> getGyroYaw() {
+        return gyro.getYaw();
+    }
 
-    // public StatusSignal<Double> getGyroYawVelocity() {
-    //     return gyro.getAngularVelocityZWorld();
-    // }
+    public StatusSignal<Double> getGyroYawVelocity() {
+        return gyro.getAngularVelocityZWorld();
+    }
     
     @Override
     public void periodic() {
         statesPub.set(getModuleStates());
 
-        // SmartDashboard.putNumber("Swerve/Gyro/Angle (deg)", getGyroAngle().getDegrees());
-        // SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", getGyroYaw().getValueAsDouble());
-        // SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", getGyroYawVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Gyro/Angle (deg)", getGyroAngle().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro/Yaw (deg)", getGyroYaw().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Gyro/Yaw Velocity (deg)", getGyroYawVelocity().getValueAsDouble());
         
-        // SmartDashboard.putNumber("Swerve/X Acceleration (Gs)", gyro.getAccelerationX().getValueAsDouble());
-        // SmartDashboard.putNumber("Swerve/Y Acceleration (Gs)", gyro.getAccelerationY().getValueAsDouble());
-        // SmartDashboard.putNumber("Swerve/Z Acceleration (Gs)", gyro.getAccelerationZ().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/X Acceleration (Gs)", gyro.getAccelerationX().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Y Acceleration (Gs)", gyro.getAccelerationY().getValueAsDouble());
+        SmartDashboard.putNumber("Swerve/Z Acceleration (Gs)", gyro.getAccelerationZ().getValueAsDouble());
 
         SmartDashboard.putNumber("Swerve/Chassis X Speed", getChassisSpeeds().vxMetersPerSecond);
         SmartDashboard.putNumber("Swerve/Chassis Y Speed", getChassisSpeeds().vyMetersPerSecond);
