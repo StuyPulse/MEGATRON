@@ -24,17 +24,35 @@ public interface Cameras {
 
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
         // TO DO: find positions
-        new CameraConfig("samera0", new Pose3d(
-            new Translation3d(),
-            new Rotation3d()),
+        new CameraConfig(
+            "samera0", 
+            new Pose3d(
+                new Translation3d(),
+                new Rotation3d()
+            ),
             "100",
-            3000),
-        new CameraConfig("samera1", new Pose3d(
-            new Translation3d(),
-            new Rotation3d()),
+            3000
+        ),
+        new CameraConfig(
+            "samera1", 
+            new Pose3d(
+                new Translation3d(),
+                new Rotation3d()
+            ),
             "101",
-            3001)
+            3001
+        )
     };
+
+    public CameraConfig ARM_CAMERA = new CameraConfig(
+        "samera3", 
+        new Pose3d(
+            new Translation3d(),
+            new Rotation3d()
+        ), 
+        "102", 
+        3002
+    );
 
     /*** LINEAR REGRESSION ***/
 
