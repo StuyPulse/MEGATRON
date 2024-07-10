@@ -310,7 +310,6 @@ public interface Settings {
 
     public interface Driver {
         public interface Drive {
-            double BUZZ_DURATION = 0.2;
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
@@ -356,5 +355,10 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
             SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
         }
+    }
+
+    public interface Buzz {
+        double BUZZ_DURATION = 0.2;
+        double BUZZ_INTENSITY = 1;
     }
 }
