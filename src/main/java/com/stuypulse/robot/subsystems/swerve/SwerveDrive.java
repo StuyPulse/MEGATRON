@@ -15,6 +15,7 @@ import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
+import com.stuypulse.robot.subsystems.swerve.controllers.DriveController;
 import com.stuypulse.robot.subsystems.swerve.modules.KrakenSwerveModule;
 import com.stuypulse.robot.subsystems.swerve.modules.SwerveModule;
 
@@ -64,6 +65,10 @@ public class SwerveDrive extends SubsystemBase {
     private final Pigeon2 gyro;
     private final FieldObject2d[] modules2D;
 
+    private ChassisSpeeds desiredSpeeds = new ChassisSpeeds();
+    // TODO: Add SSG
+    private final DriveController driveController;
+
     private final StructArrayPublisher<SwerveModuleState> statesPub;
 
     // Status Signals
@@ -80,6 +85,8 @@ public class SwerveDrive extends SubsystemBase {
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
         modules2D = new FieldObject2d[modules.length];
         gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
+
+        driveController = new DriveController();
 
         statesPub = NetworkTableInstance.getDefault()
             .getStructArrayTopic("SmartDashboard/Swerve/States", SwerveModuleState.struct).publish();

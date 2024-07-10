@@ -18,6 +18,7 @@ import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -36,8 +37,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class KrakenSwerveModule extends SwerveModule {
@@ -55,7 +54,7 @@ public class KrakenSwerveModule extends SwerveModule {
 
     private final TalonFX driveMotor;
     private final TalonFX turnMotor;
-    private final AnalogInput turnEncoder;
+    private final CANcoder turnEncoder;
 
     private final AngleController pivotController;
 
@@ -101,7 +100,7 @@ public class KrakenSwerveModule extends SwerveModule {
 
         driveMotor = new TalonFX(driveMotorID, "*");
         turnMotor = new TalonFX(turnMotorID, "*");
-        turnEncoder = new AnalogInput(turnEncoderID);
+        turnEncoder = new CANcoder(turnEncoderID, "*");
 
         setDrivePID(Swerve.Drive.kP.doubleValue(), Swerve.Drive.kI.doubleValue(), Swerve.Drive.kD.doubleValue());
         setTurnPID(Swerve.Turn.kP.doubleValue(), Swerve.Turn.kI.doubleValue(), Swerve.Turn.kD.doubleValue());
@@ -149,10 +148,7 @@ public class KrakenSwerveModule extends SwerveModule {
         driveTorqueCurrent = driveMotor.getTorqueCurrent();
         turnAbsolutePosition =
             () ->
-                Rotation2d.fromRadians(
-                    turnEncoder.getVoltage()
-                        / RobotController.getVoltage5V()
-                        * (2 * Math.PI))
+                Rotation2d.fromRotations(turnEncoder.getAbsolutePosition().getValueAsDouble())
                     .minus(angleOffset);
         turnVelocity = turnMotor.getVelocity();
         turnAppliedVolts = turnMotor.getMotorVoltage();
@@ -183,7 +179,7 @@ public class KrakenSwerveModule extends SwerveModule {
         driveMotor.optimizeBusUtilization();
         turnMotor.optimizeBusUtilization();
 
-        // turnMotor is a TalonFX, so we need to configure it as such
+        // turnMotor is a TalonFX, so we do not need to configure it as such
         // Motors.disableStatusFrames(turnMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_POSIITION, StatusFrame.ABS_ENCODER_VELOCITY);
         // Motors.Swerve.TURN_CONFIG.configure(turnMotor);
     }

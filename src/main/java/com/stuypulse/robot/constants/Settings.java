@@ -5,9 +5,6 @@
 
 package com.stuypulse.robot.constants;
 
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.util.PIDConstants;
-
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
