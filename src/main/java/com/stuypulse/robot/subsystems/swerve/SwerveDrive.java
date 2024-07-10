@@ -1,20 +1,14 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.subsystems.swerve;
 
 import com.stuypulse.stuylib.math.Vector2D;
-import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.RobotType;
 import com.stuypulse.robot.constants.Settings.Swerve;
 import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
+import com.stuypulse.robot.subsystems.odometry.Odometry;
 import com.stuypulse.robot.subsystems.swerve.controllers.DriveController;
 import com.stuypulse.robot.subsystems.swerve.modules.KrakenSwerveModule;
 import com.stuypulse.robot.subsystems.swerve.modules.SwerveModule;
@@ -44,16 +38,12 @@ public class SwerveDrive extends SubsystemBase {
     private static final SwerveDrive instance;
 
     static {
-        if (Robot.ROBOT == RobotType.SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER) {
-            instance = new SwerveDrive(
-                new KrakenSwerveModule(FrontRight.ID, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
-                new KrakenSwerveModule(FrontLeft.ID,  FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
-                new KrakenSwerveModule(BackLeft.ID,  BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
-                new KrakenSwerveModule(BackRight.ID, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
-            );
-        } else {
-            instance = null; // TODO: Change this to something. Just !nothing.
-        }
+        instance = new SwerveDrive(
+            new KrakenSwerveModule(FrontRight.ID, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER),
+            new KrakenSwerveModule(FrontLeft.ID,  FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER),
+            new KrakenSwerveModule(BackLeft.ID,  BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER),
+            new KrakenSwerveModule(BackRight.ID, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER)
+        );
     }
 
     public static SwerveDrive getInstance() {
@@ -83,6 +73,7 @@ public class SwerveDrive extends SubsystemBase {
     protected SwerveDrive(SwerveModule... modules) {
         this.modules = modules;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
+        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
         modules2D = new FieldObject2d[modules.length];
         gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
 
@@ -157,7 +148,7 @@ public class SwerveDrive extends SubsystemBase {
     public void setFieldRelativeSpeeds(ChassisSpeeds chassisSpeeds) {
         setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
             chassisSpeeds,
-            getGyroAngle())); // TODO: Replace with Odometry.getPose().getRotation()
+            Odometry.getInstance().getPose().getRotation()));
     }
 
     public void setChassisSpeeds(ChassisSpeeds robotSpeeds) {
@@ -184,7 +175,7 @@ public class SwerveDrive extends SubsystemBase {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             velocity.y, -velocity.x,
             -rotation,
-            getGyroAngle()); // TODO: Replace with Odometry.getPose().getRotation()
+            Odometry.getInstance().getPose().getRotation());
 
         Pose2d robotVel = new Pose2d(
             Settings.DT * speeds.vxMetersPerSecond,

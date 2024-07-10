@@ -1,8 +1,3 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.util.ShooterSpeeds;
@@ -61,8 +56,8 @@ public interface Settings {
         SmartNumber AUTON_MAX_ACCELERATION = new SmartNumber("Arm/Auton Max Acceleration (deg)", 480);
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
-        SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90);
-        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.1);
+        SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
+        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 1);
         SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -70);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
@@ -73,18 +68,17 @@ public interface Settings {
 
         // characterize and manually tune
         public interface PID {
-            SmartNumber kP = new SmartNumber("Arm/kP", 1.3);
-            SmartNumber kI = new SmartNumber("Arm/kI", 0);
-            SmartNumber kD = new SmartNumber("Arm/kD", 0.25);
+            SmartNumber kP = new SmartNumber("Arm/kP", 0.350000);
+            SmartNumber kI = new SmartNumber("Arm/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Arm/kD", 0.0);
         }
 
         public interface Feedforward {
-            SmartNumber kS = new SmartNumber("Arm/kS", 0.061);
-            SmartNumber kV = new SmartNumber("Arm/kV", 1.2);
-            SmartNumber kA = new SmartNumber("Arm/kA", 0.038097);
+            SmartNumber kS = new SmartNumber("Arm/kS", 0.44765);
+            SmartNumber kV = new SmartNumber("Arm/kV", 0.10971); 
+            SmartNumber kA = new SmartNumber("Arm/kA", 0.014801); 
 
-            SmartNumber kGEmpty = new SmartNumber("Arm/kG Empty", 0.7); // TODO: determine kG
-            SmartNumber kGNote = new SmartNumber("Arm/kG Note", 0.7);
+            SmartNumber kG = new SmartNumber("Arm/kG", 0.14213); 
         }
 
         public interface Encoder {
@@ -268,6 +262,52 @@ public interface Settings {
         }
     }
 
+    public interface Alignment {
+        double DEBOUNCE_TIME = 0.05;
+
+        SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
+        SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
+
+        SmartNumber AMP_WALL_SETUP_DISTANCE = new SmartNumber("Alignment/Amp/Setup Pose Distance to Wall", Units.inchesToMeters(25.5));
+        SmartNumber AMP_WALL_SCORE_DISTANCE = new SmartNumber("Alignment/Amp/Score Pose Distance to Wall", Units.inchesToMeters(22.5 - 1.75));
+
+        SmartNumber TRAP_SETUP_DISTANCE = new SmartNumber("Alignment/Trap/Setup Pose Distance", Units.inchesToMeters(21.0));
+        SmartNumber TRAP_CLIMB_DISTANCE = new SmartNumber("Alignment/Trap/Climb Distance", Units.inchesToMeters(18.0));
+
+        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Trap/Into Chain Speed", 0.25);
+
+		double NOTE_TO_GOAL_TIME = 0.4;
+
+        double MAX_ALIGNMENT_SPEED = 2.5;
+
+        public interface Translation {
+            SmartNumber kP = new SmartNumber("Alignment/Translation/kP", 6.0);
+            SmartNumber kI = new SmartNumber("Alignment/Translation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Alignment/Translation/kD", 0.2);
+        }
+
+        public interface Rotation {
+            SmartNumber kP = new SmartNumber("Alignment/Rotation/kP", 6.0);
+            SmartNumber kI = new SmartNumber("Alignment/Rotation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
+        }
+
+        public interface Shoot {
+            public interface Translation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
+                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
+            }
+    
+            public interface Rotation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
+                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
+            }
+        }
+    }
+
     public interface Driver {
         public interface Drive {
             double BUZZ_DURATION = 0.2;
@@ -287,6 +327,34 @@ public interface Settings {
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
 
             SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Turn/Max Turning", 6.0);
+        }
+    }
+
+    public interface NoteDetection {
+        double X_ANGLE_RC = 0.05;
+
+        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Note Detection/Has Note Debounce", 0.2);
+
+        SmartNumber THRESHOLD_X = new SmartNumber("Note Detection/X Threshold", 0.2);
+        SmartNumber THRESHOLD_Y = new SmartNumber("Note Detection/Y Threshold", Units.inchesToMeters(2));
+        SmartNumber THRESHOLD_ANGLE = new SmartNumber("Note Detection/Angle Threshold", 1);
+
+        SmartNumber DRIVE_SPEED = new SmartNumber("Note Detection/Drive Speed", 1);
+
+        SmartNumber INTAKE_THRESHOLD_DISTANCE = new SmartNumber("Note Detection/In Intake Path Distance", 0.9);
+
+        double MAX_FULLY_IN_VIEW_ANGLE = 20;
+        
+        public interface Translation {
+            SmartNumber kP = new SmartNumber("Note Detection/Translation/kP", 8.0);
+            SmartNumber kI = new SmartNumber("Note Detection/Translation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Note Detection/Translation/kD", 0.0);
+        }
+
+        public interface Rotation {
+            SmartNumber kP = new SmartNumber("Note Detection/Rotation/kP", 2.0);
+            SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
         }
     }
 }
