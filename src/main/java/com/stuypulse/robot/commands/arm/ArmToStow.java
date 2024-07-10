@@ -4,6 +4,6 @@ import com.stuypulse.robot.constants.Settings;
 
 public class ArmToStow extends ArmToAngle{
     public ArmToStow(){
-        super(Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Settings.Arm.MIN_ANGLE.doubleValue());
     }
 }
