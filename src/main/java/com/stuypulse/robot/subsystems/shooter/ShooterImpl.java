@@ -52,7 +52,7 @@ public class ShooterImpl extends Shooter {
             .add(new PIDController(Settings.Shooter.RIGHT.PID.kP, Settings.Shooter.RIGHT.PID.kI, Settings.Shooter.RIGHT.PID.kD)
                 .setIntegratorFilter(1000, 0.5 / Settings.Shooter.RIGHT.PID.kI));
         
-        hasNote = BStream.create(feederBeam).filtered(new BDebounce.Both(Settings.Shooter.HAS_NOTE_DEBOUNCE));
+        hasNote = BStream.create(feederBeam).not().filtered(new BDebounce.Both(Settings.Shooter.HAS_NOTE_DEBOUNCE));
 
         Motors.disableStatusFrames(leftMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
         Motors.disableStatusFrames(rightMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
@@ -90,7 +90,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public boolean hasNote() {
-        return feederBeam.get();
+        return hasNote.get();
     }
 
     @Override
@@ -119,6 +119,8 @@ public class ShooterImpl extends Shooter {
             SmartDashboard.putNumber("Shooter/Left Requested Voltage", leftController.getOutput());
             SmartDashboard.putNumber("Shooter/Right Requested Voltage", rightController.getOutput());
         }
+
+        SmartDashboard.putBoolean("Shooter/Has Note", hasNote());
 
         SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
         SmartDashboard.putNumber("Shooter/Right RPM", getRightShooterRPM());
