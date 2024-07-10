@@ -50,14 +50,14 @@ public interface Motors {
 
     public interface Intake {
         CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
-        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
-        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 500, 0.25);
     }
 
     public interface Shooter {
-        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
-        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
-        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
+        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
+        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
+        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
     }
   
     /* Configurations */

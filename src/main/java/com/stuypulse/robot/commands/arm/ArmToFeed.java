@@ -6,6 +6,6 @@ import com.stuypulse.robot.constants.Settings;
 such that it can still receive notes from the intake*/
 public class ArmToFeed extends ArmToAngle{
     public ArmToFeed(){
-        super(Settings.Arm.FEED_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Settings.Arm.FEED_ANGLE.doubleValue());
     }
 }

@@ -60,13 +60,14 @@ public interface Settings {
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
-        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 1);
+        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
         SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -70);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
-        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Ferry Angle", -80);
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -80);
+        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
 
         // feed angle is the furthest position the arm can be to still receive notes from the intake
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", -87);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 20);
 
         // characterize and manually tune
         public interface PID {
@@ -309,7 +310,6 @@ public interface Settings {
 
     public interface Driver {
         public interface Drive {
-            double BUZZ_DURATION = 0.2;
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
@@ -355,5 +355,10 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
             SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
         }
+    }
+
+    public interface Buzz {
+        double BUZZ_DURATION = 0.2;
+        double BUZZ_INTENSITY = 1;
     }
 }
