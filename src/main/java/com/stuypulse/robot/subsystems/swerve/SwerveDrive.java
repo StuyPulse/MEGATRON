@@ -23,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -75,7 +76,6 @@ public class SwerveDrive extends SubsystemBase {
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
         gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
         modules2D = new FieldObject2d[modules.length];
-        gyro = new Pigeon2(Ports.Gyro.PIGEON2, "*");
 
         driveController = new DriveController();
 
@@ -194,6 +194,14 @@ public class SwerveDrive extends SubsystemBase {
         setChassisSpeeds(new ChassisSpeeds());
     }
 
+    public void acceptTeleopInput(
+        double controllerX, double controllerY, double controllerOmega) {
+            if(DriverStation.isTeleopEnabled()) {
+                driveController.acceptDriveInput(controllerX, controllerY, controllerOmega);
+            }
+            
+    }
+
     /** Gyro **/
     public Rotation2d getGyroAngle() {
         return gyro.getRotation2d();
@@ -210,6 +218,8 @@ public class SwerveDrive extends SubsystemBase {
     @Override
     public void periodic() {
         statesPub.set(getModuleStates());
+
+        desiredSpeeds = driveController.update();
 
         BaseStatusSignal.refreshAll(yaw, yawVelocity);
 

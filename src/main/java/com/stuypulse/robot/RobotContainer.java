@@ -16,6 +16,7 @@ import com.stuypulse.robot.subsystems.odometry.Odometry;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
 
@@ -32,6 +33,10 @@ public class RobotContainer {
     public final Shooter shooter = Shooter.getInstance();
     public final Arm arm = Arm.getInstance();
     public final SwerveDrive swerve = SwerveDrive.getInstance();
+
+    // Controller
+    // private final CommandXboxController driver = new CommandXboxController(Ports.Gamepad.DRIVER);
+    // private final CommandXboxController operator = new CommandXboxController(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
