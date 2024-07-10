@@ -34,6 +34,10 @@ public abstract class Shooter extends SubsystemBase {
         return rightTargetRPM.get();
     }
 
+    public abstract void setLeftShooterRPM(double rpm);
+
+    public abstract void setRightShooterRPM(double rpm);
+
     public final void setTargetSpeeds(ShooterSpeeds speeds) {
         this.leftTargetRPM.set(speeds.getLeftRPM());
         this.rightTargetRPM.set(speeds.getRightRPM());
