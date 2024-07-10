@@ -42,10 +42,10 @@ public class ShooterSpeeds {
     }
 
     public double getLeftRPM() {
-        return leftRPM;
+        return shooterRPM.doubleValue() + shooterDifferential.doubleValue() / 2.0;
     }
 
     public double getRightRPM() {
-        return rightRPM;
+        return shooterRPM.doubleValue() - shooterDifferential.doubleValue() / 2.0;
     }
 }
