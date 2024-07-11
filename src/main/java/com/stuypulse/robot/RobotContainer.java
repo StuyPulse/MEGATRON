@@ -74,21 +74,22 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getLeftTriggerButton()
-            .whileTrue(new IntakeAcquire())
-            .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
-                .andThen(new ArmSetState(Arm.State.FEED)
-                    .andThen(new WaitUntilCommand(intake::hasNote))
-                    .andThen(new ShooterAcquireFromIntake())
-                )
-            );
+        driver.getLeftTriggerButton().whileTrue(new IntakeAcquire());
         
         driver.getLeftBumper()
-            .onTrue(new IntakeDeacquire())
+            .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
+            .andThen(new ArmSetState(Arm.State.FEED)
+                .andThen(new WaitUntilCommand(intake::hasNote).alongWith(new ArmWaitUntilAtTarget()))
+                .andThen(new ShooterAcquireFromIntake())
+            )
+        );
+        
+        driver.getDPadLeft()
+            .whileTrue(new IntakeDeacquire())
             .onFalse(new IntakeStop());
 
         driver.getRightTriggerButton()
-            .whileTrue(new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget())
+            .whileTrue(new ArmWaitUntilAtTarget()
                 .andThen(new ShooterAutoShoot())
             );
         
