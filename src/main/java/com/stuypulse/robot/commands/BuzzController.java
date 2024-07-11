@@ -1,6 +1,6 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.constants.Settings.Swerve.Assist;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.util.StopWatch;
 
@@ -29,7 +29,7 @@ public class BuzzController extends InstantCommand {
     }
 
     public BuzzController(Gamepad driver) {
-        this(driver, Assist.BUZZ_INTENSITY);
+        this(driver, Settings.Buzz.BUZZ_INTENSITY);
     }
 
     @Override
