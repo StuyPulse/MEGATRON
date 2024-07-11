@@ -34,8 +34,6 @@ public class ArmImpl extends Arm {
     private final SmartNumber maxVelocity;
     private final SmartNumber maxAcceleration;
 
-    private Optional<Double> voltageOverride;
-
     private final Controller controller;
 
     protected ArmImpl() {
@@ -56,24 +54,10 @@ public class ArmImpl extends Arm {
         Motors.Arm.LEFT_MOTOR.configure(leftMotor);
         Motors.Arm.RIGHT_MOTOR.configure(rightMotor);
 
-        voltageOverride = Optional.empty();
-
         controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
-            .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
-            .setOutputFilter(x -> voltageOverride.orElse(x));
+            .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD));
     } 
-
-    @Override
-    public double getDegrees() {
-        return 360 * armEncoder.getPosition();
-    }
-
-    @Override
-    public void stop() {
-        leftMotor.setVoltage(0);
-        rightMotor.setVoltage(0);
-    }
 
     @Override
     public void setConstraints(double maxVelocity, double maxAcceleration) {
@@ -82,12 +66,36 @@ public class ArmImpl extends Arm {
     }
 
     @Override
-    public void setVoltage(double voltage) {
-        voltageOverride = Optional.of(voltage);
+    public boolean atTarget() {
+        return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.getAsDouble();
     }
 
-    @Override
-    protected void setVoltageImpl(double voltage) {
+    private double getTargetDegrees() {
+        switch (state) {
+            case AMP:
+                return Settings.Arm.AMP_ANGLE.getAsDouble();
+            case SPEAKER:
+                return getSpeakerAngle();
+            case LOB_FERRY:
+                return Settings.Arm.LOB_FERRY_ANGLE.getAsDouble(); 
+            case FEED:
+                return Settings.Arm.FEED_ANGLE.getAsDouble();
+            case STOW:
+                return Settings.Arm.MIN_ANGLE.getAsDouble();
+            default:
+                return Settings.Arm.MIN_ANGLE.getAsDouble();   
+        }
+    }
+
+    private double getSpeakerAngle() {
+        return 0;
+    }
+
+    private double getDegrees() {
+        return 360 * armEncoder.getPosition();
+    }
+
+    private void setVoltage(double voltage) {
         leftMotor.setVoltage(voltage);
         rightMotor.setVoltage(voltage);
     }
@@ -95,7 +103,7 @@ public class ArmImpl extends Arm {
     @Override
     public void periodic() {
         controller.update(getTargetDegrees(), getDegrees());
-        setVoltageImpl(SLMath.clamp(controller.getOutput(), -6, 6));
+        setVoltage(SLMath.clamp(controller.getOutput(), -6, 6));
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
         SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
