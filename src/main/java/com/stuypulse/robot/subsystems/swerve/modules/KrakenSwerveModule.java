@@ -2,7 +2,10 @@ package com.stuypulse.robot.subsystems.swerve.modules;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
@@ -27,7 +30,6 @@ import com.stuypulse.stuylib.streams.numbers.filters.TimedMovingAverage;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,6 +46,20 @@ public class KrakenSwerveModule extends SwerveModule {
 
     private final IFilter targetAcceleration;
 
+    // Status Signals
+    private final StatusSignal<Double> drivePosition;
+    private final StatusSignal<Double> driveVelocity;
+    private final StatusSignal<Double> driveAppliedVolts;
+    private final StatusSignal<Double> driveSupplyCurrent;
+    private final StatusSignal<Double> driveTorqueCurrent;
+
+    private final StatusSignal<Double> turnPosition;
+    private final Supplier<Rotation2d> turnAbsolutePosition;
+    private final StatusSignal<Double> turnVelocity;
+    private final StatusSignal<Double> turnAppliedVolts;
+    private final StatusSignal<Double> turnSupplyCurrent;
+    private final StatusSignal<Double> turnTorqueCurrent;
+
     private final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
     private final TalonFXConfiguration turnConfig = new TalonFXConfiguration();
     private static final Executor brakeModeExecutor = Executors.newFixedThreadPool(8); // TODO: Choose n threaqds
@@ -59,13 +75,12 @@ public class KrakenSwerveModule extends SwerveModule {
 
     public KrakenSwerveModule(
         String id, 
-        Translation2d location, 
         Rotation2d angleOffset, 
         int driveMotorID, 
         int turnMotorID, 
         int turnEncoderID
     ) {
-        super(id, location);
+        super(id);
 
         this.angleOffset = angleOffset;
 
@@ -107,7 +122,37 @@ public class KrakenSwerveModule extends SwerveModule {
         // driveConfig.CurrentLimits.StatorCurrentLimit = 65; // 65A stator current limit
         // driveConfig.CurrentLimits.StatorCurrentLimitEnable = true; // Enable stator current limiting
 
-        driveMotor.setPosition(0);
+        // 250 hz signals
+        drivePosition = driveMotor.getPosition();
+        turnPosition = turnMotor.getPosition();
+        BaseStatusSignal.setUpdateFrequencyForAll(250, drivePosition, turnPosition);
+
+        // 100 hz signals
+        driveVelocity = driveMotor.getVelocity();
+        driveAppliedVolts = driveMotor.getMotorVoltage();
+        driveSupplyCurrent = driveMotor.getSupplyCurrent();
+        driveTorqueCurrent = driveMotor.getTorqueCurrent();
+        turnAbsolutePosition =
+            () ->
+                Rotation2d.fromRotations(turnEncoder.getAbsolutePosition().getValueAsDouble())
+                    .minus(angleOffset);
+        turnVelocity = turnMotor.getVelocity();
+        turnAppliedVolts = turnMotor.getMotorVoltage();
+        turnSupplyCurrent = turnMotor.getSupplyCurrent();
+        turnTorqueCurrent = turnMotor.getTorqueCurrent();
+        BaseStatusSignal.setUpdateFrequencyForAll(
+        100,
+            driveVelocity,
+            driveAppliedVolts,
+            driveSupplyCurrent,
+            driveTorqueCurrent,
+            turnVelocity,
+            turnAppliedVolts,
+            turnSupplyCurrent,
+            turnTorqueCurrent);
+        
+        // driveMotor.setPosition(0);
+        turnMotor.setPosition(turnAbsolutePosition.get().getRotations(), 1.0);
 
         pivotController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD)
             .setOutputFilter(x -> -x);
@@ -120,7 +165,7 @@ public class KrakenSwerveModule extends SwerveModule {
         driveMotor.optimizeBusUtilization();
         turnMotor.optimizeBusUtilization();
 
-        // turnMotor is a TalonFX, so we need to configure it as such
+        // turnMotor is a TalonFX, so we do not need to configure it as such
         // Motors.disableStatusFrames(turnMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_POSIITION, StatusFrame.ABS_ENCODER_VELOCITY);
         // Motors.Swerve.TURN_CONFIG.configure(turnMotor);
     }
@@ -130,25 +175,25 @@ public class KrakenSwerveModule extends SwerveModule {
     /****************/
 
     public double getPosition() {
-        return driveMotor.getPosition().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
+        return drivePosition.getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
     }
 
     public double getTurnPosition() {
-        return turnMotor.getPosition().getValueAsDouble() * Encoder.Turn.POSITION_CONVERSION;
+        return turnPosition.getValueAsDouble() * Encoder.Turn.POSITION_CONVERSION;
     }
 
     @Override
     public double getVelocity() {
-        return driveMotor.getVelocity().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
+        return driveVelocity.getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
     }
 
     public double getTurnVelocity() {
-        return turnMotor.getVelocity().getValueAsDouble() * Encoder.Turn.POSITION_CONVERSION;
+        return turnVelocity.getValueAsDouble() * Encoder.Turn.POSITION_CONVERSION;
     }
 
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRotations(turnEncoder.getAbsolutePosition().getValueAsDouble())
+        return Rotation2d.fromRotations(turnAbsolutePosition.get().getRotations())
             .minus(angleOffset);
     }
 
@@ -187,6 +232,11 @@ public class KrakenSwerveModule extends SwerveModule {
         driveMotor.setControl(currentControl.withOutput(input));
     }
 
+    public void setCharacterization(double turnSetpointRads, double input) {
+        setTurnPosition(turnSetpointRads);
+        setCharacterization(input);
+    }
+
     public void setDriveVelocity(double velocityRadsPerSec, double feedForward) {
         driveMotor.setControl(
             velocityTorqueCurrentFOC
@@ -194,7 +244,7 @@ public class KrakenSwerveModule extends SwerveModule {
                 .withFeedForward(feedForward));
     }
     
-    public void runTurnPositionSetpoint(double angleRads) {
+    public void setTurnPosition(double angleRads) {
         turnMotor.setControl(positionControl.withPosition(Units.radiansToRotations(angleRads)));
     }
 
@@ -220,6 +270,11 @@ public class KrakenSwerveModule extends SwerveModule {
             });
     }
 
+    public void setBrakeMode(boolean enable) {
+        setDriveBrakeMode(enable);
+        setTurnBrakeMode(enable);
+    }
+
     public void stop() {
         driveMotor.setControl(neutralControl);
         turnMotor.setControl(neutralControl);
@@ -229,9 +284,24 @@ public class KrakenSwerveModule extends SwerveModule {
         return speedMetersPerSecond / Encoder.Drive.POSITION_CONVERSION;
     }
 
+    // TODO: FIX PERIODIC
     @Override
     public void periodic() {
         super.periodic();
+
+        BaseStatusSignal.refreshAll(
+            drivePosition,
+            driveVelocity,
+            driveAppliedVolts,
+            driveSupplyCurrent,
+            driveTorqueCurrent);
+        
+        BaseStatusSignal.refreshAll(
+            turnPosition,
+            turnVelocity,
+            turnAppliedVolts,
+            turnSupplyCurrent,
+            turnTorqueCurrent);
 
         final boolean USE_ACCEL = true;
 
@@ -265,7 +335,7 @@ public class KrakenSwerveModule extends SwerveModule {
         SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Turn Voltage", pivotController.getOutput());
         SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Turn Current", turnMotor.getSupplyCurrent().getValueAsDouble());
         SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Angle Error", pivotController.getError().toDegrees());
-        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Raw Encoder Angle", Units.rotationsToDegrees(turnEncoder.getAbsolutePosition().getValueAsDouble()));
+        SmartDashboard.putNumber("Swerve/Modules/" + getId() + "/Raw Encoder Angle", Units.rotationsToDegrees(turnAbsolutePosition.get().getRotations()));
     }
     
 }
