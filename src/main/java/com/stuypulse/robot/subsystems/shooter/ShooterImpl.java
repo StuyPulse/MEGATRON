@@ -75,23 +75,25 @@ public class ShooterImpl extends Shooter {
         Motors.Shooter.FEEDER_MOTOR.configure(feederMotor);   
     }
 
-    @Override
-    public double getLeftShooterRPM() {
+    private double getLeftShooterRPM() {
         return leftEncoder.getVelocity();
     }
 
-    @Override
-    public double getRightShooterRPM() {
+    private double getRightShooterRPM() {
         return rightEncoder.getVelocity();
     }
 
     @Override
-    public void setLeftShooterRPM(double rpm) {
+    public boolean atTargetSpeeds() {
+        return Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
+            && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+    }
+
+    private void setLeftShooterRPM(double rpm) {
         leftController.setReference(rpm, ControlType.kVelocity);
     }
     
-    @Override
-    public void setRightShooterRPM(double rpm) {
+    private void setRightShooterRPM(double rpm) {
         rightController.setReference(rpm, ControlType.kVelocity);
     }
 
@@ -124,34 +126,24 @@ public class ShooterImpl extends Shooter {
     public void periodic () {
         super.periodic();
 
-        // leftController.update(getLeftTargetRPM(), getLeftShooterRPM());
-        // rightController.update(getRightTargetRPM(), getRightShooterRPM());
         setLeftShooterRPM(getLeftTargetRPM());
         setRightShooterRPM(getRightTargetRPM());
 
-        if (getLeftTargetRPM() == 0 && getRightTargetRPM() == 0) {
+        if (getLeftTargetRPM() == 0) {
             leftMotor.stopMotor();
-            rightMotor.stopMotor();
-            
-            SmartDashboard.putNumber("Shooter/Left Requested Voltage", 0);
-            SmartDashboard.putNumber("Shooter/Right Requested Voltage", 0);
-        
-        } else {
-            // leftMotor.setVoltage(leftController.getOutput());
-            // rightMotor.setVoltage(rightController.getOutput());
-
-
-            // SmartDashboard.putNumber("Shooter/Left Requested Voltage", leftController.getOutput());
-            // SmartDashboard.putNumber("Shooter/Right Requested Voltage", rightController.getOutput());
         }
+
+        if (getRightTargetRPM() == 0) {
+            rightMotor.stopMotor();
+        }
+
+        SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
+        SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());
 
         SmartDashboard.putBoolean("Shooter/Has Note", hasNote());
 
         SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
         SmartDashboard.putNumber("Shooter/Right RPM", getRightShooterRPM());
-
-        // SmartDashboard.putNumber("Shooter/Left Error", leftController.getError());
-        // SmartDashboard.putNumber("Shooter/Right Error", rightController.getError());
 
         SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage() * leftMotor.getAppliedOutput());
         SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage() * rightMotor.getAppliedOutput());

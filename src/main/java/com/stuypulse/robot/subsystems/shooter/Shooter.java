@@ -26,26 +26,17 @@ public abstract class Shooter extends SubsystemBase {
         rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", 0);
     }
 
-    public final double getLeftTargetRPM() {
-        return leftTargetRPM.get();
-    }
-
-    public final double getRightTargetRPM() {
-        return rightTargetRPM.get();
-    }
-
-    public abstract void setLeftShooterRPM(double rpm);
-
-    public abstract void setRightShooterRPM(double rpm);
-
-    public final void setTargetSpeeds(ShooterSpeeds speeds) {
+    public void setTargetSpeeds(ShooterSpeeds speeds) {
         this.leftTargetRPM.set(speeds.getLeftRPM());
         this.rightTargetRPM.set(speeds.getRightRPM());
     }
 
-    public final boolean atTargetSpeeds() {
-        return Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
-            && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+    public double getLeftTargetRPM() {
+        return leftTargetRPM.get();
+    }
+
+    public double getRightTargetRPM() {
+        return rightTargetRPM.get();
     }
 
     public void stop() {
@@ -54,8 +45,7 @@ public abstract class Shooter extends SubsystemBase {
         rightTargetRPM.set(0);
     }
 
-    public abstract double getLeftShooterRPM();
-    public abstract double getRightShooterRPM();
+    public abstract boolean atTargetSpeeds();
 
     public abstract void runFeederForwards();
     public abstract void runFeederBackwards();
