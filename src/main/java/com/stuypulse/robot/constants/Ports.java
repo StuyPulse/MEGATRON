@@ -19,7 +19,7 @@ public interface Ports {
         int FUNNEL_RIGHT = 22;
         int INTAKE_MOTOR = 20;
 
-        int IRSensor = 2; // TO DO: FIND IR SENSOR PORT
+        int IRSensor = 3;
     }
 
     public interface Shooter {
