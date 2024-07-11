@@ -9,7 +9,7 @@ public class ShooterFerry extends SequentialCommandGroup {
     public ShooterFerry() {
         addCommands(
             new ShooterSetRPM(Settings.Shooter.FERRY),
-            new ShooterWaitForTarget()
+            new ShooterWaitForTarget().withTimeout((Settings.Shooter.MAX_WAIT_TO_REACH_TARGET))
                 .andThen(new ShooterFeederAcquireForever())
         );
     }

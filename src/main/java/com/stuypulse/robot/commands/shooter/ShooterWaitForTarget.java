@@ -9,10 +9,5 @@ public class ShooterWaitForTarget extends WaitUntilCommand {
     public ShooterWaitForTarget() {
         super(() -> Shooter.getInstance().atTargetSpeeds());
     }
-
-    @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
-    }
-
+    
 }

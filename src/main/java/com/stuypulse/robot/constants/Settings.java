@@ -60,12 +60,12 @@ public interface Settings {
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
-        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
+        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 60);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
 
         // feed angle is the furthest position the arm can be to still receive notes from the intake
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 20);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
 
         // characterize and manually tune
         public interface PID {
@@ -88,18 +88,19 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.85;
-        double INTAKE_DEACQUIRE_SPEED = 0.9;
+        double INTAKE_ACQUIRE_SPEED = 0.5;
+        double INTAKE_DEACQUIRE_SPEED = 0.5;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IRSensorTriggerTime = .02;
+        double IRSensorTriggerTime = .03;
     }
 
     public interface Shooter {
-        double FEEDER_SPEED = 0.75;
+        double FEEDER_SPEED = .18;
 
         double TARGET_RPM_THRESHOLD = 300;
+        double MAX_WAIT_TO_REACH_TARGET = 1;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
@@ -111,8 +112,9 @@ public interface Settings {
             new SmartNumber("Shooter/Ferry RPM differential", 500)
         );
 
-        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.2);
+        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.01);
 
+        // left runs faster than right
         public interface LEFT {
             public interface PID {
                 double kP = 0.00034711;
@@ -122,7 +124,7 @@ public interface Settings {
 
             public interface FF {
                 double kS = 0;
-                double kV = 0;
+                double kV = 0.00018;
                 double kA = 0;
             }
         }
@@ -136,7 +138,7 @@ public interface Settings {
 
             public interface FF {
                 double kS = 0;
-                double kV = 0;
+                double kV = 0.00015;
                 double kA = 0;
             }
         }
