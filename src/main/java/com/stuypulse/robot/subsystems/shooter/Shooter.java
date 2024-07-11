@@ -22,8 +22,8 @@ public abstract class Shooter extends SubsystemBase {
     private final SmartNumber rightTargetRPM;
 
     public Shooter() {
-        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", 0);
-        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", 0);
+        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", Settings.Shooter.SPEAKER.getLeftRPM());
+        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", Settings.Shooter.SPEAKER.getRightRPM());
     }
 
     public void setTargetSpeeds(ShooterSpeeds speeds) {
