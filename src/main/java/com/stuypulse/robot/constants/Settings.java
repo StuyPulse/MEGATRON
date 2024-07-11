@@ -88,15 +88,17 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 1.0;
-        double INTAKE_DEACQUIRE_SPEED = 1.0;
+        double INTAKE_ACQUIRE_SPEED = 0.85;
+        double INTAKE_DEACQUIRE_SPEED = 0.9;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IRSensorTriggerTime = .03;
+        double IRSensorTriggerTime = .02;
     }
 
     public interface Shooter {
+        double FEEDER_SPEED = 0.75;
+
         double TARGET_RPM_THRESHOLD = 300;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
@@ -138,8 +140,6 @@ public interface Settings {
                 double kA = 0;
             }
         }
-
-        double FEEDER_SPEED = 1.0;
     }
     
     public interface Swerve {

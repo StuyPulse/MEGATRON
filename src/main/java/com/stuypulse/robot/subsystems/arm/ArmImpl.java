@@ -107,13 +107,13 @@ public class ArmImpl extends Arm {
         controller.update(getTargetDegrees(), getDegrees());
         setVoltage(SLMath.clamp(controller.getOutput(), -6, 6));
 
+        if (bumpSwitchTriggered.get()) {
+            armEncoder.setPosition(Settings.Arm.MIN_ANGLE.get()/360);
+        }
+
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
         SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
         SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
-
-        if (bumpSwitchTriggered.get()) {
-            armEncoder.setPosition((-90 + 12.25)/360);
-        }
 
         SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", bumpSwitch.get());
 

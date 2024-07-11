@@ -1,15 +1,21 @@
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.arm.ArmSetState;
+import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
-import com.stuypulse.robot.commands.arm.ArmToLobFerry;
-import com.stuypulse.robot.commands.arm.ArmToLowFerry;
+import com.stuypulse.robot.commands.arm.ArmToFerry;
+import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
+import com.stuypulse.robot.commands.arm.ArmToStow;
+import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
-import com.stuypulse.robot.commands.shooter.ShooterFerry;
+import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
+import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.stuylib.input.Gamepad;
@@ -25,6 +31,7 @@ import com.stuypulse.robot.subsystems.odometry.Odometry;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class RobotContainer {
 
@@ -67,26 +74,31 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         driver.getLeftTriggerButton()
-            .onTrue(new IntakeAcquire())
+            .whileTrue(new IntakeAcquire())
+            .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
+                .andThen(new ArmSetState(Arm.State.FEED)
+                    .andThen(new WaitUntilCommand(intake::hasNote))
+                    .andThen(new ShooterAcquireFromIntake())
+                )
+            );
+        
+        driver.getLeftBumper()
+            .onTrue(new IntakeDeacquire())
             .onFalse(new IntakeStop());
-        
-        driver.getRightTriggerButton()
-            .onTrue(new ArmToFeed()
-                .andThen(new ShooterAcquireFromIntake())
-                .andThen(new ArmToSpeaker())
-                .andThen(new ShooterScoreSpeaker()));
-        
-        driver.getTopButton()
-            .onTrue(new ArmToFeed()
-                .andThen(new ShooterAcquireFromIntake())
-                .andThen(new ArmToLobFerry())
-                .andThen(new ShooterFerry()));
 
-        driver.getBottomButton()
-            .onTrue(new ArmToFeed()
-                .andThen(new ShooterAcquireFromIntake())
-                .andThen(new ArmToLowFerry())
-                .andThen(new ShooterFerry()));
+        driver.getRightTriggerButton()
+            .whileTrue(new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget())
+                .andThen(new ShooterAutoShoot())
+            );
+        
+        driver.getTopButton().onTrue(new ArmToSpeaker());
+        driver.getLeftButton().onTrue(new ArmToAmp());
+        driver.getRightButton().onTrue(new ArmToSpeaker());
+        driver.getBottomButton().onTrue(new ArmToFeed());
+        
+        driver.getDPadUp().onTrue(new ArmToPreClimb());
+        driver.getDPadDown().onTrue(new ArmToStow());
+
     }
 
     /**************/
