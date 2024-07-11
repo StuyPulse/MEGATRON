@@ -82,6 +82,8 @@ public class ArmImpl extends Arm {
                 return Settings.Arm.FEED_ANGLE.getAsDouble();
             case STOW:
                 return Settings.Arm.MIN_ANGLE.getAsDouble();
+            case PRE_CLIMB:
+                return Settings.Arm.PRE_CLIMB_ANGLE.getAsDouble();
             default:
                 return Settings.Arm.MIN_ANGLE.getAsDouble();   
         }

@@ -20,7 +20,8 @@ public abstract class Arm extends SubsystemBase {
         SPEAKER,
         FERRY,
         FEED,
-        STOW
+        STOW,
+        PRE_CLIMB
     }
 
     protected State state;

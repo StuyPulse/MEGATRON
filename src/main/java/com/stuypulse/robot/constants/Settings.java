@@ -62,6 +62,7 @@ public interface Settings {
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
+        SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
 
         // feed angle is the furthest position the arm can be to still receive notes from the intake
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 20);
