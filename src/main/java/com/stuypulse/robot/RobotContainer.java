@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
@@ -90,6 +91,9 @@ public class RobotContainer {
             .whileTrue(new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget())
                 .andThen(new ShooterAutoShoot())
             );
+        
+        driver.getRightBumper()
+            .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         
         driver.getTopButton().onTrue(new ArmToSpeaker());
         driver.getLeftButton().onTrue(new ArmToAmp());
