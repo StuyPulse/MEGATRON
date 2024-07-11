@@ -18,7 +18,7 @@ public abstract class Arm extends SubsystemBase {
     public enum State {
         AMP,
         SPEAKER,
-        LOB_FERRY,
+        FERRY,
         FEED,
         STOW
     }

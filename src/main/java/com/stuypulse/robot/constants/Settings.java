@@ -61,7 +61,7 @@ public interface Settings {
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
-        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
+        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
 
         // feed angle is the furthest position the arm can be to still receive notes from the intake
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 20);
