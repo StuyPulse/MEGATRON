@@ -133,10 +133,6 @@ public class KrakenSwerveModule extends SwerveModule {
         return driveMotor.getPosition().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;
     }
 
-    public double getTurnPosition() {
-        return turnMotor.getPosition().getValueAsDouble() * Encoder.Turn.POSITION_CONVERSION;
-    }
-
     @Override
     public double getVelocity() {
         return driveMotor.getVelocity().getValueAsDouble() * Encoder.Drive.POSITION_CONVERSION;

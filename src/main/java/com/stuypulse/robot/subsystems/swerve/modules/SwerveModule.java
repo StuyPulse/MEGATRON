@@ -40,7 +40,8 @@ public abstract class SwerveModule extends SubsystemBase {
     }
 
     public final void setTargetState(SwerveModuleState state) {
-        targetState = SwerveModuleState.optimize(state, getAngle());
+        // targetState = SwerveModuleState.optimize(state, getAngle());
+        targetState = state;
     }
 
     public final SwerveModuleState getTargetState() {

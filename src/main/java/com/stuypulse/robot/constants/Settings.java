@@ -61,7 +61,7 @@ public interface Settings {
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
-        SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -70);
+        SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -90 + 12.25 + 12.168);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -80);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
@@ -90,12 +90,12 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 1.0;
-        double INTAKE_DEACQUIRE_SPEED = 1.0;
+        double INTAKE_ACQUIRE_SPEED = 0.9;
+        double INTAKE_DEACQUIRE_SPEED = 0.9;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IRSensorTriggerTime = .03;
+        double IRSensorTriggerTime = .02;
     }
 
     public interface Shooter {
@@ -143,7 +143,7 @@ public interface Settings {
             }
         }
 
-        double FEEDER_SPEED = 1.0;
+        double FEEDER_SPEED = 0.7;
     }
     
     public interface Swerve {
@@ -208,17 +208,18 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 7.0);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 0.25);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.05);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.25582);
-            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.00205);
-            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.00020123);
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.0);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0);
 
             SmartBoolean INVERTED = new SmartBoolean("Swerve/Turn/INVERTED", true);
 
-            double TURN_REDUCTION = (150.0 / 7.0); // 21.4285714286
+            double TURN_REDUCTION = 1;
+            // double TURN_REDUCTION = (150.0 / 7.0); // 21.4285714286
         }
 
         public interface Drive {
@@ -239,25 +240,25 @@ public interface Settings {
 
         public interface FrontRight {
             String ID = "Front Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(38.144531);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(132.978516);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
         }
 
         public interface FrontLeft {
             String ID = "Front Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(-173.408203);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(-18.720703);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
         }
 
         public interface BackLeft {
             String ID = "Back Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(24.609375);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(-164.707031);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
         }
 
         public interface BackRight {
             String ID = "Back Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(38.232422);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(111.796875);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
         }
     }
