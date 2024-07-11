@@ -97,7 +97,7 @@ public class RobotContainer {
         
         driver.getTopButton().onTrue(new ArmToSpeaker());
         driver.getLeftButton().onTrue(new ArmToAmp());
-        driver.getRightButton().onTrue(new ArmToSpeaker());
+        driver.getRightButton().onTrue(new ArmToFerry());
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());
