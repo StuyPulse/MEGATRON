@@ -28,7 +28,6 @@ public interface Settings {
     // checks the current RIO's serial number to determine which robot is running
     public enum RobotType {
         // TODO: Add serial numbers from RIOs
-        TUMBLER(""),
         SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER(""),
         SIM("");
 
@@ -61,9 +60,7 @@ public interface Settings {
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
-        SmartNumber SPEAKER_ANGLE = new SmartNumber("Arm/Speaker Angle", -70);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 80);
-        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -80);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 70);
 
         // feed angle is the furthest position the arm can be to still receive notes from the intake
@@ -71,7 +68,7 @@ public interface Settings {
 
         // characterize and manually tune
         public interface PID {
-            SmartNumber kP = new SmartNumber("Arm/kP", 0.350000);
+            SmartNumber kP = new SmartNumber("Arm/kP", 0.45000);
             SmartNumber kI = new SmartNumber("Arm/kI", 0.0);
             SmartNumber kD = new SmartNumber("Arm/kD", 0.0);
         }
@@ -105,8 +102,6 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM", 4875), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
-
-        ShooterSpeeds AMPING = new ShooterSpeeds(-1000, -1);
 
         ShooterSpeeds FERRY = new ShooterSpeeds(
             new SmartNumber("Shooter/Ferry RPM", 4875), 

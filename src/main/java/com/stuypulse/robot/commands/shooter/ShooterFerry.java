@@ -8,7 +8,7 @@ public class ShooterFerry extends SequentialCommandGroup {
     
     public ShooterFerry() {
         addCommands(
-            new ShooterSetRPM(Settings.Shooter.SPEAKER),
+            new ShooterSetRPM(Settings.Shooter.FERRY),
             new ShooterWaitForTarget()
                 .andThen(new ShooterFeederAcquireForever())
         );
