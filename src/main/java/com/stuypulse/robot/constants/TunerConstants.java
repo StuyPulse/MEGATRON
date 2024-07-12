@@ -83,7 +83,7 @@ public class TunerConstants {
     private static final double kSteerFrictionVoltage = 0.25;
     private static final double kDriveFrictionVoltage = 0.25;
 
-    private static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
+    public static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
             .withCANbusName(kCANbusName)
             .withPigeon2Id(kPigeonId)
             .withPigeon2Configs(pigeonConfigs);
@@ -150,16 +150,16 @@ public class TunerConstants {
     private static final double kBackRightYPosInches = -13.5;
 
 
-    private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
+    public static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
             kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset, Units.inchesToMeters(kFrontLeftXPosInches), Units.inchesToMeters(kFrontLeftYPosInches), kInvertLeftSide)
             .withSteerMotorInverted(kFrontLeftSteerInvert);
-    private static final SwerveModuleConstants FrontRight = ConstantCreator.createModuleConstants(
+    public static final SwerveModuleConstants FrontRight = ConstantCreator.createModuleConstants(
             kFrontRightSteerMotorId, kFrontRightDriveMotorId, kFrontRightEncoderId, kFrontRightEncoderOffset, Units.inchesToMeters(kFrontRightXPosInches), Units.inchesToMeters(kFrontRightYPosInches), kInvertRightSide)
             .withSteerMotorInverted(kFrontRightSteerInvert);
-    private static final SwerveModuleConstants BackLeft = ConstantCreator.createModuleConstants(
+    public static final SwerveModuleConstants BackLeft = ConstantCreator.createModuleConstants(
             kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), kInvertLeftSide)
             .withSteerMotorInverted(kBackLeftSteerInvert);
-    private static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
+    public static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), kInvertRightSide)
             .withSteerMotorInverted(kBackRightSteerInvert);
 

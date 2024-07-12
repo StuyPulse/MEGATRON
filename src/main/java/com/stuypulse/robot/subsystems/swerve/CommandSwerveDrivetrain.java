@@ -7,12 +7,17 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.constants.TunerConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -21,6 +26,24 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * subsystem so it can be used in command-based projects easily.
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+
+    private static final CommandSwerveDrivetrain instance;
+
+    static {
+        instance = new CommandSwerveDrivetrain(
+            TunerConstants.DrivetrainConstants, 
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight, 
+            TunerConstants.BackLeft, 
+            TunerConstants.BackRight);
+    }
+
+    public static CommandSwerveDrivetrain getInstance() {
+        return instance;
+    }
+
+    private final FieldObject2d[] modules2D;
+
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
@@ -37,12 +60,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        modules2D = new FieldObject2d[Modules.length];
     }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        modules2D = new FieldObject2d[Modules.length];
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -62,6 +87,25 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
+    }
+
+    public SwerveDriveKinematics getKinematics() {
+        return m_kinematics;
+    }
+
+    public Rotation2d getGyroAngle() {
+        return Rotation2d.fromRotations(m_yawGetter.getValueAsDouble());
+    }
+
+    public SwerveModulePosition[] getModulePositions() {
+        return m_modulePositions;
+    }
+
+    public void initFieldObject(Field2d field) {
+        String[] ids = {"Front Left", "Front Right", "Back Left", "Back Right"};
+        for (int i = 0; i < Modules.length; i++) {
+            modules2D[i] = field.getObject(ids[i] + "-2d");
+        }
     }
 
     @Override

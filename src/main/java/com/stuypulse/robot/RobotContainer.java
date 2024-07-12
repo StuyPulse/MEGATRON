@@ -19,19 +19,18 @@ import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
+// import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+// import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.TunerConstants;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
-import com.stuypulse.robot.subsystems.shooter.Shooter;
+// import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
-import com.stuypulse.robot.subsystems.arm.Arm;
+// import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.odometry.Odometry;
 
@@ -55,8 +54,8 @@ public class RobotContainer {
     public final Odometry odometry = Odometry.getInstance();
     
     public final Intake intake = Intake.getInstance();
-    public final Shooter shooter = Shooter.getInstance();
-    public final Arm arm = Arm.getInstance();
+    // public final Shooter shooter = Shooter.getInstance();
+    // public final Arm arm = Arm.getInstance();
     public final CommandSwerveDrivetrain swerve = TunerConstants.DriveTrain;
 
     // Swerve Drive Stuff
@@ -84,7 +83,7 @@ public class RobotContainer {
     /****************/
 
     private void configureDefaultCommands() {
-        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        // swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         
         swerve.setDefaultCommand( 
         swerve.applyRequest(() -> drive.withVelocityX(-driver.getLeftY() * Settings.Swerve.MAX_LINEAR_VELOCITY) // Drive forward with
@@ -111,35 +110,35 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getLeftTriggerButton().whileTrue(new IntakeAcquire());
+        // driver.getLeftTriggerButton().whileTrue(new IntakeAcquire());
         
-        driver.getLeftBumper()
-            .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
-            .andThen(new ArmSetState(Arm.State.FEED)
-                .andThen(new WaitUntilCommand(intake::hasNote).alongWith(new ArmWaitUntilAtTarget()))
-                .andThen(new ShooterAcquireFromIntake())
-            )
-        );
+        // driver.getLeftBumper()
+        //     .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
+        //     .andThen(new ArmSetState(Arm.State.FEED)
+        //         .andThen(new WaitUntilCommand(intake::hasNote).alongWith(new ArmWaitUntilAtTarget()))
+        //         .andThen(new ShooterAcquireFromIntake())
+        //     )
+        // );
         
-        driver.getDPadLeft()
-            .whileTrue(new IntakeDeacquire())
-            .onFalse(new IntakeStop());
+        // driver.getDPadLeft()
+        //     .whileTrue(new IntakeDeacquire())
+        //     .onFalse(new IntakeStop());
 
-        driver.getRightTriggerButton()
-            .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                .andThen(new ShooterAutoShoot())
-            );
+        // driver.getRightTriggerButton()
+        //     .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //         .andThen(new ShooterAutoShoot())
+        //     );
         
-        driver.getRightBumper()
-            .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
+        // driver.getRightBumper()
+        //     .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         
-        driver.getTopButton().onTrue(new ArmToSpeaker());
-        driver.getLeftButton().onTrue(new ArmToAmp());
-        driver.getRightButton().onTrue(new ArmToFerry());
-        driver.getBottomButton().onTrue(new ArmToFeed());
+        // driver.getTopButton().onTrue(new ArmToSpeaker());
+        // driver.getLeftButton().onTrue(new ArmToAmp());
+        // driver.getRightButton().onTrue(new ArmToFerry());
+        // driver.getBottomButton().onTrue(new ArmToFeed());
         
-        driver.getDPadUp().onTrue(new ArmToPreClimb());
-        driver.getDPadDown().onTrue(new ArmToStow());
+        // driver.getDPadUp().onTrue(new ArmToPreClimb());
+        // driver.getDPadDown().onTrue(new ArmToStow());
 
     }
 
