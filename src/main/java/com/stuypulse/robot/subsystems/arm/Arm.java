@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems.arm;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class Arm extends SubsystemBase {
@@ -44,5 +45,6 @@ public abstract class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putString("Arm/State", getState().toString());
     }
 }

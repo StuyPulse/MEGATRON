@@ -104,6 +104,8 @@ public class ArmImpl extends Arm {
 
     @Override
     public void periodic() {
+        super.periodic();
+        
         controller.update(getTargetDegrees(), getDegrees());
         setVoltage(SLMath.clamp(controller.getOutput(), -6, 6));
 

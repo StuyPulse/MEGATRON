@@ -2,35 +2,25 @@ package com.stuypulse.robot.commands.shooter;
 
 import com.stuypulse.robot.subsystems.arm.Arm;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * automatically determines how to shoot depending on the state of the arm
  */
-public class ShooterAutoShoot extends SequentialCommandGroup {
+public class ShooterAutoShoot extends InstantCommand{
 
-    public ShooterAutoShoot() {
-        
+    @Override
+    public void initialize() {
         switch (Arm.getInstance().getState()) {
             case AMP:
-                addCommands(
-                    new ShooterScoreAmp()
-                );
-                break;
+                CommandScheduler.getInstance().schedule(new ShooterScoreAmp());
             case SPEAKER:
-                addCommands(
-                    new ShooterScoreSpeaker()
-                );
-                break;
+                CommandScheduler.getInstance().schedule(new ShooterScoreSpeaker());
             case FERRY:
-                addCommands(
-                    new ShooterFerry()
-                );
-                break;
+                CommandScheduler.getInstance().schedule(new ShooterFerry());
             default:
-                addCommands(
-                    new ShooterScoreSpeaker()
-                );
+                CommandScheduler.getInstance().schedule(new ShooterScoreSpeaker());
         }
     }
 }

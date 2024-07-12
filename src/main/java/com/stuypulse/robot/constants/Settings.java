@@ -67,6 +67,8 @@ public interface Settings {
         // feed angle is the furthest position the arm can be to still receive notes from the intake
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
 
+        double MAX_WAIT_TO_REACH_TARGET = 2.0;
+
         // characterize and manually tune
         public interface PID {
             SmartNumber kP = new SmartNumber("Arm/kP", 0.45000);
@@ -97,7 +99,7 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_SPEED = .18;
+        double FEEDER_SPEED = .22;
 
         double TARGET_RPM_THRESHOLD = 300;
         double MAX_WAIT_TO_REACH_TARGET = 1;
