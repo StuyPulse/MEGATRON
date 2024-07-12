@@ -1,5 +1,6 @@
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.arm.ArmReset;
 import com.stuypulse.robot.constants.Settings.RobotType;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robot = new RobotContainer();
+        CommandScheduler.getInstance().schedule(new ArmReset());
     }
 
     @Override

@@ -22,7 +22,8 @@ public abstract class Arm extends SubsystemBase {
         FERRY,
         FEED,
         STOW,
-        PRE_CLIMB
+        PRE_CLIMB,
+        RESETTING
     }
 
     protected State state;
