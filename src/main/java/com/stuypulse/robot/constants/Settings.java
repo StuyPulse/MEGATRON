@@ -49,12 +49,8 @@ public interface Settings {
     }
   
     public interface Arm {
-        // all constants need to be determined on robot and changed
-        SmartNumber TELEOP_MAX_VELOCITY = new SmartNumber("Arm/Teleop Max Velocity (deg)", 315);
-        SmartNumber TELEOP_MAX_ACCELERATION = new SmartNumber("Arm/Teleop Max Acceleration (deg)", 420);
-
-        SmartNumber AUTON_MAX_VELOCITY = new SmartNumber("Arm/Auton Max Velocity (deg)", 360);
-        SmartNumber AUTON_MAX_ACCELERATION = new SmartNumber("Arm/Auton Max Acceleration (deg)", 480);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 350);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 400);
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
@@ -63,23 +59,21 @@ public interface Settings {
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 60);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-
-        // feed angle is the furthest position the arm can be to still receive notes from the intake
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
 
         // characterize and manually tune
         public interface PID {
-            SmartNumber kP = new SmartNumber("Arm/kP", 0.45000);
+            SmartNumber kP = new SmartNumber("Arm/kP", 0.20000);
             SmartNumber kI = new SmartNumber("Arm/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Arm/kD", 0.0);
+            SmartNumber kD = new SmartNumber("Arm/kD", 0.005);
         }
 
         public interface Feedforward {
-            SmartNumber kS = new SmartNumber("Arm/kS", 0.44765);
-            SmartNumber kV = new SmartNumber("Arm/kV", 0.10971); 
-            SmartNumber kA = new SmartNumber("Arm/kA", 0.014801); 
+            SmartNumber kS = new SmartNumber("Arm/kS", 0.0); //0.44765
+            SmartNumber kV = new SmartNumber("Arm/kV", 0.0); //0.10971 
+            SmartNumber kA = new SmartNumber("Arm/kA", 0.0); //0.014801
 
             SmartNumber kG = new SmartNumber("Arm/kG", 0.14213); 
         }

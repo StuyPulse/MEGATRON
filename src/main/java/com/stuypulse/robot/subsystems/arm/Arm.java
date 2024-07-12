@@ -41,8 +41,6 @@ public abstract class Arm extends SubsystemBase {
 
     public abstract boolean atTarget();
 
-    public abstract void setConstraints(double maxVelocity, double maxAcceleration);
-
     @Override
     public void periodic() {
         SmartDashboard.putString("Arm/State", getState().toString());

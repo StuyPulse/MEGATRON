@@ -16,6 +16,7 @@ import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 
@@ -31,10 +32,8 @@ public class ArmImpl extends Arm {
     private final DigitalInput bumpSwitch;
     private final BStream bumpSwitchTriggered;
 
-    private final SmartNumber maxVelocity;
-    private final SmartNumber maxAcceleration;
-
     private final Controller controller;
+    private final MotionProfile motionProfile;
 
     protected ArmImpl() {
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
@@ -47,23 +46,19 @@ public class ArmImpl extends Arm {
 
         armEncoder.setPositionConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
         armEncoder.setVelocityConversionFactor(Settings.Arm.Encoder.GEAR_RATIO);
-
-        maxVelocity = new SmartNumber("Arm/Max Velocity", Settings.Arm.TELEOP_MAX_VELOCITY.doubleValue());
-        maxAcceleration = new SmartNumber("Arm/Max Acceleration", Settings.Arm.TELEOP_MAX_ACCELERATION.doubleValue());
         
         Motors.Arm.LEFT_MOTOR.configure(leftMotor);
         Motors.Arm.RIGHT_MOTOR.configure(rightMotor);
+        
+        motionProfile = new MotionProfile(
+            Settings.Arm.MAX_VELOCITY, 
+            Settings.Arm.MAX_ACCELERATION);
 
         controller = new MotorFeedforward(Settings.Arm.Feedforward.kS, Settings.Arm.Feedforward.kV, Settings.Arm.Feedforward.kA).position()
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
-            .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD));
+            .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
+            .setSetpointFilter(motionProfile);
     } 
-
-    @Override
-    public void setConstraints(double maxVelocity, double maxAcceleration) {
-        this.maxVelocity.set(maxVelocity);
-        this.maxAcceleration.set(maxAcceleration);
-    }
 
     @Override
     public boolean atTarget() {
