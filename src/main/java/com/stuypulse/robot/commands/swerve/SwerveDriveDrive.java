@@ -1,60 +1,66 @@
-// package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve;
 
-// import com.stuypulse.stuylib.input.Gamepad;
-// import com.stuypulse.stuylib.math.SLMath;
-// import com.stuypulse.stuylib.streams.numbers.IStream;
-// import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
-// import com.stuypulse.stuylib.streams.vectors.VStream;
-// import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
-// import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
-// import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.streams.numbers.IStream;
+import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.vectors.VStream;
+import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
+import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
+import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Driver.Drive;
+import com.stuypulse.robot.constants.Settings.Driver.Turn;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
-// import com.stuypulse.robot.constants.Settings.Driver.Drive;
-// import com.stuypulse.robot.constants.Settings.Driver.Turn;
-// import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import edu.wpi.first.wpilibj2.command.Command;
 
-// import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.wpilibj2.command.Command;
+public class SwerveDriveDrive extends Command {
 
-// public class SwerveDriveDrive extends Command {
+    private final CommandSwerveDrivetrain swerve;
 
-//     private final CommandSwerveDrivetrain swerve;
+    private final Gamepad driver;
 
-//     private final Gamepad driver;
+    private final SwerveRequest.FieldCentric drive;
 
-//     private final VStream speed;
-//     private final IStream turn;
+    private final VStream speed;
+    private final IStream turn;
 
-//     public SwerveDriveDrive(Gamepad driver) {
-//         swerve = CommandSwerveDrivetrain.getInstance();
+    public SwerveDriveDrive(Gamepad driver) {
+        swerve = CommandSwerveDrivetrain.getInstance();
 
-//         speed = VStream.create(driver::getLeftStick)
-//             .filtered(
-//                 new VDeadZone(Drive.DEADBAND),
-//                 x -> x.clamp(1),
-//                 x -> x.pow(Drive.POWER.get()),
-//                 x -> x.mul(Drive.MAX_TELEOP_SPEED.get()),
-//                 new VRateLimit(Drive.MAX_TELEOP_ACCEL.get()),
-//                 new VLowPassFilter(Drive.RC.get()));
+        speed = VStream.create(driver::getLeftStick)
+            .filtered(
+                new VDeadZone(Drive.DEADBAND),
+                x -> x.clamp(1),
+                x -> x.pow(Drive.POWER.get()),
+                x -> x.mul(Drive.MAX_TELEOP_SPEED.get()),
+                new VRateLimit(Drive.MAX_TELEOP_ACCEL.get()),
+                new VLowPassFilter(Drive.RC.get()));
 
-//         turn = IStream.create(driver::getRightX)
-//             .filtered(
-//                 x -> SLMath.deadband(x, Turn.DEADBAND.get()),
-//                 x -> SLMath.spow(x, Turn.POWER.get()),
-//                 x -> x * Turn.MAX_TELEOP_TURNING.get(),
-//                 new LowPassFilter(Turn.RC.get()));
+        turn = IStream.create(driver::getRightX)
+            .filtered(
+                x -> SLMath.deadband(x, Turn.DEADBAND.get()),
+                x -> SLMath.spow(x, Turn.POWER.get()),
+                x -> x * Turn.MAX_TELEOP_TURNING.get(),
+                new LowPassFilter(Turn.RC.get()));
 
-//         this.driver = driver;
+        this.driver = driver;
 
-//         addRequirements(swerve);
-//     }
+        drive = new SwerveRequest.FieldCentric()
+            .withDeadband(Settings.Swerve.MAX_LINEAR_VELOCITY * 0.1).withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * 0.1) // 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
 
-//     @Override
-//     public void execute() {
-//         if (driver.getLeftTriggerPressed()) {
-//             swerve.setChassisSpeeds(new ChassisSpeeds(speed.get().y, -speed.get().x, -turn.get()));
-//         } else {
-//             swerve.drive(speed.get(), turn.get());
-//         }
-//     }
-// }
+        addRequirements(swerve);
+    }
+
+    @Override
+    public void execute() {
+        swerve.setControl(drive.withVelocityX(speed.get().x)
+                .withVelocityY(speed.get().y)
+                .withRotationalRate(turn.get())         
+            );
+    }
+}
