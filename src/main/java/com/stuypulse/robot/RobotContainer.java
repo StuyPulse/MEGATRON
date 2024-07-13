@@ -29,7 +29,7 @@ import com.stuypulse.robot.constants.TunerConstants;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.subsystems.arm.Arm;
@@ -58,7 +58,7 @@ public class RobotContainer {
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();
     public final Arm arm = Arm.getInstance();
-    public final CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+    public final SwerveDrive swerve = SwerveDrive.getInstance();
 
     private final Telemetry logger = new Telemetry(Settings.Swerve.MAX_LINEAR_VELOCITY);
 

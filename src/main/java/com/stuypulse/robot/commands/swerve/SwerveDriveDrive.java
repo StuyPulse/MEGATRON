@@ -13,13 +13,13 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Driver.Turn;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveDriveDrive extends Command {
 
-    private final CommandSwerveDrivetrain swerve;
+    private final SwerveDrive swerve;
 
     private final Gamepad driver;
 
@@ -29,7 +29,7 @@ public class SwerveDriveDrive extends Command {
     private final IStream turn;
 
     public SwerveDriveDrive(Gamepad driver) {
-        swerve = CommandSwerveDrivetrain.getInstance();
+        swerve = SwerveDrive.getInstance();
 
         speed = VStream.create(driver::getLeftStick)
             .filtered(

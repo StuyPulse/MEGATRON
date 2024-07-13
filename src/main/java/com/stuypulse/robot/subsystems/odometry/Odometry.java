@@ -4,7 +4,7 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.LinearRegression;
 import com.stuypulse.robot.util.vision.AprilTag;
@@ -55,7 +55,7 @@ public class Odometry extends SubsystemBase {
     private Translation2d lastPose;
 
     protected Odometry() {
-        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+        SwerveDrive swerve = SwerveDrive.getInstance();
         odometry = new SwerveDriveOdometry(
             swerve.getKinematics(),
             swerve.getGyroAngle(),
@@ -117,13 +117,13 @@ public class Odometry extends SubsystemBase {
      * @param pose the pose to reset to
      */
     public void reset(Pose2d pose) {
-        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+        SwerveDrive swerve = SwerveDrive.getInstance();
         odometry.resetPosition(swerve.getGyroAngle(), swerve.getModulePositions(), pose);
         estimator.resetPosition(swerve.getGyroAngle(), swerve.getModulePositions(), pose);
     }
 
     private void updateOdometry() {
-        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+        SwerveDrive swerve = SwerveDrive.getInstance();
         odometry.update(swerve.getGyroAngle(), swerve.getModulePositions());
         estimator.update(swerve.getGyroAngle(), swerve.getModulePositions());
     }

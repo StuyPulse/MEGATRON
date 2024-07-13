@@ -6,7 +6,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Swerve.Assist;
 import com.stuypulse.robot.subsystems.odometry.Odometry;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.input.Gamepad;
@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public abstract class SwerveDriveDriveAligned extends Command {
 
-    private final CommandSwerveDrivetrain swerve;
+    private final SwerveDrive swerve;
     protected final Gamepad driver;
     protected final Odometry odometry;
     private final VStream velocity;
@@ -36,7 +36,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     public SwerveDriveDriveAligned(Gamepad driver) {
         odometry = Odometry.getInstance();
-        swerve = CommandSwerveDrivetrain.getInstance();
+        swerve = SwerveDrive.getInstance();
         this.driver = driver;
 
         velocity = VStream.create(driver::getLeftStick)
