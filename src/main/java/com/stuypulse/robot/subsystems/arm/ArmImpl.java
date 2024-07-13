@@ -122,7 +122,7 @@ public class ArmImpl extends Arm {
                 / (2 * pivotToSpeaker.getNorm() * Settings.Arm.LENGTH)
             );
 
-            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
+            return SLMath.clamp(-(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get());
         }
         catch (Exception e) {
             e.printStackTrace();

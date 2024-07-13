@@ -24,8 +24,10 @@ public interface Settings {
 
     double WIDTH = Units.inchesToMeters(32);
     double LENGTH = Units.inchesToMeters(36);
+
     double HEIGHT_TO_ARM_PIVOT = Units.inchesToMeters(23.75);
     double DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT = Units.inchesToMeters(Units.metersToInches(LENGTH) / 2 - 14.875);
+    double ANGLE_BETWEEN_ARM_AND_SHOOTER = 84; // shooter is tilted up
   
     // checks the current RIO's serial number to determine which robot is running
     public enum RobotType {
