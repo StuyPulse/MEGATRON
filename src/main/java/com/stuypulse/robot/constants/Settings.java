@@ -9,7 +9,6 @@ import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 /*-
@@ -62,7 +61,7 @@ public interface Settings {
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
-        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.05);
+        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 60);
@@ -97,7 +96,7 @@ public interface Settings {
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IRSensorTriggerTime = .03;
+        double IR_DEBOUNCE = .03;
     }
 
     public interface Shooter {
