@@ -29,7 +29,7 @@ public abstract class Arm extends SubsystemBase {
     protected State state;
 
     protected Arm() {
-        state = State.STOW;
+        state = State.RESETTING;
     }
 
     public void setState(State state) {

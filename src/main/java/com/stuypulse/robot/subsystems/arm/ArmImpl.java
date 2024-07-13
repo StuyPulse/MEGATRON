@@ -5,7 +5,6 @@ import com.revrobotics.RelativeEncoder;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Motors.Swerve;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
@@ -13,7 +12,6 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
@@ -41,6 +39,7 @@ public class ArmImpl extends Arm {
     private final MotionProfile motionProfile;
 
     protected ArmImpl() {
+        super();
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Ports.Arm.RIGHT_MOTOR, MotorType.kBrushless);
         armEncoder = new FilteredRelativeEncoder(leftMotor);
