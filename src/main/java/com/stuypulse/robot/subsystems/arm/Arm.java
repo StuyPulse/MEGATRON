@@ -33,7 +33,9 @@ public abstract class Arm extends SubsystemBase {
     }
 
     public void setState(State state) {
-        this.state = state;
+        if (this.state != State.RESETTING) {
+            this.state = state;
+        }
     }
 
     public State getState() {
