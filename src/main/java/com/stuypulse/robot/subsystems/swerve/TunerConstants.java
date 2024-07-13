@@ -137,7 +137,7 @@ public class TunerConstants {
         Settings.Swerve.FrontLeft.ABSOLUTE_OFFSET.getRotations(), 
         Settings.Swerve.FrontLeft.MODULE_OFFSET.getX(), 
         Settings.Swerve.FrontLeft.MODULE_OFFSET.getY(), 
-        Settings.Swerve.Drive.INVERTED)
+        Settings.Swerve.FrontLeft.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
     public static final SwerveModuleConstants FrontRight = ConstantCreator.createModuleConstants(
         Ports.Swerve.FrontRight.TURN, 
@@ -146,7 +146,7 @@ public class TunerConstants {
         Settings.Swerve.FrontRight.ABSOLUTE_OFFSET.getRotations(), 
         Settings.Swerve.FrontRight.MODULE_OFFSET.getX(), 
         Settings.Swerve.FrontRight.MODULE_OFFSET.getY(), 
-        Settings.Swerve.Drive.INVERTED)
+        Settings.Swerve.FrontRight.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
     public static final SwerveModuleConstants BackLeft = ConstantCreator.createModuleConstants(
         Ports.Swerve.BackLeft.TURN, 
@@ -155,7 +155,7 @@ public class TunerConstants {
         Settings.Swerve.BackLeft.ABSOLUTE_OFFSET.getRotations(), 
         Settings.Swerve.BackLeft.MODULE_OFFSET.getX(), 
         Settings.Swerve.BackLeft.MODULE_OFFSET.getY(), 
-        Settings.Swerve.Drive.INVERTED)
+        Settings.Swerve.BackLeft.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
     public static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
         Ports.Swerve.BackRight.TURN, 
@@ -164,6 +164,6 @@ public class TunerConstants {
         Settings.Swerve.BackRight.ABSOLUTE_OFFSET.getRotations(), 
         Settings.Swerve.BackRight.MODULE_OFFSET.getX(), 
         Settings.Swerve.BackRight.MODULE_OFFSET.getY(), 
-        Settings.Swerve.Drive.INVERTED)
+        Settings.Swerve.BackRight.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
 }

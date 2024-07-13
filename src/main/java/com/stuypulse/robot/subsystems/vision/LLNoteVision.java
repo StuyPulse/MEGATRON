@@ -3,7 +3,7 @@ package com.stuypulse.robot.subsystems.vision;
 import static com.stuypulse.robot.constants.Cameras.Limelight.*;
 
 import com.stuypulse.robot.constants.Settings.NoteDetection;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.vision.Limelight;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -46,7 +46,7 @@ public class LLNoteVision extends NoteVision {
             }
         }
 
-        note = Odometry.getInstance().getField().getObject("Note");
+        note = SwerveDrive.getInstance().getField().getObject("Note");
 
         notePose = VStream.create(() -> notePoseRaw)
             .filtered(new VTimedMovingAverage(0.5));
@@ -98,8 +98,6 @@ public class LLNoteVision extends NoteVision {
         Translation2d sum = new Translation2d();
 
         for (Limelight limelight : limelights) {
-            Odometry odometry = Odometry.getInstance();
-
             Translation2d limelightToNote = new Translation2d(limelight.getDistanceToNote(), Rotation2d.fromDegrees(limelight.getXAngle()));
 
             Translation2d robotToNote = limelightToNote
@@ -107,8 +105,8 @@ public class LLNoteVision extends NoteVision {
                 .rotateBy(limelight.getRobotRelativePose().getRotation().toRotation2d());
 
             Translation2d fieldToNote = robotToNote
-                .rotateBy(odometry.getPose().getRotation())
-                .plus(odometry.getPose().getTranslation());
+                .rotateBy(SwerveDrive.getInstance().getPose().getRotation())
+                .plus(SwerveDrive.getInstance().getPose().getTranslation());
 
             sum = sum.plus(fieldToNote);
         }
@@ -124,7 +122,7 @@ public class LLNoteVision extends NoteVision {
             limelights[i].updateData();
         }
 
-        note.setPose(new Pose2d(Odometry.getInstance().getPose().getTranslation().plus(getRobotRelativeNotePose()), new Rotation2d()));
+        note.setPose(new Pose2d(SwerveDrive.getInstance().getPose().getTranslation().plus(getRobotRelativeNotePose()), new Rotation2d()));
 
         if (hasNoteDataRaw()) updateNotePose();
         updateTelemetry();

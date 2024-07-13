@@ -1,7 +1,8 @@
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
+import com.stuypulse.robot.constants.Motors.Swerve;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.vision.AprilTag;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -232,7 +233,7 @@ public interface Field {
     };
 
     public static boolean robotUnderStage() {
-        Translation2d robot = Odometry.getInstance().getPose().getTranslation();
+        Translation2d robot = SwerveDrive.getInstance().getPose().getTranslation();
         
         return pointInTriangle(robot, CLOSE_STAGE_TRIANGLE) || pointInTriangle(robot, FAR_STAGE_TRIANGLE);
     }

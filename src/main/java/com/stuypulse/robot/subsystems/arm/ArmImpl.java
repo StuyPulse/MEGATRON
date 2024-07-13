@@ -3,11 +3,10 @@ package com.stuypulse.robot.subsystems.arm;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import java.util.Optional;
-
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
+import com.stuypulse.robot.constants.Motors.Swerve;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
 import com.stuypulse.stuylib.control.Controller;
@@ -99,7 +98,7 @@ public class ArmImpl extends Arm {
                 new Rotation3d()
             );
 
-            Pose2d robotPose = Odometry.getInstance().getPose();
+            Pose2d robotPose = SwerveDrive.getInstance().getPose();
 
             Pose3d armPivotPose = new Pose3d(
                 robotPose.getX() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getCos(),

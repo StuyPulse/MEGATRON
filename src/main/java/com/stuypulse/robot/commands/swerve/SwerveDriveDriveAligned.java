@@ -5,7 +5,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Swerve.Assist;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
@@ -26,7 +25,6 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     private final SwerveDrive swerve;
     protected final Gamepad driver;
-    protected final Odometry odometry;
     private final VStream velocity;
 
     private final SwerveRequest.FieldCentric drive;
@@ -35,7 +33,6 @@ public abstract class SwerveDriveDriveAligned extends Command {
     private final IStream angleVelocity;
 
     public SwerveDriveDriveAligned(Gamepad driver) {
-        odometry = Odometry.getInstance();
         swerve = SwerveDrive.getInstance();
         this.driver = driver;
 

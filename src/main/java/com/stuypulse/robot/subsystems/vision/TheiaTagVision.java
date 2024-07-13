@@ -1,7 +1,8 @@
 package com.stuypulse.robot.subsystems.vision;
 
 import com.stuypulse.robot.constants.Cameras;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
+import com.stuypulse.robot.constants.Motors.Swerve;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.vision.TheiaCamera;
 import com.stuypulse.robot.util.vision.VisionData;
 
@@ -26,7 +27,7 @@ public class TheiaTagVision extends AprilTagVision {
 
         outputs = new ArrayList<VisionData>();
 
-        robot = Odometry.getInstance().getField().getObject("Vision Pose");
+        robot = SwerveDrive.getInstance().getField().getObject("Vision Pose");
     }
 
     /**

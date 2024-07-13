@@ -34,7 +34,6 @@ import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
-import com.stuypulse.robot.subsystems.odometry.Odometry;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -53,7 +52,6 @@ public class RobotContainer {
     // Subsystem
     public final AprilTagVision vision = AprilTagVision.getInstance();
     public final NoteVision noteVision = NoteVision.getInstance();
-    public final Odometry odometry = Odometry.getInstance();
     
     public final Intake intake = Intake.getInstance();
     // public final Shooter shooter = Shooter.getInstance();

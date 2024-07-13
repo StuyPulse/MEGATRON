@@ -229,32 +229,34 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.00012288);
             SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0000259);
 
-            boolean INVERTED = true;
-
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0));
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0));
             double L4 = ((50.0 / 16.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 5.35714285714
         }
 
         public interface FrontRight {
+            boolean DRIVE_INVERTED = true;
             String ID = "Front Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
         }
 
         public interface FrontLeft {
+            boolean DRIVE_INVERTED = false;
             String ID = "Front Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
         }
 
         public interface BackLeft {
+            boolean DRIVE_INVERTED = false;
             String ID = "Back Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
         }
 
         public interface BackRight {
+            boolean DRIVE_INVERTED = true;
             String ID = "Back Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
@@ -354,6 +356,10 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
             SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
         }
+    }
+
+    public interface Vision {
+        SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
     }
 
     public interface Buzz {

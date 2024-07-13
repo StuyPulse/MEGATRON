@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,14 +16,14 @@ public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
 
     @Override
     protected Rotation2d getTargetAngle() {
-        Translation2d currentPose = odometry.getPose().getTranslation();
+        Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
         return speakerPose.minus(currentPose).getAngle();
     }
 
     @Override
     protected double getDistanceToTarget() {
-        Translation2d currentPose = odometry.getPose().getTranslation();
+        Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
         return currentPose.getDistance(speakerPose);
     }

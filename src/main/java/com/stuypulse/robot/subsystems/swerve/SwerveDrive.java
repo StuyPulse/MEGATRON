@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems.swerve;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
@@ -7,7 +8,13 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.vision.AprilTagVision;
+import com.stuypulse.robot.util.vision.VisionData;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -41,6 +48,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return instance;
     }
 
+    private final Field2d field;
     private final FieldObject2d[] modules2D;
 
     private static final double kSimLoopPeriod = 0.005; // 5 ms
@@ -60,6 +68,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         modules2D = new FieldObject2d[Modules.length];
+        field = new Field2d();
     }
     public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
@@ -67,6 +76,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         modules2D = new FieldObject2d[Modules.length];
+        field = new Field2d();
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -100,11 +110,45 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return m_modulePositions;
     }
 
-    public void initFieldObject(Field2d field) {
+    public Pose2d getPose() {
+        return m_odometry.getEstimatedPosition();
+    }
+
+    public Field2d getField() {
+        return field;
+    }
+
+    public void initFieldObject() {
         String[] ids = {"Front Left", "Front Right", "Back Left", "Back Right"};
         for (int i = 0; i < Modules.length; i++) {
             modules2D[i] = field.getObject(ids[i] + "-2d");
         }
+    }
+
+    private void updateEstimatorWithVisionData(ArrayList<VisionData> outputs) {
+        Pose2d poseSum = new Pose2d();
+        double timestampSum = 0;
+        double areaSum = 0;
+
+        for (VisionData data : outputs) {
+            Pose2d weighted = data.getPose().toPose2d().times(data.getArea());
+
+            poseSum = new Pose2d(
+                poseSum.getTranslation().plus(weighted.getTranslation()),
+                poseSum.getRotation().plus(weighted.getRotation())
+            );
+
+            areaSum += data.getArea();
+
+            timestampSum += data.getTimestamp() * data.getArea();
+        }
+
+        addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+    }
+
+    public void setVisionEnabled(boolean enabled) {
+        Settings.Vision.IS_ACTIVE.set(enabled);
     }
 
     @Override
@@ -121,6 +165,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
                                 : BlueAlliancePerspectiveRotation);
                 hasAppliedOperatorPerspective = true;
             });
+        }
+
+        // add vision data to pose estimates
+        ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
+
+        if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {
+            updateEstimatorWithVisionData(outputs);
         }
     }
 }
