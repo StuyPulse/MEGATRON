@@ -27,6 +27,8 @@ public interface Field {
 
     double NOTE_LENGTH = Units.inchesToMeters(14.0);
 
+    double SPEAKER_HEIGHT = (1.98 + 2.11) / 2; // represents the middle of the speaker
+
     public static Pose3d transformToOppositeAlliance(Pose3d pose) {
         Pose3d rotated = pose.rotateBy(new Rotation3d(0, 0, Math.PI));
 

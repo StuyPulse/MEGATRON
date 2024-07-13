@@ -24,6 +24,8 @@ public interface Settings {
 
     double WIDTH = Units.inchesToMeters(32);
     double LENGTH = Units.inchesToMeters(36);
+    double HEIGHT_TO_ARM_PIVOT = Units.inchesToMeters(23.75);
+    double DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT = Units.inchesToMeters(Units.metersToInches(LENGTH) / 2 - 14.875);
   
     // checks the current RIO's serial number to determine which robot is running
     public enum RobotType {
@@ -49,6 +51,8 @@ public interface Settings {
     }
   
     public interface Arm {
+        double LENGTH = Units.inchesToMeters(16.5);
+
         SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 350);
         SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 400);
 
@@ -141,8 +145,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = Units.inchesToMeters(32.5);
-        double LENGTH = Units.inchesToMeters(27.375);
+        double WIDTH = Units.inchesToMeters(27); // intake side 
+        double LENGTH = Units.inchesToMeters(19.25); 
         double CENTER_TO_INTAKE_FRONT = Units.inchesToMeters(13.0);
 
         double MAX_MODULE_SPEED = 4.9;
@@ -208,9 +212,8 @@ public interface Settings {
             SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.25582);
             SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.00205);
             SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.00020123);
-            double kT = 1.0 / DCMotor.getKrakenX60Foc(1).KtNMPerAmp;
 
-            SmartBoolean INVERTED = new SmartBoolean("Swerve/Turn/INVERTED", true);
+            boolean INVERTED = true;
 
             double TURN_REDUCTION = (150.0 / 7.0); // 21.4285714286
         }
@@ -233,26 +236,26 @@ public interface Settings {
 
         public interface FrontRight {
             String ID = "Front Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(38.144531);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
+            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
         }
 
         public interface FrontLeft {
             String ID = "Front Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(-173.408203);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
+            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
         }
 
         public interface BackLeft {
             String ID = "Back Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(24.609375);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
+            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
         }
 
         public interface BackRight {
             String ID = "Back Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromDegrees(38.232422);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875);
+            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
         }
     }
 

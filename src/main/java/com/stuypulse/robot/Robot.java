@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robot = new RobotContainer();
-        CommandScheduler.getInstance().schedule(new ArmReset());
+        // CommandScheduler.getInstance().schedule(new ArmReset());
     }
 
     @Override

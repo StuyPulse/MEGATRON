@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.odometry.Odometry;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
 import com.stuypulse.stuylib.control.Controller;
@@ -17,9 +18,14 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -85,7 +91,43 @@ public class ArmImpl extends Arm {
     }
 
     private double getSpeakerAngle() {
-        return 0;
+        try {
+            Pose3d speakerPose = new Pose3d(
+                Field.getAllianceSpeakerPose().getX(),
+                Field.getAllianceSpeakerPose().getY(),
+                Field.SPEAKER_HEIGHT,
+                new Rotation3d()
+            );
+
+            Pose2d robotPose = Odometry.getInstance().getPose();
+
+            Pose3d armPivotPose = new Pose3d(
+                robotPose.getX() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getCos(),
+                robotPose.getY() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getSin(),
+                Settings.HEIGHT_TO_ARM_PIVOT,
+                new Rotation3d()
+            );
+
+            Translation3d pivotToSpeaker = speakerPose.minus(armPivotPose).getTranslation();
+
+            double distanceFromShooterToSpeaker = Math.sqrt(Math.pow(pivotToSpeaker.getNorm(), 2) - Math.pow(Settings.Arm.LENGTH, 2));
+
+            double angleFromPivotToSpeaker = Math.atan(
+                Field.SPEAKER_HEIGHT - Settings.HEIGHT_TO_ARM_PIVOT
+                / pivotToSpeaker.toTranslation2d().getNorm()
+            );
+
+            double angleBetweenPivotToSpeakerAndArm = Math.acos(
+                (Math.pow(pivotToSpeaker.getNorm(), 2) + Math.pow(Settings.Arm.LENGTH, 2) - Math.pow(distanceFromShooterToSpeaker, 2))
+                / (2 * pivotToSpeaker.getNorm() * Settings.Arm.LENGTH)
+            );
+
+            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -30;
+        }
     }
 
     private double getDegrees() {
