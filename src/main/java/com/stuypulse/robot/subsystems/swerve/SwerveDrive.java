@@ -8,6 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.vision.VisionData;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -37,11 +39,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     static {
         instance = new SwerveDrive(
-            TunerConstants.DrivetrainConstants, 
-            TunerConstants.FrontLeft,
-            TunerConstants.FrontRight, 
-            TunerConstants.BackLeft, 
-            TunerConstants.BackRight);
+            SwerveDriveConstants.DrivetrainConstants,
+            SwerveDriveConstants.FrontLeft,
+            SwerveDriveConstants.FrontRight,
+            SwerveDriveConstants.BackLeft,
+            SwerveDriveConstants.BackRight
+        );
     }
 
     public static SwerveDrive getInstance() {
@@ -51,7 +54,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private final Field2d field;
     private final FieldObject2d[] modules2D;
 
-    private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
@@ -62,15 +64,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-    public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
-        super(driveTrainConstants, OdometryUpdateFrequency, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
-        modules2D = new FieldObject2d[Modules.length];
-        field = new Field2d();
-    }
-    public SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
+    protected SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         if (Utils.isSimulation()) {
             startSimThread();
@@ -95,7 +89,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             /* use the measured time delta, get battery voltage from WPILib */
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
-        m_simNotifier.startPeriodic(kSimLoopPeriod);
+        m_simNotifier.startPeriodic(0.005);
     }
 
     public SwerveDriveKinematics getKinematics() {
@@ -151,13 +145,16 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         Settings.Vision.IS_ACTIVE.set(enabled);
     }
 
-    @Override
-    public void periodic() {
-        /* Periodically try to apply the operator perspective */
-        /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
-        /* This allows us to correct the perspective in case the robot code restarts mid-match */
-        /* Otherwise, only check and apply the operator perspective if the DS is disabled */
-        /* This ensures driving behavior doesn't change until an explicit disable event occurs during testing*/
+    /**
+     * Try to apply the operator perspective 
+     * If we haven't applied the operator perspective before, then we should apply it regardless of DS state 
+     * This allows us to correct the perspective in case the robot code restarts mid-match 
+     * Otherwise, only check and apply the operator perspective if the DS is disabled
+     * This ensures driving behavior doesn't change until an explicit disable event occurs during testing
+     * 
+     * <p>Should call this periodically
+     */
+    private void applyOperatorPerspective() {
         if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent((allianceColor) -> {
                 this.setOperatorPerspectiveForward(
@@ -166,10 +163,27 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
                 hasAppliedOperatorPerspective = true;
             });
         }
+    }
 
-        // add vision data to pose estimates
+    @Override
+    public void periodic() {
+        String[] moduleIds = {"Front Left", "Front Right", "Back Left", "Back Right"};
+        for (int i = 0; i < Modules.length; i++) {
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Angle (deg)", Modules[i].getTargetState().angle.getDegrees());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle (deg)", Modules[i].getCurrentState().angle.getDegrees());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Velocity (m/s)", Modules[i].getTargetState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (m/s)", Modules[i].getCurrentState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle Error", Modules[i].getTargetState().angle.minus(Modules[i].getCurrentState().angle).getDegrees());
+
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
+        }
+
+        applyOperatorPerspective();
+
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
-
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {
             updateEstimatorWithVisionData(outputs);
         }

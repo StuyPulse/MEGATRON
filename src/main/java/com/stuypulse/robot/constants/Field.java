@@ -1,7 +1,6 @@
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.constants.Motors.Swerve;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.vision.AprilTag;
 

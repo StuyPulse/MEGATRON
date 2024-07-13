@@ -1,4 +1,4 @@
-package com.stuypulse.robot;
+package com.stuypulse.robot.subsystems.swerve;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain.SwerveDriveState;

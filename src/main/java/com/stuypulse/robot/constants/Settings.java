@@ -25,6 +25,8 @@ public interface Settings {
     double WIDTH = Units.inchesToMeters(32);
     double LENGTH = Units.inchesToMeters(36);
 
+    double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
+
     double HEIGHT_TO_ARM_PIVOT = Units.inchesToMeters(23.75);
     double DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT = Units.inchesToMeters(Units.metersToInches(LENGTH) / 2 - 14.875);
     double ANGLE_BETWEEN_ARM_AND_SHOOTER = 84; // shooter is tilted up
@@ -149,7 +151,6 @@ public interface Settings {
     public interface Swerve {
         double WIDTH = Units.inchesToMeters(27); // intake side 
         double LENGTH = Units.inchesToMeters(19.25); 
-        double CENTER_TO_INTAKE_FRONT = Units.inchesToMeters(13.0);
 
         double MAX_MODULE_SPEED = 4.9;
         double MAX_MODULE_ACCEL = 15.0;
@@ -157,9 +158,13 @@ public interface Settings {
         double MAX_LINEAR_VELOCITY = 15.0;
         double MAX_ANGULAR_VELOCITY = 12.0;
 
-        double MODULE_VELOCITY_DEADBAND = 0.05;
+        String CAN_BUS_NAME = "Default Name";
 
-        SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05); // TODO: make 0.25 and test
+        // The stator current at which the wheels start to slip;
+        double SLIP_CURRENT = 150.0;
+
+        // Theoretical free speed (m/s) at 12v applied output;
+        double SPEED_AT_12_VOLTS = 5.21;
 
         public interface Assist {
             SmartNumber ALIGN_MIN_SPEAKER_DIST = new SmartNumber("SwerveAssist/Minimum Distance to Speaker", 4); 
@@ -209,11 +214,11 @@ public interface Settings {
         public interface Turn {
             SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 7.0);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.05);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.25582);
-            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 0.00205);
-            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.00020123);
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.5);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0);
 
             boolean INVERTED = true;
 
@@ -221,13 +226,13 @@ public interface Settings {
         }
 
         public interface Drive {
-            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 0.31399);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 3.0);
             SmartNumber kI = new SmartNumber("Swerve/Drive/PID/kI", 0);
             SmartNumber kD = new SmartNumber("Swerve/Drive/PID/kD", 0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.00012288);
-            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.00012288);
-            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0000259);
+            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.0);
+            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0);
 
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0));
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0));
@@ -261,6 +266,14 @@ public interface Settings {
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875);
             Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
         }
+
+        public interface Simulation {
+            double TURN_INERTIA = 0.00001;
+            double DRIVE_INERTIA = 0.001;
+            // Simulated voltage necessary to overcome friction
+            double TURN_FRICTION_VOLTAGE = 0.25;
+            double DRIVE_FRICTION_VOLTAGE = 0.25;
+        }
     }
 
     public interface Alignment {
@@ -270,15 +283,7 @@ public interface Settings {
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
 
-        SmartNumber AMP_WALL_SETUP_DISTANCE = new SmartNumber("Alignment/Amp/Setup Pose Distance to Wall", Units.inchesToMeters(25.5));
-        SmartNumber AMP_WALL_SCORE_DISTANCE = new SmartNumber("Alignment/Amp/Score Pose Distance to Wall", Units.inchesToMeters(22.5 - 1.75));
-
-        SmartNumber TRAP_SETUP_DISTANCE = new SmartNumber("Alignment/Trap/Setup Pose Distance", Units.inchesToMeters(21.0));
-        SmartNumber TRAP_CLIMB_DISTANCE = new SmartNumber("Alignment/Trap/Climb Distance", Units.inchesToMeters(18.0));
-
         SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Trap/Into Chain Speed", 0.25);
-
-		double NOTE_TO_GOAL_TIME = 0.4;
 
         double MAX_ALIGNMENT_SPEED = 2.5;
 
