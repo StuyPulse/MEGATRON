@@ -44,16 +44,6 @@ public interface Cameras {
         )
     };
 
-    public CameraConfig ARM_CAMERA = new CameraConfig(
-        "samera3", 
-        new Pose3d(
-            new Translation3d(),
-            new Rotation3d()
-        ), 
-        "102", 
-        3002
-    );
-
     /*** LINEAR REGRESSION ***/
 
     // XY Standard Deviation vs Distance
