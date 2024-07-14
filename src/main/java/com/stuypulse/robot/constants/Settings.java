@@ -221,7 +221,7 @@ public interface Settings {
 
             boolean INVERTED = true;
 
-            double TURN_REDUCTION = (150.0 / 7.0); // 21.4285714286
+            double GEAR_RATIO = (150.0 / 7.0); // 21.4285714286
         }
 
         public interface Drive {
@@ -233,8 +233,8 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.0);
             SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0);
 
-            double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0));
-            double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0));
+            double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
+            double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
             double L4 = ((50.0 / 16.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 5.35714285714
         }
 

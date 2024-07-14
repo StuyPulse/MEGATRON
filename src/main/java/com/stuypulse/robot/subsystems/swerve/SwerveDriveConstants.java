@@ -48,9 +48,9 @@ public class SwerveDriveConstants {
             .withPigeon2Configs(pigeonConfigs);
 
     private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
-            .withDriveMotorGearRatio(6.122448979591837)
-            .withSteerMotorGearRatio(21.428571428571427)
-            .withWheelRadius(2)
+            .withDriveMotorGearRatio(Settings.Swerve.Drive.L4)
+            .withSteerMotorGearRatio(Settings.Swerve.Turn.GEAR_RATIO)
+            .withWheelRadius(Settings.Swerve.Encoder.Drive.WHEEL_DIAMETER / 2)
             .withSlipCurrent(Settings.Swerve.SLIP_CURRENT)
             .withSteerMotorGains(steerGains)
             .withDriveMotorGains(driveGains)
