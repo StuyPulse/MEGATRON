@@ -115,7 +115,9 @@ public interface Settings {
             new SmartNumber("Shooter/Ferry RPM differential", 500)
         );
 
-        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.01);
+        // Different falling debounce is used to detect note shooting;
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.5);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Note Shot Debounce", 0.01);
 
         // left runs faster than right
         public interface LEFT {

@@ -56,15 +56,10 @@ public class ShooterImpl extends Shooter {
         rightController.setI(Settings.Shooter.RIGHT.PID.kI);
         rightController.setD(Settings.Shooter.RIGHT.PID.kD);
         rightController.setFF(Settings.Shooter.RIGHT.FF.kV);
-
-        // leftController = new MotorFeedforward(Settings.Shooter.LEFT.FF.kS, Settings.Shooter.LEFT.FF.kV, Settings.Shooter.LEFT.FF.kA).velocity()
-        //     .add(new PIDController(Settings.Shooter.LEFT.PID.kP, Settings.Shooter.LEFT.PID.kI, Settings.Shooter.LEFT.PID.kD)
-        //         .setIntegratorFilter(1000, 0.5 / Settings.Shooter.LEFT.PID.kI));
-        // rightController = new MotorFeedforward(Settings.Shooter.RIGHT.FF.kS, Settings.Shooter.RIGHT.FF.kV, Settings.Shooter.RIGHT.FF.kA).velocity()
-        //     .add(new PIDController(Settings.Shooter.RIGHT.PID.kP, Settings.Shooter.RIGHT.PID.kI, Settings.Shooter.RIGHT.PID.kD)
-        //         .setIntegratorFilter(1000, 0.5 / Settings.Shooter.RIGHT.PID.kI));
         
-        hasNote = BStream.create(feederBeam).not().filtered(new BDebounce.Both(Settings.Shooter.HAS_NOTE_DEBOUNCE));
+        hasNote = BStream.create(feederBeam).not()
+            .filtered(new BDebounce.Falling(Settings.Shooter.HAS_NOTE_FALLING_DEBOUNCE))
+            .filtered(new BDebounce.Rising(Settings.Shooter.HAS_NOTE_RISING_DEBOUNCE));
 
         Motors.disableStatusFrames(leftMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
         Motors.disableStatusFrames(rightMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
