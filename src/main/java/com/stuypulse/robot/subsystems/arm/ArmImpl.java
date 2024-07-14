@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
@@ -140,6 +141,12 @@ public class ArmImpl extends Arm {
     @Override
     public void periodic() {
         super.periodic();
+
+        if (state != State.RESETTING && state != State.PRE_CLIMB && state != State.STOW) {
+            if (!Shooter.getInstance().hasNote()) {
+                setState(State.FEED);
+            }
+        }
         
         if (state == State.RESETTING) {
             setVoltage(-2);
