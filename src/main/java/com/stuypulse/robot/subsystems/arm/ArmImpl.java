@@ -141,17 +141,16 @@ public class ArmImpl extends Arm {
     @Override
     public void periodic() {
         super.periodic();
-
-        if (state != State.RESETTING && state != State.PRE_CLIMB && state != State.STOW) {
-            if (!Shooter.getInstance().hasNote()) {
-                setState(State.FEED);
-            }
-        }
         
         if (state == State.RESETTING) {
             setVoltage(-2);
         }
         else {
+            if (state != State.PRE_CLIMB && state != State.STOW) {
+                if (!Shooter.getInstance().hasNote()) {
+                    setState(State.FEED);
+                }
+            }
             controller.update(getTargetDegrees(), getDegrees());
             setVoltage(controller.getOutput());
         }

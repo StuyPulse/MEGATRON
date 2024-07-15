@@ -1,6 +1,5 @@
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.arm.ArmReset;
 import com.stuypulse.robot.constants.Settings.RobotType;
 
 import edu.wpi.first.wpilibj.DriverStation;

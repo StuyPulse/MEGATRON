@@ -5,9 +5,6 @@ public class ShooterSpeeds {
     private final Number shooterRPM; //the average RPM of left and right shooters
     private final Number shooterDifferential;
 
-    private double leftRPM;
-    private double rightRPM;
-
     public ShooterSpeeds() {
         this(0, 0);
     }

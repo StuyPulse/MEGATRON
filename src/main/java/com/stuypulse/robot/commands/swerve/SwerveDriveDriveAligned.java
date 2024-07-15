@@ -75,4 +75,9 @@ public abstract class SwerveDriveDriveAligned extends Command {
                 .withRotationalRate(angleVelocity.get())         
             );
     }
+
+    @Override
+    public boolean isFinished() {
+        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DEADBAND.getAsDouble();
+    }
 }

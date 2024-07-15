@@ -27,9 +27,4 @@ public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
         return currentPose.getDistance(speakerPose);
     }
-
-    @Override
-    public boolean isFinished() {
-        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DEADBAND.getAsDouble();
-    }
 }
