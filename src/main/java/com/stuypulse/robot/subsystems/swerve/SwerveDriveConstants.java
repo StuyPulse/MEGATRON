@@ -13,8 +13,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackTy
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 
-import edu.wpi.first.math.util.Units;
-
 public class SwerveDriveConstants {
 
     private static final Slot0Configs steerGains = new Slot0Configs()

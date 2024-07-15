@@ -49,9 +49,7 @@ public class SwerveDriveDrive extends Command {
 
         this.driver = driver;
 
-        drive = new SwerveRequest.FieldCentric()
-            .withDeadband(Settings.Swerve.MAX_LINEAR_VELOCITY * 0.1).withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * 0.1) // 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+        drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
 
         addRequirements(swerve);
     }

@@ -46,7 +46,8 @@ public abstract class SwerveDriveDriveAligned extends Command {
                 new VLowPassFilter(Drive.RC.get()));
         
         drive = new SwerveRequest.FieldCentric()
-            .withDeadband(Settings.Swerve.MAX_LINEAR_VELOCITY * 0.1).withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * 0.1) // 10% deadband
+            .withDeadband(Settings.Swerve.MAX_LINEAR_VELOCITY * Settings.Driver.Drive.DEADBAND.get())
+            .withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * Settings.Driver.Turn.DEADBAND.get())
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
 
         controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kP)
@@ -70,9 +71,15 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     @Override
     public void execute() {
-        swerve.setControl(drive.withVelocityX(velocity.get().x)
+        swerve.setControl(
+            drive.withVelocityX(velocity.get().x)
                 .withVelocityY(velocity.get().y)
-                .withRotationalRate(angleVelocity.get())         
+                .withRotationalRate(
+                    angleVelocity.get() 
+                    + controller.update(
+                        Angle.fromRotation2d(getTargetAngle()), 
+                        Angle.fromRotation2d(swerve.getPose().getRotation()))
+                )         
             );
     }
 

@@ -59,7 +59,7 @@ public class RobotContainer {
     public final Arm arm = Arm.getInstance();
     public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-    private final Telemetry logger = new Telemetry(Settings.Swerve.MAX_LINEAR_VELOCITY);
+    private final Telemetry logger = new Telemetry();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -70,6 +70,11 @@ public class RobotContainer {
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
+
+        if (Utils.isSimulation()) {
+            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+        }
+        swerve.registerTelemetry(logger::telemeterize);
     }
 
     /****************/
@@ -78,11 +83,6 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-
-        if (Utils.isSimulation()) {
-            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
-        }
-        swerve.registerTelemetry(logger::telemeterize);
     }
 
     /***************/

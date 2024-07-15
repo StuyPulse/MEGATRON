@@ -14,6 +14,7 @@ public class SwerveDriveAlignedFerry extends SwerveDriveDriveAligned {
         super(driver);
     }
 
+    // returns pose of close amp corner
     private Translation2d getTargetPose() {
         Translation2d targetPose = Robot.isBlue()
             ? new Translation2d(0.0, Field.WIDTH - 1.5)
@@ -22,7 +23,6 @@ public class SwerveDriveAlignedFerry extends SwerveDriveDriveAligned {
         return targetPose;
     }
 
-    // returns pose of close amp corner
     @Override
     protected Rotation2d getTargetAngle() {
         return SwerveDrive.getInstance().getPose().getTranslation().minus(getTargetPose()).getAngle();
