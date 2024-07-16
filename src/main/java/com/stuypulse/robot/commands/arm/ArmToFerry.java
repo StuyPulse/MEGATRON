@@ -1,9 +1,10 @@
 package com.stuypulse.robot.commands.arm;
 
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.arm.Arm;
 
-public class ArmToFerry extends ArmToAngle{
+public class ArmToFerry extends ArmSetState{
+
     public ArmToFerry(){
-        super(Settings.Arm.FERRY_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Arm.State.FERRY);
     }
 }

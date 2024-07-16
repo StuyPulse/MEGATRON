@@ -1,9 +1,10 @@
 package com.stuypulse.robot.commands.arm;
 
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.arm.Arm;
 
-public class ArmToAmp extends ArmToAngle{
+public class ArmToAmp extends ArmSetState{
+
     public ArmToAmp(){
-        super(Settings.Arm.AMP_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Arm.State.AMP);
     }
 }

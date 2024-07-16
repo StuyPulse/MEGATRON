@@ -1,11 +1,10 @@
 package com.stuypulse.robot.commands.arm;
 
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.arm.Arm;
 
-/* moves the arm to the furthest possible position from stow
-such that it can still receive notes from the intake*/
-public class ArmToFeed extends ArmToAngle{
+public class ArmToFeed extends ArmSetState{
+
     public ArmToFeed(){
-        super(Settings.Arm.FEED_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Arm.State.FEED);
     }
 }

@@ -1,9 +1,10 @@
 package com.stuypulse.robot.commands.arm;
 
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.arm.Arm;
 
-public class ArmToStow extends ArmToAngle{
+public class ArmToStow extends ArmSetState{
+
     public ArmToStow(){
-        super(Settings.Arm.MIN_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Arm.State.STOW);
     }
 }

@@ -34,7 +34,7 @@ public class IntakeImpl extends Intake {
         IRSensor = new DigitalInput(Ports.Intake.IRSensor);
 
         hasNote = BStream.create(IRSensor).not()
-            .filtered(new BDebounce.Both(Settings.Intake.IRSensorTriggerTime));
+            .filtered(new BDebounce.Both(Settings.Intake.IR_DEBOUNCE));
     }
 
     @Override

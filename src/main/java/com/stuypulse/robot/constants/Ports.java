@@ -1,8 +1,3 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
 package com.stuypulse.robot.constants;
 
 /** This file contains the different ports of motors, solenoids and sensors */
@@ -24,14 +19,14 @@ public interface Ports {
         int FUNNEL_RIGHT = 22;
         int INTAKE_MOTOR = 20;
 
-        int IRSensor = 0; // TO DO: FIND IR SENSOR PORT
+        int IRSensor = 3;
     }
 
     public interface Shooter {
         int LEFT_MOTOR = 41;
         int RIGHT_MOTOR = 42;
         int FEEDER_MOTOR = 40;
-        int RECIEVER_IR = 2;
+        int RECIEVER_IR = 1;
     }
     
     public interface Gyro {

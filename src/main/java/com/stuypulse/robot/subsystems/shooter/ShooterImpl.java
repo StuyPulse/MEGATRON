@@ -3,14 +3,13 @@ package com.stuypulse.robot.subsystems.shooter;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Motors.StatusFrame;
-import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
-import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -27,8 +26,8 @@ public class ShooterImpl extends Shooter {
     private final RelativeEncoder rightEncoder;
     private final DigitalInput feederBeam;
 
-    private final Controller leftController;
-    private final Controller rightController;
+    private final SparkPIDController leftController;
+    private final SparkPIDController rightController;
 
     private final BStream hasNote;
 
@@ -45,14 +44,22 @@ public class ShooterImpl extends Shooter {
         leftEncoder.setVelocityConversionFactor(1.2);
         rightEncoder.setVelocityConversionFactor(1.0);
         
-        leftController = new MotorFeedforward(Settings.Shooter.LEFT.FF.kS, Settings.Shooter.LEFT.FF.kV, Settings.Shooter.LEFT.FF.kA).velocity()
-            .add(new PIDController(Settings.Shooter.LEFT.PID.kP, Settings.Shooter.LEFT.PID.kI, Settings.Shooter.LEFT.PID.kD)
-                .setIntegratorFilter(1000, 0.5 / Settings.Shooter.LEFT.PID.kI));
-        rightController = new MotorFeedforward(Settings.Shooter.RIGHT.FF.kS, Settings.Shooter.RIGHT.FF.kV, Settings.Shooter.RIGHT.FF.kA).velocity()
-            .add(new PIDController(Settings.Shooter.RIGHT.PID.kP, Settings.Shooter.RIGHT.PID.kI, Settings.Shooter.RIGHT.PID.kD)
-                .setIntegratorFilter(1000, 0.5 / Settings.Shooter.RIGHT.PID.kI));
+        leftController = leftMotor.getPIDController();
+        rightController = rightMotor.getPIDController();
+
+        leftController.setP(Settings.Shooter.LEFT.PID.kP);
+        leftController.setI(Settings.Shooter.LEFT.PID.kI);
+        leftController.setD(Settings.Shooter.LEFT.PID.kD);
+        leftController.setFF(Settings.Shooter.LEFT.FF.kV);
+
+        rightController.setP(Settings.Shooter.RIGHT.PID.kP);
+        rightController.setI(Settings.Shooter.RIGHT.PID.kI);
+        rightController.setD(Settings.Shooter.RIGHT.PID.kD);
+        rightController.setFF(Settings.Shooter.RIGHT.FF.kV);
         
-        hasNote = BStream.create(feederBeam).filtered(new BDebounce.Both(Settings.Shooter.HAS_NOTE_DEBOUNCE));
+        hasNote = BStream.create(feederBeam).not()
+            .filtered(new BDebounce.Falling(Settings.Shooter.HAS_NOTE_FALLING_DEBOUNCE))
+            .filtered(new BDebounce.Rising(Settings.Shooter.HAS_NOTE_RISING_DEBOUNCE));
 
         Motors.disableStatusFrames(leftMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
         Motors.disableStatusFrames(rightMotor, StatusFrame.ANALOG_SENSOR, StatusFrame.ALTERNATE_ENCODER, StatusFrame.ABS_ENCODER_VELOCITY);
@@ -63,14 +70,26 @@ public class ShooterImpl extends Shooter {
         Motors.Shooter.FEEDER_MOTOR.configure(feederMotor);   
     }
 
-    @Override
-    public double getLeftShooterRPM() {
+    private double getLeftShooterRPM() {
         return leftEncoder.getVelocity();
     }
 
-    @Override
-    public double getRightShooterRPM() {
+    private double getRightShooterRPM() {
         return rightEncoder.getVelocity();
+    }
+
+    @Override
+    public boolean atTargetSpeeds() {
+        return Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
+            && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+    }
+
+    private void setLeftShooterRPM(double rpm) {
+        leftController.setReference(rpm, ControlType.kVelocity);
+    }
+    
+    private void setRightShooterRPM(double rpm) {
+        rightController.setReference(rpm, ControlType.kVelocity);
     }
 
     @Override
@@ -90,7 +109,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public boolean hasNote() {
-        return feederBeam.get();
+        return hasNote.get();
     }
 
     @Override
@@ -102,29 +121,24 @@ public class ShooterImpl extends Shooter {
     public void periodic () {
         super.periodic();
 
-        leftController.update(getLeftTargetRPM(), getLeftShooterRPM());
-        rightController.update(getRightTargetRPM(), getRightShooterRPM());
+        setLeftShooterRPM(getLeftTargetRPM());
+        setRightShooterRPM(getRightTargetRPM());
 
-        if (getLeftTargetRPM() == 0 && getRightTargetRPM() == 0) {
+        if (getLeftTargetRPM() == 0) {
             leftMotor.stopMotor();
-            rightMotor.stopMotor();
-            
-            SmartDashboard.putNumber("Shooter/Left Requested Voltage", 0);
-            SmartDashboard.putNumber("Shooter/Right Requested Voltage", 0);
-        
-        } else {
-            leftMotor.setVoltage(leftController.getOutput());
-            rightMotor.setVoltage(rightController.getOutput());
-
-            SmartDashboard.putNumber("Shooter/Left Requested Voltage", leftController.getOutput());
-            SmartDashboard.putNumber("Shooter/Right Requested Voltage", rightController.getOutput());
         }
+
+        if (getRightTargetRPM() == 0) {
+            rightMotor.stopMotor();
+        }
+
+        SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
+        SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());
+
+        SmartDashboard.putBoolean("Shooter/Has Note", hasNote());
 
         SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
         SmartDashboard.putNumber("Shooter/Right RPM", getRightShooterRPM());
-
-        SmartDashboard.putNumber("Shooter/Left Error", leftController.getError());
-        SmartDashboard.putNumber("Shooter/Right Error", rightController.getError());
 
         SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage() * leftMotor.getAppliedOutput());
         SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage() * rightMotor.getAppliedOutput());

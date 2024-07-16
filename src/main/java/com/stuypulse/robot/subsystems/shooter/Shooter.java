@@ -22,26 +22,21 @@ public abstract class Shooter extends SubsystemBase {
     private final SmartNumber rightTargetRPM;
 
     public Shooter() {
-        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", 0);
-        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", 0);
+        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", Settings.Shooter.SPEAKER.getLeftRPM());
+        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", Settings.Shooter.SPEAKER.getRightRPM());
     }
 
-    public final double getLeftTargetRPM() {
-        return leftTargetRPM.get();
-    }
-
-    public final double getRightTargetRPM() {
-        return rightTargetRPM.get();
-    }
-
-    public final void setTargetSpeeds(ShooterSpeeds speeds) {
+    public void setTargetSpeeds(ShooterSpeeds speeds) {
         this.leftTargetRPM.set(speeds.getLeftRPM());
         this.rightTargetRPM.set(speeds.getRightRPM());
     }
 
-    public final boolean atTargetSpeeds() {
-        return Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
-            && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+    public double getLeftTargetRPM() {
+        return leftTargetRPM.get();
+    }
+
+    public double getRightTargetRPM() {
+        return rightTargetRPM.get();
     }
 
     public void stop() {
@@ -50,8 +45,7 @@ public abstract class Shooter extends SubsystemBase {
         rightTargetRPM.set(0);
     }
 
-    public abstract double getLeftShooterRPM();
-    public abstract double getRightShooterRPM();
+    public abstract boolean atTargetSpeeds();
 
     public abstract void runFeederForwards();
     public abstract void runFeederBackwards();

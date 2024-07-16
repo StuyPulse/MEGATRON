@@ -1,9 +1,10 @@
 package com.stuypulse.robot.commands.arm;
 
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.arm.Arm;
 
-public class ArmToSpeaker extends ArmToAngle{
+public class ArmToSpeaker extends ArmSetState{
+
     public ArmToSpeaker(){
-        super(Settings.Arm.SPEAKER_ANGLE.doubleValue(), Settings.Arm.MAX_ANGLE_ERROR.doubleValue());
+        super(Arm.State.SPEAKER);
     }
 }
