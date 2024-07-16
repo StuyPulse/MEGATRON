@@ -141,6 +141,13 @@ public class ArmImpl extends Arm {
     @Override
     public void periodic() {
         super.periodic();
+
+        if (bumpSwitchTriggered.get()) {
+            armEncoder.setPosition(Settings.Arm.MIN_ANGLE.get()/360);
+            if (state == State.RESETTING) {
+                state = State.FEED;
+            }
+        }
         
         if (state == State.RESETTING) {
             setVoltage(-2);
@@ -153,11 +160,6 @@ public class ArmImpl extends Arm {
             }
             controller.update(getTargetDegrees(), getDegrees());
             setVoltage(controller.getOutput());
-        }
-
-        if (bumpSwitchTriggered.get()) {
-            armEncoder.setPosition(Settings.Arm.MIN_ANGLE.get()/360);
-            state = State.STOW;
         }
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
