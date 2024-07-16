@@ -66,7 +66,7 @@ public interface Settings {
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 60);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 15);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 2);
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
 
@@ -100,7 +100,7 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_SPEED = 0.22;
+        double FEEDER_SPEED = 0.25;
 
         double TARGET_RPM_THRESHOLD = 300;
         double MAX_WAIT_TO_REACH_TARGET = 2;
@@ -116,8 +116,8 @@ public interface Settings {
         );
 
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Debounce", 0.4);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Note Shot Debounce", 0.005);
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 1.0);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.01);
 
         // left runs faster than right
         public interface LEFT {

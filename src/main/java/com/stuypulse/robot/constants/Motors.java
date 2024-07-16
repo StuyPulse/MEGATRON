@@ -46,7 +46,7 @@ public interface Motors {
     public interface Intake {
         CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kBrake, 500, 0.25);
         CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 500, 0.25);
-        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kBrake, 500, 0.25);
+        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25);
     }
 
     public interface Shooter {

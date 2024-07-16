@@ -124,9 +124,13 @@ public class RobotContainer {
         driver.getRightBumper()
             .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         
-        driver.getTopButton().onTrue(new ArmToSpeaker());
+        driver.getTopButton()
+            .onTrue(new ArmToSpeaker());
+            // .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         driver.getLeftButton().onTrue(new ArmToAmp());
-        driver.getRightButton().onTrue(new ArmToFerry());
+        driver.getRightButton()
+            .onTrue(new ArmToFerry());
+            // .onTrue(new SwerveDriveAlignedFerry(driver));
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());
