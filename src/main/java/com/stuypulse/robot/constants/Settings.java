@@ -61,12 +61,15 @@ public interface Settings {
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
-        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
+
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 60);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 2);
+        SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
+
+        SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
 

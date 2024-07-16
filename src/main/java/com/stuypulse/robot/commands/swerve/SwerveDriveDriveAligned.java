@@ -69,6 +69,10 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     protected abstract double getDistanceToTarget();
 
+    protected double getAngleError() {
+        return controller.getError().getRotation2d().getDegrees();
+    }
+
     @Override
     public void execute() {
         swerve.setControl(
