@@ -15,7 +15,10 @@ import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveAlignedFerryAndShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveAlignedSpeakerAndShoot;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedFerry;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
@@ -37,6 +40,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class RobotContainer {
@@ -88,10 +92,10 @@ public class RobotContainer {
         driver.getRightMenuButton().whileTrue(new SwerveDriveXMode());
         driver.getLeftMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
 
-        // driver.getLeftTriggerButton()
-        //     .whileTrue(new IntakeAcquire()
-        //         .andThen(new BuzzController(driver))
-        //     );
+        driver.getLeftTriggerButton()
+            .whileTrue(new IntakeAcquire()
+                .andThen(new BuzzController(driver))
+            );
         
         // driver.getLeftBumper()
         //     .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
@@ -102,15 +106,15 @@ public class RobotContainer {
         //     )
         // );
 
-        driver.getLeftTriggerButton()
-            .whileTrue(new ArmToFeed().onlyIf(() -> !shooter.hasNote()))
-            .whileTrue(new IntakeAcquire()
-                .andThen(new BuzzController(driver))
-                .andThen(new WaitUntilCommand(() -> Arm.getInstance().getState() == Arm.State.FEED))
-                .andThen(new ArmWaitUntilAtTarget())
-                .andThen(new ShooterAcquireFromIntake().onlyIf(() -> !shooter.hasNote()))
-                .andThen(new BuzzController(driver)))
-            .onFalse(new IntakeStop());
+        // driver.getLeftTriggerButton()
+        //     .whileTrue(new ArmToFeed().onlyIf(() -> !shooter.hasNote()))
+        //     .whileTrue(new IntakeAcquire()
+        //         .andThen(new BuzzController(driver))
+        //         .andThen(new WaitUntilCommand(() -> Arm.getInstance().getState() == Arm.State.FEED))
+        //         .andThen(new ArmWaitUntilAtTarget())
+        //         .andThen(new ShooterAcquireFromIntake().onlyIf(() -> !shooter.hasNote()))
+        //         .andThen(new BuzzController(driver)))
+        //     .onFalse(new IntakeStop());
         
         driver.getLeftBumper()
             .whileTrue(new IntakeDeacquire())

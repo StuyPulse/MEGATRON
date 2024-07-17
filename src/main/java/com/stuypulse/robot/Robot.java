@@ -1,6 +1,11 @@
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.BuzzController;
+import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.constants.Settings.RobotType;
+import com.stuypulse.robot.subsystems.arm.Arm;
+import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -32,6 +37,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        if (Arm.getInstance().getState() == Arm.State.FEED 
+            && Arm.getInstance().atTarget() 
+            && !Shooter.getInstance().hasNote()
+            && Intake.getInstance().hasNote()
+        ) {
+            CommandScheduler.getInstance().schedule(new ShooterAcquireFromIntake()
+                                                    .andThen(new BuzzController(robot.driver)));
+        }
+        
         CommandScheduler.getInstance().run();
     }
 
