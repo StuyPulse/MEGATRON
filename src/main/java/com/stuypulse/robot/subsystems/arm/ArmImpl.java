@@ -159,7 +159,12 @@ public class ArmImpl extends Arm {
                 }
             }
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            setVoltage(controller.getOutput());
+            if (state == State.FEED && atTarget()) {
+                setVoltage(-1);
+            }
+            else {
+                setVoltage(controller.getOutput());
+            }
         }
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
