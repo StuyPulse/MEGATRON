@@ -40,16 +40,17 @@ public abstract class Shooter extends SubsystemBase {
     }
 
     public void stop() {
-        stopFeeder();
+        feederStop();
         leftTargetRPM.set(0);
         rightTargetRPM.set(0);
     }
 
     public abstract boolean atTargetSpeeds();
 
-    public abstract void runFeederForwards();
-    public abstract void runFeederBackwards();
-    public abstract void stopFeeder();
+    public abstract void feederIntake();
+    public abstract void feederDeacquire();
+    public abstract void feederShoot();
+    public abstract void feederStop();
     
     public abstract boolean hasNote();
 

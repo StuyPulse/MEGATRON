@@ -42,7 +42,7 @@ public class SwerveDriveAlignedFerryAndShoot extends SwerveDriveDriveAlignedSpea
     public void execute() {
         super.execute();
         if (canShoot.get()) {
-            shooter.runFeederForwards();
+            shooter.feederShoot();
         }
     }
 

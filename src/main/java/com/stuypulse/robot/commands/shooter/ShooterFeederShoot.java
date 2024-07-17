@@ -4,18 +4,17 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class ShooterFeederAcquireForever extends InstantCommand {
+public class ShooterFeederShoot extends InstantCommand {
 
     private final Shooter shooter;
 
-    public ShooterFeederAcquireForever() {
+    public ShooterFeederShoot() {
         shooter = Shooter.getInstance();
         addRequirements(shooter);
     }
 
     @Override
     public void initialize() {
-        shooter.runFeederForwards();
+        shooter.feederShoot();
     }
-
 }

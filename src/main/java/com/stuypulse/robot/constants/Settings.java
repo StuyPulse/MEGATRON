@@ -61,12 +61,12 @@ public interface Settings {
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
-        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 1);
+        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -60);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 0);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); //0
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -94,7 +94,7 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.82;
+        double INTAKE_ACQUIRE_SPEED = 0.75;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -102,7 +102,9 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_SPEED = 0.23;
+        double FEEDER_INTAKE_SPEED = 0.24;
+        double FEEDER_DEAQUIRE_SPEED = 0.5;
+        double FEEDER_SHOOT_SPEED = 1.0;
 
         double TARGET_RPM_THRESHOLD = 300;
         double MAX_WAIT_TO_REACH_TARGET = 2;

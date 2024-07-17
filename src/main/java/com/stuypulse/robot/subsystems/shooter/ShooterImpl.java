@@ -93,17 +93,22 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public void runFeederForwards() {
-        feederMotor.set(+Settings.Shooter.FEEDER_SPEED);
+    public void feederIntake() {
+        feederMotor.set(+Settings.Shooter.FEEDER_INTAKE_SPEED);
     }
 
     @Override
-    public void runFeederBackwards() {
-        feederMotor.set(-Settings.Shooter.FEEDER_SPEED);
+    public void feederDeacquire() {
+        feederMotor.set(-Settings.Shooter.FEEDER_DEAQUIRE_SPEED);
     }
 
     @Override
-    public void stopFeeder() {
+    public void feederShoot() {
+        feederMotor.set(Settings.Shooter.FEEDER_SHOOT_SPEED);
+    }
+
+    @Override
+    public void feederStop() {
         feederMotor.stopMotor();
     }
 

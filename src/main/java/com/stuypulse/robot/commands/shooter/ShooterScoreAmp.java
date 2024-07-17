@@ -3,18 +3,17 @@ package com.stuypulse.robot.commands.shooter;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class ShooterScoreAmp extends InstantCommand{
-
-    private final Shooter shooter;
+public class ShooterScoreAmp extends SequentialCommandGroup {
 
     public ShooterScoreAmp() {
-        shooter = Shooter.getInstance();
-        addRequirements(shooter);
-    }
-
-    @Override
-    public void initialize() {
-        shooter.runFeederBackwards();
+        addCommands(
+            new ShooterFeederDeacquire(),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
+            new WaitUntilCommand(1),
+            new InstantCommand(() -> Shooter.getInstance().stopFeeder())
+        );
     }
 }

@@ -42,7 +42,7 @@ public class SwerveDriveAlignedSpeakerAndShoot extends SwerveDriveDriveAlignedSp
     public void execute() {
         super.execute();
         if (canShoot.get()) {
-            shooter.runFeederForwards();
+            shooter.feederShoot();
         }
     }
 

@@ -19,7 +19,7 @@ public class ShooterAcquireFromIntake extends Command {
     @Override
     public void initialize() {
         intake.acquire();
-        shooter.runFeederForwards();
+        shooter.feederIntake();
     }
 
     @Override
