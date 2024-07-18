@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 
-public class SwerveDriveAlignedFerry extends SwerveDriveDriveAligned {
+public class SwerveDriveDriveAlignedFerry extends SwerveDriveDriveAligned {
 
-    public SwerveDriveAlignedFerry(Gamepad driver) {
+    public SwerveDriveDriveAlignedFerry(Gamepad driver) {
         super(driver);
     }
 

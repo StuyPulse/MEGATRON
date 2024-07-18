@@ -15,12 +15,16 @@ public class ShooterAutoShoot extends InstantCommand{
         switch (Arm.getInstance().getState()) {
             case AMP:
                 CommandScheduler.getInstance().schedule(new ShooterScoreAmp());
+                break;
             case SPEAKER:
                 CommandScheduler.getInstance().schedule(new ShooterScoreSpeaker());
+                break;
             case FERRY:
                 CommandScheduler.getInstance().schedule(new ShooterFerry());
+                break;
             default:
                 CommandScheduler.getInstance().schedule(new ShooterScoreSpeaker());
+                break;
         }
     }
 }

@@ -22,6 +22,11 @@ public interface Cameras {
         int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
     }
 
+    //192.168.1.83:5802
+    //192.168.1.71.5802
+    
+    //192.168.1.ip.defaultport
+
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
         // TO DO: find positions
         new CameraConfig(

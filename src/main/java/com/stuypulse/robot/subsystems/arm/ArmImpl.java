@@ -125,7 +125,7 @@ public class ArmImpl extends Arm {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return -30;
+            return Settings.Arm.PODIUM_SHOT_ANGLE.get();
         }
     }
 
@@ -158,7 +158,8 @@ public class ArmImpl extends Arm {
                     setState(State.FEED);
                 }
             }
-            controller.update(getTargetDegrees(), getDegrees());
+
+            controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
             setVoltage(controller.getOutput());
         }
 
