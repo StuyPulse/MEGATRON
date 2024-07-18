@@ -56,8 +56,8 @@ public class SwerveDriveDrive extends Command {
 
     @Override
     public void execute() {
-        swerve.setControl(drive.withVelocityX(speed.get().x)
-                .withVelocityY(speed.get().y)
+        swerve.setControl(drive.withVelocityX(speed.get().y)
+                .withVelocityY(speed.get().x)
                 .withRotationalRate(turn.get())         
             );
     }

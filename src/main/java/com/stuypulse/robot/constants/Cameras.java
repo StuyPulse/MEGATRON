@@ -23,9 +23,7 @@ public interface Cameras {
     }
 
     //192.168.1.83:5802
-    //192.168.1.71.5802
-    
-    //192.168.1.ip.defaultport
+    //192.168.1.71:5802
 
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
         // TO DO: find positions
@@ -35,7 +33,7 @@ public interface Cameras {
                 new Translation3d(-11.25, -3.333797, 23.929362),
                 new Rotation3d(0, 15, 0)
             ),
-            "100",
+            "83",
             3000
         ),
         new CameraConfig(
