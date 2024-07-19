@@ -165,7 +165,7 @@ public interface Settings {
         double MAX_LINEAR_VELOCITY = 15.0;
         double MAX_ANGULAR_VELOCITY = 12.0;
 
-        String CAN_BUS_NAME = "Default Name";
+        String CAN_BUS_NAME = "swerve";
 
         // The stator current at which the wheels start to slip;
         double SLIP_CURRENT = 150.0;
@@ -247,28 +247,28 @@ public interface Settings {
         }
 
         public interface FrontRight {
-            boolean DRIVE_INVERTED = true;
+            boolean DRIVE_INVERTED = false;
             String ID = "Front Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
             Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * -0.5);
         }
 
         public interface FrontLeft {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Front Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
             Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * +0.5);
         }
 
         public interface BackLeft {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Back Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
             Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * +0.5);
         }
 
         public interface BackRight {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Back Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875 + 0.5);
             Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * -0.5);

@@ -8,12 +8,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.vision.VisionData;
-import com.stuypulse.stuylib.network.SmartBoolean;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -180,6 +177,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
         }
+
+        field.setRobotPose(getPose());
 
         applyOperatorPerspective();
 
