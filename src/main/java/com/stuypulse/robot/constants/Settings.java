@@ -69,6 +69,8 @@ public interface Settings {
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); //0
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
+        SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
+
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
@@ -120,7 +122,7 @@ public interface Settings {
         );
 
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.9);
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
         SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.01);
 
         // left runs faster than right

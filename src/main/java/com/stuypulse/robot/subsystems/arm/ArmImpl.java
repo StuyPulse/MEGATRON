@@ -39,6 +39,8 @@ public class ArmImpl extends Arm {
     private final Controller controller;
     private final MotionProfile motionProfile;
 
+    private final BStream shouldGoBackToFeed;
+
     protected ArmImpl() {
         super();
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
@@ -63,6 +65,9 @@ public class ArmImpl extends Arm {
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
             .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
             .setSetpointFilter(motionProfile);
+        
+        shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
+                            .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
     } 
 
     @Override
@@ -153,10 +158,8 @@ public class ArmImpl extends Arm {
             setVoltage(-2);
         }
         else {
-            if (state != State.PRE_CLIMB && state != State.STOW) {
-                if (!Shooter.getInstance().hasNote()) {
-                    setState(State.FEED);
-                }
+            if (state != State.PRE_CLIMB && state != State.STOW && shouldGoBackToFeed.get()) {
+                setState(State.FEED);
             }
 
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
