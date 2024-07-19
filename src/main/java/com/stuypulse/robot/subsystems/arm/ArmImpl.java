@@ -79,8 +79,10 @@ public class ArmImpl extends Arm {
         switch (state) {
             case AMP:
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
-            case SPEAKER:
-                return getSpeakerAngle();
+            case SPEAKER_LOW:
+                return getSpeakerAngle(true);
+            case SPEAKER_HIGH:
+                return getSpeakerAngle(false);
             case FERRY:
                 return Settings.Arm.FERRY_ANGLE.getAsDouble(); 
             case FEED:
@@ -94,7 +96,7 @@ public class ArmImpl extends Arm {
         }
     }
 
-    private double getSpeakerAngle() {
+    private double getSpeakerAngle(boolean getLowAngle) {
         try {
             Pose3d speakerPose = new Pose3d(
                 Field.getAllianceSpeakerPose().getX(),
@@ -126,10 +128,15 @@ public class ArmImpl extends Arm {
                 / (2 * pivotToSpeaker.getNorm() * Settings.Arm.LENGTH)
             );
 
-            return SLMath.clamp(-(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get());
+            if (getLowAngle) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER);
+            }
+            else {
+                return (angleBetweenPivotToSpeakerAndArm + angleFromPivotToSpeaker) + (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER);
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception exception) {
+            exception.printStackTrace();
             return Settings.Arm.PODIUM_SHOT_ANGLE.get();
         }
     }
