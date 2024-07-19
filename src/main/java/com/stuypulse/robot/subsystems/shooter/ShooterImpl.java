@@ -9,6 +9,7 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Motors.StatusFrame;
+import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -125,6 +126,16 @@ public class ShooterImpl extends Shooter {
     @Override
     public void periodic () {
         super.periodic();
+
+        Arm.State armState = Arm.getInstance().getState();
+
+        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
+            setTargetSpeeds(Settings.Shooter.SPEAKER);
+        }
+
+        if (armState == Arm.State.FERRY) {
+            setTargetSpeeds(Settings.Shooter.FERRY);
+        }
 
         setLeftShooterRPM(getLeftTargetRPM());
         setRightShooterRPM(getRightTargetRPM());

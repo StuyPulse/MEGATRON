@@ -64,9 +64,9 @@ public interface Settings {
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
-        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -60);
+        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); //0
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); 
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
         SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
@@ -104,12 +104,12 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.24;
+        double FEEDER_INTAKE_SPEED = 0.22;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 1.0;
+        double FEEDER_SHOOT_SPEED = 0.22;
 
-        double TARGET_RPM_THRESHOLD = 300;
-        double MAX_WAIT_TO_REACH_TARGET = 2;
+        double TARGET_RPM_THRESHOLD = 150;
+        double MAX_WAIT_TO_REACH_TARGET = 2.5;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
@@ -117,13 +117,13 @@ public interface Settings {
         );
 
         ShooterSpeeds FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Ferry RPM", 4875), 
+            new SmartNumber("Shooter/Ferry RPM", 1200), // 3800 for opposing alliance wing 
             new SmartNumber("Shooter/Ferry RPM differential", 500)
         );
 
         // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.01);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.005);
 
         // left runs faster than right
         public interface LEFT {
