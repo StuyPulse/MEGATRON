@@ -21,8 +21,8 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
-    double WIDTH = Units.inchesToMeters(32);
-    double LENGTH = Units.inchesToMeters(36);
+    double WIDTH = Units.inchesToMeters(36); // intake side 
+    double LENGTH = Units.inchesToMeters(32);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
@@ -250,28 +250,28 @@ public interface Settings {
             boolean DRIVE_INVERTED = true;
             String ID = "Front Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * -0.5);
         }
 
         public interface FrontLeft {
             boolean DRIVE_INVERTED = false;
             String ID = "Front Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * +0.5);
         }
 
         public interface BackLeft {
             boolean DRIVE_INVERTED = false;
             String ID = "Back Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * +0.5);
         }
 
         public interface BackRight {
-            boolean DRIVE_INVERTED = true;
+            boolean DRIVE_INVERTED = false;
             String ID = "Back Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875 + 0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * -0.5);
         }
 
         public interface Simulation {

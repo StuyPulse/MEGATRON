@@ -76,8 +76,8 @@ public abstract class SwerveDriveDriveAligned extends Command {
     @Override
     public void execute() {
         swerve.setControl(
-            drive.withVelocityX(velocity.get().x)
-                .withVelocityY(velocity.get().y)
+            drive.withVelocityX(velocity.get().y)
+                .withVelocityY(-velocity.get().x)
                 .withRotationalRate(
                     angleVelocity.get() 
                     + controller.update(
