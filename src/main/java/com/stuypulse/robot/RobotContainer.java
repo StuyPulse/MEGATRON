@@ -4,7 +4,8 @@ import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
-import com.stuypulse.robot.commands.arm.ArmToFerry;
+import com.stuypulse.robot.commands.arm.ArmToLobFerry;
+import com.stuypulse.robot.commands.arm.ArmToLowFerry;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeakerHigh;
 import com.stuypulse.robot.commands.arm.ArmToSpeakerLow;
@@ -136,7 +137,10 @@ public class RobotContainer {
             // .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         driver.getLeftButton().onTrue(new ArmToAmp());
         driver.getRightButton()
-            .onTrue(new ArmToFerry());
+            .onTrue(new ConditionalCommand(
+                new ArmToLobFerry(), 
+                new ArmToLowFerry(), 
+                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
             // .onTrue(new SwerveDriveAlignedFerry(driver));
         driver.getBottomButton().onTrue(new ArmToFeed());
         

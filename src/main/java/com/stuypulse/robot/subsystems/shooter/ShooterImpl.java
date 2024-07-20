@@ -14,7 +14,7 @@ import com.stuypulse.robot.constants.Motors.StatusFrame;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
-import com.stuypulse.robot.util.ShooterFerryInterpolation;
+import com.stuypulse.robot.util.ShooterLowFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -138,7 +138,7 @@ public class ShooterImpl extends Shooter {
             : new Translation2d(0, 1.5);
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
-        double targetRPM = ShooterFerryInterpolation.getRPM(distanceToFerryInInches);
+        double targetRPM = ShooterLowFerryInterpolation.getRPM(distanceToFerryInInches);
         return new ShooterSpeeds(targetRPM, 500);
     }
 
@@ -151,7 +151,7 @@ public class ShooterImpl extends Shooter {
         if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
             setTargetSpeeds(Settings.Shooter.SPEAKER);
         }
-        else if (armState == Arm.State.FERRY) {
+        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
             setTargetSpeeds(getFerrySpeeds());
         }
         else {

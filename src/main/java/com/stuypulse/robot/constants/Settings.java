@@ -64,9 +64,10 @@ public interface Settings {
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
-        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -50);
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
+        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); 
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
         SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
@@ -108,7 +109,7 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 0.22;
 
-        double TARGET_RPM_THRESHOLD = 150;
+        double TARGET_RPM_THRESHOLD = 250;
         double MAX_WAIT_TO_REACH_TARGET = 1.5;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
