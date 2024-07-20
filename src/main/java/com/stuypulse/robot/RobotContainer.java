@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class RobotContainer {
@@ -128,8 +129,10 @@ public class RobotContainer {
             .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         
         driver.getTopButton()
-            .onTrue(new ArmToSpeakerLow().onlyIf(() -> Arm.getInstance().getState() != Arm.State.SPEAKER_LOW))
-            .onTrue(new ArmToSpeakerHigh().onlyIf(() -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
+            .onTrue(new ConditionalCommand(
+                new ArmToSpeakerHigh(), 
+                new ArmToSpeakerLow(), 
+                () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
             // .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
         driver.getLeftButton().onTrue(new ArmToAmp());
         driver.getRightButton()
