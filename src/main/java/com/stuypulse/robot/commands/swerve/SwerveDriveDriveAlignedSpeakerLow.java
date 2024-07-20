@@ -1,16 +1,15 @@
 package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.constants.Field;
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
+public class SwerveDriveDriveAlignedSpeakerLow extends SwerveDriveDriveAligned{
     
-    public SwerveDriveDriveAlignedSpeaker(Gamepad driver) {
+    public SwerveDriveDriveAlignedSpeakerLow(Gamepad driver) {
         super(driver);
     }
 

@@ -18,9 +18,10 @@ import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedFerry;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerLow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -127,21 +128,22 @@ public class RobotContainer {
             );
         
         driver.getRightBumper()
-            .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
+            .onTrue(new SwerveDriveDriveAlignedSpeakerLow(driver));
         
         driver.getTopButton()
             .onTrue(new ConditionalCommand(
                 new ArmToSpeakerHigh(), 
                 new ArmToSpeakerLow(), 
                 () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
-            // .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
+
         driver.getLeftButton().onTrue(new ArmToAmp());
+
         driver.getRightButton()
             .onTrue(new ConditionalCommand(
                 new ArmToLobFerry(), 
                 new ArmToLowFerry(), 
                 () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
-            // .onTrue(new SwerveDriveAlignedFerry(driver));
+
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());
