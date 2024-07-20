@@ -6,12 +6,23 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Motors.StatusFrame;
+import com.stuypulse.robot.subsystems.arm.Arm;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
+import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
+import com.stuypulse.robot.util.ShooterLowFerryInterpolation;
+import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -122,9 +133,37 @@ public class ShooterImpl extends Shooter {
         return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
     }
 
+    private ShooterSpeeds getFerrySpeeds() {
+        Translation2d ferryZone = Robot.isBlue()
+            ? new Translation2d(0, Field.WIDTH - 1.5)
+            : new Translation2d(0, 1.5);
+        
+        double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
+        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
+            double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
+            return new ShooterSpeeds(targetRPM, 500);
+        }
+        else {
+            double targetRPM = ShooterLowFerryInterpolation.getRPM(distanceToFerryInInches);
+            return new ShooterSpeeds(targetRPM, 500);
+        }
+    }
+
     @Override
     public void periodic () {
         super.periodic();
+
+        Arm.State armState = Arm.getInstance().getState();
+
+        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
+            setTargetSpeeds(Settings.Shooter.SPEAKER);
+        }
+        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
+            setTargetSpeeds(getFerrySpeeds());
+        }
+        else {
+            setTargetSpeeds(Settings.Shooter.SPEAKER);
+        }
 
         setLeftShooterRPM(getLeftTargetRPM());
         setRightShooterRPM(getRightTargetRPM());

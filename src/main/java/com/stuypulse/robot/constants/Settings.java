@@ -21,8 +21,8 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
-    double WIDTH = Units.inchesToMeters(32);
-    double LENGTH = Units.inchesToMeters(36);
+    double WIDTH = Units.inchesToMeters(36); // intake side 
+    double LENGTH = Units.inchesToMeters(32);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
@@ -64,10 +64,13 @@ public interface Settings {
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
-        SmartNumber FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -60);
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
+        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17); //0
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
+
+        SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
@@ -102,26 +105,21 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.24;
+        double FEEDER_INTAKE_SPEED = 0.22;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 1.0;
+        double FEEDER_SHOOT_SPEED = 0.22;
 
-        double TARGET_RPM_THRESHOLD = 300;
-        double MAX_WAIT_TO_REACH_TARGET = 2;
+        double TARGET_RPM_THRESHOLD = 250;
+        double MAX_WAIT_TO_REACH_TARGET = 1.5;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
-        ShooterSpeeds FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Ferry RPM", 4875), 
-            new SmartNumber("Shooter/Ferry RPM differential", 500)
-        );
-
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.9);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.01);
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.005);
 
         // left runs faster than right
         public interface LEFT {
@@ -163,7 +161,7 @@ public interface Settings {
         double MAX_LINEAR_VELOCITY = 15.0;
         double MAX_ANGULAR_VELOCITY = 12.0;
 
-        String CAN_BUS_NAME = "Default Name";
+        String CAN_BUS_NAME = "swerve";
 
         // The stator current at which the wheels start to slip;
         double SLIP_CURRENT = 150.0;
@@ -245,31 +243,31 @@ public interface Settings {
         }
 
         public interface FrontRight {
-            boolean DRIVE_INVERTED = true;
+            boolean DRIVE_INVERTED = false;
             String ID = "Front Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * +0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * -0.5);
         }
 
         public interface FrontLeft {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Front Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * +0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * +0.5);
         }
 
         public interface BackLeft {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Back Left";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * -0.5, LENGTH * -0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * +0.5);
         }
 
         public interface BackRight {
             boolean DRIVE_INVERTED = true;
             String ID = "Back Right";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875);
-            Translation2d MODULE_OFFSET = new Translation2d(WIDTH * +0.5, LENGTH * -0.5);
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875 + 0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * -0.5);
         }
 
         public interface Simulation {

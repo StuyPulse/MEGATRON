@@ -39,6 +39,8 @@ public class ArmImpl extends Arm {
     private final Controller controller;
     private final MotionProfile motionProfile;
 
+    private final BStream shouldGoBackToFeed;
+
     protected ArmImpl() {
         super();
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
@@ -63,6 +65,9 @@ public class ArmImpl extends Arm {
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
             .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
             .setSetpointFilter(motionProfile);
+        
+        shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
+                            .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
     } 
 
     @Override
@@ -74,10 +79,14 @@ public class ArmImpl extends Arm {
         switch (state) {
             case AMP:
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
-            case SPEAKER:
-                return getSpeakerAngle();
-            case FERRY:
-                return Settings.Arm.FERRY_ANGLE.getAsDouble(); 
+            case SPEAKER_LOW:
+                return getSpeakerAngle(true);
+            case SPEAKER_HIGH:
+                return getSpeakerAngle(false);
+            case LOW_FERRY:
+                return Settings.Arm.LOW_FERRY_ANGLE.getAsDouble(); 
+            case LOB_FERRY:
+                return Settings.Arm.LOB_FERRY_ANGLE.getAsDouble();
             case FEED:
                 return Settings.Arm.FEED_ANGLE.getAsDouble();
             case STOW:
@@ -89,7 +98,7 @@ public class ArmImpl extends Arm {
         }
     }
 
-    private double getSpeakerAngle() {
+    private double getSpeakerAngle(boolean getLowAngle) {
         try {
             Pose3d speakerPose = new Pose3d(
                 Field.getAllianceSpeakerPose().getX(),
@@ -121,10 +130,15 @@ public class ArmImpl extends Arm {
                 / (2 * pivotToSpeaker.getNorm() * Settings.Arm.LENGTH)
             );
 
-            return SLMath.clamp(-(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get());
+            if (getLowAngle) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER);
+            }
+            else {
+                return (angleBetweenPivotToSpeakerAndArm + angleFromPivotToSpeaker) + (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER);
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception exception) {
+            exception.printStackTrace();
             return Settings.Arm.PODIUM_SHOT_ANGLE.get();
         }
     }
@@ -153,10 +167,8 @@ public class ArmImpl extends Arm {
             setVoltage(-2);
         }
         else {
-            if (state != State.PRE_CLIMB && state != State.STOW) {
-                if (!Shooter.getInstance().hasNote()) {
-                    setState(State.FEED);
-                }
+            if (state != State.PRE_CLIMB && state != State.STOW && shouldGoBackToFeed.get()) {
+                setState(State.FEED);
             }
 
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());

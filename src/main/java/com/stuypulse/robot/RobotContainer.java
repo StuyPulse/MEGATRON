@@ -4,9 +4,11 @@ import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
-import com.stuypulse.robot.commands.arm.ArmToFerry;
+import com.stuypulse.robot.commands.arm.ArmToLobFerry;
+import com.stuypulse.robot.commands.arm.ArmToLowFerry;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
-import com.stuypulse.robot.commands.arm.ArmToSpeaker;
+import com.stuypulse.robot.commands.arm.ArmToSpeakerHigh;
+import com.stuypulse.robot.commands.arm.ArmToSpeakerLow;
 import com.stuypulse.robot.commands.arm.ArmToStow;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
@@ -15,12 +17,11 @@ import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
-import com.stuypulse.robot.commands.swerve.SwerveDriveAlignedFerryAndShoot;
-import com.stuypulse.robot.commands.swerve.SwerveDriveAlignedSpeakerAndShoot;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedFerry;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeaker;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerLow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -41,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class RobotContainer {
@@ -126,15 +128,22 @@ public class RobotContainer {
             );
         
         driver.getRightBumper()
-            .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
+            .onTrue(new SwerveDriveDriveAlignedSpeakerLow(driver));
         
         driver.getTopButton()
-            .onTrue(new ArmToSpeaker());
-            // .onTrue(new SwerveDriveDriveAlignedSpeaker(driver));
+            .onTrue(new ConditionalCommand(
+                new ArmToSpeakerHigh(), 
+                new ArmToSpeakerLow(), 
+                () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
+
         driver.getLeftButton().onTrue(new ArmToAmp());
+
         driver.getRightButton()
-            .onTrue(new ArmToFerry());
-            // .onTrue(new SwerveDriveAlignedFerry(driver));
+            .onTrue(new ConditionalCommand(
+                new ArmToLobFerry(), 
+                new ArmToLowFerry(), 
+                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
+
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());
