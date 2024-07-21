@@ -172,6 +172,8 @@ public interface Settings {
         public interface Assist {
             SmartNumber ALIGN_MIN_SPEAKER_DIST = new SmartNumber("SwerveAssist/Minimum Distance to Speaker", 4); 
 
+            double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
+
             // angle PID
             SmartNumber kP = new SmartNumber("SwerveAssist/kP", 6.0);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
