@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerHigh;
@@ -91,32 +92,14 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getRightMenuButton().whileTrue(new SwerveDriveXMode());
-        driver.getLeftMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
+        driver.getRightBumper().whileTrue(new SwerveDriveXMode());
+
+        driver.getRightMenuButton().onTrue(new SwerveDriveAutoAlignment(driver));
 
         driver.getLeftTriggerButton()
             .whileTrue(new IntakeAcquire()
                 .andThen(new BuzzController(driver))
             );
-        
-        // driver.getLeftBumper()
-        //     .whileTrue(new WaitUntilCommand(() -> !shooter.hasNote())
-        //     .andThen(new ArmToFeed()
-        //         .andThen(new WaitUntilCommand(intake::hasNote).alongWith(new ArmWaitUntilAtTarget()))
-        //         .andThen(new ShooterAcquireFromIntake())
-        //         .andThen(new BuzzController(driver))
-        //     )
-        // );
-
-        // driver.getLeftTriggerButton()
-        //     .whileTrue(new ArmToFeed().onlyIf(() -> !shooter.hasNote()))
-        //     .whileTrue(new IntakeAcquire()
-        //         .andThen(new BuzzController(driver))
-        //         .andThen(new WaitUntilCommand(() -> Arm.getInstance().getState() == Arm.State.FEED))
-        //         .andThen(new ArmWaitUntilAtTarget())
-        //         .andThen(new ShooterAcquireFromIntake().onlyIf(() -> !shooter.hasNote()))
-        //         .andThen(new BuzzController(driver)))
-        //     .onFalse(new IntakeStop());
         
         driver.getLeftBumper()
             .whileTrue(new IntakeDeacquire())
@@ -126,9 +109,6 @@ public class RobotContainer {
             .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .andThen(new ShooterAutoShoot())
             );
-        
-        driver.getRightBumper()
-            .onTrue(new SwerveDriveDriveAlignedSpeakerLow(driver));
         
         driver.getTopButton()
             .onTrue(new ConditionalCommand(
