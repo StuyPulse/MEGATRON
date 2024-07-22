@@ -22,9 +22,6 @@ public interface Cameras {
         int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
     }
 
-    //192.168.1.83:5802
-    //192.168.1.71:5802
-
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
         // TO DO: find positions
         new CameraConfig(
@@ -33,18 +30,19 @@ public interface Cameras {
                 new Translation3d(-11.25, -3.333797, 23.929362),
                 new Rotation3d(0, 15, 0)
             ),
-            "83",
+            "29",
             3000
-        ),
+        ), //10.6.94.29:5802
+
         new CameraConfig(
             "samera1", //electronic plate camera
             new Pose3d(
                 new Translation3d(0, 4.863591, 19.216471),
                 new Rotation3d(0, 80, 0)
             ),
-            "101",
+            "96",
             3001
-        )
+        ) //10.6.94.96:5802
     };
 
     /*** LINEAR REGRESSION ***/
