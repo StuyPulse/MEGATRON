@@ -36,7 +36,6 @@ public class ShooterAcquireFromIntake extends Command {
         if (isFeeding) {
             if (stopWatch.getTime() > Settings.Intake.HANDOFF_TIMEOUT) {
                 intake.deacquire();
-                shooter.feederDeacquire();
                 isFeeding = false;
                 stopWatch.reset();
             }
@@ -44,7 +43,6 @@ public class ShooterAcquireFromIntake extends Command {
         else {
             if (stopWatch.getTime() > Settings.Intake.MINIMUM_DEACQUIRE_TIME_WHEN_STUCK && intake.hasNote()) {
                 intake.acquire();
-                shooter.feederIntake();
                 isFeeding = true;
                 stopWatch.reset();
             }
