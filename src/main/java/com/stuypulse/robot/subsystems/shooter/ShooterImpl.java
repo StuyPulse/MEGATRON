@@ -139,6 +139,7 @@ public class ShooterImpl extends Shooter {
             : new Translation2d(0, 1.5);
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
+        
         if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
@@ -167,14 +168,6 @@ public class ShooterImpl extends Shooter {
 
         setLeftShooterRPM(getLeftTargetRPM());
         setRightShooterRPM(getRightTargetRPM());
-
-        if (getLeftTargetRPM() == 0) {
-            leftMotor.stopMotor();
-        }
-
-        if (getRightTargetRPM() == 0) {
-            rightMotor.stopMotor();
-        }
 
         SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
         SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());

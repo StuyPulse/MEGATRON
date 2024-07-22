@@ -61,6 +61,7 @@ public interface Settings {
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
+        
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
@@ -97,17 +98,21 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.75;
+        double INTAKE_ACQUIRE_SPEED = 0.85;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
+
         double IR_DEBOUNCE = .005;
+
+        double HANDOFF_TIMEOUT = 2;
+        double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 1.6;
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.22;
+        double FEEDER_INTAKE_SPEED = 0.25;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 0.22;
+        double FEEDER_SHOOT_SPEED = 0.25;
 
         double TARGET_RPM_THRESHOLD = 250;
         double MAX_WAIT_TO_REACH_TARGET = 1.5;
