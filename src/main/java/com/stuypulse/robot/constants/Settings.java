@@ -68,7 +68,7 @@ public interface Settings {
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 16);
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
         SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
@@ -98,15 +98,15 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.85;
+        double INTAKE_ACQUIRE_SPEED = 0.8;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
         double IR_DEBOUNCE = .005;
 
-        double HANDOFF_TIMEOUT = 2;
-        double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 1.6;
+        double HANDOFF_TIMEOUT = 1.8;
+        double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 0.5;
     }
 
     public interface Shooter {

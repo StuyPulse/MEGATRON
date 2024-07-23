@@ -20,7 +20,6 @@ import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -120,7 +119,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public void feederStop() {
-        feederMotor.stopMotor();
+        feederMotor.set(0);
     }
 
     @Override
@@ -168,6 +167,8 @@ public class ShooterImpl extends Shooter {
 
         setLeftShooterRPM(getLeftTargetRPM());
         setRightShooterRPM(getRightTargetRPM());
+
+        SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 
         SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
         SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());
