@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
             && Arm.getInstance().atTarget() 
             && !Shooter.getInstance().hasNote()
             && Intake.getInstance().hasNote()
+            && Intake.getInstance().getState() != Intake.State.DEACQUIRING
         ) {
             CommandScheduler.getInstance().schedule(new ShooterAcquireFromIntake()
                                                     .andThen(new BuzzController(robot.driver)));

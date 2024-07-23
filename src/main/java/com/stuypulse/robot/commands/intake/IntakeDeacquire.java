@@ -15,6 +15,6 @@ public class IntakeDeacquire extends InstantCommand {
 
     @Override
     public void initialize() {
-        intake.deacquire();
+        intake.setState(Intake.State.DEACQUIRING);
     }
 }

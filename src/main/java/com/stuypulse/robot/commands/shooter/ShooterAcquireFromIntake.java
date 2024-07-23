@@ -27,7 +27,7 @@ public class ShooterAcquireFromIntake extends Command {
 
     @Override
     public void initialize() {
-        intake.acquire();
+        intake.setState(Intake.State.ACQUIRING);
         shooter.feederIntake();
     }
 
@@ -35,14 +35,14 @@ public class ShooterAcquireFromIntake extends Command {
     public void execute() {
         if (isFeeding) {
             if (stopWatch.getTime() > Settings.Intake.HANDOFF_TIMEOUT) {
-                intake.deacquire();
+                intake.setState(Intake.State.DEACQUIRING);
                 isFeeding = false;
                 stopWatch.reset();
             }
         }
         else {
             if (stopWatch.getTime() > Settings.Intake.MINIMUM_DEACQUIRE_TIME_WHEN_STUCK && intake.hasNote()) {
-                intake.acquire();
+                intake.setState(Intake.State.ACQUIRING);
                 isFeeding = true;
                 stopWatch.reset();
             }
@@ -57,7 +57,7 @@ public class ShooterAcquireFromIntake extends Command {
     @Override
     public void end(boolean interrupted) {
         shooter.feederStop();
-        intake.stop();
+        intake.setState(Intake.State.STOP);
     }
 
 }

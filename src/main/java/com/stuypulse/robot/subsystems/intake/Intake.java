@@ -10,24 +10,32 @@ public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
 
     static {
-        if (Robot.isReal()) {
-            instance = new IntakeImpl();
-        } else {
-            instance = new IntakeSim();
-        }
+        instance = new IntakeImpl();
     }
 
     public static Intake getInstance() {
         return instance;
     }
 
-    protected Intake() {}
+    public enum State {
+        DEACQUIRING,
+        ACQUIRING,
+        STOP
+    }
 
-    public abstract void acquire();
+    private State state;
 
-    public abstract void deacquire();
+    protected Intake() {
+        this.state = State.STOP;
+    }
 
-    public abstract void stop();
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState() {
+        return this.state;
+    }
 
     public abstract boolean hasNote();
 }

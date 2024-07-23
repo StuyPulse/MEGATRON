@@ -23,6 +23,7 @@ public class IntakeImpl extends Intake {
     private final BStream hasNote;
 
     public IntakeImpl() {
+        super();
         funnelMotorLeft = new CANSparkMax(Ports.Intake.FUNNEL_LEFT, MotorType.kBrushless);
         funnelMotorRight = new CANSparkMax(Ports.Intake.FUNNEL_RIGHT, MotorType.kBrushless);        
         intakeMotor = new CANSparkMax(Ports.Intake.INTAKE_MOTOR, MotorType.kBrushless);
@@ -37,22 +38,19 @@ public class IntakeImpl extends Intake {
             .filtered(new BDebounce.Both(Settings.Intake.IR_DEBOUNCE));
     }
 
-    @Override
-    public void acquire() {
+    private void acquire() {
         intakeMotor.set(+Settings.Intake.INTAKE_ACQUIRE_SPEED);
         funnelMotorLeft.set(+Settings.Intake.FUNNEL_ACQUIRE);
         funnelMotorRight.set(+Settings.Intake.FUNNEL_ACQUIRE);
     }
 
-    @Override
-    public void deacquire() {
+    private void deacquire() {
         intakeMotor.set(-Settings.Intake.INTAKE_DEACQUIRE_SPEED);
         funnelMotorLeft.set(-Settings.Intake.FUNNEL_DEACQUIRE);
         funnelMotorRight.set(-Settings.Intake.FUNNEL_DEACQUIRE);
     }
 
-    @Override
-    public void stop() {
+    private void stop() {
         intakeMotor.stopMotor();
         funnelMotorLeft.stopMotor();
         funnelMotorRight.stopMotor();
@@ -66,6 +64,21 @@ public class IntakeImpl extends Intake {
     @Override
     public void periodic() {
         super.periodic();
+
+        switch (getState()) {
+            case ACQUIRING:
+                acquire();
+                break;
+            case DEACQUIRING:
+                deacquire();
+                break;
+            case STOP:
+                stop();
+                break;
+            default:
+                stop();
+                break;
+        }
 
         SmartDashboard.putNumber("Intake/Intake Speed", intakeMotor.get());
         SmartDashboard.putNumber("Intake/Funnel/Right Funnel Speed", funnelMotorLeft.get());
