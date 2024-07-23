@@ -17,6 +17,8 @@ import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
+import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
+import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
@@ -108,7 +110,8 @@ public class RobotContainer {
         driver.getRightTriggerButton()
             .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .andThen(new ShooterAutoShoot())
-            );
+            )
+            .onFalse(new ShooterFeederStop());
         
         driver.getTopButton()
             .onTrue(new ConditionalCommand(

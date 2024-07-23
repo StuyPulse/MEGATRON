@@ -15,12 +15,12 @@ public class IntakeAcquire extends Command {
 
     @Override
     public void initialize() {
-        intake.acquire();
+        intake.setState(Intake.State.ACQUIRING);
     }
 
     @Override
     public void end(boolean interrupted) {
-        intake.stop();
+        intake.setState(Intake.State.STOP);
     }
 
     @Override

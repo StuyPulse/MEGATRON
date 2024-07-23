@@ -15,6 +15,6 @@ public class IntakeStop extends InstantCommand {
 
     @Override
     public void initialize() {
-        intake.stop();
+        intake.setState(Intake.State.STOP);
     }
 }
