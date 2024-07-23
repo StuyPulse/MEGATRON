@@ -77,6 +77,8 @@ public interface Settings {
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
 
+        double HOLD_TO_OVERRIDE_TIME = 0.45;
+
         // characterize and manually tune
         public interface PID {
             SmartNumber kP = new SmartNumber("Arm/kP", 0.20000);

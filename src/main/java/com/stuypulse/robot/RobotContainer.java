@@ -96,6 +96,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         driver.getRightBumper().whileTrue(new SwerveDriveXMode());
 
+        driver.getLeftMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
         driver.getRightMenuButton().onTrue(new SwerveDriveAutoAlignment(driver));
 
         driver.getLeftTriggerButton()
@@ -114,23 +115,23 @@ public class RobotContainer {
             .onFalse(new ShooterFeederStop());
         
         driver.getTopButton()
-            .onTrue(new ConditionalCommand(
+            .whileTrue(new ConditionalCommand(
                 new ArmToSpeakerHigh(), 
                 new ArmToSpeakerLow(), 
-                () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
+                () -> Arm.getInstance().getActualState() == Arm.State.SPEAKER_LOW));
 
-        driver.getLeftButton().onTrue(new ArmToAmp());
+        driver.getLeftButton().whileTrue(new ArmToAmp());
 
         driver.getRightButton()
-            .onTrue(new ConditionalCommand(
+            .whileTrue(new ConditionalCommand(
                 new ArmToLobFerry(), 
                 new ArmToLowFerry(), 
-                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
+                () -> Arm.getInstance().getActualState() == Arm.State.LOW_FERRY));
 
-        driver.getBottomButton().onTrue(new ArmToFeed());
+        driver.getBottomButton().whileTrue(new ArmToFeed());
         
-        driver.getDPadUp().onTrue(new ArmToPreClimb());
-        driver.getDPadDown().onTrue(new ArmToStow());
+        driver.getDPadUp().whileTrue(new ArmToPreClimb());
+        driver.getDPadDown().whileTrue(new ArmToStow());
 
     }
 

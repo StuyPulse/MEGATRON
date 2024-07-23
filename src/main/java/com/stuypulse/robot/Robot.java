@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        if (Arm.getInstance().getState() == Arm.State.FEED 
+        if (Arm.getInstance().getActualState() == Arm.State.FEED 
             && Arm.getInstance().atTarget() 
             && !Shooter.getInstance().hasNote()
             && Intake.getInstance().hasNote()

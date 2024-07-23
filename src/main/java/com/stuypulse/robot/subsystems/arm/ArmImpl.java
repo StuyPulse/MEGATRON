@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class ArmImpl extends Arm {
     
@@ -68,6 +69,8 @@ public class ArmImpl extends Arm {
         
         shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
                             .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
+        
+        overriding = false;
     } 
 
     @Override
@@ -75,8 +78,13 @@ public class ArmImpl extends Arm {
         return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.getAsDouble();
     }
 
+    @Override
+    public boolean shouldReturnToFeed() {
+        return shouldGoBackToFeed.get();
+    }
+
     private double getTargetDegrees() {
-        switch (state) {
+        switch (actualState) {
             case AMP:
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
             case SPEAKER_LOW:
@@ -158,17 +166,28 @@ public class ArmImpl extends Arm {
 
         if (bumpSwitchTriggered.get()) {
             armEncoder.setPosition(Settings.Arm.MIN_ANGLE.get()/360);
-            if (state == State.RESETTING) {
-                state = State.FEED;
+            if (actualState == State.RESETTING) {
+                actualState = State.FEED;
+                requestedState = State.FEED;
             }
         }
         
-        if (state == State.RESETTING) {
-            setVoltage(-2);
+        if (actualState == State.RESETTING) {
+            setVoltage(-1.5);
         }
         else {
-            if (state != State.PRE_CLIMB && state != State.STOW && shouldGoBackToFeed.get()) {
-                setState(State.FEED);
+            if (overriding
+                || requestedState == State.STOW 
+                || requestedState == State.PRE_CLIMB
+                || requestedState == State.FEED
+                || requestedState == State.RESETTING
+                || Shooter.getInstance().hasNote()
+            ) {
+                this.actualState = this.requestedState;
+            }
+            else if (shouldGoBackToFeed.get()) {
+                requestedState = State.FEED;
+                actualState = State.FEED;
             }
 
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
