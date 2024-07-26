@@ -132,14 +132,15 @@ public class ShooterImpl extends Shooter {
         return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
     }
 
-    private ShooterSpeeds getFerrySpeeds() {
+    @Override
+    public ShooterSpeeds getFerrySpeeds() {
         Translation2d ferryZone = Robot.isBlue()
             ? new Translation2d(0, Field.WIDTH - 1.5)
             : new Translation2d(0, 1.5);
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
+        if (Arm.getInstance().getActualState() == Arm.State.LOB_FERRY) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
         }
@@ -153,20 +154,33 @@ public class ShooterImpl extends Shooter {
     public void periodic () {
         super.periodic();
 
-        Arm.State armState = Arm.getInstance().getState();
+        Arm.State armState = Arm.getInstance().getActualState();
 
-        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
-            setTargetSpeeds(Settings.Shooter.SPEAKER);
+        if (Settings.Shooter.ALWAYS_KEEP_AT_SPEED) {
+            if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
+                setTargetSpeeds(Settings.Shooter.SPEAKER);
+            }
+            else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
+                setTargetSpeeds(getFerrySpeeds());
+            }
+            else {
+                setTargetSpeeds(Settings.Shooter.SPEAKER);
+            }
         }
-        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
-            setTargetSpeeds(getFerrySpeeds());
+
+        if (getLeftTargetRPM() == 0) {
+            leftMotor.set(0);
         }
         else {
-            setTargetSpeeds(Settings.Shooter.SPEAKER);
+            setLeftShooterRPM(getLeftTargetRPM());
         }
 
-        setLeftShooterRPM(getLeftTargetRPM());
-        setRightShooterRPM(getRightTargetRPM());
+        if (getRightTargetRPM() == 0) {
+            rightMotor.set(0);
+        }
+        else {
+            setRightShooterRPM(getRightTargetRPM());
+        }
 
         SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 
