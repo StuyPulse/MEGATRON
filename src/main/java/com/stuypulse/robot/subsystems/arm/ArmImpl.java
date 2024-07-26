@@ -69,8 +69,6 @@ public class ArmImpl extends Arm {
         
         shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
                             .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
-        
-        overriding = false;
     } 
 
     @Override
@@ -186,8 +184,10 @@ public class ArmImpl extends Arm {
                 this.actualState = this.requestedState;
             }
             else if (shouldGoBackToFeed.get()) {
-                requestedState = State.FEED;
-                actualState = State.FEED;
+                if (actualState != State.FEED) {
+                    requestedState = State.FEED;
+                    actualState = State.FEED;
+                }
             }
 
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
@@ -198,7 +198,7 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
         SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
 
-        SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", bumpSwitch.get());
+        SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", !bumpSwitch.get());
 
         SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
         SmartDashboard.putNumber("Arm/Raw Encoder Angle (rot)", armEncoder.getPosition());

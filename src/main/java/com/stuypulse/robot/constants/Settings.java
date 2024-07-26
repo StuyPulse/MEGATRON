@@ -77,8 +77,6 @@ public interface Settings {
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
 
-        double HOLD_TO_OVERRIDE_TIME = 0.45;
-
         // characterize and manually tune
         public interface PID {
             SmartNumber kP = new SmartNumber("Arm/kP", 0.20000);
@@ -118,6 +116,8 @@ public interface Settings {
 
         double TARGET_RPM_THRESHOLD = 250;
         double MAX_WAIT_TO_REACH_TARGET = 1.5;
+
+        boolean ALWAYS_KEEP_AT_SPEED = true;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
@@ -327,6 +327,9 @@ public interface Settings {
     }
 
     public interface Driver {
+        double HOLD_TO_OVERRIDE_TIME = 0.55;
+        double DOUBLE_CLICK_TIME_BETWEEN_CLICKS = 0.5;
+
         public interface Drive {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 

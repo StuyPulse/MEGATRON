@@ -2,12 +2,17 @@ package com.stuypulse.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
+import com.stuypulse.robot.commands.arm.ArmDisableOverride;
+import com.stuypulse.robot.commands.arm.ArmEnableOverride;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.arm.ArmToFerry;
 import com.stuypulse.robot.commands.arm.ArmToLobFerry;
 import com.stuypulse.robot.commands.arm.ArmToLowFerry;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
+import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSpeakerHigh;
+import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSpeakerLow;
 import com.stuypulse.robot.commands.arm.ArmToStow;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
@@ -115,20 +120,30 @@ public class RobotContainer {
             .onFalse(new ShooterFeederStop());
         
         driver.getTopButton()
-            .whileTrue(new ConditionalCommand(
-                new ArmToSpeakerHigh(), 
-                new ArmToSpeakerLow(), 
-                () -> Arm.getInstance().getActualState() == Arm.State.SPEAKER_LOW));
+            .onTrue(new ArmToSpeaker());
+        
+        driver.getTopButton()
+            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
+            .onTrue(new ArmEnableOverride())
+            .onFalse(new ArmDisableOverride());
 
-        driver.getLeftButton().whileTrue(new ArmToAmp());
+        driver.getLeftButton()
+            .onTrue(new ArmToAmp());
+            
+        driver.getLeftButton()
+            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
+            .onTrue(new ArmEnableOverride())
+            .onFalse(new ArmDisableOverride());
 
         driver.getRightButton()
-            .whileTrue(new ConditionalCommand(
-                new ArmToLobFerry(), 
-                new ArmToLowFerry(), 
-                () -> Arm.getInstance().getActualState() == Arm.State.LOW_FERRY));
+            .whileTrue(new ArmToFerry());
+            
+        driver.getRightButton()
+            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
+            .onTrue(new ArmEnableOverride())
+            .onFalse(new ArmDisableOverride());
 
-        driver.getBottomButton().whileTrue(new ArmToFeed());
+        driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().whileTrue(new ArmToPreClimb());
         driver.getDPadDown().whileTrue(new ArmToStow());

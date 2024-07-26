@@ -13,7 +13,10 @@ public class ShooterLobFerryInterpolation {
 
     // RPM, distance (inches)
     private static final double[][] RPMAndDistance = {
-        {, },
+        // fake data im just putting here so it doesnt crash lol
+        {1000, 55.5},
+        {1000, 42.5},
+        {1000, 57},
     };
 
     static {
