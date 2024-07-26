@@ -24,6 +24,7 @@ import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
+import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.swerve.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
@@ -40,6 +41,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
+import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
 
@@ -117,7 +119,8 @@ public class RobotContainer {
             .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .andThen(new ShooterAutoShoot())
             )
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ShooterSetRPM(new ShooterSpeeds()).onlyIf(() -> !Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         driver.getTopButton()
             .onTrue(new ArmToSpeaker());

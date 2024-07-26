@@ -132,7 +132,8 @@ public class ShooterImpl extends Shooter {
         return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
     }
 
-    private ShooterSpeeds getFerrySpeeds() {
+    @Override
+    public ShooterSpeeds getFerrySpeeds() {
         Translation2d ferryZone = Robot.isBlue()
             ? new Translation2d(0, Field.WIDTH - 1.5)
             : new Translation2d(0, 1.5);
@@ -155,18 +156,31 @@ public class ShooterImpl extends Shooter {
 
         Arm.State armState = Arm.getInstance().getActualState();
 
-        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
-            setTargetSpeeds(Settings.Shooter.SPEAKER);
-        }
-        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
-            setTargetSpeeds(getFerrySpeeds());
-        }
-        else {
-            setTargetSpeeds(Settings.Shooter.SPEAKER);
+        if (Settings.Shooter.ALWAYS_KEEP_AT_SPEED) {
+            if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
+                setTargetSpeeds(Settings.Shooter.SPEAKER);
+            }
+            else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
+                setTargetSpeeds(getFerrySpeeds());
+            }
+            else {
+                setTargetSpeeds(Settings.Shooter.SPEAKER);
+            }
         }
 
-        setLeftShooterRPM(getLeftTargetRPM());
-        setRightShooterRPM(getRightTargetRPM());
+        if (getLeftTargetRPM() == 0) {
+            leftMotor.set(0);
+        }
+        else {
+            setLeftShooterRPM(getLeftTargetRPM());
+        }
+
+        if (getRightTargetRPM() == 0) {
+            rightMotor.set(0);
+        }
+        else {
+            setRightShooterRPM(getRightTargetRPM());
+        }
 
         SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 

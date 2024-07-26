@@ -114,10 +114,10 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 0.25;
 
-        double TARGET_RPM_THRESHOLD = 250;
-        double MAX_WAIT_TO_REACH_TARGET = 1.5;
+        boolean ALWAYS_KEEP_AT_SPEED = false;
 
-        boolean ALWAYS_KEEP_AT_SPEED = true;
+        double TARGET_RPM_THRESHOLD = 250;
+        double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
