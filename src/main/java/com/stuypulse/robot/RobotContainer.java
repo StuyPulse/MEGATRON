@@ -123,7 +123,8 @@ public class RobotContainer {
             .onFalse(new ShooterSetRPM(new ShooterSpeeds()).onlyIf(() -> !Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         driver.getTopButton()
-            .onTrue(new ArmToSpeaker());
+            .onTrue(new ArmToSpeaker())
+            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
         
         driver.getTopButton()
             .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
@@ -131,7 +132,8 @@ public class RobotContainer {
             .onFalse(new ArmDisableOverride());
 
         driver.getLeftButton()
-            .onTrue(new ArmToAmp());
+            .onTrue(new ArmToAmp())
+            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
             
         driver.getLeftButton()
             .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
@@ -139,7 +141,8 @@ public class RobotContainer {
             .onFalse(new ArmDisableOverride());
 
         driver.getRightButton()
-            .whileTrue(new ArmToFerry());
+            .whileTrue(new ArmToFerry())
+            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
             
         driver.getRightButton()
             .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
