@@ -56,22 +56,23 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 425);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 450);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 400);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 425);
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         
-        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2);
+        SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 16);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
-        SmartNumber SHOULD_RETURN_TO_FEED_TIME = new SmartNumber("Arm/Return To Feed Time", 1.0);
+        double SHOULD_RETURN_TO_FEED_TIME = 1.0;
+        double EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP = 2.5;
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
@@ -331,7 +332,7 @@ public interface Settings {
         double DOUBLE_CLICK_TIME_BETWEEN_CLICKS = 0.5;
 
         public interface Drive {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
@@ -341,7 +342,7 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.03);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.015);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
