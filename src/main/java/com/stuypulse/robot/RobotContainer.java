@@ -105,6 +105,7 @@ public class RobotContainer {
         driver.getRightMenuButton().onTrue(new SwerveDriveAutoAlignment(driver));
 
         driver.getLeftTriggerButton()
+            .onTrue(new ArmToFeed())
             .whileTrue(new IntakeAcquire()
                 .andThen(new BuzzController(driver))
             );
@@ -123,19 +124,16 @@ public class RobotContainer {
         driver.getTopButton()
             .onTrue(new ArmToSpeaker())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-
         driver.getLeftButton()
             .onTrue(new ArmToAmp())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-
         driver.getRightButton()
-            .whileTrue(new ArmToFerry())
+            .onTrue(new ArmToFerry())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-
         driver.getBottomButton().onTrue(new ArmToFeed());
         
-        driver.getDPadUp().whileTrue(new ArmToPreClimb());
-        driver.getDPadDown().whileTrue(new ArmToStow());
+        driver.getDPadUp().onTrue(new ArmToPreClimb());
+        driver.getDPadDown().onTrue(new ArmToStow());
 
     }
 
