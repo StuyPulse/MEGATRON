@@ -74,6 +74,8 @@ public class ArmImpl extends Arm {
         switch (state) {
             case AMP:
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
+            case SUBWOOFER_SHOT:
+                return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
             case SPEAKER_LOW:
                 return getSpeakerAngle(true);
             case SPEAKER_HIGH:
@@ -134,7 +136,7 @@ public class ArmImpl extends Arm {
         }
         catch (Exception exception) {
             exception.printStackTrace();
-            return Settings.Arm.PODIUM_SHOT_ANGLE.get();
+            return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
         }
     }
 

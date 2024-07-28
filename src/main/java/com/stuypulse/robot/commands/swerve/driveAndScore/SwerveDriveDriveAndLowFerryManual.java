@@ -9,10 +9,10 @@ import com.stuypulse.stuylib.input.Gamepad;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-public class SwerveDriveDriveAndLobFerry extends SwerveDriveDriveAndScore{
+public class SwerveDriveDriveAndLowFerryManual extends SwerveDriveDriveAndScore{
 
-    public SwerveDriveDriveAndLobFerry(Gamepad driver) {
-        super(driver, Arm.State.LOB_FERRY);
+    public SwerveDriveDriveAndLowFerryManual(Gamepad driver) {
+        super(driver, Arm.State.SPEAKER_HIGH);
     }
 
     private Translation2d getAmpCornerPose() {
@@ -25,11 +25,11 @@ public class SwerveDriveDriveAndLobFerry extends SwerveDriveDriveAndScore{
     
     @Override
     protected Rotation2d getTargetAngle() {
-        return SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Field.getManualFerryPosition().minus(getAmpCornerPose()).getAngle();
     }
 
     @Override
     protected double getDistanceToTarget() {
-        return SwerveDrive.getInstance().getPose().getTranslation().getDistance(getAmpCornerPose());
+        return Field.getManualFerryPosition().getDistance(getAmpCornerPose());
     }
 }

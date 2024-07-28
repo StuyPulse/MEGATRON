@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.arm.ArmToSpeakerHigh;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSpeakerLow;
 import com.stuypulse.robot.commands.arm.ArmToStow;
+import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
@@ -22,17 +23,23 @@ import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
+import com.stuypulse.robot.commands.shooter.ShooterScoreAmp;
+import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
-import com.stuypulse.robot.commands.swerve.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerHigh;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveAutoAlignment;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerHigh;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerLow;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLobFerry;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLobFerryManual;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerryManual;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerLow;
-import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerLow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -103,59 +110,87 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getRightBumper().whileTrue(new SwerveDriveXMode());
+        configureOperatorBindings();
+        configureDriverBindings();
+    }
 
+    private void configureDriverBindings() {
         driver.getLeftMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
-        driver.getRightMenuButton().onTrue(new SwerveDriveAutoAlignment(driver));
 
-        driver.getLeftTriggerButton()
+        // intake field relative
+        driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
             .whileTrue(new IntakeAcquire()
                 .andThen(new BuzzController(driver))
             );
         
-        driver.getLeftBumper()
+        // intake robot relative
+        driver.getLeftTriggerButton()
+            .onTrue(new ArmToFeed())
+            .whileTrue(new IntakeAcquire()
+                .andThen(new BuzzController(driver))
+            )
+            .whileTrue(new SwerveDriveDriveRobotRelative(driver));
+        
+        // deacquire
+        driver.getDPadLeft()
             .whileTrue(new IntakeDeacquire())
             .onFalse(new IntakeStop());
-
-        driver.getRightTriggerButton()
-            .whileTrue(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                .andThen(new ShooterAutoShoot())
-            )
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ShooterSetRPM(new ShooterSpeeds()).onlyIf(() -> !Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
-        driver.getTopButton()
-            .onTrue(new ArmToSpeaker())
-            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-        
-        driver.getTopButton()
+        // speaker align and score 
+        driver.getRightBumper()
+            .onTrue(new ArmToSpeaker());
+        driver.getRightBumper()
             .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
             .whileTrue(new ConditionalCommand(
                 new SwerveDriveDriveAndScoreSpeakerLow(driver), 
                 new SwerveDriveDriveAndScoreSpeakerHigh(driver), 
                 () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
 
-        driver.getRightButton()
-            .onTrue(new ArmToFerry())
-            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-
-        driver.getRightButton()
+        // ferry align and shoot
+        driver.getTopButton()
+            .onTrue(new ArmToFerry());
+        driver.getTopButton()
             .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
             .whileTrue(new ConditionalCommand(
                 new SwerveDriveDriveAndLowFerry(driver), 
                 new SwerveDriveDriveAndLobFerry(driver), 
                 () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
 
-        driver.getLeftButton()
+        // arm to amp and alignment
+        driver.getLeftTriggerButton()
             .onTrue(new ArmToAmp())
-            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
+            .onTrue(new SwerveDriveDriveAlignedAmp(driver));
+
+        // manual speaker at subwoofer
+        // score amp
+        // rebind to a button on the back later
+        driver.getRightMenuButton()
+            .whileTrue(new ConditionalCommand(
+                new ShooterScoreAmp(), 
+                new ArmToSubwooferShot()
+                    .andThen(new ShooterScoreSpeaker()), 
+                () -> Arm.getInstance().getState() == Arm.State.AMP));
+        
+        // manual ferry
+        driver.getLeftButton()
+            .onTrue(new ArmToFerry());
+        driver.getLeftButton()
+            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
+            .whileTrue(new ConditionalCommand(
+                new SwerveDriveDriveAndLowFerryManual(driver), 
+                new SwerveDriveDriveAndLobFerryManual(driver), 
+                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
         
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());
         driver.getDPadDown().onTrue(new ArmToStow());
+    }
 
+    private void configureOperatorBindings() {
+        operator.getLeftTriggerButton().whileTrue(new IntakeDeacquire());
+        operator.getRightTriggerButton().whileTrue(new IntakeAcquire());
     }
 
     /**************/

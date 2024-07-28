@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAligned;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.subsystems.arm.Arm;
@@ -24,7 +24,7 @@ public class SwerveDriveAutoAlignment extends InstantCommand{
     public void initialize() {
         switch (Arm.getInstance().getState()) {
             case AMP:
-                CommandScheduler.getInstance().schedule(new SwerveDriveDriveAmpAligned(driver));
+                CommandScheduler.getInstance().schedule(new SwerveDriveDriveAlignedAmp(driver));
                 break;
             case SPEAKER_HIGH:
                 CommandScheduler.getInstance().schedule(new SwerveDriveDriveAlignedSpeakerHigh(driver));

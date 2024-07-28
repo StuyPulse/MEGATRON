@@ -12,7 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class SwerveDriveDriveAndLowFerry extends SwerveDriveDriveAndScore{
 
     public SwerveDriveDriveAndLowFerry(Gamepad driver) {
-        super(driver, Arm.State.SPEAKER_HIGH);
+        super(driver, Arm.State.LOW_FERRY);
     }
 
     private Translation2d getAmpCornerPose() {

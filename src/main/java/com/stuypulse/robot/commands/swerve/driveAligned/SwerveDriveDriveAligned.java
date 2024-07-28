@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAligned;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -71,6 +71,11 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     protected double getAngleError() {
         return controller.getError().getRotation2d().getDegrees();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DEADBAND.getAsDouble();
     }
 
     @Override
