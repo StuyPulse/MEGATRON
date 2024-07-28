@@ -39,9 +39,6 @@ public class ArmImpl extends Arm {
     private final Controller controller;
     private final MotionProfile motionProfile;
 
-    private final BStream shouldGoBackToFeed;
-    private final BStream shouldGoBackToFeedFromAmp;
-
     protected ArmImpl() {
         super();
         leftMotor = new CANSparkMax(Ports.Arm.LEFT_MOTOR, MotorType.kBrushless);
@@ -66,14 +63,6 @@ public class ArmImpl extends Arm {
             .add(new ArmEncoderFeedforward(Settings.Arm.Feedforward.kG))
             .add(new PIDController(Settings.Arm.PID.kP, Settings.Arm.PID.kI, Settings.Arm.PID.kD))
             .setSetpointFilter(motionProfile);
-        
-        shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
-                            .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
-        
-        shouldGoBackToFeedFromAmp = BStream.create(shouldGoBackToFeed)
-                            .filtered(new BDebounce.Rising(Settings.Arm.EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP))
-                            .and(BStream.create(() -> !overriding)
-                                .filtered(new BDebounce.Rising(Settings.Arm.EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP)));
     } 
 
     @Override
@@ -81,13 +70,8 @@ public class ArmImpl extends Arm {
         return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.getAsDouble();
     }
 
-    @Override
-    public boolean shouldReturnToFeed() {
-        return shouldGoBackToFeed.get();
-    }
-
     private double getTargetDegrees() {
-        switch (actualState) {
+        switch (state) {
             case AMP:
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
             case SPEAKER_LOW:
@@ -169,38 +153,15 @@ public class ArmImpl extends Arm {
 
         if (bumpSwitchTriggered.get()) {
             armEncoder.setPosition(Settings.Arm.MIN_ANGLE.get()/360);
-            if (actualState == State.RESETTING) {
-                actualState = State.FEED;
-                requestedState = State.FEED;
+            if (state == State.RESETTING) {
+                state = State.FEED;
             }
         }
         
-        if (actualState == State.RESETTING) {
+        if (state == State.RESETTING) {
             setVoltage(-1.5);
         }
         else {
-            if (overriding
-                || requestedState == State.STOW 
-                || requestedState == State.PRE_CLIMB
-                || requestedState == State.FEED
-                || requestedState == State.RESETTING
-                || Shooter.getInstance().hasNote()
-            ) {
-                this.actualState = this.requestedState;
-            }
-            else if (shouldGoBackToFeed.get()) {
-                if (actualState == State.AMP) {
-                    if (shouldGoBackToFeedFromAmp.get()) {
-                        requestedState = State.FEED;
-                        actualState = State.FEED;
-                    }
-                }
-                else if (actualState != State.FEED) {
-                    requestedState = State.FEED;
-                    actualState = State.FEED;
-                }
-            }
-
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
             setVoltage(controller.getOutput());
         }

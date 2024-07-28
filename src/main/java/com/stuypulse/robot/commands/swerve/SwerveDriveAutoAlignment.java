@@ -22,7 +22,7 @@ public class SwerveDriveAutoAlignment extends InstantCommand{
 
     @Override
     public void initialize() {
-        switch (Arm.getInstance().getActualState()) {
+        switch (Arm.getInstance().getState()) {
             case AMP:
                 CommandScheduler.getInstance().schedule(new SwerveDriveDriveAmpAligned(driver));
                 break;

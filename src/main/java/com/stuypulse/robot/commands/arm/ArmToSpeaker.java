@@ -22,10 +22,10 @@ public class ArmToSpeaker extends InstantCommand{
     @Override
     public void initialize() {
         if (stopWatch.getTime() - lastClick < Settings.Driver.DOUBLE_CLICK_TIME_BETWEEN_CLICKS) {
-            arm.setRequestedState(Arm.State.SPEAKER_HIGH);
+            arm.setState(Arm.State.SPEAKER_HIGH);
         }
         else {
-            arm.setRequestedState(Arm.State.SPEAKER_LOW);
+            arm.setState(Arm.State.SPEAKER_LOW);
         }
         lastClick = stopWatch.getTime();
     }

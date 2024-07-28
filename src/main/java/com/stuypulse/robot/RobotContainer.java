@@ -2,8 +2,6 @@ package com.stuypulse.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
-import com.stuypulse.robot.commands.arm.ArmDisableOverride;
-import com.stuypulse.robot.commands.arm.ArmEnableOverride;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.arm.ArmToFerry;
@@ -125,29 +123,14 @@ public class RobotContainer {
         driver.getTopButton()
             .onTrue(new ArmToSpeaker())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-        
-        driver.getTopButton()
-            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
-            .onTrue(new ArmEnableOverride())
-            .onFalse(new ArmDisableOverride());
 
         driver.getLeftButton()
             .onTrue(new ArmToAmp())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-            
-        driver.getLeftButton()
-            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
-            .onTrue(new ArmEnableOverride())
-            .onFalse(new ArmDisableOverride());
 
         driver.getRightButton()
             .whileTrue(new ArmToFerry())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-            
-        driver.getRightButton()
-            .debounce(Settings.Driver.HOLD_TO_OVERRIDE_TIME)
-            .onTrue(new ArmEnableOverride())
-            .onFalse(new ArmDisableOverride());
 
         driver.getBottomButton().onTrue(new ArmToFeed());
         

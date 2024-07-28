@@ -140,7 +140,7 @@ public class ShooterImpl extends Shooter {
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getActualState() == Arm.State.LOB_FERRY) {
+        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
         }
@@ -154,7 +154,7 @@ public class ShooterImpl extends Shooter {
     public void periodic () {
         super.periodic();
 
-        Arm.State armState = Arm.getInstance().getActualState();
+        Arm.State armState = Arm.getInstance().getState();
 
         if (Settings.Shooter.ALWAYS_KEEP_AT_SPEED) {
             if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {

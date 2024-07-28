@@ -71,9 +71,6 @@ public interface Settings {
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
         SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
 
-        double SHOULD_RETURN_TO_FEED_TIME = 1.0;
-        double EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP = 2.5;
-
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
@@ -328,7 +325,6 @@ public interface Settings {
     }
 
     public interface Driver {
-        double HOLD_TO_OVERRIDE_TIME = 0.55;
         double DOUBLE_CLICK_TIME_BETWEEN_CLICKS = 0.5;
 
         public interface Drive {

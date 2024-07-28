@@ -22,10 +22,10 @@ public class ArmToFerry extends InstantCommand{
     @Override
     public void initialize() {
         if (stopWatch.getTime() - lastClick < Settings.Driver.DOUBLE_CLICK_TIME_BETWEEN_CLICKS) {
-            arm.setRequestedState(Arm.State.LOB_FERRY);
+            arm.setState(Arm.State.LOB_FERRY);
         }
         else {
-            arm.setRequestedState(Arm.State.LOW_FERRY);
+            arm.setState(Arm.State.LOW_FERRY);
         }
         lastClick = stopWatch.getTime();
     }

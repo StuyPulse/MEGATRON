@@ -12,7 +12,7 @@ public class ShooterAutoShoot extends InstantCommand{
 
     @Override
     public void initialize() {
-        switch (Arm.getInstance().getActualState()) {
+        switch (Arm.getInstance().getState()) {
             case AMP:
                 CommandScheduler.getInstance().schedule(new ShooterScoreAmp());
                 break;
