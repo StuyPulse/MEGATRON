@@ -3,6 +3,7 @@ package com.stuypulse.robot.commands.swerve.driveAndScore;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
+import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Alignment;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
@@ -129,7 +130,6 @@ public abstract class SwerveDriveDriveAndScore extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooter.setTargetSpeeds(new ShooterSpeeds());
-        shooter.feederStop();
+        CommandScheduler.getInstance().schedule(new ShooterStop());
     }
 }

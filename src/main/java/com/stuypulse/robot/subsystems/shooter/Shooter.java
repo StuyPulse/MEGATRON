@@ -55,6 +55,4 @@ public abstract class Shooter extends SubsystemBase {
     public abstract void feederStop();
     
     public abstract boolean hasNote();
-
-    public abstract boolean noteShot();
 }

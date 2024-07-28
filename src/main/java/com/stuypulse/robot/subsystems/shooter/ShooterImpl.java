@@ -128,11 +128,6 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public boolean noteShot() {
-        return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
-    }
-
-    @Override
     public ShooterSpeeds getFerrySpeeds() {
         Translation2d ferryZone = Robot.isBlue()
             ? new Translation2d(0, Field.WIDTH - 1.5)
@@ -199,8 +194,6 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
-
-        SmartDashboard.putBoolean("Shooter/Note Shot", noteShot());
     }
 
 }
