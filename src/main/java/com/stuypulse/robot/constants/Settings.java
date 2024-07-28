@@ -68,7 +68,8 @@ public interface Settings {
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
+        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -60);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -293,7 +294,8 @@ public interface Settings {
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
 
-        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Trap/Into Chain Speed", 0.25);
+        SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
+        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);
 
         double MAX_ALIGNMENT_SPEED = 2.5;
 
@@ -307,20 +309,8 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Alignment/Rotation/kP", 6.0);
             SmartNumber kI = new SmartNumber("Alignment/Rotation/kI", 0.0);
             SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
-        }
 
-        public interface Shoot {
-            public interface Translation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
-                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
-            }
-    
-            public interface Rotation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
-                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
-            }
+            SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
         }
     }
 

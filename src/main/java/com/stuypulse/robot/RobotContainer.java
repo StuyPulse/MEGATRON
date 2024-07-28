@@ -3,6 +3,7 @@ package com.stuypulse.robot;
 import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
+import com.stuypulse.robot.commands.arm.ArmToClimbing;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.arm.ArmToFerry;
 import com.stuypulse.robot.commands.arm.ArmToLobFerry;
@@ -28,6 +29,8 @@ import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToChain;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToClimb;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
@@ -150,9 +153,10 @@ public class RobotContainer {
                 () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
 
         // ferry align and shoot
-        driver.getTopButton()
+        // move to back of controller
+        driver.getRightMenuButton()
             .onTrue(new ArmToFerry());
-        driver.getTopButton()
+        driver.getRightMenuButton()
             .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
             .whileTrue(new ConditionalCommand(
                 new SwerveDriveDriveAndLowFerry(driver), 
@@ -175,19 +179,24 @@ public class RobotContainer {
                 () -> Arm.getInstance().getState() == Arm.State.AMP));
         
         // manual ferry
-        driver.getLeftButton()
+        driver.getTopButton()
             .onTrue(new ArmToFerry());
-        driver.getLeftButton()
+        driver.getTopButton()
             .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
             .whileTrue(new ConditionalCommand(
                 new SwerveDriveDriveAndLowFerryManual(driver), 
                 new SwerveDriveDriveAndLobFerryManual(driver), 
                 () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
         
-        driver.getBottomButton().onTrue(new ArmToFeed());
+        driver.getBottomButton()
+            .onTrue(new ArmToPreClimb());
+        driver.getBottomButton()
+            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
+            .whileTrue(new SwerveDriveDriveToChain());
         
-        driver.getDPadUp().onTrue(new ArmToPreClimb());
-        driver.getDPadDown().onTrue(new ArmToStow());
+        driver.getRightButton().whileTrue(new SwerveDriveDriveToClimb());
+        
+        driver.getLeftBumper().onTrue(new ArmToClimbing());
     }
 
     private void configureOperatorBindings() {

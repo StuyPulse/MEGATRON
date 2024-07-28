@@ -90,6 +90,8 @@ public class ArmImpl extends Arm {
                 return Settings.Arm.MIN_ANGLE.getAsDouble();
             case PRE_CLIMB:
                 return Settings.Arm.PRE_CLIMB_ANGLE.getAsDouble();
+            case CLIMBING:
+                return Settings.Arm.POST_CLIMB_ANGLE.get();
             default:
                 return Settings.Arm.MIN_ANGLE.getAsDouble();   
         }

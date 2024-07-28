@@ -25,6 +25,7 @@ public abstract class Arm extends SubsystemBase {
         FEED,
         STOW,
         PRE_CLIMB,
+        CLIMBING,
         RESETTING
     }
 
