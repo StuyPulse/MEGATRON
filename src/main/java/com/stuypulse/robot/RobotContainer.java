@@ -40,6 +40,7 @@ import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowF
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerryManual;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerLow;
+import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -120,6 +121,7 @@ public class RobotContainer {
         // intake field relative
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
+            .whileTrue(new SwerveDriveDriveToNote(driver))
             .whileTrue(new IntakeAcquire()
                 .andThen(new BuzzController(driver))
             );
