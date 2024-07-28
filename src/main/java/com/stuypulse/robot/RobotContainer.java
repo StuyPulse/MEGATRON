@@ -28,6 +28,10 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedLowFerry;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLobFerry;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerHigh;
+import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerLow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveAlignedSpeakerLow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
@@ -124,12 +128,29 @@ public class RobotContainer {
         driver.getTopButton()
             .onTrue(new ArmToSpeaker())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
-        driver.getLeftButton()
-            .onTrue(new ArmToAmp())
-            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
+        
+        driver.getTopButton()
+            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
+            .whileTrue(new ConditionalCommand(
+                new SwerveDriveDriveAndScoreSpeakerLow(driver), 
+                new SwerveDriveDriveAndScoreSpeakerHigh(driver), 
+                () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
+
         driver.getRightButton()
             .onTrue(new ArmToFerry())
             .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
+
+        driver.getRightButton()
+            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
+            .whileTrue(new ConditionalCommand(
+                new SwerveDriveDriveAndLowFerry(driver), 
+                new SwerveDriveDriveAndLobFerry(driver), 
+                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
+
+        driver.getLeftButton()
+            .onTrue(new ArmToAmp())
+            .onTrue(new BuzzController(driver).onlyIf(() -> !Shooter.getInstance().hasNote()));
+        
         driver.getBottomButton().onTrue(new ArmToFeed());
         
         driver.getDPadUp().onTrue(new ArmToPreClimb());

@@ -1,15 +1,22 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAndScore;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Alignment;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Swerve.Assist;
+import com.stuypulse.robot.subsystems.arm.Arm;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
+import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounceRC;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.VStream;
@@ -20,21 +27,32 @@ import com.stuypulse.stuylib.util.AngleVelocity;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-public abstract class SwerveDriveDriveAligned extends Command {
+public abstract class SwerveDriveDriveAndScore extends Command {
 
     private final SwerveDrive swerve;
+    private final Arm arm;
+    private final Shooter shooter;
+
+    private final Arm.State armState;
+
     protected final Gamepad driver;
     private final VStream velocity;
+    private final IStream angleVelocity;
+
+    private final BStream isAligned;
 
     private final SwerveRequest.FieldCentric drive;
 
     private final AngleController controller;
-    private final IStream angleVelocity;
 
-    public SwerveDriveDriveAligned(Gamepad driver) {
+    public SwerveDriveDriveAndScore(Gamepad driver, Arm.State armState) {
         swerve = SwerveDrive.getInstance();
+        shooter = Shooter.getInstance();
+        arm = Arm.getInstance();
         this.driver = driver;
+        this.armState = armState;
 
         velocity = VStream.create(driver::getLeftStick)
             .filtered(
@@ -52,6 +70,9 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
         controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kP)
             .setOutputFilter(x -> -x);
+        
+        isAligned = BStream.create(this::isAligned)
+            .filtered(new BDebounceRC.Rising(Alignment.DEBOUNCE_TIME));
 
         AngleVelocity derivative = new AngleVelocity();
 
@@ -69,8 +90,22 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     protected abstract double getDistanceToTarget();
 
-    protected double getAngleError() {
-        return controller.getError().getRotation2d().getDegrees();
+    private boolean isAligned() {
+        return controller.isDoneDegrees(Alignment.ANGLE_TOLERANCE.get());
+    }
+
+    @Override
+    public void initialize() {
+        arm.setState(armState);
+        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
+            shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
+        }
+        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
+            shooter.setTargetSpeeds(shooter.getFerrySpeeds());
+        }
+        else {
+            shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
+        }
     }
 
     @Override
@@ -85,5 +120,16 @@ public abstract class SwerveDriveDriveAligned extends Command {
                         Angle.fromRotation2d(swerve.getPose().getRotation()))
                 )         
             );
+        
+        if (isAligned.get()) {
+            CommandScheduler.getInstance().schedule(new ShooterAutoShoot());
+        }
+
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooter.setTargetSpeeds(new ShooterSpeeds());
+        shooter.feederStop();
     }
 }

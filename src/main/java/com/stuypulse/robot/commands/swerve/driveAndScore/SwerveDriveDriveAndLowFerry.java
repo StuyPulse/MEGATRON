@@ -1,17 +1,18 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAndScore;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.input.Gamepad;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
+public class SwerveDriveDriveAndLowFerry extends SwerveDriveDriveAndScore{
 
-public class SwerveDriveDriveAlignedLowFerry extends SwerveDriveDriveAligned {
-
-    public SwerveDriveDriveAlignedLowFerry(Gamepad driver) {
-        super(driver);
+    public SwerveDriveDriveAndLowFerry(Gamepad driver) {
+        super(driver, Arm.State.SPEAKER_HIGH);
     }
 
     private Translation2d getAmpCornerPose() {
@@ -21,7 +22,7 @@ public class SwerveDriveDriveAlignedLowFerry extends SwerveDriveDriveAligned {
         
         return targetPose;
     }
-
+    
     @Override
     protected Rotation2d getTargetAngle() {
         return SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle();

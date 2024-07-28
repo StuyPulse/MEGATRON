@@ -14,7 +14,6 @@ public class SwerveDriveDriveAlignedLobFerry extends SwerveDriveDriveAligned {
         super(driver);
     }
 
-    // returns pose of close amp corner
     private Translation2d getAmpCornerPose() {
         Translation2d targetPose = Robot.isBlue()
             ? new Translation2d(0.0, Field.WIDTH - 1.5)
