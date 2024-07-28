@@ -2,17 +2,14 @@ package com.stuypulse.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
+import com.stuypulse.robot.commands.arm.ArmSetShootHeightToHigh;
+import com.stuypulse.robot.commands.arm.ArmSetShootHeightToLow;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.arm.ArmToFerry;
-import com.stuypulse.robot.commands.arm.ArmToLobFerry;
-import com.stuypulse.robot.commands.arm.ArmToLowFerry;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
-import com.stuypulse.robot.commands.arm.ArmToSpeakerHigh;
-import com.stuypulse.robot.commands.arm.ArmToSpeaker;
-import com.stuypulse.robot.commands.arm.ArmToSpeakerLow;
 import com.stuypulse.robot.commands.arm.ArmToStow;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
@@ -32,17 +29,13 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToChain;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToClimb;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveAutoAlignment;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerLow;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLobFerry;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLobFerryManual;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerry;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndLowFerryManual;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerHigh;
-import com.stuypulse.robot.commands.swerve.driveAndScore.SwerveDriveDriveAndScoreSpeakerLow;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndFerry;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndFerryManual;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndScoreSpeaker;
 import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
@@ -119,7 +112,7 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings() {
-        driver.getLeftMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
+        driver.getRightMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
 
         // intake field relative
         driver.getRightTriggerButton()
@@ -142,26 +135,17 @@ public class RobotContainer {
             .whileTrue(new IntakeDeacquire())
             .onFalse(new IntakeStop());
         
+        driver.getDPadUp().onTrue(new ArmSetShootHeightToHigh());
+        driver.getDPadDown().onTrue(new ArmSetShootHeightToLow());
+        
         // speaker align and score 
         driver.getRightBumper()
-            .onTrue(new ArmToSpeaker());
-        driver.getRightBumper()
-            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
-            .whileTrue(new ConditionalCommand(
-                new SwerveDriveDriveAndScoreSpeakerLow(driver), 
-                new SwerveDriveDriveAndScoreSpeakerHigh(driver), 
-                () -> Arm.getInstance().getState() == Arm.State.SPEAKER_LOW));
+            .whileTrue(new SwerveDriveDriveAndScoreSpeaker(driver));
 
         // ferry align and shoot
         // move to back of controller
-        driver.getRightMenuButton()
-            .onTrue(new ArmToFerry());
-        driver.getRightMenuButton()
-            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
-            .whileTrue(new ConditionalCommand(
-                new SwerveDriveDriveAndLowFerry(driver), 
-                new SwerveDriveDriveAndLobFerry(driver), 
-                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
+        driver.getRightStickButton()
+            .whileTrue(new SwerveDriveDriveAndFerry(driver));
 
         // arm to amp and alignment
         driver.getLeftBumper()
@@ -171,7 +155,7 @@ public class RobotContainer {
         // manual speaker at subwoofer
         // score amp
         // rebind to a button on the back later
-        driver.getRightMenuButton()
+        driver.getLeftStickButton()
             .whileTrue(new ConditionalCommand(
                 new ShooterScoreAmp(), 
                 new ArmToSubwooferShot()
@@ -180,22 +164,15 @@ public class RobotContainer {
         
         // manual ferry
         driver.getTopButton()
-            .onTrue(new ArmToFerry());
-        driver.getTopButton()
-            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
-            .whileTrue(new ConditionalCommand(
-                new SwerveDriveDriveAndLowFerryManual(driver), 
-                new SwerveDriveDriveAndLobFerryManual(driver), 
-                () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
+            .whileTrue(new SwerveDriveDriveAndFerryManual(driver));
         
-        driver.getBottomButton()
+        driver.getRightButton()
             .onTrue(new ArmToPreClimb());
-        driver.getBottomButton()
-            .debounce(Settings.Driver.HOLD_TIME_FOR_AUTOMATED_SCORING)
+        driver.getRightButton()
+            .debounce(Settings.Driver.TIME_UNTIL_HOLD)
             .whileTrue(new SwerveDriveDriveToChain());
         
-        driver.getRightButton().whileTrue(new SwerveDriveDriveToClimb());
-        
+        driver.getBottomButton().whileTrue(new SwerveDriveDriveToChain());
         driver.getLeftMenuButton().onTrue(new ArmToClimbing());
     }
 

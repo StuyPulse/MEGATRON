@@ -315,8 +315,7 @@ public interface Settings {
     }
 
     public interface Driver {
-        double DOUBLE_CLICK_TIME_BETWEEN_CLICKS = 0.5;
-        double HOLD_TIME_FOR_AUTOMATED_SCORING = 0.7;
+        double TIME_UNTIL_HOLD = 0.7;
 
         public interface Drive {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);

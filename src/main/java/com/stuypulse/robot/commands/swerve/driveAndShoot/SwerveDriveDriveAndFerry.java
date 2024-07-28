@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve.driveAndScore;
+package com.stuypulse.robot.commands.swerve.driveAndShoot;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
@@ -9,10 +9,10 @@ import com.stuypulse.stuylib.input.Gamepad;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-public class SwerveDriveDriveAndLobFerry extends SwerveDriveDriveAndScore{
+public class SwerveDriveDriveAndFerry extends SwerveDriveDriveAndShoot{
 
-    public SwerveDriveDriveAndLobFerry(Gamepad driver) {
-        super(driver, Arm.State.LOB_FERRY);
+    public SwerveDriveDriveAndFerry(Gamepad driver) {
+        super(driver, Arm.State.FERRY);
     }
 
     private Translation2d getAmpCornerPose() {
@@ -25,7 +25,9 @@ public class SwerveDriveDriveAndLobFerry extends SwerveDriveDriveAndScore{
     
     @Override
     protected Rotation2d getTargetAngle() {
-        return SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Arm.getInstance().getShootHeight() == Arm.ShootHeight.LOW
+                ? SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle()
+                : SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
     }
 
     @Override

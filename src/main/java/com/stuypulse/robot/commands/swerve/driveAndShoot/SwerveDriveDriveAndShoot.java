@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve.driveAndScore;
+package com.stuypulse.robot.commands.swerve.driveAndShoot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -30,7 +30,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-public abstract class SwerveDriveDriveAndScore extends Command {
+public abstract class SwerveDriveDriveAndShoot extends Command {
 
     private final SwerveDrive swerve;
     private final Arm arm;
@@ -48,7 +48,7 @@ public abstract class SwerveDriveDriveAndScore extends Command {
 
     private final AngleController controller;
 
-    public SwerveDriveDriveAndScore(Gamepad driver, Arm.State armState) {
+    public SwerveDriveDriveAndShoot(Gamepad driver, Arm.State armState) {
         swerve = SwerveDrive.getInstance();
         shooter = Shooter.getInstance();
         arm = Arm.getInstance();
@@ -98,14 +98,13 @@ public abstract class SwerveDriveDriveAndScore extends Command {
     @Override
     public void initialize() {
         arm.setState(armState);
-        if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
-            shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
-        }
-        else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
-            shooter.setTargetSpeeds(shooter.getFerrySpeeds());
-        }
-        else {
-            shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
+        switch (armState) {
+            case SPEAKER:
+                shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
+            case FERRY:
+                shooter.setTargetSpeeds(shooter.getFerrySpeeds());
+            default:
+                shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
         }
     }
 
@@ -124,6 +123,10 @@ public abstract class SwerveDriveDriveAndScore extends Command {
         
         if (isAligned.get()) {
             CommandScheduler.getInstance().schedule(new ShooterAutoShoot());
+        }
+
+        if (armState == Arm.State.FERRY) {
+            shooter.setTargetSpeeds(shooter.getFerrySpeeds());
         }
 
     }

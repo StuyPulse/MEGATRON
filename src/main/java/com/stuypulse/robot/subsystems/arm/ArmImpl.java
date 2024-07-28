@@ -76,14 +76,12 @@ public class ArmImpl extends Arm {
                 return Settings.Arm.AMP_ANGLE.getAsDouble();
             case SUBWOOFER_SHOT:
                 return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
-            case SPEAKER_LOW:
-                return getSpeakerAngle(true);
-            case SPEAKER_HIGH:
-                return getSpeakerAngle(false);
-            case LOW_FERRY:
-                return Settings.Arm.LOW_FERRY_ANGLE.getAsDouble(); 
-            case LOB_FERRY:
-                return Settings.Arm.LOB_FERRY_ANGLE.getAsDouble();
+            case SPEAKER:
+                return getSpeakerAngle(shootHeight == ShootHeight.LOW);
+            case FERRY:
+                return shootHeight == ShootHeight.LOW 
+                        ? Settings.Arm.LOW_FERRY_ANGLE.getAsDouble()
+                        : Settings.Arm.LOB_FERRY_ANGLE.getAsDouble();
             case FEED:
                 return Settings.Arm.FEED_ANGLE.getAsDouble();
             case STOW:
