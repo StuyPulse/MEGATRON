@@ -12,7 +12,7 @@ public class ShooterScoreAmp extends SequentialCommandGroup {
         addCommands(
             new ShooterFeederDeacquire(),
             new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
-            new WaitUntilCommand(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME.get()),
+            new WaitUntilCommand(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME),
             new ShooterFeederStop()
         );
     }

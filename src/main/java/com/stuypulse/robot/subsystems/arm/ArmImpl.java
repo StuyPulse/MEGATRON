@@ -26,7 +26,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class ArmImpl extends Arm {
     
@@ -41,6 +40,7 @@ public class ArmImpl extends Arm {
     private final MotionProfile motionProfile;
 
     private final BStream shouldGoBackToFeed;
+    private final BStream shouldGoBackToFeedFromAmp;
 
     protected ArmImpl() {
         super();
@@ -69,6 +69,11 @@ public class ArmImpl extends Arm {
         
         shouldGoBackToFeed = BStream.create(() -> !Shooter.getInstance().hasNote())
                             .filtered(new BDebounce.Rising(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME));
+        
+        shouldGoBackToFeedFromAmp = BStream.create(shouldGoBackToFeed)
+                            .filtered(new BDebounce.Rising(Settings.Arm.EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP))
+                            .and(BStream.create(() -> !overriding)
+                                .filtered(new BDebounce.Rising(Settings.Arm.EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP)));
     } 
 
     @Override
@@ -184,7 +189,13 @@ public class ArmImpl extends Arm {
                 this.actualState = this.requestedState;
             }
             else if (shouldGoBackToFeed.get()) {
-                if (actualState != State.FEED) {
+                if (actualState == State.AMP) {
+                    if (shouldGoBackToFeedFromAmp.get()) {
+                        requestedState = State.FEED;
+                        actualState = State.FEED;
+                    }
+                }
+                else if (actualState != State.FEED) {
                     requestedState = State.FEED;
                     actualState = State.FEED;
                 }
