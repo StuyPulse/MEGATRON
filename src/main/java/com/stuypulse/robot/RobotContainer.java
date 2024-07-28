@@ -164,7 +164,7 @@ public class RobotContainer {
                 () -> Arm.getInstance().getState() == Arm.State.LOW_FERRY));
 
         // arm to amp and alignment
-        driver.getLeftTriggerButton()
+        driver.getLeftBumper()
             .onTrue(new ArmToAmp())
             .onTrue(new SwerveDriveDriveAlignedAmp(driver));
 
@@ -196,7 +196,7 @@ public class RobotContainer {
         
         driver.getRightButton().whileTrue(new SwerveDriveDriveToClimb());
         
-        driver.getLeftBumper().onTrue(new ArmToClimbing());
+        driver.getLeftMenuButton().onTrue(new ArmToClimbing());
     }
 
     private void configureOperatorBindings() {
