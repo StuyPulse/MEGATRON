@@ -77,7 +77,7 @@ public class ShooterImpl extends Shooter {
 
         Motors.Shooter.LEFT_SHOOTER.configure(leftMotor);
         Motors.Shooter.RIGHT_SHOOTER.configure(rightMotor);
-        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor);   
+        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor); 
     }
 
     private double getLeftShooterRPM() {
@@ -148,19 +148,6 @@ public class ShooterImpl extends Shooter {
     @Override
     public void periodic () {
         super.periodic();
-
-        Arm.State armState = Arm.getInstance().getState();
-
-        if (Settings.Shooter.ALWAYS_KEEP_AT_SPEED) {
-            switch (armState) {
-                case SPEAKER:
-                    setTargetSpeeds(Settings.Shooter.SPEAKER);
-                case FERRY:
-                    setTargetSpeeds(getFerrySpeeds());
-                default:
-                    setTargetSpeeds(Settings.Shooter.SPEAKER);
-            }
-        }
 
         if (getLeftTargetRPM() == 0) {
             leftMotor.set(0);

@@ -2,7 +2,6 @@ package com.stuypulse.robot.commands.swerve.driveAndShoot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Alignment;
@@ -32,21 +31,21 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public abstract class SwerveDriveDriveAndShoot extends Command {
 
-    private final SwerveDrive swerve;
-    private final Arm arm;
-    private final Shooter shooter;
+    protected final SwerveDrive swerve;
+    protected final Arm arm;
+    protected final Shooter shooter;
 
-    private final Arm.State armState;
+    protected final Arm.State armState;
 
     protected final Gamepad driver;
-    private final VStream velocity;
-    private final IStream angleVelocity;
+    protected final VStream velocity;
+    protected final IStream angleVelocity;
 
-    private final BStream isAligned;
+    protected final BStream isAligned;
 
-    private final SwerveRequest.FieldCentric drive;
+    protected final SwerveRequest.FieldCentric drive;
 
-    private final AngleController controller;
+    protected final AngleController controller;
 
     public SwerveDriveDriveAndShoot(Gamepad driver, Arm.State armState) {
         swerve = SwerveDrive.getInstance();
@@ -69,7 +68,7 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
             .withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * Settings.Driver.Turn.DEADBAND.get())
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
 
-        controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kP)
+        controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kD)
             .setOutputFilter(x -> -x);
         
         isAligned = BStream.create(this::isAligned)
@@ -88,8 +87,9 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
     }
 
     protected abstract Rotation2d getTargetAngle();
-
     protected abstract double getDistanceToTarget();
+
+    protected abstract ShooterSpeeds getTargetSpeeds();
 
     private boolean isAligned() {
         return controller.isDoneDegrees(Alignment.ANGLE_TOLERANCE.get());
@@ -98,14 +98,7 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
     @Override
     public void initialize() {
         arm.setState(armState);
-        switch (armState) {
-            case SPEAKER:
-                shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
-            case FERRY:
-                shooter.setTargetSpeeds(shooter.getFerrySpeeds());
-            default:
-                shooter.setTargetSpeeds(Settings.Shooter.SPEAKER);
-        }
+        shooter.setTargetSpeeds(getTargetSpeeds());
     }
 
     @Override
@@ -120,19 +113,10 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
                         Angle.fromRotation2d(swerve.getPose().getRotation()))
                 )         
             );
-        
-        if (isAligned.get()) {
-            CommandScheduler.getInstance().schedule(new ShooterAutoShoot());
-        }
-
-        if (armState == Arm.State.FERRY) {
-            shooter.setTargetSpeeds(shooter.getFerrySpeeds());
-        }
-
     }
 
     @Override
     public void end(boolean interrupted) {
-        CommandScheduler.getInstance().schedule(new ShooterStop());
+        CommandScheduler.getInstance().schedule(new ShooterStop().onlyIf(() -> !Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
     }
 }

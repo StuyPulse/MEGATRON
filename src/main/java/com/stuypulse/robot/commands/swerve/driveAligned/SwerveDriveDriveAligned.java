@@ -50,7 +50,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
             .withRotationalDeadband(Settings.Swerve.MAX_ANGULAR_VELOCITY * Settings.Driver.Turn.DEADBAND.get())
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
 
-        controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kP)
+        controller = new AnglePIDController(Settings.Swerve.Assist.kP, Settings.Swerve.Assist.kI, Settings.Swerve.Assist.kD)
             .setOutputFilter(x -> -x);
 
         AngleVelocity derivative = new AngleVelocity();
@@ -75,7 +75,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DEADBAND.getAsDouble();
+        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble();
     }
 
     @Override

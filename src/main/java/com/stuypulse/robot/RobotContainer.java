@@ -18,12 +18,12 @@ import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
-import com.stuypulse.robot.commands.shooter.ShooterAutoShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
 import com.stuypulse.robot.commands.shooter.ShooterScoreAmp;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
+import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToChain;
@@ -160,7 +160,11 @@ public class RobotContainer {
                 new ShooterScoreAmp(), 
                 new ArmToSubwooferShot()
                     .andThen(new ShooterScoreSpeaker()), 
-                () -> Arm.getInstance().getState() == Arm.State.AMP));
+                () -> Arm.getInstance().getState() == Arm.State.AMP))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         // manual ferry
         driver.getTopButton()

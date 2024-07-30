@@ -1,13 +1,16 @@
 package com.stuypulse.robot.commands.swerve.driveAndShoot;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.commands.shooter.ShooterFerry;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
+import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class SwerveDriveDriveAndFerry extends SwerveDriveDriveAndShoot{
 
@@ -33,5 +36,18 @@ public class SwerveDriveDriveAndFerry extends SwerveDriveDriveAndShoot{
     @Override
     protected double getDistanceToTarget() {
         return SwerveDrive.getInstance().getPose().getTranslation().getDistance(getAmpCornerPose());
+    }
+
+    @Override
+    protected ShooterSpeeds getTargetSpeeds() {
+        return shooter.getFerrySpeeds();
+    }
+
+    @Override
+    public void execute() {
+        super.execute();
+        if (isAligned.get()) {
+            CommandScheduler.getInstance().schedule(new ShooterFerry());
+        }
     }
 }

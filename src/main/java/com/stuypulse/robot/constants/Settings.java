@@ -69,7 +69,7 @@ public interface Settings {
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 16);
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -60);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -97,7 +97,7 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.8;
+        double INTAKE_ACQUIRE_SPEED = 0.75;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -109,9 +109,9 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.25;
+        double FEEDER_INTAKE_SPEED = 0.3;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 0.25;
+        double FEEDER_SHOOT_SPEED = 0.4;
 
         boolean ALWAYS_KEEP_AT_SPEED = false;
 
@@ -121,6 +121,11 @@ public interface Settings {
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
+        );
+
+        ShooterSpeeds MANUAL_FERRY = new ShooterSpeeds(
+            new SmartNumber("Shooter/Manual Ferry RPM", 4800),
+            new SmartNumber("Shooter/Manual Ferry RPM differential", 500)
         );
 
         // Different falling debounce is used to detect note shooting;
@@ -181,7 +186,7 @@ public interface Settings {
             double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
 
             // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 6.0);
+            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
             SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.0);
 
@@ -328,7 +333,8 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.015);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.03);
+            SmartNumber DISABLE_ALIGNMENT_DEADBAND = new SmartNumber("Driver Settings/Turn/Disable Alignment Deadband", 0.08);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
