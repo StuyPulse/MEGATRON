@@ -135,7 +135,7 @@ public class ShooterImpl extends Shooter {
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getShootHeight() == Arm.ShootHeight.HIGH) {
+        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
         }

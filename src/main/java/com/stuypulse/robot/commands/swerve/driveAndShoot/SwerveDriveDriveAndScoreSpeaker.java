@@ -23,9 +23,7 @@ public class SwerveDriveDriveAndScoreSpeaker extends SwerveDriveDriveAndShoot{
     protected Rotation2d getTargetAngle() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-        return Arm.getInstance().getShootHeight() == Arm.ShootHeight.LOW
-                ? speakerPose.minus(currentPose).getAngle()
-                : speakerPose.minus(currentPose).getAngle().plus(Rotation2d.fromDegrees(180));
+        return speakerPose.minus(currentPose).getAngle();
     }
 
     @Override

@@ -13,10 +13,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-public class SwerveDriveDriveAndFerryManual extends SwerveDriveDriveAndShoot{
+public class SwerveDriveDriveAndLobFerryManual extends SwerveDriveDriveAndShoot{
 
-    public SwerveDriveDriveAndFerryManual(Gamepad driver) {
-        super(driver, Arm.State.FERRY);
+    public SwerveDriveDriveAndLobFerryManual(Gamepad driver) {
+        super(driver, Arm.State.LOB_FERRY);
     }
 
     private Translation2d getAmpCornerPose() {
@@ -29,9 +29,7 @@ public class SwerveDriveDriveAndFerryManual extends SwerveDriveDriveAndShoot{
     
     @Override
     protected Rotation2d getTargetAngle() {
-        return Arm.getInstance().getShootHeight() == Arm.ShootHeight.LOW
-                ? Field.getManualFerryPosition().minus(getAmpCornerPose()).getAngle()
-                : Field.getManualFerryPosition().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Field.getManualFerryPosition().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
     }
 
     @Override

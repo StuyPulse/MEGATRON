@@ -19,7 +19,8 @@ public abstract class Arm extends SubsystemBase {
         AMP,
         SUBWOOFER_SHOT,
         SPEAKER,
-        FERRY,
+        LOW_FERRY,
+        LOB_FERRY,
         FEED,
         STOW,
         PRE_CLIMB,
@@ -27,17 +28,10 @@ public abstract class Arm extends SubsystemBase {
         RESETTING
     }
 
-    public enum ShootHeight {
-        HIGH,
-        LOW
-    }
-
     protected State state;
-    protected ShootHeight shootHeight;
 
     protected Arm() {
         state = State.RESETTING;
-        shootHeight = ShootHeight.LOW;
     }
 
     public void setState(State state) {
@@ -46,18 +40,6 @@ public abstract class Arm extends SubsystemBase {
 
     public State getState() {
         return this.state;
-    }
-
-    public void setShootHeightHigh() {
-        this.shootHeight = ShootHeight.HIGH;
-    }
-
-    public void setShootHeightLow() {
-        this.shootHeight = ShootHeight.LOW;
-    }
-
-    public ShootHeight getShootHeight() {
-        return this.shootHeight;
     }
 
     public abstract boolean atTarget();
