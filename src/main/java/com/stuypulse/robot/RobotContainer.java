@@ -2,8 +2,6 @@ package com.stuypulse.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.stuypulse.robot.commands.BuzzController;
-import com.stuypulse.robot.commands.arm.ArmSetShootHeightToHigh;
-import com.stuypulse.robot.commands.arm.ArmSetShootHeightToLow;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
@@ -33,8 +31,10 @@ import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedA
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerHigh;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerLow;
-import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndFerry;
-import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndFerryManual;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLobFerry;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLobFerryManual;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLowFerryManual;
 import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndScoreSpeaker;
 import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
@@ -112,7 +112,7 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings() {
-        driver.getRightMenuButton().onTrue(new SwerveDriveSeedFieldRelative());
+        driver.getDPadUp().onTrue(new SwerveDriveSeedFieldRelative());
 
         // intake field relative
         driver.getRightTriggerButton()
@@ -135,17 +135,13 @@ public class RobotContainer {
             .whileTrue(new IntakeDeacquire())
             .onFalse(new IntakeStop());
         
-        driver.getDPadUp().onTrue(new ArmSetShootHeightToHigh());
-        driver.getDPadDown().onTrue(new ArmSetShootHeightToLow());
-        
         // speaker align and score 
-        driver.getRightBumper()
-            .whileTrue(new SwerveDriveDriveAndScoreSpeaker(driver));
+        driver.getRightBumper().whileTrue(new SwerveDriveDriveAndScoreSpeaker(driver));
 
         // ferry align and shoot
         // move to back of controller
-        driver.getRightStickButton()
-            .whileTrue(new SwerveDriveDriveAndFerry(driver));
+        driver.getDPadRight().whileTrue(new SwerveDriveDriveAndLobFerry(driver));
+        driver.getDPadDown().whileTrue(new SwerveDriveDriveAndLowFerry(driver));
 
         // arm to amp and alignment
         driver.getLeftBumper()
@@ -155,7 +151,7 @@ public class RobotContainer {
         // manual speaker at subwoofer
         // score amp
         // rebind to a button on the back later
-        driver.getLeftStickButton()
+        driver.getRightMenuButton()
             .whileTrue(new ConditionalCommand(
                 new ShooterScoreAmp(), 
                 new ArmToSubwooferShot()
@@ -167,17 +163,12 @@ public class RobotContainer {
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         // manual ferry
-        driver.getTopButton()
-            .whileTrue(new SwerveDriveDriveAndFerryManual(driver));
+        driver.getTopButton().whileTrue(new SwerveDriveDriveAndLobFerryManual(driver));
+        driver.getLeftButton().whileTrue(new SwerveDriveDriveAndLowFerryManual(driver));
         
-        driver.getRightButton()
-            .onTrue(new ArmToPreClimb());
-        driver.getRightButton()
-            .debounce(Settings.Driver.TIME_UNTIL_HOLD)
-            .whileTrue(new SwerveDriveDriveToChain());
-        
-        driver.getBottomButton().whileTrue(new SwerveDriveDriveToChain());
-        driver.getLeftMenuButton().onTrue(new ArmToClimbing());
+        // climbing
+        driver.getRightButton().onTrue(new ArmToPreClimb());
+        driver.getBottomButton().onTrue(new ArmToClimbing());
     }
 
     private void configureOperatorBindings() {
