@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class SwerveDriveDriveAndLowFerry extends SwerveDriveDriveAndShoot{
 
     public SwerveDriveDriveAndLowFerry(Gamepad driver) {
-        super(driver, Arm.State.LOB_FERRY);
+        super(driver, Arm.State.LOW_FERRY);
     }
 
     private Translation2d getAmpCornerPose() {
@@ -44,8 +44,8 @@ public class SwerveDriveDriveAndLowFerry extends SwerveDriveDriveAndShoot{
     @Override
     public void execute() {
         super.execute();
-        if (isAligned.get()) {
-            CommandScheduler.getInstance().schedule(new ShooterFerry());
+        if (canShoot()) {
+            shooter.feederShoot();
         }
     }
 }

@@ -26,6 +26,7 @@ import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 import com.stuypulse.stuylib.util.AngleVelocity;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -95,6 +96,10 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
         return controller.isDoneDegrees(Alignment.ANGLE_TOLERANCE.get());
     }
 
+    protected boolean canShoot() {
+        return isAligned.get() && arm.atTarget() && shooter.atTargetSpeeds();
+    }
+
     @Override
     public void initialize() {
         arm.setState(armState);
@@ -113,10 +118,5 @@ public abstract class SwerveDriveDriveAndShoot extends Command {
                         Angle.fromRotation2d(swerve.getPose().getRotation()))
                 )         
             );
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        CommandScheduler.getInstance().schedule(new ShooterStop().onlyIf(() -> !Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
     }
 }

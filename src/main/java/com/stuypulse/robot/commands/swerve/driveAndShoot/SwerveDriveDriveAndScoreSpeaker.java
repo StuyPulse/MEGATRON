@@ -41,8 +41,8 @@ public class SwerveDriveDriveAndScoreSpeaker extends SwerveDriveDriveAndShoot{
     @Override
     public void execute() {
         super.execute();
-        if (isAligned.get()) {
-            CommandScheduler.getInstance().schedule(new ShooterScoreSpeaker());
+        if (canShoot()) {
+            shooter.feederShoot();
         }
     }
 }

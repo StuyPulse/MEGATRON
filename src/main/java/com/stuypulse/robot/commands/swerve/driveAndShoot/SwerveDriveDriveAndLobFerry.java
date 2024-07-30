@@ -44,8 +44,8 @@ public class SwerveDriveDriveAndLobFerry extends SwerveDriveDriveAndShoot{
     @Override
     public void execute() {
         super.execute();
-        if (isAligned.get()) {
-            CommandScheduler.getInstance().schedule(new ShooterFerry());
+        if (canShoot()) {
+            shooter.feederShoot();
         }
     }
 }

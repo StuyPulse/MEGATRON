@@ -136,12 +136,33 @@ public class RobotContainer {
             .onFalse(new IntakeStop());
         
         // speaker align and score 
-        driver.getRightBumper().whileTrue(new SwerveDriveDriveAndScoreSpeaker(driver));
+        // score amp
+        driver.getRightBumper()
+            .whileTrue(new ConditionalCommand(
+                new ArmWaitUntilAtTarget()
+                    .withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                    .andThen(new ShooterScoreAmp()),
+                new SwerveDriveDriveAndScoreSpeaker(driver),
+                () -> Arm.getInstance().getState() == Arm.State.AMP))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
         // ferry align and shoot
         // move to back of controller
-        driver.getDPadRight().whileTrue(new SwerveDriveDriveAndLobFerry(driver));
-        driver.getDPadDown().whileTrue(new SwerveDriveDriveAndLowFerry(driver));
+        driver.getDPadRight()
+            .whileTrue(new SwerveDriveDriveAndLobFerry(driver))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+        driver.getDPadDown()
+            .whileTrue(new SwerveDriveDriveAndLowFerry(driver))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
         // arm to amp and alignment
         driver.getLeftBumper()
@@ -149,22 +170,28 @@ public class RobotContainer {
             .onTrue(new SwerveDriveDriveAlignedAmp(driver));
 
         // manual speaker at subwoofer
-        // score amp
         // rebind to a button on the back later
         driver.getRightMenuButton()
-            .whileTrue(new ConditionalCommand(
-                new ShooterScoreAmp(), 
-                new ArmToSubwooferShot()
-                    .andThen(new ShooterScoreSpeaker()), 
-                () -> Arm.getInstance().getState() == Arm.State.AMP))
+            .whileTrue(new ArmToSubwooferShot()
+                        .andThen(new ShooterScoreSpeaker()))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         // manual ferry
-        driver.getTopButton().whileTrue(new SwerveDriveDriveAndLobFerryManual(driver));
-        driver.getLeftButton().whileTrue(new SwerveDriveDriveAndLowFerryManual(driver));
+        driver.getTopButton()
+            .whileTrue(new SwerveDriveDriveAndLobFerryManual(driver))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+        driver.getLeftButton()
+            .whileTrue(new SwerveDriveDriveAndLowFerryManual(driver))
+            .onFalse(new ConditionalCommand(
+                new ShooterFeederStop(), 
+                new ShooterStop(), 
+                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
         // climbing
         driver.getRightButton().onTrue(new ArmToPreClimb());

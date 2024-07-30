@@ -123,11 +123,6 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
-        ShooterSpeeds MANUAL_FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Manual Ferry RPM", 4800),
-            new SmartNumber("Shooter/Manual Ferry RPM differential", 500)
-        );
-
         // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
         SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.005);
