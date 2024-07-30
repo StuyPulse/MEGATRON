@@ -77,7 +77,7 @@ public class ShooterImpl extends Shooter {
 
         Motors.Shooter.LEFT_SHOOTER.configure(leftMotor);
         Motors.Shooter.RIGHT_SHOOTER.configure(rightMotor);
-        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor);   
+        Motors.Shooter.FEEDER_MOTOR.configure(feederMotor); 
     }
 
     private double getLeftShooterRPM() {
@@ -128,11 +128,6 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public boolean noteShot() {
-        return getLeftTargetRPM() > 0 && getRightTargetRPM() > 0 && hasNote.get() == false; 
-    }
-
-    @Override
     public ShooterSpeeds getFerrySpeeds() {
         Translation2d ferryZone = Robot.isBlue()
             ? new Translation2d(0, Field.WIDTH - 1.5)
@@ -140,7 +135,7 @@ public class ShooterImpl extends Shooter {
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getActualState() == Arm.State.LOB_FERRY) {
+        if (Arm.getInstance().getShootHeight() == Arm.ShootHeight.HIGH) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
         }
@@ -153,20 +148,6 @@ public class ShooterImpl extends Shooter {
     @Override
     public void periodic () {
         super.periodic();
-
-        Arm.State armState = Arm.getInstance().getActualState();
-
-        if (Settings.Shooter.ALWAYS_KEEP_AT_SPEED) {
-            if (armState == Arm.State.SPEAKER_HIGH || armState == Arm.State.SPEAKER_LOW) {
-                setTargetSpeeds(Settings.Shooter.SPEAKER);
-            }
-            else if (armState == Arm.State.LOW_FERRY || armState == Arm.State.LOB_FERRY) {
-                setTargetSpeeds(getFerrySpeeds());
-            }
-            else {
-                setTargetSpeeds(Settings.Shooter.SPEAKER);
-            }
-        }
 
         if (getLeftTargetRPM() == 0) {
             leftMotor.set(0);
@@ -199,8 +180,6 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
-
-        SmartDashboard.putBoolean("Shooter/Note Shot", noteShot());
     }
 
 }

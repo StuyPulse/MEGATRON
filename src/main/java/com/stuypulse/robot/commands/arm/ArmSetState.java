@@ -16,6 +16,6 @@ public class ArmSetState extends InstantCommand{
 
     @Override
     public void initialize() {
-        arm.setRequestedState(state);
+        arm.setState(state);
     }
 }

@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAligned;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
@@ -8,14 +8,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 
-public class SwerveDriveDriveAlignedLowFerry extends SwerveDriveDriveAligned {
+public class SwerveDriveDriveAlignedLobFerry extends SwerveDriveDriveAligned {
 
-    public SwerveDriveDriveAlignedLowFerry(Gamepad driver) {
+    public SwerveDriveDriveAlignedLobFerry(Gamepad driver) {
         super(driver);
     }
 
-    // returns pose of close amp corner
-    private Translation2d getTargetPose() {
+    private Translation2d getAmpCornerPose() {
         Translation2d targetPose = Robot.isBlue()
             ? new Translation2d(0.0, Field.WIDTH - 1.5)
             : new Translation2d(0.0, 1.5);
@@ -25,11 +24,11 @@ public class SwerveDriveDriveAlignedLowFerry extends SwerveDriveDriveAligned {
 
     @Override
     protected Rotation2d getTargetAngle() {
-        return SwerveDrive.getInstance().getPose().getTranslation().minus(getTargetPose()).getAngle();
+        return SwerveDrive.getInstance().getPose().getTranslation().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
     }
 
     @Override
     protected double getDistanceToTarget() {
-        return SwerveDrive.getInstance().getPose().getTranslation().getDistance(getTargetPose());
+        return SwerveDrive.getInstance().getPose().getTranslation().getDistance(getAmpCornerPose());
     }
 }

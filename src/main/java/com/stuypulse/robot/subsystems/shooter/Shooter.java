@@ -22,8 +22,8 @@ public abstract class Shooter extends SubsystemBase {
     private final SmartNumber rightTargetRPM;
 
     public Shooter() {
-        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", 0);
-        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", 0);
+        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", Settings.Shooter.ALWAYS_KEEP_AT_SPEED ? Settings.Shooter.SPEAKER.getLeftRPM() : 0);
+        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", Settings.Shooter.ALWAYS_KEEP_AT_SPEED ? Settings.Shooter.SPEAKER.getRightRPM() : 0);
     }
 
     public void setTargetSpeeds(ShooterSpeeds speeds) {
@@ -55,6 +55,4 @@ public abstract class Shooter extends SubsystemBase {
     public abstract void feederStop();
     
     public abstract boolean hasNote();
-
-    public abstract boolean noteShot();
 }

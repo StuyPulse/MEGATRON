@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.swerve;
+package com.stuypulse.robot.commands.swerve.driveAligned;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
@@ -6,9 +6,9 @@ import com.stuypulse.stuylib.input.Gamepad;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 
-public class SwerveDriveDriveAmpAligned extends SwerveDriveDriveAligned {
+public class SwerveDriveDriveAlignedAmp extends SwerveDriveDriveAligned {
 
-    public SwerveDriveDriveAmpAligned(Gamepad driver) {
+    public SwerveDriveDriveAlignedAmp(Gamepad driver) {
         super(driver);
     }
 

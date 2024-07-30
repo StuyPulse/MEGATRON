@@ -269,16 +269,13 @@ public interface Field {
 
     /*** FERRYING ***/
 
+    public static Translation2d getManualFerryPosition() {
+        return Robot.isBlue()
+            ? new Translation2d(LENGTH / 2 + WING_TO_CENTERLINE * 0.8, 1)
+            : new Translation2d(LENGTH / 2 - WING_TO_CENTERLINE * 0.8, 1);
+    }
+
     // MIDLINE: 8.27
-
-    // BEFORE: 9
-    // MIDLINE + 60% of WING_TO_CENTERLINE distance
-    double FERRY_SHOT_MAX_X = LENGTH / 2.0 + WING_TO_CENTERLINE * 0.60;
-    double FERRY_SHOT_MIN_X = 6.0;
-    double FERRY_SHOT_MIN_FAR_X = 8.5;
-
-    double CONST_FERRY_X = (FERRY_SHOT_MAX_X + FERRY_SHOT_MIN_FAR_X) / 2.0;
-    double FERRY_CUTOFF = 1.8;
 
     /**** EMPTY FIELD POSES ****/
 

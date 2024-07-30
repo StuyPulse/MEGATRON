@@ -1,13 +1,10 @@
 package com.stuypulse.robot.subsystems.arm;
 
-import com.stuypulse.robot.subsystems.shooter.Shooter;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class Arm extends SubsystemBase {
 
-    /* SINGLETON */
     private static final Arm instance;
 
     static {
@@ -20,54 +17,53 @@ public abstract class Arm extends SubsystemBase {
 
     public enum State {
         AMP,
-        SPEAKER_HIGH,
-        SPEAKER_LOW,
-        LOW_FERRY,
-        LOB_FERRY,
+        SUBWOOFER_SHOT,
+        SPEAKER,
+        FERRY,
         FEED,
         STOW,
         PRE_CLIMB,
+        CLIMBING,
         RESETTING
     }
 
-    protected State requestedState;
-    protected State actualState;
-    protected boolean overriding;
+    public enum ShootHeight {
+        HIGH,
+        LOW
+    }
+
+    protected State state;
+    protected ShootHeight shootHeight;
 
     protected Arm() {
-        requestedState = State.RESETTING;
-        actualState = State.RESETTING;
-        overriding = false;
+        state = State.RESETTING;
+        shootHeight = ShootHeight.LOW;
     }
 
-    public void setRequestedState(State state) {
-        this.requestedState = state;
+    public void setState(State state) {
+        this.state = state;
     }
 
-    public State getRequestedState() {
-        return this.requestedState;
+    public State getState() {
+        return this.state;
     }
 
-    public State getActualState() {
-        return this.actualState;
+    public void setShootHeightHigh() {
+        this.shootHeight = ShootHeight.HIGH;
     }
 
-    public void setOverriding(boolean overriding) {
-        this.overriding = overriding;
+    public void setShootHeightLow() {
+        this.shootHeight = ShootHeight.LOW;
     }
 
-    public boolean isOverriding() {
-        return this.overriding;
+    public ShootHeight getShootHeight() {
+        return this.shootHeight;
     }
 
     public abstract boolean atTarget();
 
-    public abstract boolean shouldReturnToFeed();
-
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Arm/Is Overriding", overriding);
-        SmartDashboard.putString("Arm/Requested State", getRequestedState().toString());
-        SmartDashboard.putString("Arm/Actual State", getActualState().toString());
+        SmartDashboard.putString("Arm/State", state.toString());
     }
 }

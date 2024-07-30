@@ -28,7 +28,7 @@ public interface Cameras {
             "samera0", //tower camera
             new Pose3d(
                 new Translation3d(-11.25, -3.333797, 23.929362),
-                new Rotation3d(0, 15, 0)
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(15), Units.degreesToRadians(0))
             ),
             "29",
             3000
@@ -38,7 +38,7 @@ public interface Cameras {
             "samera1", //electronic plate camera
             new Pose3d(
                 new Translation3d(0, 4.863591, 19.216471),
-                new Rotation3d(0, 80, 0)
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(80), Units.degreesToRadians(0))
             ),
             "96",
             3001

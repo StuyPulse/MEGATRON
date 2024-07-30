@@ -68,11 +68,9 @@ public interface Settings {
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.getAsDouble() + 17);
-        SmartNumber PODIUM_SHOT_ANGLE = new SmartNumber("Arm/Podium Shot Angle", -60);
-
-        double SHOULD_RETURN_TO_FEED_TIME = 1.0;
-        double EXTRA_TIME_BEFORE_RETURNING_TO_FEED_FOR_AMP = 2.5;
+        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
+        SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -60);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
@@ -99,7 +97,7 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.8;
+        double INTAKE_ACQUIRE_SPEED = 0.6;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -113,7 +111,7 @@ public interface Settings {
     public interface Shooter {
         double FEEDER_INTAKE_SPEED = 0.25;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 0.25;
+        double FEEDER_SHOOT_SPEED = 0.4;
 
         boolean ALWAYS_KEEP_AT_SPEED = false;
 
@@ -123,6 +121,11 @@ public interface Settings {
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 4875), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
+        );
+
+        ShooterSpeeds MANUAL_FERRY = new ShooterSpeeds(
+            new SmartNumber("Shooter/Manual Ferry RPM", 4800),
+            new SmartNumber("Shooter/Manual Ferry RPM differential", 500)
         );
 
         // Different falling debounce is used to detect note shooting;
@@ -183,7 +186,7 @@ public interface Settings {
             double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
 
             // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 6.0);
+            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
             SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.0);
 
@@ -296,7 +299,8 @@ public interface Settings {
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
 
-        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Trap/Into Chain Speed", 0.25);
+        SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
+        SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);
 
         double MAX_ALIGNMENT_SPEED = 2.5;
 
@@ -310,26 +314,13 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Alignment/Rotation/kP", 6.0);
             SmartNumber kI = new SmartNumber("Alignment/Rotation/kI", 0.0);
             SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
-        }
 
-        public interface Shoot {
-            public interface Translation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
-                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
-            }
-    
-            public interface Rotation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
-                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
-            }
+            SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
         }
     }
 
     public interface Driver {
-        double HOLD_TO_OVERRIDE_TIME = 0.55;
-        double DOUBLE_CLICK_TIME_BETWEEN_CLICKS = 0.5;
+        double TIME_UNTIL_HOLD = 0.7;
 
         public interface Drive {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);
@@ -342,7 +333,8 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.015);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.03);
+            SmartNumber DISABLE_ALIGNMENT_DEADBAND = new SmartNumber("Driver Settings/Turn/Disable Alignment Deadband", 0.08);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);

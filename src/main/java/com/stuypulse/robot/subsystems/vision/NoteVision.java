@@ -31,10 +31,11 @@ public abstract class NoteVision extends SubsystemBase {
 
     public abstract boolean hasNoteData();
 
+    public abstract Translation2d getEstimatedNotePose();
+
     public abstract Translation2d getRobotRelativeNotePose();
 
     public final Rotation2d getRotationToNote() {
-        // return Angle.fromRotation2d(getRobotRelativeNotePose().getAngle()).add(Angle.fromDegrees(180)).getRotation2d();
         return getRobotRelativeNotePose().getAngle();
     }
 
@@ -42,6 +43,5 @@ public abstract class NoteVision extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("Note Detection/Has Note Data", hasNoteData());
         SmartDashboard.putBoolean("Note Detection/Is in Intake Path", withinIntakePath());
-        SmartDashboard.putNumber("Note Detection/angle to note", getRotationToNote().getDegrees());
     }
 }

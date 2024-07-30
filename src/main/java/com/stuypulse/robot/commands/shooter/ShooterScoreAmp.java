@@ -1,19 +1,20 @@
 package com.stuypulse.robot.commands.shooter;
 
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class ShooterScoreAmp extends SequentialCommandGroup {
+public class ShooterScoreAmp extends InstantCommand {
+
+    private final Shooter shooter;
 
     public ShooterScoreAmp() {
-        addCommands(
-            new ShooterFeederDeacquire(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
-            new WaitUntilCommand(Settings.Arm.SHOULD_RETURN_TO_FEED_TIME),
-            new ShooterFeederStop()
-        );
+        shooter = Shooter.getInstance();
+        addRequirements(shooter);
+    }
+
+    @Override
+    public void initialize() {
+        shooter.feederDeacquire();
     }
 }
