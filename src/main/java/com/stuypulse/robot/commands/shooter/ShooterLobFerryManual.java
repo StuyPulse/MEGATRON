@@ -22,16 +22,8 @@ public class ShooterLobFerryManual extends SequentialCommandGroup {
         );
     }
 
-    private Translation2d getAmpCornerPose() {
-        Translation2d targetPose = Robot.isBlue()
-            ? new Translation2d(0.0, Field.WIDTH - 1.5)
-            : new Translation2d(0.0, 1.5);
-        
-        return targetPose;
-    }
-
     private double getFerryDistance() {
-        return Units.metersToInches(Field.getManualFerryPosition().getDistance(getAmpCornerPose()));
+        return Units.metersToInches(Field.getManualFerryPosition().getDistance(Field.getAmpCornerPose()));
     }
 
 }

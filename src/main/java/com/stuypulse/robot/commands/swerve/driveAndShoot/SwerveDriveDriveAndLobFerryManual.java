@@ -22,23 +22,15 @@ public class SwerveDriveDriveAndLobFerryManual extends SwerveDriveDriveAndShoot{
     public SwerveDriveDriveAndLobFerryManual(Gamepad driver) {
         super(driver, Arm.State.LOB_FERRY);
     }
-
-    private Translation2d getAmpCornerPose() {
-        Translation2d targetPose = Robot.isBlue()
-            ? new Translation2d(0.0, Field.WIDTH - 1.5)
-            : new Translation2d(0.0, 1.5);
-        
-        return targetPose;
-    }
     
     @Override
     protected Rotation2d getTargetAngle() {
-        return Field.getManualFerryPosition().minus(getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
     }
 
     @Override
     protected double getDistanceToTarget() {
-        return Field.getManualFerryPosition().getDistance(getAmpCornerPose());
+        return Field.getManualFerryPosition().getDistance(Field.getAmpCornerPose());
     }
 
     @Override

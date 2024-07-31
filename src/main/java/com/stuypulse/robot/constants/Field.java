@@ -27,7 +27,8 @@ public interface Field {
 
     double NOTE_LENGTH = Units.inchesToMeters(14.0);
 
-    double SPEAKER_HEIGHT = (1.98 + 2.11) / 2; // represents the middle of the speaker
+    double SPEAKER_MAX_HEIGHT = 2.11; // represents the top of the speaker opening
+    double SPEAKER_MIN_HEIGHT = 1.98; // represents the bottom of the speaker opening
 
     public static Pose3d transformToOppositeAlliance(Pose3d pose) {
         Pose3d rotated = pose.rotateBy(new Rotation3d(0, 0, Math.PI));
@@ -273,6 +274,14 @@ public interface Field {
         return Robot.isBlue()
             ? new Translation2d(LENGTH / 2 + WING_TO_CENTERLINE * 0.8, 1)
             : new Translation2d(LENGTH / 2 - WING_TO_CENTERLINE * 0.8, 1);
+    }
+
+    public static Translation2d getAmpCornerPose() {
+        Translation2d targetPose = Robot.isBlue()
+            ? new Translation2d(0.0, Field.WIDTH - 1.5)
+            : new Translation2d(0.0, 1.5);
+        
+        return targetPose;
     }
 
     // MIDLINE: 8.27
