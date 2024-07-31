@@ -5,7 +5,8 @@ import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
-import com.stuypulse.robot.commands.arm.ArmToFerry;
+import com.stuypulse.robot.commands.arm.ArmToLobFerry;
+import com.stuypulse.robot.commands.arm.ArmToLowFerry;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToStow;
@@ -22,15 +23,17 @@ import com.stuypulse.robot.commands.shooter.ShooterScoreAmp;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
+import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToChain;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveToClimb;
 import com.stuypulse.robot.commands.swerve.SwerveDriveXMode;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLobFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerHigh;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeakerLow;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualLobFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLobFerry;
 import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLobFerryManual;
 import com.stuypulse.robot.commands.swerve.driveAndShoot.SwerveDriveDriveAndLowFerry;
@@ -40,6 +43,7 @@ import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Driver;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
@@ -47,6 +51,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
+import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
@@ -54,6 +59,7 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -142,7 +148,13 @@ public class RobotContainer {
                 new ArmWaitUntilAtTarget()
                     .withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                     .andThen(new ShooterScoreAmp()),
-                new SwerveDriveDriveAndScoreSpeaker(driver),
+                new SwerveDriveDriveAlignedSpeaker(driver)
+                    .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
+                        .andThen(new ShooterFeederShoot())
+                    ),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
@@ -152,17 +164,45 @@ public class RobotContainer {
         // ferry align and shoot
         // move to back of controller
         driver.getDPadRight()
-            .whileTrue(new SwerveDriveDriveAndLobFerry(driver))
+            .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
+                    .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLobFerry()))
+                        .andThen(new ShooterFeederShoot())
+                    )
+            )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+
         driver.getDPadDown()
-            .whileTrue(new SwerveDriveDriveAndLowFerry(driver))
+            .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
+                    .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLowFerry()))
+                        .andThen(new ShooterFeederShoot())
+                    )
+            )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+                
+        // driver.getDPadRight()
+        //     .whileTrue(new SwerveDriveDriveAndLobFerry(driver))
+        //     .onFalse(new ConditionalCommand(
+        //         new ShooterFeederStop(), 
+        //         new ShooterStop(), 
+        //         () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+        // driver.getDPadDown()
+        //     .whileTrue(new SwerveDriveDriveAndLowFerry(driver))
+        //     .onFalse(new ConditionalCommand(
+        //         new ShooterFeederStop(), 
+        //         new ShooterStop(), 
+        //         () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
         // arm to amp and alignment
         driver.getLeftBumper()
@@ -173,6 +213,7 @@ public class RobotContainer {
         // rebind to a button on the back later
         driver.getRightMenuButton()
             .whileTrue(new ArmToSubwooferShot()
+                        .andThen(new ArmWaitUntilAtTarget())
                         .andThen(new ShooterScoreSpeaker()))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 

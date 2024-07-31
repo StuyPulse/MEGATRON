@@ -16,8 +16,7 @@ public class ShooterLobFerryManual extends SequentialCommandGroup {
     public ShooterLobFerryManual() {
         addCommands(
             new ShooterSetRPM(new ShooterSpeeds(ShooterLobFerryInterpolation.getRPM(getFerryDistance()))),
-            new ShooterWaitForTarget().withTimeout((Settings.Shooter.MAX_WAIT_TO_REACH_TARGET))
-                .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)),
+            new ShooterWaitForTarget().withTimeout((Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)),
             new ShooterFeederShoot()
         );
     }

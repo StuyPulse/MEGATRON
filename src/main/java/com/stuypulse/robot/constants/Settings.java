@@ -97,7 +97,7 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.6;
+        double INTAKE_ACQUIRE_SPEED = 0.65;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -115,11 +115,11 @@ public interface Settings {
 
         boolean ALWAYS_KEEP_AT_SPEED = false;
 
-        double TARGET_RPM_THRESHOLD = 250;
+        double TARGET_RPM_THRESHOLD = 200;
         double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
-            new SmartNumber("Shooter/Speaker RPM", 5000), 
+            new SmartNumber("Shooter/Speaker RPM", 5500), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
@@ -144,7 +144,7 @@ public interface Settings {
 
         public interface RIGHT {
             public interface PID {
-                double kP = 0.00034711;
+                double kP = 0.00304711;
                 double kI = 0;
                 double kD = 0.0;
             }
