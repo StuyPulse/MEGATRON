@@ -70,7 +70,7 @@ public interface Settings {
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
-        SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -60);
+        SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
@@ -111,7 +111,7 @@ public interface Settings {
     public interface Shooter {
         double FEEDER_INTAKE_SPEED = 0.25;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 0.4;
+        double FEEDER_SHOOT_SPEED = 1.0;
 
         boolean ALWAYS_KEEP_AT_SPEED = false;
 
@@ -119,7 +119,7 @@ public interface Settings {
         double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
-            new SmartNumber("Shooter/Speaker RPM", 4875), 
+            new SmartNumber("Shooter/Speaker RPM", 5000), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
