@@ -8,19 +8,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 
-public class SwerveDriveDriveAlignedLobFerry extends SwerveDriveDriveAligned {
+public class SwerveDriveDriveAlignedManualLowFerry extends SwerveDriveDriveAligned {
 
-    public SwerveDriveDriveAlignedLobFerry(Gamepad driver) {
+    public SwerveDriveDriveAlignedManualLowFerry(Gamepad driver) {
         super(driver);
     }
 
     @Override
     protected Rotation2d getTargetAngle() {
-        return SwerveDrive.getInstance().getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle();
     }
 
     @Override
     protected double getDistanceToTarget() {
-        return SwerveDrive.getInstance().getPose().getTranslation().getDistance(Field.getAmpCornerPose());
+        return Field.getManualFerryPosition().getDistance(Field.getAmpCornerPose());
     }
 }

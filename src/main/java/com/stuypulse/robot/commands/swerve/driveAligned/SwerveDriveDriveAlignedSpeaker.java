@@ -7,9 +7,9 @@ import com.stuypulse.stuylib.input.Gamepad;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
-public class SwerveDriveDriveAlignedSpeakerHigh extends SwerveDriveDriveAligned{
+public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
     
-    public SwerveDriveDriveAlignedSpeakerHigh(Gamepad driver) {
+    public SwerveDriveDriveAlignedSpeaker(Gamepad driver) {
         super(driver);
     }
 
@@ -17,7 +17,7 @@ public class SwerveDriveDriveAlignedSpeakerHigh extends SwerveDriveDriveAligned{
     protected Rotation2d getTargetAngle() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-        return speakerPose.minus(currentPose).getAngle().plus(Rotation2d.fromDegrees(180));
+        return speakerPose.minus(currentPose).getAngle();
     }
 
     @Override

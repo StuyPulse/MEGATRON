@@ -8,14 +8,18 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.vision.VisionData;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -116,6 +120,34 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
     }
 
+    public boolean isAlignedToSpeaker() {
+        Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
+        Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
+        Rotation2d targetAngle = speakerPose.minus(currentPose).getAngle();
+
+        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+    }
+
+    public boolean isAlignedToLowFerry() {
+        Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle();
+        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+    }
+
+    public boolean isAlignedToLobFerry() {
+        Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+    }
+
+    public boolean isAlignedToManualLowFerry() {
+        Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle();
+        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+    }
+
+    public boolean isAlignedToManualLobFerry() {
+        Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
+        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+    }
+
     private void updateEstimatorWithVisionData(ArrayList<VisionData> outputs) {
         Pose2d poseSum = new Pose2d();
         double timestampSum = 0;
@@ -134,7 +166,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             timestampSum += data.getTimestamp() * data.getArea();
         }
 
-        addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
+        // addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
+            // DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+        
+        addVisionMeasurement(new Pose2d(3, 3, new Rotation2d()), timestampSum / areaSum,
             DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
     }
 

@@ -41,6 +41,8 @@ public class ShooterImpl extends Shooter {
 
     private final BStream hasNote;
 
+    private boolean isShooting;
+
     protected ShooterImpl() {
         leftMotor = new CANSparkMax(Ports.Shooter.LEFT_MOTOR, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Ports.Shooter.RIGHT_MOTOR, MotorType.kBrushless);
@@ -78,6 +80,8 @@ public class ShooterImpl extends Shooter {
         Motors.Shooter.LEFT_SHOOTER.configure(leftMotor);
         Motors.Shooter.RIGHT_SHOOTER.configure(rightMotor);
         Motors.Shooter.FEEDER_MOTOR.configure(feederMotor); 
+
+        isShooting = false;
     }
 
     private double getLeftShooterRPM() {
@@ -105,21 +109,30 @@ public class ShooterImpl extends Shooter {
     @Override
     public void feederIntake() {
         feederMotor.set(+Settings.Shooter.FEEDER_INTAKE_SPEED);
+        isShooting = false;
     }
 
     @Override
     public void feederDeacquire() {
         feederMotor.set(-Settings.Shooter.FEEDER_DEAQUIRE_SPEED);
+        isShooting = false;
     }
 
     @Override
     public void feederShoot() {
         feederMotor.set(Settings.Shooter.FEEDER_SHOOT_SPEED);
+        isShooting = true;
     }
 
     @Override
     public void feederStop() {
         feederMotor.set(0);
+        isShooting = false;
+    }
+
+    @Override
+    public boolean isShooting() {
+        return isShooting;
     }
 
     @Override
@@ -135,7 +148,7 @@ public class ShooterImpl extends Shooter {
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getShootHeight() == Arm.ShootHeight.HIGH) {
+        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
             double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
             return new ShooterSpeeds(targetRPM, 500);
         }

@@ -13,8 +13,8 @@ public interface Cameras {
         // TO DO: find position
         Pose3d[] POSITIONS = new Pose3d[] {
             new Pose3d(
-                new Translation3d(Units.inchesToMeters(3), 0, Units.inchesToMeters(13.75)),
-                new Rotation3d(0, Math.toRadians(8), Math.toRadians(2)))
+                new Translation3d(Units.inchesToMeters(3), Units.inchesToMeters(0), Units.inchesToMeters(13.75)),
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(8), Units.degreesToRadians(2)))
         };
 
         String[] LIMELIGHTS = { "limelight" };
@@ -27,7 +27,7 @@ public interface Cameras {
         new CameraConfig(
             "samera0", //tower camera
             new Pose3d(
-                new Translation3d(-11.25, -3.333797, 23.929362),
+                new Translation3d(Units.inchesToMeters(-11.25), Units.inchesToMeters(-3.333797), Units.inchesToMeters(23.929362)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(15), Units.degreesToRadians(0))
             ),
             "29",
@@ -37,7 +37,7 @@ public interface Cameras {
         new CameraConfig(
             "samera1", //electronic plate camera
             new Pose3d(
-                new Translation3d(0, 4.863591, 19.216471),
+                new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(4.863591), Units.inchesToMeters(19.216471)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(80), Units.degreesToRadians(0))
             ),
             "96",

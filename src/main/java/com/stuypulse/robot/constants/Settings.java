@@ -64,13 +64,13 @@ public interface Settings {
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 70);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 55);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
-        SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -60);
+        SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
 
@@ -97,7 +97,7 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.6;
+        double INTAKE_ACQUIRE_SPEED = 0.65;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -111,21 +111,16 @@ public interface Settings {
     public interface Shooter {
         double FEEDER_INTAKE_SPEED = 0.25;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
-        double FEEDER_SHOOT_SPEED = 0.4;
+        double FEEDER_SHOOT_SPEED = 1.0;
 
         boolean ALWAYS_KEEP_AT_SPEED = false;
 
-        double TARGET_RPM_THRESHOLD = 250;
+        double TARGET_RPM_THRESHOLD = 200;
         double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
-            new SmartNumber("Shooter/Speaker RPM", 4875), 
+            new SmartNumber("Shooter/Speaker RPM", 5500), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
-        );
-
-        ShooterSpeeds MANUAL_FERRY = new ShooterSpeeds(
-            new SmartNumber("Shooter/Manual Ferry RPM", 4800),
-            new SmartNumber("Shooter/Manual Ferry RPM differential", 500)
         );
 
         // Different falling debounce is used to detect note shooting;
@@ -149,7 +144,7 @@ public interface Settings {
 
         public interface RIGHT {
             public interface PID {
-                double kP = 0.00034711;
+                double kP = 0.00304711;
                 double kI = 0;
                 double kD = 0.0;
             }

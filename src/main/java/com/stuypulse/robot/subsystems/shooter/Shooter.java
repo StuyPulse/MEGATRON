@@ -53,6 +53,8 @@ public abstract class Shooter extends SubsystemBase {
     public abstract void feederDeacquire();
     public abstract void feederShoot();
     public abstract void feederStop();
+
+    public abstract boolean isShooting();
     
     public abstract boolean hasNote();
 }
