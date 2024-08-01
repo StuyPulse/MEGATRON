@@ -190,19 +190,6 @@ public class RobotContainer {
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
-                
-        // driver.getDPadRight()
-        //     .whileTrue(new SwerveDriveDriveAndLobFerry(driver))
-        //     .onFalse(new ConditionalCommand(
-        //         new ShooterFeederStop(), 
-        //         new ShooterStop(), 
-        //         () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
-        // driver.getDPadDown()
-        //     .whileTrue(new SwerveDriveDriveAndLowFerry(driver))
-        //     .onFalse(new ConditionalCommand(
-        //         new ShooterFeederStop(), 
-        //         new ShooterStop(), 
-        //         () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
         // arm to amp and alignment
         driver.getLeftBumper()

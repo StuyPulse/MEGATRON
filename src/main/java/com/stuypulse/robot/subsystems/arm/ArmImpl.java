@@ -22,8 +22,10 @@ import com.stuypulse.robot.constants.Ports;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -100,11 +102,11 @@ public class ArmImpl extends Arm {
             Pose3d speakerPose = new Pose3d(
                 Field.getAllianceSpeakerPose().getX(),
                 Field.getAllianceSpeakerPose().getY(),
-                Field.SPEAKER_HEIGHT,
+                Field.SPEAKER_MAX_HEIGHT,
                 new Rotation3d()
             );
 
-            Pose2d robotPose = SwerveDrive.getInstance().getPose();
+            Pose2d robotPose = new Pose2d(Units.inchesToMeters(20.5 * 12 + Units.metersToInches(Settings.LENGTH/2)), speakerPose.getY(), new Rotation2d());
 
             Pose3d armPivotPose = new Pose3d(
                 robotPose.getX() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getCos(),
@@ -115,19 +117,16 @@ public class ArmImpl extends Arm {
 
             Translation3d pivotToSpeaker = speakerPose.minus(armPivotPose).getTranslation();
 
-            double distanceFromShooterToSpeaker = Math.sqrt(Math.pow(pivotToSpeaker.getNorm(), 2) - Math.pow(Settings.Arm.LENGTH, 2));
-
-            double angleFromPivotToSpeaker = Math.atan(
-                Field.SPEAKER_HEIGHT - Settings.HEIGHT_TO_ARM_PIVOT
-                / pivotToSpeaker.toTranslation2d().getNorm()
+            double angleFromPivotToSpeaker = Units.radiansToDegrees(
+                Math.atan(
+                    pivotToSpeaker.getZ()
+                    / pivotToSpeaker.toTranslation2d().getNorm()
+                )
             );
 
-            double angleBetweenPivotToSpeakerAndArm = Math.acos(
-                (Math.pow(pivotToSpeaker.getNorm(), 2) + Math.pow(Settings.Arm.LENGTH, 2) - Math.pow(distanceFromShooterToSpeaker, 2))
-                / (2 * pivotToSpeaker.getNorm() * Settings.Arm.LENGTH)
-            );
+            double angleBetweenPivotToSpeakerAndArm = Units.radiansToDegrees(Math.acos(Settings.Arm.LENGTH / pivotToSpeaker.getNorm()));
 
-            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - (90 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER);
+            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -157,10 +156,16 @@ public class ArmImpl extends Arm {
         
         if (state == State.RESETTING) {
             setVoltage(-1.5);
+            controller.update(Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MIN_ANGLE.get());
         }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            setVoltage(controller.getOutput());
+            if (Shooter.getInstance().isShooting()) {
+                setVoltage(controller.getOutput() + 0.31);
+            }
+            else {
+                setVoltage(controller.getOutput());
+            }
         }
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
