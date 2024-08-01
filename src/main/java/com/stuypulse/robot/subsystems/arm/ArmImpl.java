@@ -106,7 +106,7 @@ public class ArmImpl extends Arm {
                 new Rotation3d()
             );
 
-            Pose2d robotPose = new Pose2d(Units.inchesToMeters(20.5 * 12 + Units.metersToInches(Settings.LENGTH/2)), speakerPose.getY(), new Rotation2d());
+            Pose2d robotPose = SwerveDrive.getInstance().getPose();
 
             Pose3d armPivotPose = new Pose3d(
                 robotPose.getX() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getCos(),
