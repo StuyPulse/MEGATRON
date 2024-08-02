@@ -59,10 +59,10 @@ public interface LEDInstructions {
     LEDInstruction DEACQUIRING = new LEDPulseColor(SLColor.RED);
 
     LEDInstruction SPEAKER_ALIGN = GREEN;
-    LEDInstruction SPEAKER_ALIGN_MANUAL = new LEDPulseColor(SLColor.GREEN);
+    LEDInstruction SPEAKER_MANUAL = new LEDPulseColor(SLColor.GREEN);
 
-    LEDInstruction LOW_FERRY_ALIGN = GOLD;
-    LEDInstruction LOW_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.GOLD);
+    LEDInstruction LOW_FERRY_ALIGN = LIME;
+    LEDInstruction LOW_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.LIME);
 
     LEDInstruction LOB_FERRY_ALIGN = AQUA;
     LEDInstruction LOB_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.AQUA);
@@ -70,14 +70,14 @@ public interface LEDInstructions {
     LEDInstruction AMP_WITH_ALIGN = VIOLET;
     LEDInstruction AMP_WITHOUT_ALIGN = new LEDPulseColor(SLColor.VIOLET);
 
+    LEDInstruction IS_ALIGNED = RAINBOW;
+
     LEDInstruction ATTENTION = new LED694(0.01, SLColor.BLUE);
 
-    LEDInstruction ARM_PRECLIMB = HOT_PINK;
-    LEDInstruction ARM_POSTCLIMB = LIME;
+    LEDInstruction ARM_PRECLIMB = ORANGE;
+    LEDInstruction ARM_POSTCLIMB = new LEDPulseColor(SLColor.ORANGE);
 
 	LEDInstruction CONTAINS_NOTE = GOLD;
-
-    LEDInstruction SHOOTING = PINK;
 
     // TO FUTURE USERS, DONT PUT LEDAlign and LEDAutonChooser (any disabled LEDInstructions) inside
     // the LEDInstructions interface
