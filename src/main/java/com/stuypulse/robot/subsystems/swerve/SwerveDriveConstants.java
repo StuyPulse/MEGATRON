@@ -101,4 +101,6 @@ public class SwerveDriveConstants {
         Settings.Swerve.BackRight.MODULE_OFFSET.getY(), 
         Settings.Swerve.BackRight.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
+        
+    public static final double UpdateOdometryFrequency = 50 /* hz */;
 }
