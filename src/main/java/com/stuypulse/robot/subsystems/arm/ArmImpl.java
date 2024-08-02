@@ -69,7 +69,10 @@ public class ArmImpl extends Arm {
 
     @Override
     public boolean atTarget() {
-        return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.getAsDouble();
+        if (state == State.FEED) {
+            return getDegrees() < Settings.Arm.FEED_ANGLE.get() + Settings.Arm.MAX_ANGLE_ERROR.get();
+        }
+        return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
     }
 
     private double getTargetDegrees() {
