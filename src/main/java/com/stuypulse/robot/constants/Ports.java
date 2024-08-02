@@ -57,7 +57,10 @@ public interface Ports {
             int TURN = 17;
             int ENCODER = 4;
         }
+    }
 
+    public interface LEDController {
+        int PORT = 0; // PWM
     }
 }
 

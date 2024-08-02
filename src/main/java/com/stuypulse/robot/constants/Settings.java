@@ -109,7 +109,7 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.25;
+        double FEEDER_INTAKE_SPEED = 0.23;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
@@ -312,6 +312,16 @@ public interface Settings {
 
             SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
         }
+    }
+
+    public interface LED {
+        int LED_LENGTH = 61;
+        SmartNumber BLINK_TIME = new SmartNumber("LED/LED Blink Time", .15);
+
+        SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
+        SmartNumber ROTATION_SPREAD = new SmartNumber("LED/LED Rotation Spread (deg)", 15);
+
+        SmartBoolean LED_AUTON_TOGGLE = new SmartBoolean("LED/Auton Align Display", false);
     }
 
     public interface Driver {

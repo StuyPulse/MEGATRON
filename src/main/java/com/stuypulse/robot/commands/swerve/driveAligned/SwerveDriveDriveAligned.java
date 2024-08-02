@@ -73,10 +73,10 @@ public abstract class SwerveDriveDriveAligned extends Command {
         return controller.getError().getRotation2d().getDegrees();
     }
 
-    @Override
-    public boolean isFinished() {
-        return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble();
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble();
+    // }
 
     @Override
     public void execute() {
