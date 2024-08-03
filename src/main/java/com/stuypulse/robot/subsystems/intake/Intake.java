@@ -20,6 +20,7 @@ public abstract class Intake extends SubsystemBase {
     public enum State {
         DEACQUIRING,
         ACQUIRING,
+        FEEDING,
         STOP
     }
 

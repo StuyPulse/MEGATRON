@@ -64,7 +64,7 @@ public interface Settings {
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 55);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 50);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
@@ -99,12 +99,15 @@ public interface Settings {
     public interface Intake {
         double INTAKE_ACQUIRE_SPEED = 0.65;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
+
+        double INTAKE_FEED_SPEED = 0.65;
+
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
         double IR_DEBOUNCE = .005;
 
-        double HANDOFF_TIMEOUT = 1.8;
+        double HANDOFF_TIMEOUT = 1.5;
         double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 0.5;
     }
 
@@ -334,7 +337,7 @@ public interface Settings {
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
 
             SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_MODULE_SPEED);
-            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", 15);
+            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", Swerve.MAX_MODULE_ACCEL);
         }
 
         public interface Turn {
