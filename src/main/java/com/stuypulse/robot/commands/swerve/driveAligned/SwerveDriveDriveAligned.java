@@ -10,8 +10,10 @@ import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.numbers.filters.RateLimit;
 import com.stuypulse.stuylib.streams.vectors.VStream;
 import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
@@ -56,11 +58,15 @@ public abstract class SwerveDriveDriveAligned extends Command {
         AngleVelocity derivative = new AngleVelocity();
 
         angleVelocity = IStream.create(() -> derivative.get(Angle.fromRotation2d(getTargetAngle())))
-            .filtered(new LowPassFilter(Assist.ANGLE_DERIV_RC))
-            // make angleVelocity contribute less once distance is less than REDUCED_FF_DIST
-            // so that angular velocity doesn't oscillate
-            .filtered(x -> x * Math.min(1, getDistanceToTarget() / Assist.REDUCED_FF_DIST))
-            .filtered(x -> -x);
+            .filtered(
+                new LowPassFilter(Assist.ANGLE_DERIV_RC),
+                // make angleVelocity contribute less once distance is less than REDUCED_FF_DIST
+                // so that angular velocity doesn't oscillate
+                x -> x * Math.min(1, getDistanceToTarget() / Assist.REDUCED_FF_DIST),
+                new RateLimit(Settings.Swerve.MAX_ANGULAR_ACCEL),
+                x -> SLMath.clamp(x, -Settings.Swerve.MAX_ANGULAR_VELOCITY, Settings.Swerve.MAX_ANGULAR_VELOCITY),
+                x -> -x
+            );
         
         addRequirements(swerve);
     }

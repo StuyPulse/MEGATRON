@@ -12,13 +12,6 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/*-
- * Contains:
- *      - forceSetLED() : sets color of LEDs for short time
- *      - getDefaultColor() : determines LED color if it is not set
- *      - periodic() : sets LED color to default color if in teleop
- */
-
 public class LEDController extends SubsystemBase {
     private static LEDController instance;
 
