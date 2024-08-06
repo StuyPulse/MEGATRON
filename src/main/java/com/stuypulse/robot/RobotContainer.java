@@ -278,14 +278,7 @@ public class RobotContainer {
     }
 
     private void configureOperatorBindings() {
-        operator.getLeftTriggerButton().whileTrue(new IntakeDeacquire());
-        operator.getRightTriggerButton().whileTrue(new IntakeAcquire());
 
-        operator.getLeftMenuButton().whileTrue(new LEDSet(LEDInstructions.BLUE));
-        operator.getRightMenuButton().whileTrue(new LEDSet(LEDInstructions.GREEN));
-        operator.getDPadUp().whileTrue(new LEDSet(LEDInstructions.PINK));
-        operator.getDPadLeft().whileTrue(new LEDSet(LEDInstructions.RAINBOW));
-        operator.getDPadRight().whileTrue(new LEDSet(new LEDPulseColor(SLColor.RED, SLColor.WHITE)));
     }
 
     /**************/

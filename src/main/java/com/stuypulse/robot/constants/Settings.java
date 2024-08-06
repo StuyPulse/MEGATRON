@@ -168,8 +168,8 @@ public interface Settings {
 
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
-        double MAX_ANGULAR_VELOCITY = SAFE_MODE_ENABLED ? 4 :12.0;
-        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 20.0;
+        double MAX_ANGULAR_VELOCITY = SAFE_MODE_ENABLED ? 3.0 : 12.0;
+        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 100.0;
 
         String CAN_BUS_NAME = "swerve";
 
@@ -348,8 +348,8 @@ public interface Settings {
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
 
-            SmartNumber MAX_TELEOP_TURN_SPEED = new SmartNumber("Driver Settings/Turn/Max Turning", Swerve.MAX_ANGULAR_VELOCITY);
-            SmartNumber MAX_TELEOP_TURN_ACCEL = new SmartNumber("Driver Settings/Turn/Max Turning", Swerve.MAX_ANGULAR_ACCEL);
+            SmartNumber MAX_TELEOP_TURN_SPEED = new SmartNumber("Driver Settings/Turn/Max Turn Speed (rad/s)", Swerve.MAX_ANGULAR_VELOCITY);
+            SmartNumber MAX_TELEOP_TURN_ACCEL = new SmartNumber("Driver Settings/Turn/Max Turn Accel (rad/s^2)", Swerve.MAX_ANGULAR_ACCEL);
         }
     }
 
