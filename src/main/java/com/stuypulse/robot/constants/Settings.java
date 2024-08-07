@@ -21,7 +21,7 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
-    boolean SAFE_MODE_ENABLED = true;
+    boolean SAFE_MODE_ENABLED = false;
 
     double WIDTH = Units.inchesToMeters(36); // intake side 
     double LENGTH = Units.inchesToMeters(32);
