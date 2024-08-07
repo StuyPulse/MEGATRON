@@ -90,10 +90,13 @@ public abstract class SwerveDriveDriveAligned extends Command {
             drive.withVelocityX(velocity.get().y)
                 .withVelocityY(-velocity.get().x)
                 .withRotationalRate(
-                    angleVelocity.get() 
-                    + controller.update(
-                        Angle.fromRotation2d(getTargetAngle()), 
-                        Angle.fromRotation2d(swerve.getPose().getRotation()))
+                    SLMath.clamp(angleVelocity.get() 
+                                + controller.update(
+                                    Angle.fromRotation2d(getTargetAngle()), 
+                                    Angle.fromRotation2d(swerve.getPose().getRotation())),
+                                -Settings.Swerve.MAX_ANGULAR_VELOCITY,
+                                Settings.Swerve.MAX_ANGULAR_VELOCITY
+                    )
                 )         
             );
     }
