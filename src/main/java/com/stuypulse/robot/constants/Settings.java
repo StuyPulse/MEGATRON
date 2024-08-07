@@ -21,6 +21,8 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
+    boolean SAFE_MODE_ENABLED = false;
+
     double WIDTH = Units.inchesToMeters(36); // intake side 
     double LENGTH = Units.inchesToMeters(32);
 
@@ -56,10 +58,10 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 400);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 425);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 400);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 425);
 
-        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
+        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 90);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
@@ -164,11 +166,10 @@ public interface Settings {
         double WIDTH = Units.inchesToMeters(27); // intake side 
         double LENGTH = Units.inchesToMeters(19.25); 
 
-        double MAX_MODULE_SPEED = 4.9;
-        double MAX_MODULE_ACCEL = 15.0;
-
-        double MAX_LINEAR_VELOCITY = 15.0;
-        double MAX_ANGULAR_VELOCITY = 12.0;
+        double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
+        double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
+        double MAX_ANGULAR_VELOCITY = SAFE_MODE_ENABLED ? 3.0 : 12.0;
+        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 100.0;
 
         String CAN_BUS_NAME = "swerve";
 
@@ -336,8 +337,8 @@ public interface Settings {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
 
-            SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_MODULE_SPEED);
-            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", Swerve.MAX_MODULE_ACCEL);
+            SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_LINEAR_VELOCITY);
+            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", Swerve.MAX_LINEAR_ACCEL);
         }
 
         public interface Turn {
@@ -347,7 +348,8 @@ public interface Settings {
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
 
-            SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Turn/Max Turning", 6.0);
+            SmartNumber MAX_TELEOP_TURN_SPEED = new SmartNumber("Driver Settings/Turn/Max Turn Speed (rad/s)", Swerve.MAX_ANGULAR_VELOCITY);
+            SmartNumber MAX_TELEOP_TURN_ACCEL = new SmartNumber("Driver Settings/Turn/Max Turn Accel (rad/s^2)", Swerve.MAX_ANGULAR_ACCEL);
         }
     }
 
