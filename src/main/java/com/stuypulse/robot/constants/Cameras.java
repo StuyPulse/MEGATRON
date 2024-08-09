@@ -25,12 +25,13 @@ public interface Cameras {
     public CameraConfig[] APRILTAG_CAMERAS = new CameraConfig[] {
         // TO DO: find positions
         new CameraConfig(
-            "samera0", //tower camera
+            // "samera0", //tower camera
+            "tower-cam",
             new Pose3d(
                 new Translation3d(Units.inchesToMeters(-11.25), Units.inchesToMeters(-3.333797), Units.inchesToMeters(23.929362)),
                 new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(15), Units.degreesToRadians(0))
             ),
-            "29",
+            "11",
             3000
         ), //10.6.94.29:5802
 

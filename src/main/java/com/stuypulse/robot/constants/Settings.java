@@ -169,7 +169,7 @@ public interface Settings {
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
         double MAX_ANGULAR_VELOCITY = SAFE_MODE_ENABLED ? 3.0 : 12.0;
-        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 100.0;
+        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 200.0;
 
         String CAN_BUS_NAME = "swerve";
 
@@ -383,6 +383,8 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
+        String TOWER_CAM_NAME = "photonvision";
+        String PLATE_CAM_NAME = "plate-cam";
     }
 
     public interface Buzz {
