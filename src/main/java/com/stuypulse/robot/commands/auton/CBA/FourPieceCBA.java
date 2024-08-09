@@ -4,12 +4,15 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
 import com.stuypulse.robot.commands.auton.UntilNoteShot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
+import com.stuypulse.robot.commands.shooter.SwerveDriveToShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
 import com.stuypulse.robot.constants.Settings.Auton;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class FourPieceCBA {
+public class FourPieceCBA extends SequentialCommandGroup {
     
     public FourPieceCBA(PathPlannerPath... path) {
         addCommands(

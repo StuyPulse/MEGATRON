@@ -169,6 +169,8 @@ public interface Settings {
 
         String CAN_BUS_NAME = "swerve";
 
+        SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05);
+
         // The stator current at which the wheels start to slip;
         double SLIP_CURRENT = 150.0;
 
@@ -290,6 +292,8 @@ public interface Settings {
     public interface Alignment {
         double DEBOUNCE_TIME = 0.05;
 
+        SmartNumber PODIUM_SHOT_DISTANCE = new SmartNumber("Shooter/Podium Distance", 2.85);
+
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
@@ -311,6 +315,20 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
 
             SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
+        }
+
+        public interface Shoot {
+            public interface Translation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
+                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
+            }
+
+            public interface Rotation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
+                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
+            }
         }
     }
 
@@ -373,5 +391,15 @@ public interface Settings {
     public interface Buzz {
         double BUZZ_DURATION = 0.2;
         double BUZZ_INTENSITY = 1;
+    }
+
+    public interface Auton {
+        double MAX_SHOT_DISTANCE = 3.1;
+
+        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Conveyor/Shoot Wait Delay", 0.45);
+
+        double SHOOTER_STARTUP_DELAY = 0.5;
+        double DEFAULT_INTAKE_TIMEOUT = 0.75;
+        double SHOOTER_START_PRE = 1.0;
     }
 }

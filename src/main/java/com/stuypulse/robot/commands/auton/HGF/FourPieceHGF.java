@@ -6,33 +6,42 @@ import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
 import com.stuypulse.robot.commands.auton.UntilNoteShot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
+import com.stuypulse.robot.commands.shooter.SwerveDriveToShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
+import com.stuypulse.robot.constants.Settings.Auton;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class FourPieceHGF {
+public class FourPieceHGF extends SequentialCommandGroup {
     
      public FourPieceHGF(PathPlannerPath... paths) {
         addCommands(
             new ParallelCommandGroup(
-                new WaitCommand(0.25)
+                new WaitCommand(Auton.SHOOTER_STARTUP_DELAY)
                     .andThen(new ShooterScoreSpeaker()),
-
-                SwerveDriveToPose.speakerRelative(-55)
-                    .withTolerance(0.1, 0.1, 2) 
+                
+                SwerveDriveToPose.speakerRelative(-15)
+                    .withTolerance(0.03, 0.03, 3)
             ),
 
-            new ShooterWaitForTarget(),
-            new UntilNoteShot(0.75),
+            new UntilNoteShot(0.7),
 
             new FollowPathAndIntake(paths[0]),
-            new FollowPathAlignAndShoot(paths[1], new FastAlignShootSpeakerRelative(-45, 1.0)),
-            new FollowPathAlignAndShoot(paths[1], SwerveDriveToPose.speakerRelative(-45)),
+            new SwerveDriveToShoot()
+                .withTolerance(0.03, 3),
+            new UntilNoteShot(),
+
+            new FollowPathAndIntake(paths[1]),
+            new SwerveDriveToShoot()
+                .withTolerance(0.03, 3),
+            new UntilNoteShot(),
+
             new FollowPathAndIntake(paths[2]),
-            new FollowPathAlignAndShoot(paths[3], new FastAlignShootSpeakerRelative(-45)),
-            new FollowPathAlignAndShoot(paths[3], SwerveDriveToPose.speakerRelative(-45)),
-            new FollowPathAndIntake(paths[4]),
-            new FollowPathAlignAndShoot(paths[5], SwerveDriveToPose.speakerRelative(-45))
+            new SwerveDriveToShoot()
+                .withTolerance(0.03, 3),
+            new UntilNoteShot(0.7)
         );
     }
 

@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands.auton;
 
 import com.stuypulse.robot.commands.intake.IntakeStop;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
@@ -17,5 +18,9 @@ public class UntilNoteShot extends SequentialCommandGroup {
                 .withTimeout(timeout),
             new IntakeStop()
         );
+    }
+
+    public UntilNoteShot() {
+        this(Settings.Auton.SHOOT_WAIT_DELAY.get());
     }
 }
