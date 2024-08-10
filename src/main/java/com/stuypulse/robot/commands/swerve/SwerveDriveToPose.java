@@ -79,7 +79,7 @@ public class SwerveDriveToPose extends Command {
         this.poseSupplier = poseSupplier;
 
         targetPose2d = swerve.getField().getObject("Target Pose");
-        maxSpeed = Swerve.MAX_MODULE_SPEED;
+        maxSpeed = 4.9;
 
         controller = new HolonomicController(
             new PIDController(Translation.kP, Translation.kI, Translation.kD),

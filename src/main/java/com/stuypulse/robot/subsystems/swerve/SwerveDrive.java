@@ -146,7 +146,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             new HolonomicPathFollowerConfig(
                 Motion.XY,
                 Motion.THETA,
-                Settings.Swerve.MAX_MODULE_SPEED,
+                4.9,
                 Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
                 new ReplanningConfig(false, false)
             ),
