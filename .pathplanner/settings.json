@@ -4,7 +4,8 @@
   "holonomicMode": true,
   "pathFolders": [
     "ABCDE",
-    "HGF"
+    "HGF",
+    "Reroutes"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
