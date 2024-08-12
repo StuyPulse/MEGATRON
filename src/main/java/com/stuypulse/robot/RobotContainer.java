@@ -226,9 +226,10 @@ public class RobotContainer {
         // manual speaker at subwoofer
         // rebind to a button on the back later
         driver.getRightMenuButton()
-            .whileTrue(new ArmToSubwooferShot()
-                        .andThen(new ArmWaitUntilAtTarget())
-                        .andThen(new ShooterScoreSpeaker()))
+            .whileTrue(new ArmToSubwooferShot().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+                        .andThen(new ShooterFeederShoot()))
             .whileTrue(new LEDSet(LEDInstructions.SPEAKER_MANUAL))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 

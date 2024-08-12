@@ -16,10 +16,10 @@ import com.stuypulse.robot.constants.Settings;
 public class SwerveDriveConstants {
 
     private static final Slot0Configs steerGains = new Slot0Configs()
-        .withKP(Settings.Swerve.Turn.kP.get()).withKI(Settings.Swerve.Turn.kI.get()).withKD(Settings.Swerve.Turn.kI.get())
+        .withKP(Settings.Swerve.Turn.kP.get()).withKI(Settings.Swerve.Turn.kI.get()).withKD(Settings.Swerve.Turn.kD.get())
         .withKS(Settings.Swerve.Turn.kS.get()).withKV(Settings.Swerve.Turn.kV.get()).withKA(Settings.Swerve.Turn.kA.get());
     private static final Slot0Configs driveGains = new Slot0Configs()
-        .withKP(Settings.Swerve.Drive.kP.get()).withKI(Settings.Swerve.Drive.kI.get()).withKD(Settings.Swerve.Drive.kI.get())
+        .withKP(Settings.Swerve.Drive.kP.get()).withKI(Settings.Swerve.Drive.kI.get()).withKD(Settings.Swerve.Drive.kD.get())
         .withKS(Settings.Swerve.Drive.kS.get()).withKV(Settings.Swerve.Drive.kV.get()).withKA(Settings.Swerve.Drive.kA.get());
 
     // Initial configs for the drive and steer motors and the CANcoder; these cannot be null.
