@@ -158,8 +158,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = Units.inchesToMeters(27); // intake side 
-        double LENGTH = Units.inchesToMeters(19.25); 
+        double WIDTH = Units.inchesToMeters(36); // intake side 
+        double LENGTH = Units.inchesToMeters(32); 
 
         double MAX_MODULE_SPEED = 4.9;
         double MAX_MODULE_ACCEL = 15.0;

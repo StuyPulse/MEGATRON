@@ -1,6 +1,5 @@
 package com.stuypulse.robot.commands.shooter;
 
-import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
