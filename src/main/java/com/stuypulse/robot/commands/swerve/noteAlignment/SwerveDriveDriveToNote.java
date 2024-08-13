@@ -11,6 +11,8 @@ import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounceRC;
 import com.stuypulse.stuylib.streams.vectors.VStream;
@@ -94,10 +96,15 @@ public class SwerveDriveDriveToNote extends Command {
             if (vision.withinIntakePath())
                 speeds.omegaRadiansPerSecond = Math.signum(speeds.omegaRadiansPerSecond) * Math.toRadians(5.0);
 
+            Vector2D velocity = new Vector2D(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+            double angularVelocity = speeds.omegaRadiansPerSecond;
+
+            velocity = velocity.clamp(Settings.Swerve.MAX_LINEAR_VELOCITY);
+            angularVelocity = SLMath.clamp(angularVelocity, -Settings.Swerve.MAX_ANGULAR_VELOCITY, Settings.Swerve.MAX_ANGULAR_VELOCITY);
             // drive to note
-            swerve.setControl(drive.withVelocityX(speeds.vxMetersPerSecond)
-                .withVelocityY(speeds.vyMetersPerSecond)
-                .withRotationalRate(speeds.omegaRadiansPerSecond)      
+            swerve.setControl(drive.withVelocityX(velocity.x)
+                .withVelocityY(velocity.y)
+                .withRotationalRate(angularVelocity)      
             );
         } else {
             swerve.setControl(drive.withVelocityX(speed.get().y)

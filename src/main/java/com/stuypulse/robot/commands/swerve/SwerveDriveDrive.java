@@ -4,6 +4,7 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.numbers.filters.RateLimit;
 import com.stuypulse.stuylib.streams.vectors.VStream;
 import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
@@ -33,7 +34,6 @@ public class SwerveDriveDrive extends Command {
 
         speed = VStream.create(driver::getLeftStick)
             .filtered(
-                new VDeadZone(Drive.DEADBAND),
                 x -> x.clamp(1),
                 x -> x.pow(Drive.POWER.get()),
                 x -> x.mul(Drive.MAX_TELEOP_SPEED.get()),
@@ -42,9 +42,10 @@ public class SwerveDriveDrive extends Command {
 
         turn = IStream.create(driver::getRightX)
             .filtered(
-                x -> SLMath.deadband(x, Turn.DEADBAND.get()),
+                x -> SLMath.clamp(x, -1, 1),
                 x -> SLMath.spow(x, Turn.POWER.get()),
-                x -> x * Turn.MAX_TELEOP_TURNING.get(),
+                x -> x * Turn.MAX_TELEOP_TURN_SPEED.get(),
+                new RateLimit(Turn.MAX_TELEOP_TURN_ACCEL.get()),
                 new LowPassFilter(Turn.RC.get()));
 
         this.driver = driver;

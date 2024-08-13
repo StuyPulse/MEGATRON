@@ -21,6 +21,8 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
+    boolean SAFE_MODE_ENABLED = false;
+
     double WIDTH = Units.inchesToMeters(36); // intake side 
     double LENGTH = Units.inchesToMeters(32);
 
@@ -56,15 +58,15 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", 400);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", 425);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 400);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 425);
 
-        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 100);
+        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 90);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 55);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 50);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
@@ -99,17 +101,20 @@ public interface Settings {
     public interface Intake {
         double INTAKE_ACQUIRE_SPEED = 0.65;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
+
+        double INTAKE_FEED_SPEED = 0.65;
+
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
         double IR_DEBOUNCE = .005;
 
-        double HANDOFF_TIMEOUT = 1.8;
+        double HANDOFF_TIMEOUT = 1.5;
         double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 0.5;
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.25;
+        double FEEDER_INTAKE_SPEED = 0.23;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
@@ -161,11 +166,10 @@ public interface Settings {
         double WIDTH = Units.inchesToMeters(36); // intake side 
         double LENGTH = Units.inchesToMeters(32); 
 
-        double MAX_MODULE_SPEED = 4.9;
-        double MAX_MODULE_ACCEL = 15.0;
-
-        double MAX_LINEAR_VELOCITY = 15.0;
-        double MAX_ANGULAR_VELOCITY = 12.0;
+        double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
+        double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
+        double MAX_ANGULAR_VELOCITY = SAFE_MODE_ENABLED ? 3.0 : 12.0;
+        double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 100.0;
 
         String CAN_BUS_NAME = "swerve";
 
@@ -253,31 +257,31 @@ public interface Settings {
         }
 
         public interface FrontRight {
-            boolean DRIVE_INVERTED = false;
+            boolean DRIVE_INVERTED = true;
             String ID = "Front Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.1318359375);
-            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * -0.5);
-        }
-
-        public interface FrontLeft {
-            boolean DRIVE_INVERTED = true;
-            String ID = "Front Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
-            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * +0.5);
-        }
-
-        public interface BackLeft {
-            boolean DRIVE_INVERTED = true;
-            String ID = "Back Left";
-            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
             Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * +0.5);
         }
 
+        public interface FrontLeft {
+            boolean DRIVE_INVERTED = false;
+            String ID = "Front Left";
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.052734375);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * -0.5);
+        }
+
+        public interface BackLeft {
+            boolean DRIVE_INVERTED = false;
+            String ID = "Back Left";
+            Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.33154296875);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * -0.5);
+        }
+
         public interface BackRight {
-            boolean DRIVE_INVERTED = true;
+            boolean DRIVE_INVERTED = false;
             String ID = "Back Right";
             Rotation2d ABSOLUTE_OFFSET = Rotation2d.fromRotations(0.192138671875 + 0.5);
-            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * -0.5, WIDTH * -0.5);
+            Translation2d MODULE_OFFSET = new Translation2d(LENGTH * +0.5, WIDTH * +0.5);
         }
 
         public interface Simulation {
@@ -332,6 +336,16 @@ public interface Settings {
         }
     }
 
+    public interface LED {
+        int LED_LENGTH = 61;
+        SmartNumber BLINK_TIME = new SmartNumber("LED/LED Blink Time", .15);
+
+        SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
+        SmartNumber ROTATION_SPREAD = new SmartNumber("LED/LED Rotation Spread (deg)", 15);
+
+        SmartBoolean LED_AUTON_TOGGLE = new SmartBoolean("LED/Auton Align Display", false);
+    }
+
     public interface Driver {
         double TIME_UNTIL_HOLD = 0.7;
 
@@ -341,8 +355,8 @@ public interface Settings {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
 
-            SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_MODULE_SPEED);
-            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", 15);
+            SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_LINEAR_VELOCITY);
+            SmartNumber MAX_TELEOP_ACCEL = new SmartNumber("Driver Settings/Drive/Max Accleration", Swerve.MAX_LINEAR_ACCEL);
         }
 
         public interface Turn {
@@ -352,7 +366,8 @@ public interface Settings {
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
 
-            SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Turn/Max Turning", 6.0);
+            SmartNumber MAX_TELEOP_TURN_SPEED = new SmartNumber("Driver Settings/Turn/Max Turn Speed (rad/s)", Swerve.MAX_ANGULAR_VELOCITY);
+            SmartNumber MAX_TELEOP_TURN_ACCEL = new SmartNumber("Driver Settings/Turn/Max Turn Accel (rad/s^2)", Swerve.MAX_ANGULAR_ACCEL);
         }
     }
 

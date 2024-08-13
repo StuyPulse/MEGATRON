@@ -56,6 +56,12 @@ public class IntakeImpl extends Intake {
         funnelMotorRight.stopMotor();
     }
 
+    private void feed() {
+        intakeMotor.set(Settings.Intake.INTAKE_FEED_SPEED);
+        funnelMotorLeft.stopMotor();
+        funnelMotorRight.stopMotor();
+    }
+
     @Override
     public boolean hasNote() {
         return hasNote.get();
@@ -71,6 +77,9 @@ public class IntakeImpl extends Intake {
                 break;
             case DEACQUIRING:
                 deacquire();
+                break;
+            case FEEDING:
+                feed();
                 break;
             case STOP:
                 stop();

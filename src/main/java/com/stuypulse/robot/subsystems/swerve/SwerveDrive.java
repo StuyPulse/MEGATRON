@@ -46,6 +46,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     static {
         instance = new SwerveDrive(
             SwerveDriveConstants.DrivetrainConstants,
+            SwerveDriveConstants.UpdateOdometryFrequency,
             SwerveDriveConstants.FrontLeft,
             SwerveDriveConstants.FrontRight,
             SwerveDriveConstants.BackLeft,
@@ -70,8 +71,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-    protected SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
-        super(driveTrainConstants, modules);
+    protected SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double UpdateOdometryFrequency, SwerveModuleConstants... modules) {
+        super(driveTrainConstants, UpdateOdometryFrequency, modules);
         if (Utils.isSimulation()) {
             startSimThread();
         }
