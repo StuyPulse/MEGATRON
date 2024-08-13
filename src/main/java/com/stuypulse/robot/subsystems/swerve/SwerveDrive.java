@@ -120,7 +120,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public void stop() {
-        stop();
+        setControl(new SwerveRequest.FieldCentric()
+                    .withVelocityX(0)
+                    .withVelocityY(0)
+                    .withRotationalRate(0));
     }
 
     public Command followPathCommand(String pathName) {
