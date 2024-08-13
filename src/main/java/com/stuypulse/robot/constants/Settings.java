@@ -149,7 +149,7 @@ public interface Settings {
 
         public interface RIGHT {
             public interface PID {
-                double kP = 0.00304711;
+                double kP = 0.000304711;
                 double kI = 0;
                 double kD = 0.0;
             }
