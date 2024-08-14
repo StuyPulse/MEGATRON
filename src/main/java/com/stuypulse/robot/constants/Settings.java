@@ -58,15 +58,15 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 350);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 350);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 1000);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 800);
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 85);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 50);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 40);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
@@ -404,8 +404,8 @@ public interface Settings {
     }
 
     public interface Buzz {
-        double BUZZ_DURATION = 0.2;
-        double BUZZ_INTENSITY = 1;
+        double BUZZ_DURATION = 1.0;
+        double BUZZ_INTENSITY = 1.0;
     }
 
     public interface Auton {

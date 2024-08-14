@@ -124,7 +124,7 @@ public class RobotContainer {
         // intake field relative
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
-            .whileTrue(new SwerveDriveDriveToNote(driver))
+            // .whileTrue(new SwerveDriveDriveToNote(driver))
             .whileTrue(new IntakeAcquire()
                 .deadlineWith(new LEDSet(LEDInstructions.INTAKING))
                 .andThen(new BuzzController(driver))
@@ -207,14 +207,8 @@ public class RobotContainer {
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
-        // arm to amp and alignment
-        driver.getLeftBumper()
-            .onTrue(new ArmToAmp())
-            .onTrue(new SwerveDriveDriveAlignedAmp(driver)
-                    .onlyWhile(() -> 
-                        Math.abs(driver.getRightX()) < Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble() && 
-                        Arm.getInstance().getState() == Arm.State.AMP)
-                    .deadlineWith(new LEDSet(LEDInstructions.AMP_WITH_ALIGN)));
+        // arm to amp
+        driver.getLeftBumper().onTrue(new ArmToAmp());
 
         // manual speaker at subwoofer
         // rebind to a button on the back later
