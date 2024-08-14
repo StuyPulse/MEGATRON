@@ -5,7 +5,7 @@ import com.stuypulse.robot.commands.auton.FollowPathAlignAndShoot;
 import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
-import com.stuypulse.robot.commands.shooter.SwerveDriveToShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToShoot;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -28,7 +28,8 @@ public class FivePieceBFGH extends SequentialCommandGroup {
             new FollowPathAndIntake(paths[3]),
             new FollowPathAlignAndShoot(paths[4], new SwerveDriveToShoot()),
 
-            new FollowPathAndIntake(paths[5])
+            new FollowPathAndIntake(paths[5]),
+            new FollowPathAlignAndShoot(paths[6], new SwerveDriveToShoot())
         );
 
     }

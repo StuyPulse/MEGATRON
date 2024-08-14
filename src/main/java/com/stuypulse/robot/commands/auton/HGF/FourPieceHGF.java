@@ -4,7 +4,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
 import com.stuypulse.robot.commands.auton.UntilNoteShot;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
-import com.stuypulse.robot.commands.shooter.SwerveDriveToShoot;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToShoot;
 import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
 import com.stuypulse.robot.constants.Settings.Auton;
 

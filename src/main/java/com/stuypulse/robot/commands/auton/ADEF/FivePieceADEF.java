@@ -27,7 +27,8 @@ public class FivePieceADEF extends SequentialCommandGroup {
             new FollowPathAndIntake(paths[3]),
             new FollowPathAlignAndShoot(paths[4], new SwerveDriveToShoot()),
 
-            new FollowPathAndIntake(paths[5])
+            new FollowPathAndIntake(paths[5]),
+            new FollowPathAlignAndShoot(paths[6], new SwerveDriveToShoot())
         );
     }
 
