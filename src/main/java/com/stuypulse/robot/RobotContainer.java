@@ -25,6 +25,7 @@ import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterFeederDeacquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
+import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
@@ -280,6 +281,8 @@ public class RobotContainer {
         // climbing
         driver.getRightButton().onTrue(new ArmToPreClimb());
         driver.getBottomButton().onTrue(new ArmToClimbing());
+
+        driver.getLeftMenuButton().whileTrue(new ShooterManualIntake());
     }
 
     private void configureOperatorBindings() {
