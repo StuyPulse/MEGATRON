@@ -71,7 +71,8 @@ public interface Settings {
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 0);
+        SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 20);
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -99,10 +100,15 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.65;
+        double INTAKE_ACQUIRE_SPEED = 1.0;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
 
-        double INTAKE_FEED_SPEED = 0.65;
+        double INTAKE_FEED_SPEED = 0.48; 
+
+        double ARM_SPEED_THRESHOLD_TO_FEED = 2.5; // degrees per second
+
+        double INTAKE_SHOOT_SPEED = 0.9;
+        double INTAKE_SHOOT_TIME = 0.75;
 
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -114,7 +120,7 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.23;
+        double FEEDER_INTAKE_SPEED = 0.19;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
@@ -129,8 +135,8 @@ public interface Settings {
         );
 
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.005);
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
 
         // left runs faster than right
         public interface LEFT {
