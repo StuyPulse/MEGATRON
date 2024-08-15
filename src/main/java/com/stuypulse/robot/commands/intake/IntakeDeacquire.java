@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands.intake;
 
 import com.stuypulse.robot.subsystems.intake.Intake;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeDeacquire extends InstantCommand {
+public class IntakeDeacquire extends Command {
     
     private final Intake intake;
 

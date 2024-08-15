@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems.intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -19,6 +20,7 @@ public abstract class Intake extends SubsystemBase {
         DEACQUIRING,
         ACQUIRING,
         FEEDING,
+        SHOOTING,
         STOP
     }
 
@@ -37,4 +39,9 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public abstract boolean hasNote();
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putString("Intake/State", state.name());
+    }
 }

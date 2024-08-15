@@ -13,7 +13,10 @@ import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeFeed;
+import com.stuypulse.robot.commands.intake.IntakeShoot;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDReset;
@@ -22,6 +25,7 @@ import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterFeederDeacquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
+import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
 import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
@@ -106,6 +110,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        intake.setDefaultCommand(new IntakeStop());
         leds.setDefaultCommand(new LEDDefaultMode());
     }
 
@@ -124,7 +129,7 @@ public class RobotContainer {
         // intake field relative
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
-            .whileTrue(new SwerveDriveDriveToNote(driver))
+            // .whileTrue(new SwerveDriveDriveToNote(driver))
             .whileTrue(new IntakeAcquire()
                 .deadlineWith(new LEDSet(LEDInstructions.INTAKING))
                 .andThen(new BuzzController(driver))
@@ -141,9 +146,8 @@ public class RobotContainer {
         
         // deacquire
         driver.getDPadLeft()
-            .onTrue(new IntakeDeacquire())
-            .whileTrue(new LEDSet(LEDInstructions.DEACQUIRING))
-            .onFalse(new IntakeStop());
+            .whileTrue(new IntakeDeacquire())
+            .whileTrue(new LEDSet(LEDInstructions.DEACQUIRING));
         
         // speaker align and score 
         // score amp
@@ -157,7 +161,9 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
-                        .andThen(new ShooterFeederShoot())
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                            )
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)
                                 .until(() -> swerve.isAlignedToSpeaker())
@@ -169,15 +175,16 @@ public class RobotContainer {
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
-        // ferry align and shoot
-        // move to back of controller
+        // lob ferry align and shoot
         driver.getDPadRight()
             .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
                     .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLobFerry()))
-                        .andThen(new ShooterFeederShoot())
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                            )
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN)
                                 .until(() -> swerve.isAlignedToLobFerry())
@@ -189,13 +196,17 @@ public class RobotContainer {
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
+
+        // low ferry align and shoot
         driver.getDPadDown()
             .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
                     .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLowFerry()))
-                        .andThen(new ShooterFeederShoot())
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                            )
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN)
                                 .until(() -> swerve.isAlignedToLowFerry())
@@ -207,36 +218,34 @@ public class RobotContainer {
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
-        // arm to amp and alignment
-        driver.getLeftBumper()
-            .onTrue(new ArmToAmp())
-            .onTrue(new SwerveDriveDriveAlignedAmp(driver)
-                    .onlyWhile(() -> 
-                        Math.abs(driver.getRightX()) < Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble() && 
-                        Arm.getInstance().getState() == Arm.State.AMP)
-                    .deadlineWith(new LEDSet(LEDInstructions.AMP_WITH_ALIGN)));
+        // arm to amp
+        driver.getLeftBumper().onTrue(new ArmToAmp());
 
         // manual speaker at subwoofer
-        // rebind to a button on the back later
         driver.getRightMenuButton()
             .whileTrue(new ArmToSubwooferShot().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new ShooterFeederShoot()))
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                            )
+                        )
             .whileTrue(new LEDSet(LEDInstructions.SPEAKER_MANUAL))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
-        // manual ferry
+        // manual lob ferry
         driver.getTopButton()
             .whileTrue(new SwerveDriveDriveAlignedManualLobFerry(driver)
                     .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLobFerry()))
-                        .andThen(new ShooterFeederShoot())
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                            )
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL)
                                 .until(() -> swerve.isAlignedToManualLobFerry())
@@ -248,13 +257,16 @@ public class RobotContainer {
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
+        // manual low ferry
         driver.getLeftButton()
             .whileTrue(new SwerveDriveDriveAlignedManualLowFerry(driver)
                     .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLowFerry()))
-                        .andThen(new ShooterFeederShoot())
+                        .andThen(new ShooterFeederShoot()
+                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atValidFeedAngle()))
+                        )
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL)
                                 .until(() -> swerve.isAlignedToManualLowFerry())
@@ -269,6 +281,8 @@ public class RobotContainer {
         // climbing
         driver.getRightButton().onTrue(new ArmToPreClimb());
         driver.getBottomButton().onTrue(new ArmToClimbing());
+
+        driver.getLeftMenuButton().whileTrue(new ShooterManualIntake());
     }
 
     private void configureOperatorBindings() {

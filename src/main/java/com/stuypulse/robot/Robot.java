@@ -1,8 +1,10 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
+import com.stuypulse.robot.commands.intake.IntakeShoot;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.RobotType;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
@@ -46,6 +48,12 @@ public class Robot extends TimedRobot {
         ) {
             CommandScheduler.getInstance().schedule(new ShooterAcquireFromIntake()
                                                     .andThen(new BuzzController(robot.driver)));
+        }
+
+        if (Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+            && Arm.getInstance().atValidFeedAngle()
+        ) {
+            CommandScheduler.getInstance().schedule(new IntakeShoot());
         }
         
         CommandScheduler.getInstance().run();
