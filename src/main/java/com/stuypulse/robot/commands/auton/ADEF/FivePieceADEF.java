@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class FivePieceADEF extends SequentialCommandGroup {
     
     public FivePieceADEF(PathPlannerPath... paths) {
+        
         addCommands(
             new ShooterScoreSpeaker(),
             

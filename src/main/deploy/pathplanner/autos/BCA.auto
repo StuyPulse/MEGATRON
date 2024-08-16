@@ -14,19 +14,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to C"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "C to B"
+            "pathName": "Center to B"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "B to A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A to C"
           }
         }
       ]
