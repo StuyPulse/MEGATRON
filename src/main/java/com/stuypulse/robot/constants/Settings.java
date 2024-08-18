@@ -58,8 +58,8 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 1000);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 800);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 900);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 700);
 
         SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 85);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
@@ -102,10 +102,10 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 1.0;
+        double INTAKE_ACQUIRE_SPEED = 0.72;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
 
-        double INTAKE_FEED_SPEED = 0.48; 
+        double INTAKE_FEED_SPEED = 0.4; 
 
         double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
         double ARM_SPEED_THRESHOLD_TO_FEED = 2.5; // degrees per second
@@ -123,7 +123,7 @@ public interface Settings {
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.19;
+        double FEEDER_INTAKE_SPEED = 0.18;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
