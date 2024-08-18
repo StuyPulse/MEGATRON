@@ -51,9 +51,13 @@ public class Robot extends TimedRobot {
         }
 
         if (Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-            && Arm.getInstance().atValidFeedAngle()
+            && Arm.getInstance().atIntakeShouldShootAngle()
         ) {
-            CommandScheduler.getInstance().schedule(new IntakeShoot().until(() -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED));
+            CommandScheduler.getInstance().schedule(new IntakeShoot()
+                                                    .until(
+                                                        () -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                                                            || !Arm.getInstance().atIntakeShouldShootAngle()
+                                                    ));
         }
         
         CommandScheduler.getInstance().run();

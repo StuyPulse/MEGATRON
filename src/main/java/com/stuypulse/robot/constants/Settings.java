@@ -71,8 +71,10 @@ public interface Settings {
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
+
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 0);
-        SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 20);
+        SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 4);
+
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -105,6 +107,7 @@ public interface Settings {
 
         double INTAKE_FEED_SPEED = 0.48; 
 
+        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
         double ARM_SPEED_THRESHOLD_TO_FEED = 2.5; // degrees per second
 
         double INTAKE_SHOOT_SPEED = 0.9;
@@ -113,9 +116,9 @@ public interface Settings {
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IR_DEBOUNCE = .005;
+        double IR_DEBOUNCE = 0.0;
 
-        double HANDOFF_TIMEOUT = 1.5;
+        double HANDOFF_TIMEOUT = 1.0;
         double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 0.5;
     }
 
