@@ -74,6 +74,7 @@ public class PhotonVisionCamera extends PhotonCamera{
             }
         }
 
+        SmartDashboard.putNumber("Vision/" + getName() + "/pose-ambiguity", latestData.getBestTarget().getPoseAmbiguity());
         return Optional.empty();
     }
 }
