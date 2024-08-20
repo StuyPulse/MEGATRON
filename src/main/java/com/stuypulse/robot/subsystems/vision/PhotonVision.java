@@ -2,26 +2,49 @@ package com.stuypulse.robot.subsystems.vision;
 
 import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
-import com.stuypulse.robot.util.vision.PhotonVisionCamera;
 import com.stuypulse.robot.util.vision.VisionData;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends AprilTagVision {
 
-    private final PhotonVisionCamera[] cameras;
+    private final PhotonCamera[] cameras;
+    private final boolean[] enabled;
+    private final PhotonPoseEstimator[] poseEstimators;
     private final ArrayList<VisionData> outputs;
 
     private final FieldObject2d robot;
 
     protected PhotonVision() {
-        this.cameras = new PhotonVisionCamera[Cameras.APRILTAG_CAMERAS.length];
+        this.cameras = new PhotonCamera[Cameras.APRILTAG_CAMERAS.length];
         for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
-            cameras[i] = new PhotonVisionCamera(Cameras.APRILTAG_CAMERAS[i]);
+            cameras[i] = new PhotonCamera(Cameras.APRILTAG_CAMERAS[i].getName());
+        }
+
+        enabled = new boolean[Cameras.APRILTAG_CAMERAS.length];
+
+        poseEstimators = new PhotonPoseEstimator[Cameras.APRILTAG_CAMERAS.length];
+        for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
+            poseEstimators[i] = new PhotonPoseEstimator(
+                AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo), 
+                PoseStrategy.AVERAGE_BEST_TARGETS, 
+                Cameras.APRILTAG_CAMERAS[i].getLocation().minus(new Pose3d())
+                );
         }
 
         outputs = new ArrayList<VisionData>();
@@ -51,10 +74,19 @@ public class PhotonVision extends AprilTagVision {
 
     @Override
     public void setCameraEnabled(String name, boolean enabled) {
-        for (PhotonVisionCamera camera : cameras) {
-            if (camera.getName().equals(name))
-                camera.setEnabled(enabled);
+        for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
+            if (cameras[i].getName().equals(name)) {
+                this.enabled[i] = enabled;
+            }
         }
+    }
+
+    private int[] getIDs(PhotonPipelineResult pipelineResult) {
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        for (PhotonTrackedTarget target : pipelineResult.getTargets()) {
+            ids.add(target.getFiducialId());
+        }
+        return ids.stream().mapToInt(i -> i).toArray();
     }
 
     @Override
@@ -62,15 +94,20 @@ public class PhotonVision extends AprilTagVision {
         super.periodic();
 
         outputs.clear();
-        
-        for (PhotonVisionCamera camera : cameras) {
-            SmartDashboard.putBoolean(camera.getName() + "/Has Data", camera.hasData());
 
-            camera.getVisionData().ifPresent(
-                (VisionData data) -> {
-                    outputs.add(data);
-                    updateTelemetry("Vision/" + camera.getName(), data);
-                });
+        for (int i = 0; i < cameras.length; i++) {
+            final int index = i;
+            if (enabled[index]) {
+                PhotonPipelineResult latestResult = cameras[index].getLatestResult();
+                Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
+                estimatedRobotPose.ifPresent(
+                    (EstimatedRobotPose robotPose) -> {
+                        VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
+                        outputs.add(data);
+                        updateTelemetry("Vision/" + cameras[index].getName(), data);
+                    }
+                );
+            }
         }
 
         SmartDashboard.putBoolean("Vision/Has Any Data", outputs.size() > 0);

@@ -33,7 +33,7 @@ public interface Cameras {
             ),
             "11",
             3000
-        ), //10.6.94.29:5802
+        ), //10.6.94.11:5800/#/dashboard
 
         new CameraConfig(
             "samera1", //electronic plate camera

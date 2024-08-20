@@ -1,6 +1,6 @@
 package com.stuypulse.robot.commands.vision;
 
-import com.stuypulse.robot.subsystems.vision.TheiaTagVision;
+import com.stuypulse.robot.subsystems.vision.PhotonVision;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
@@ -19,6 +19,6 @@ public class VisionChangeWhiteList extends InstantCommand {
 
     @Override
     public void initialize() {
-        TheiaTagVision.getInstance().setTagWhitelist(ids);
+        PhotonVision.getInstance().setTagWhitelist(ids);
     }
 }
