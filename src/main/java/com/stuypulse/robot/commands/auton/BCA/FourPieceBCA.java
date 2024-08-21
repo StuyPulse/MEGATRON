@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.auton.CBA;
+package com.stuypulse.robot.commands.auton.BCA;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class FourPieceCBA extends SequentialCommandGroup {
+public class FourPieceBCA extends SequentialCommandGroup {
     
-    public FourPieceCBA(PathPlannerPath... path) {
+    public FourPieceBCA(PathPlannerPath... path) {
         addCommands(
             new ParallelCommandGroup(
                 new WaitCommand(Auton.SHOOTER_STARTUP_DELAY)
