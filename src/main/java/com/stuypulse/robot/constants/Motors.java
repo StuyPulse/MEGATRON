@@ -39,8 +39,8 @@ public interface Motors {
     /** Classes to store all of the values a motor needs */
 
     public interface Arm {
-        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.0); 
-        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.0); 
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.25); 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25); 
     }
 
     public interface Intake {
@@ -50,9 +50,9 @@ public interface Motors {
     }
 
     public interface Shooter {
-        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 1.0);
-        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 1.0);
-        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 1.0);
+        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 0.5);
+        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 0.5);
+        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25);
     }
   
     /* Configurations */
