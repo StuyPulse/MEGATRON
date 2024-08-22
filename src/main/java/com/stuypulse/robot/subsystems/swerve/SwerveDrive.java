@@ -167,11 +167,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             timestampSum += data.getTimestamp() * data.getArea();
         }
 
-        // addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            // DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
-        
-        addVisionMeasurement(new Pose2d(3, 3, new Rotation2d()), timestampSum / areaSum,
+        addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
             DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+        
     }
 
     public void setVisionEnabled(boolean enabled) {

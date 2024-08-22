@@ -38,6 +38,10 @@ public class PhotonVision extends AprilTagVision {
 
         enabled = new boolean[Cameras.APRILTAG_CAMERAS.length];
 
+        for (int i = 0; i < enabled.length; i++) {
+            enabled[i] = true;
+        }
+
         poseEstimators = new PhotonPoseEstimator[Cameras.APRILTAG_CAMERAS.length];
         for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
             poseEstimators[i] = new PhotonPoseEstimator(
