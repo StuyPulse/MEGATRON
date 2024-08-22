@@ -3,6 +3,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.intake.IntakeShoot;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
+import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.RobotType;
@@ -51,9 +52,20 @@ public class Robot extends TimedRobot {
         }
 
         if (Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-            && Arm.getInstance().atValidFeedAngle()
+            && Arm.getInstance().atIntakeShouldShootAngle()
         ) {
-            CommandScheduler.getInstance().schedule(new IntakeShoot().until(() -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED));
+            CommandScheduler.getInstance().schedule(new IntakeShoot()
+                                                    .until(
+                                                        () -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                                                            || !Arm.getInstance().atIntakeShouldShootAngle()
+                                                    ));
+        }
+
+        if (Arm.getInstance().getState() == Arm.State.AMP 
+            && !Shooter.getInstance().hasNote() 
+            && Shooter.getInstance().getFeederState() != Shooter.FeederState.DEACQUIRING
+        ) {
+            CommandScheduler.getInstance().schedule(new ShooterManualIntake().until(() -> Arm.getInstance().getState() != Arm.State.AMP));
         }
         
         CommandScheduler.getInstance().run();

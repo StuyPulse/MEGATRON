@@ -15,6 +15,6 @@ public class ShooterFeederShoot extends InstantCommand {
 
     @Override
     public void initialize() {
-        shooter.feederShoot();
+        shooter.setFeederState(Shooter.FeederState.SHOOTING);
     }
 }

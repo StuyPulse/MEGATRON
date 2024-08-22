@@ -77,7 +77,12 @@ public class ArmImpl extends Arm {
     @Override
     public boolean atValidFeedAngle() {
         return getDegrees() > Settings.Arm.FEED_ANGLE.get() - Settings.Arm.MAX_ANGLE_ERROR.get()
-                    || getDegrees() < Settings.Arm.MAX_ACCEPTABLE_FEED_ANGLE.get() + Settings.Arm.MAX_ANGLE_ERROR.get();
+                    && getDegrees() < Settings.Arm.MAX_ACCEPTABLE_FEED_ANGLE.get() + Settings.Arm.MAX_ANGLE_ERROR.get();
+    }
+
+    @Override
+    public boolean atIntakeShouldShootAngle() {
+        return getDegrees() < Settings.Intake.MAX_ARM_ANGLE_FOR_INTAKE_SHOOT;
     }
 
     private double getTargetDegrees() {
@@ -173,7 +178,7 @@ public class ArmImpl extends Arm {
         }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            if (Shooter.getInstance().isShooting()) {
+            if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING) {
                 setVoltage(controller.getOutput() + 0.31);
             }
             else {
