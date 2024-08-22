@@ -281,8 +281,6 @@ public class RobotContainer {
         // climbing
         driver.getRightButton().onTrue(new ArmToPreClimb());
         driver.getBottomButton().onTrue(new ArmToClimbing());
-
-        driver.getLeftMenuButton().whileTrue(new SwerveDriveDriveAlignedSpeaker(driver));
     }
 
     private void configureOperatorBindings() {

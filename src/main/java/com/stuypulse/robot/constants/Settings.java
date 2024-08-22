@@ -410,8 +410,6 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
-        String TOWER_CAM_NAME = "photonvision";
-        String PLATE_CAM_NAME = "plate-cam";
     }
 
     public interface Buzz {
