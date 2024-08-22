@@ -44,6 +44,12 @@ public class IntakeImpl extends Intake {
         funnelMotorRight.set(+Settings.Intake.FUNNEL_ACQUIRE);
     }
 
+    private void shoot() {
+        intakeMotor.set(Settings.Intake.INTAKE_SHOOT_SPEED);
+        funnelMotorLeft.stopMotor();
+        funnelMotorRight.stopMotor();
+    }
+
     private void deacquire() {
         intakeMotor.set(-Settings.Intake.INTAKE_DEACQUIRE_SPEED);
         funnelMotorLeft.set(-Settings.Intake.FUNNEL_DEACQUIRE);
@@ -80,6 +86,9 @@ public class IntakeImpl extends Intake {
                 break;
             case FEEDING:
                 feed();
+                break;
+            case SHOOTING:
+                shoot();
                 break;
             case STOP:
                 stop();

@@ -58,20 +58,23 @@ public interface Settings {
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
-        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 400);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 425);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 900);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 700);
 
-        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 90);
+        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 85);
         SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 50);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 40);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 17);
+
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 0);
+        SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 4);
+
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
 
         SmartNumber BUMP_SWITCH_DEBOUNCE_TIME = new SmartNumber("Arm/Bump Switch Debounce Time", 0.02);
@@ -99,22 +102,28 @@ public interface Settings {
     }
   
     public interface Intake {
-        double INTAKE_ACQUIRE_SPEED = 0.65;
+        double INTAKE_ACQUIRE_SPEED = 0.72;
         double INTAKE_DEACQUIRE_SPEED = 1.0;
 
-        double INTAKE_FEED_SPEED = 0.65;
+        double INTAKE_FEED_SPEED = 0.4; 
+
+        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
+        double ARM_SPEED_THRESHOLD_TO_FEED = 2.5; // degrees per second
+
+        double INTAKE_SHOOT_SPEED = 0.9;
+        double INTAKE_SHOOT_TIME = 0.75;
 
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
 
-        double IR_DEBOUNCE = .005;
+        double IR_DEBOUNCE = 0.0;
 
-        double HANDOFF_TIMEOUT = 1.5;
+        double HANDOFF_TIMEOUT = 1.0;
         double MINIMUM_DEACQUIRE_TIME_WHEN_STUCK = 0.5;
     }
 
     public interface Shooter {
-        double FEEDER_INTAKE_SPEED = 0.23;
+        double FEEDER_INTAKE_SPEED = 0.18;
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
@@ -129,8 +138,8 @@ public interface Settings {
         );
 
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.01);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.005);
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
 
         // left runs faster than right
         public interface LEFT {
@@ -149,7 +158,7 @@ public interface Settings {
 
         public interface RIGHT {
             public interface PID {
-                double kP = 0.00304711;
+                double kP = 0.000314711;
                 double kI = 0;
                 double kD = 0.0;
             }
@@ -163,8 +172,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = Units.inchesToMeters(27); // intake side 
-        double LENGTH = Units.inchesToMeters(19.25); 
+        double WIDTH = Units.inchesToMeters(36); // intake side 
+        double LENGTH = Units.inchesToMeters(32); 
 
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
@@ -172,6 +181,8 @@ public interface Settings {
         double MAX_ANGULAR_ACCEL = SAFE_MODE_ENABLED ? 25.0 : 200.0;
 
         String CAN_BUS_NAME = "swerve";
+
+        SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05);
 
         // The stator current at which the wheels start to slip;
         double SLIP_CURRENT = 150.0;
@@ -294,6 +305,8 @@ public interface Settings {
     public interface Alignment {
         double DEBOUNCE_TIME = 0.05;
 
+        SmartNumber PODIUM_SHOT_DISTANCE = new SmartNumber("Shooter/Podium Distance", 2.85);
+
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
@@ -315,6 +328,20 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
 
             SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
+        }
+
+        public interface Shoot {
+            public interface Translation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
+                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
+            }
+
+            public interface Rotation {
+                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
+                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
+                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
+            }
         }
     }
 
@@ -388,7 +415,17 @@ public interface Settings {
     }
 
     public interface Buzz {
-        double BUZZ_DURATION = 0.2;
-        double BUZZ_INTENSITY = 1;
+        double BUZZ_DURATION = 1.0;
+        double BUZZ_INTENSITY = 1.0;
+    }
+
+    public interface Auton {
+        double MAX_SHOT_DISTANCE = 3.1;
+
+        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Conveyor/Shoot Wait Delay", 0.45);
+
+        double SHOOTER_STARTUP_DELAY = 0.5;
+        double DEFAULT_INTAKE_TIMEOUT = 0.75;
+        double SHOOTER_START_PRE = 1.0;
     }
 }

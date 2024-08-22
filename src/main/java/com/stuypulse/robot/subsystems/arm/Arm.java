@@ -44,6 +44,11 @@ public abstract class Arm extends SubsystemBase {
 
     public abstract boolean atTarget();
 
+    public abstract boolean atValidFeedAngle();
+    public abstract boolean atIntakeShouldShootAngle();
+
+    public abstract double getVelocity();
+
     @Override
     public void periodic() {
         SmartDashboard.putString("Arm/State", state.toString());
