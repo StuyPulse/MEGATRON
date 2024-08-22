@@ -15,11 +15,16 @@ public class ShooterManualIntake extends Command{
 
     @Override
     public void initialize() {
-        shooter.feederIntake();
+        shooter.setFeederState(Shooter.FeederState.INTAKING);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return shooter.hasNote();
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooter.feederStop();
+        shooter.setFeederState(Shooter.FeederState.STOP);
     }
 }

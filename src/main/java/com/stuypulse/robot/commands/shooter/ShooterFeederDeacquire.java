@@ -15,6 +15,6 @@ public class ShooterFeederDeacquire extends InstantCommand {
 
     @Override
     public void initialize() {
-        shooter.feederDeacquire();
+        shooter.setFeederState(Shooter.FeederState.DEACQUIRING);
     }
 }

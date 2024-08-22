@@ -178,7 +178,7 @@ public class ArmImpl extends Arm {
         }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            if (Shooter.getInstance().isShooting()) {
+            if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING) {
                 setVoltage(controller.getOutput() + 0.31);
             }
             else {

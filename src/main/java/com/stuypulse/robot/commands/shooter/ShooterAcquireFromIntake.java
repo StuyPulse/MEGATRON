@@ -29,7 +29,7 @@ public class ShooterAcquireFromIntake extends Command {
     public void initialize() {
         stopWatch.reset();
         intake.setState(Intake.State.FEEDING);
-        shooter.feederIntake();
+        shooter.setFeederState(Shooter.FeederState.INTAKING);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ShooterAcquireFromIntake extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooter.feederStop();
+        shooter.setFeederState(Shooter.FeederState.STOP);
         intake.setState(Intake.State.STOP);
     }
 
