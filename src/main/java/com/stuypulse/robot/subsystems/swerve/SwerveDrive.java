@@ -255,6 +255,19 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
+
+            // logging for testing field poses on opposite alliances, remove when finished
+            SmartDashboard.putNumber("Swerve/Speaker Pose X", Field.getAllianceSpeakerPose().getTranslation().getX());
+            SmartDashboard.putNumber("Swerve/Speaker Pose Y", Field.getAllianceSpeakerPose().getTranslation().getY());
+            SmartDashboard.putNumber("Swerve/Amp Pose X", Field.getAllianceAmpPose().getTranslation().getX());
+            SmartDashboard.putNumber("Swerve/Amp Pose Y", Field.getAllianceAmpPose().getTranslation().getY());
+            SmartDashboard.putNumber("Swerve/Opposing Amp Pose X", Field.getOpposingAmpPose().getTranslation().getX());
+            SmartDashboard.putNumber("Swerve/Opposing Amp Pose Y", Field.getOpposingAmpPose().getTranslation().getY());
+
+            SmartDashboard.putNumber("Swerve/Current Pose X", SwerveDrive.getInstance().getPose().getX());
+            SmartDashboard.putNumber("Swerve/Current Pose Y", SwerveDrive.getInstance().getPose().getY());
+            SmartDashboard.putNumber("Swerve/Current Rotation", SwerveDrive.getInstance().getGyroAngle().getDegrees());
+
         }
 
         field.setRobotPose(getPose());

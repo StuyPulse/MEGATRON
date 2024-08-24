@@ -21,7 +21,7 @@ public interface Settings {
   
     double DT = 1.0 / 50.0;
 
-    boolean SAFE_MODE_ENABLED = false;
+    boolean SAFE_MODE_ENABLED = true;
 
     double WIDTH = Units.inchesToMeters(36); // intake side 
     double LENGTH = Units.inchesToMeters(32);
@@ -309,7 +309,7 @@ public interface Settings {
 
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
-        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 20);
 
         SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
         SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);
