@@ -262,6 +262,9 @@ public class RobotContainer {
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+        
+        // human player attention button
+        driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
     }
 
     private void configureOperatorBindings() {
