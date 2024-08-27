@@ -12,13 +12,10 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
 /** This interface stores information about the field elements. */
 public interface Field {
@@ -33,8 +30,6 @@ public interface Field {
     double SPEAKER_MAX_HEIGHT = 2.11; // represents the top of the speaker opening
     double SPEAKER_MIN_HEIGHT = 1.98; // represents the bottom of the speaker opening
 
-    Optional<Alliance> alliance = DriverStation.getAlliance();  
-    
     public static Pose3d transformToOppositeAlliance(Pose3d pose) {
         Pose3d rotated = pose.rotateBy(new Rotation3d(0, 0, Math.PI));
 
@@ -157,8 +152,7 @@ public interface Field {
     /*** SPEAKER ***/
 
     public static Pose2d getAllianceSpeakerPose() {
-        // return (Robot.isBlue() ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER).getLocation().toPose2d();
-        return (alliance.isPresent() ? (alliance.get() == Alliance.Blue ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER ) : (null))
+        return (Robot.isBlue() ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER)
             .getLocation().toPose2d();
     }
 
@@ -172,17 +166,13 @@ public interface Field {
     /*** AMP ***/
 
     public static Pose2d getAllianceAmpPose() {
-        return (alliance.isPresent() ? (alliance.get() == Alliance.Blue ? NamedTags.BLUE_AMP : NamedTags.RED_AMP ) : (null))
+        return (Robot.isBlue() ? NamedTags.BLUE_AMP : NamedTags.RED_AMP)
             .getLocation().toPose2d();
-        // return (Robot.isBlue() ? NamedTags.BLUE_AMP : NamedTags.RED_AMP)
-        //     .getLocation().toPose2d();
     }
 
     public static Pose2d getOpposingAmpPose() {
-        return (alliance.isPresent() ? (alliance.get() == Alliance.Blue ? NamedTags.RED_AMP : NamedTags.BLUE_AMP ) : (null))
+        return (Robot.isBlue() ? NamedTags.RED_AMP : NamedTags.BLUE_AMP)
             .getLocation().toPose2d();
-        // return (Robot.isBlue() ? NamedTags.RED_AMP : NamedTags.BLUE_AMP)
-        //     .getLocation().toPose2d();
     }
 
     public static Pose2d getAmpPathFindPose() {
@@ -209,7 +199,6 @@ public interface Field {
     /*** TRAP ***/
 
     public static Pose2d[] getAllianceTrapPoses() {
-
         if (Robot.isBlue()) {
             return new Pose2d[] {
                 NamedTags.BLUE_STAGE_FAR.getLocation().toPose2d(),
