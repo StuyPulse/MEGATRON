@@ -71,7 +71,9 @@ public class ArmImpl extends Arm {
         if (state == State.FEED) {
             return atValidFeedAngle();
         }
-        return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
+        boolean atTarget = Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
+        SmartDashboard.putBoolean("test/armAtTarget", atTarget);
+        return atTarget;
     }
 
     @Override

@@ -169,9 +169,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public boolean isAlignedToSpeaker() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-        Rotation2d targetAngle = speakerPose.minus(currentPose).getAngle();
-
-        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+        // Rotate by 180 because the shooter is on the back of the robot
+        Rotation2d targetAngle = speakerPose.minus(currentPose).getAngle().rotateBy(Rotation2d.fromDegrees(180));
+        SmartDashboard.putNumber("test/angleError", getPose().getRotation().minus(targetAngle).getDegrees());
+        boolean isAligned = Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
+        SmartDashboard.putBoolean("test/isAligned", isAligned);
+        return isAligned;
     }
 
     public boolean isAlignedToLowFerry() {

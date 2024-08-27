@@ -20,6 +20,8 @@ public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
     protected Rotation2d getTargetAngle() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
+        SmartDashboard.putNumber("test/speakerPoseX", speakerPose.getX());
+        SmartDashboard.putNumber("test/speakerPoseY", speakerPose.getY());
         return currentPose.minus(speakerPose).getAngle();
     }
 

@@ -186,6 +186,8 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
+
+        SmartDashboard.putString("Shooter/Feeder State", getFeederState().toString());
     }
 
 }
