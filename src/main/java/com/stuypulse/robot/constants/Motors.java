@@ -117,6 +117,7 @@ public interface Motors {
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
             motor.burnFlash();
+            motor.enableVoltageCompensation(12);
         }
 
         public void configureAsFollower(CANSparkMax motor, CANSparkMax follows) {
