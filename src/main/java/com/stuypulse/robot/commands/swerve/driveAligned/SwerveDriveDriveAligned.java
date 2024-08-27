@@ -64,7 +64,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
                 // make angleVelocity contribute less once distance is less than REDUCED_FF_DIST
                 // so that angular velocity doesn't oscillate
                 x -> x * Math.min(1, getDistanceToTarget() / Assist.REDUCED_FF_DIST),
-                new RateLimit(Settings.Swerve.MAX_ANGULAR_ACCEL),
+                // new RateLimit(Settings.Swerve.MAX_ANGULAR_ACCEL),
                 x -> SLMath.clamp(x, -Settings.Swerve.MAX_ANGULAR_VELOCITY, Settings.Swerve.MAX_ANGULAR_VELOCITY),
                 x -> -x
             );

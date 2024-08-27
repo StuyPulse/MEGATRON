@@ -178,6 +178,10 @@ public class ArmImpl extends Arm {
             setVoltage(-1.5);
             controller.update(Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MIN_ANGLE.get());
         }
+        else if (getTargetDegrees() == Settings.Arm.MIN_ANGLE.get() && bumpSwitchTriggered.get()) {
+            setVoltage(0);
+            controller.update(Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MIN_ANGLE.get());
+        }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
             if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING) {
