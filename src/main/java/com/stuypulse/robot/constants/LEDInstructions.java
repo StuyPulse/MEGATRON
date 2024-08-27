@@ -55,29 +55,25 @@ public interface LEDInstructions {
 
     LEDInstruction DEFAULT = LEDInstructions.OFF;
 
-    LEDInstruction INTAKING = new LEDPulseColor(SLColor.BLUE);
-    LEDInstruction DEACQUIRING = new LEDPulseColor(SLColor.RED);
+    LEDInstruction FIELD_RELATIVE_INTAKING = new LEDRainbow();
+    LEDInstruction ROBOT_RELATIVE_INTAKING = new LEDPulseColor(SLColor.BLUE);
+    LEDInstruction DEACQUIRING = new LEDPulseColor(SLColor.GOLD);
 
     LEDInstruction SPEAKER_ALIGN = GREEN;
-    LEDInstruction SPEAKER_MANUAL = new LEDPulseColor(SLColor.GREEN);
+    LEDInstruction SPEAKER_MANUAL = new LEDRainbow();
 
-    LEDInstruction LOW_FERRY_ALIGN = LIME;
-    LEDInstruction LOW_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.LIME);
+    LEDInstruction LOW_FERRY_ALIGN = PURPLE;
+    LEDInstruction LOW_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.PURPLE);
 
-    LEDInstruction LOB_FERRY_ALIGN = AQUA;
-    LEDInstruction LOB_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.AQUA);
+    LEDInstruction LOB_FERRY_ALIGN = GREEN;
+    LEDInstruction LOB_FERRY_ALIGN_MANUAL = new LEDPulseColor(SLColor.GREEN);
 
-    LEDInstruction AMP_WITH_ALIGN = VIOLET;
-    LEDInstruction AMP_WITHOUT_ALIGN = new LEDPulseColor(SLColor.VIOLET);
-
-    LEDInstruction IS_ALIGNED = RAINBOW;
+    LEDInstruction ARM_AT_AMP = YELLOW;
+    LEDInstruction AMP_SCORE = GREEN;
 
     LEDInstruction ATTENTION = new LED694(0.01, SLColor.BLUE);
 
-    LEDInstruction ARM_PRECLIMB = ORANGE;
-    LEDInstruction ARM_POSTCLIMB = new LEDPulseColor(SLColor.ORANGE);
-
-	LEDInstruction CONTAINS_NOTE = GOLD;
+	LEDInstruction CONTAINS_NOTE = RED;
 
     // TO FUTURE USERS, DONT PUT LEDAlign and LEDAutonChooser (any disabled LEDInstructions) inside
     // the LEDInstructions interface

@@ -39,20 +39,20 @@ public interface Motors {
     /** Classes to store all of the values a motor needs */
 
     public interface Arm {
-        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.25); 
-        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25); 
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.25, false); 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25, false); 
     }
 
     public interface Intake {
-        CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kCoast, 500, 0.25);
-        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25);
-        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25);
+        CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kCoast, 500, 0.25, true);
+        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25, true);
+        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25, true);
     }
 
     public interface Shooter {
-        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 0.5);
-        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 0.5);
-        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25);
+        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 0.5, true);
+        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 0.5, true);
+        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25, true);
     }
   
     /* Configurations */
@@ -91,24 +91,27 @@ public interface Motors {
         public final IdleMode IDLE_MODE;
         public final int CURRENT_LIMIT_AMPS;
         public final double OPEN_LOOP_RAMP_RATE;
+        public final boolean ENABLE_VOLTAGE_COMPENSATION;
 
         public CANSparkConfig(
                 boolean inverted,
                 IdleMode idleMode,
                 int currentLimitAmps,
-                double openLoopRampRate) {
+                double openLoopRampRate,
+                boolean enableVoltageCompensation) {
             this.INVERTED = inverted;
             this.IDLE_MODE = idleMode;
             this.CURRENT_LIMIT_AMPS = currentLimitAmps;
             this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
+            this.ENABLE_VOLTAGE_COMPENSATION = enableVoltageCompensation;
         }
 
-        public CANSparkConfig(boolean inverted, IdleMode idleMode, int currentLimitAmps) {
-            this(inverted, idleMode, currentLimitAmps, 0.0);
+        public CANSparkConfig(boolean inverted, IdleMode idleMode, int currentLimitAmps, boolean enableVoltageCompensation) {
+            this(inverted, idleMode, currentLimitAmps, 0.0, enableVoltageCompensation);
         }
 
-        public CANSparkConfig(boolean inverted, IdleMode idleMode) {
-            this(inverted, idleMode, 80);
+        public CANSparkConfig(boolean inverted, IdleMode idleMode, boolean enableVoltageCompensation) {
+            this(inverted, idleMode, 80, enableVoltageCompensation);
         }
 
         public void configure(CANSparkBase motor) {
@@ -116,7 +119,9 @@ public interface Motors {
             motor.setIdleMode(IDLE_MODE);
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
-            motor.enableVoltageCompensation(12);
+            if (ENABLE_VOLTAGE_COMPENSATION) {
+                motor.enableVoltageCompensation(12);
+            }
             motor.burnFlash();
         }
 
@@ -125,7 +130,9 @@ public interface Motors {
             motor.setIdleMode(IDLE_MODE);
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
-            motor.enableVoltageCompensation(12);
+            if (ENABLE_VOLTAGE_COMPENSATION) {
+                motor.enableVoltageCompensation(12);
+            }
             motor.follow(follows);
             motor.burnFlash();
         }
