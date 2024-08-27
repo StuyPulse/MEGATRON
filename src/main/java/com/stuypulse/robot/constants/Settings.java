@@ -66,7 +66,7 @@ public interface Settings {
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 40);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 43);
         SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
@@ -144,21 +144,21 @@ public interface Settings {
         // left runs faster than right
         public interface LEFT {
             public interface PID {
-                double kP = 0.00034711;
+                double kP = 0.0003211;
                 double kI = 0;
-                double kD = 0.00002;
+                double kD = 0.0;
             }
 
             public interface FF {
                 double kS = 0;
-                double kV = 0.00017;
+                double kV = 0.00015;
                 double kA = 0;
             }
         }
 
         public interface RIGHT {
             public interface PID {
-                double kP = 0.000314711;
+                double kP = 0.000316711;
                 double kI = 0;
                 double kD = 0.0;
             }
