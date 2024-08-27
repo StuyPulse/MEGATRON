@@ -116,8 +116,8 @@ public interface Motors {
             motor.setIdleMode(IDLE_MODE);
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
-            motor.burnFlash();
             motor.enableVoltageCompensation(12);
+            motor.burnFlash();
         }
 
         public void configureAsFollower(CANSparkMax motor, CANSparkMax follows) {
@@ -125,6 +125,7 @@ public interface Motors {
             motor.setIdleMode(IDLE_MODE);
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
+            motor.enableVoltageCompensation(12);
             motor.follow(follows);
             motor.burnFlash();
         }
