@@ -28,7 +28,7 @@ public interface Cameras {
             "tower-cam",
             new Pose3d(
                 new Translation3d(Units.inchesToMeters(-11.25), Units.inchesToMeters(+3.333797), Units.inchesToMeters(23.929362)),
-                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(15), Units.degreesToRadians(180))
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(-15), Units.degreesToRadians(180))
             ),
             "11",
             3000
@@ -38,7 +38,7 @@ public interface Cameras {
             "plate-cam",
             new Pose3d(
                 new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(-4.863591), Units.inchesToMeters(19.216471)),
-                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(80), Units.degreesToRadians(0))
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(-10), Units.degreesToRadians(0))
             ),
             "96",
             3001
