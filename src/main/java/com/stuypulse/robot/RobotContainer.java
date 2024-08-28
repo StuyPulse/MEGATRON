@@ -163,9 +163,7 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                            )
+                        .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
@@ -181,9 +179,7 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLobFerry()))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                            )
+                        .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
             )
@@ -200,9 +196,7 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLowFerry()))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                            )
+                        .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
             )
@@ -219,9 +213,7 @@ public class RobotContainer {
             .whileTrue(new ArmToSubwooferShot().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                            )
+                        .andThen(new ShooterFeederShoot())
                         )
             .whileTrue(new LEDSet(LEDInstructions.SPEAKER_MANUAL))
             .onFalse(new ConditionalCommand(
@@ -236,9 +228,7 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLobFerry()))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                            )
+                        .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
             )
@@ -274,6 +264,7 @@ public class RobotContainer {
     }
 
     private void configureAutomaticCommandScheduling() {
+        // automatic handoff
         new Trigger(() -> arm.getState() == Arm.State.FEED 
                     && arm.atTarget() 
                     && !shooter.hasNote()
@@ -281,19 +272,26 @@ public class RobotContainer {
                     && intake.getState() != Intake.State.DEACQUIRING)
             .onTrue(new ShooterAcquireFromIntake().andThen(new BuzzController(driver)));
         
-        new Trigger(() -> Arm.getInstance().getState() == Arm.State.AMP 
-                    && !Shooter.getInstance().hasNote() 
-                    && Shooter.getInstance().getFeederState() != Shooter.FeederState.DEACQUIRING)
-            .onTrue(new ShooterManualIntake().until(() -> Arm.getInstance().getState() != Arm.State.AMP));
+        // feeder automatically pushes note further into shooter when its sticking too far out
+        new Trigger(() -> arm.getState() == Arm.State.AMP 
+                    && !shooter.hasNote() 
+                    && shooter.getFeederState() != Shooter.FeederState.DEACQUIRING)
+            .onTrue(new ShooterManualIntake().until(() -> arm.getState() != Arm.State.AMP));
         
-        new Trigger(() -> Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-                    && Arm.getInstance().atIntakeShouldShootAngle())
+        // run the intake when the arm is moving up from a low angle (to prevent intake from gripping it)
+        new Trigger(() -> arm.getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                    && arm.atIntakeShouldShootAngle())
             .onTrue(new IntakeShoot()
                 .until(
-                    () -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-                        || !Arm.getInstance().atIntakeShouldShootAngle()
+                    () -> arm.getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                        || !arm.atIntakeShouldShootAngle()
                 )
             );
+
+        // run the intake when shooting in case the intake is holding onto the note also
+        new Trigger(() -> shooter.getFeederState() == Shooter.FeederState.SHOOTING
+                    && arm.atIntakeShouldShootAngle())
+            .onTrue(new IntakeShoot().until(() -> shooter.getFeederState() != Shooter.FeederState.SHOOTING));
     }
 
     /**************/
