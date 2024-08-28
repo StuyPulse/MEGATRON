@@ -68,6 +68,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
@@ -121,6 +122,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         configureOperatorBindings();
         configureDriverBindings();
+        configureAutomaticCommandScheduling();
     }
 
     private void configureDriverBindings() {
@@ -269,6 +271,29 @@ public class RobotContainer {
 
     private void configureOperatorBindings() {
 
+    }
+
+    private void configureAutomaticCommandScheduling() {
+        new Trigger(() -> arm.getState() == Arm.State.FEED 
+                    && arm.atTarget() 
+                    && !shooter.hasNote()
+                    && intake.hasNote()
+                    && intake.getState() != Intake.State.DEACQUIRING)
+            .onTrue(new ShooterAcquireFromIntake().andThen(new BuzzController(driver)));
+        
+        new Trigger(() -> Arm.getInstance().getState() == Arm.State.AMP 
+                    && !Shooter.getInstance().hasNote() 
+                    && Shooter.getInstance().getFeederState() != Shooter.FeederState.DEACQUIRING)
+            .onTrue(new ShooterManualIntake().until(() -> Arm.getInstance().getState() != Arm.State.AMP));
+        
+        new Trigger(() -> Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                    && Arm.getInstance().atIntakeShouldShootAngle())
+            .onTrue(new IntakeShoot()
+                .until(
+                    () -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
+                        || !Arm.getInstance().atIntakeShouldShootAngle()
+                )
+            );
     }
 
     /**************/

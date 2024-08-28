@@ -41,33 +41,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        if (Arm.getInstance().getState() == Arm.State.FEED 
-            && Arm.getInstance().atTarget() 
-            && !Shooter.getInstance().hasNote()
-            && Intake.getInstance().hasNote()
-            && Intake.getInstance().getState() != Intake.State.DEACQUIRING
-        ) {
-            CommandScheduler.getInstance().schedule(new ShooterAcquireFromIntake()
-                                                    .andThen(new BuzzController(robot.driver)));
-        }
-
-        if (Arm.getInstance().getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-            && Arm.getInstance().atIntakeShouldShootAngle()
-        ) {
-            CommandScheduler.getInstance().schedule(new IntakeShoot()
-                                                    .until(
-                                                        () -> Arm.getInstance().getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-                                                            || !Arm.getInstance().atIntakeShouldShootAngle()
-                                                    ));
-        }
-
-        if (Arm.getInstance().getState() == Arm.State.AMP 
-            && !Shooter.getInstance().hasNote() 
-            && Shooter.getInstance().getFeederState() != Shooter.FeederState.DEACQUIRING
-        ) {
-            CommandScheduler.getInstance().schedule(new ShooterManualIntake().until(() -> Arm.getInstance().getState() != Arm.State.AMP));
-        }
-        
         CommandScheduler.getInstance().run();
     }
 
