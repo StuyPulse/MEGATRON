@@ -71,9 +71,7 @@ public class ArmImpl extends Arm {
         if (state == State.FEED) {
             return atValidFeedAngle();
         }
-        boolean atTarget = Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
-        SmartDashboard.putBoolean("test/armAtTarget", atTarget);
-        return atTarget;
+        return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
     }
 
     @Override
@@ -184,7 +182,7 @@ public class ArmImpl extends Arm {
         }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING) {
+            if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING && getDegrees() < Settings.Arm.MAX_ANGLE.get()) {
                 setVoltage(controller.getOutput() + 0.31);
             }
             else {
@@ -211,6 +209,8 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Right Duty Cycle", rightMotor.get());
 
         SmartDashboard.putNumber("Arm/Arm Angle", getDegrees());
-        SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)
+        SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)]
+
+        SmartDashboard.putBoolean("Arm/At Target", atTarget());
     }
 }

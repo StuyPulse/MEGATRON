@@ -131,7 +131,7 @@ public class RobotContainer {
             .onTrue(new ArmToFeed())
             // .whileTrue(new SwerveDriveDriveToNote(driver))
             .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.INTAKING))
+                .deadlineWith(new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING))
                 .andThen(new BuzzController(driver))
             );
         
@@ -139,7 +139,7 @@ public class RobotContainer {
         driver.getLeftTriggerButton()
             .onTrue(new ArmToFeed())
             .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.INTAKING))
+                .deadlineWith(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
                 .andThen(new BuzzController(driver))
             )
             .whileTrue(new SwerveDriveDriveRobotRelative(driver));
@@ -155,7 +155,7 @@ public class RobotContainer {
             .whileTrue(new ConditionalCommand(
                 new ArmWaitUntilAtTarget()
                     .withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                    .andThen(new ShooterFeederDeacquire()),
+                    .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE))),
                 new SwerveDriveDriveAlignedSpeaker(driver)
                     .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
@@ -165,10 +165,7 @@ public class RobotContainer {
                             .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
                             )
                     )
-                    .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)
-                                .until(() -> swerve.isAlignedToSpeaker())
-                                .andThen(new LEDSet(LEDInstructions.IS_ALIGNED))
-                                ),
+                    .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
@@ -186,10 +183,7 @@ public class RobotContainer {
                             .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
                             )
                     )
-                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN)
-                                .until(() -> swerve.isAlignedToLobFerry())
-                                .andThen(new LEDSet(LEDInstructions.IS_ALIGNED))
-                                )
+                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
             )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
@@ -208,10 +202,7 @@ public class RobotContainer {
                             .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
                             )
                     )
-                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN)
-                                .until(() -> swerve.isAlignedToLowFerry())
-                                .andThen(new LEDSet(LEDInstructions.IS_ALIGNED))
-                                )
+                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
             )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
@@ -247,10 +238,7 @@ public class RobotContainer {
                             .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
                             )
                     )
-                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL)
-                                .until(() -> swerve.isAlignedToManualLobFerry())
-                                .andThen(new LEDSet(LEDInstructions.IS_ALIGNED))
-                                )
+                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
             )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
@@ -268,19 +256,15 @@ public class RobotContainer {
                             .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
                         )
                     )
-                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL)
-                                .until(() -> swerve.isAlignedToManualLowFerry())
-                                .andThen(new LEDSet(LEDInstructions.IS_ALIGNED))
-                                )
+                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
             )
             .onFalse(new ConditionalCommand(
                 new ShooterFeederStop(), 
                 new ShooterStop(), 
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
         
-        // climbing
-        driver.getRightButton().onTrue(new ArmToPreClimb());
-        driver.getBottomButton().onTrue(new ArmToClimbing());
+        // human player attention button
+        driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
     }
 
     private void configureOperatorBindings() {

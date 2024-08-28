@@ -39,15 +39,8 @@ public class LEDDefaultMode extends Command {
 
     private LEDInstruction getInstruction() {
 
-        switch (arm.getState()) {
-            case PRE_CLIMB:
-                return LEDInstructions.ARM_PRECLIMB;
-            case CLIMBING:
-                return LEDInstructions.ARM_POSTCLIMB;
-            case AMP:
-                return LEDInstructions.AMP_WITHOUT_ALIGN;
-            default:
-                break;
+        if (Arm.getInstance().getState() == Arm.State.AMP) {
+            return LEDInstructions.ARM_AT_AMP;
         }
 
         if (intake.hasNote() || shooter.hasNote()) {
