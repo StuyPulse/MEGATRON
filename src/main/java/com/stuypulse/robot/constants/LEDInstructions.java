@@ -53,7 +53,7 @@ public interface LEDInstructions {
     /*** LED CONSTANTS TO BE USED IN COMMANDS ***/
     /********************************************/
 
-    LEDInstruction DEFAULT = LEDInstructions.OFF;
+    LEDInstruction DEFAULT = LEDInstructions.RED;
 
     LEDInstruction FIELD_RELATIVE_INTAKING = new LEDPulseColor(SLColor.BLUE);
     LEDInstruction ROBOT_RELATIVE_INTAKING = new LEDRainbow();
