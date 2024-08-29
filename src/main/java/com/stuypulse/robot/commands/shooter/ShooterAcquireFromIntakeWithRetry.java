@@ -7,22 +7,47 @@ import com.stuypulse.stuylib.util.StopWatch;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ShooterAcquireFromIntake extends Command {
+public class ShooterAcquireFromIntakeWithRetry extends Command {
 
     private final Shooter shooter;
     private final Intake intake;
 
-    public ShooterAcquireFromIntake() {
+    private final StopWatch stopWatch;
+    private boolean isFeeding;
+
+    public ShooterAcquireFromIntakeWithRetry() {
         shooter = Shooter.getInstance();
         intake = Intake.getInstance();
+
+        stopWatch = new StopWatch();
+        isFeeding = true;
 
         addRequirements(shooter, intake);
     }
 
     @Override
     public void initialize() {
+        stopWatch.reset();
         intake.setState(Intake.State.FEEDING);
         shooter.setFeederState(Shooter.FeederState.INTAKING);
+    }
+
+    @Override
+    public void execute() {
+        if (isFeeding) {
+            if (stopWatch.getTime() > Settings.Intake.HANDOFF_TIMEOUT) {
+                intake.setState(Intake.State.DEACQUIRING);
+                isFeeding = false;
+                stopWatch.reset();
+            }
+        }
+        else {
+            if (stopWatch.getTime() > Settings.Intake.MINIMUM_DEACQUIRE_TIME_WHEN_STUCK && intake.hasNote()) {
+                intake.setState(Intake.State.FEEDING);
+                isFeeding = true;
+                stopWatch.reset();
+            }
+        }
     }
 
     @Override

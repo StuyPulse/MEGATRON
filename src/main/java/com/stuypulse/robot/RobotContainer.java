@@ -22,6 +22,7 @@ import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDReset;
 import com.stuypulse.robot.commands.leds.LEDSet;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
+import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntakeWithRetry;
 import com.stuypulse.robot.commands.shooter.ShooterFeederDeacquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
@@ -149,15 +150,16 @@ public class RobotContainer {
         // deacquire
         driver.getDPadLeft()
             .whileTrue(new IntakeDeacquire())
+            .whileTrue(new ShooterFeederDeacquire())
             .whileTrue(new LEDSet(LEDInstructions.DEACQUIRING));
         
         // speaker align and score 
         // score amp
         driver.getRightBumper()
             .whileTrue(new ConditionalCommand(
-                new ArmWaitUntilAtTarget()
-                    .withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                    .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE))),
+                new SwerveDriveDrive(driver)
+                    .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                        .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE)))),
                 new SwerveDriveDriveAlignedSpeaker(driver)
                     .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
@@ -270,6 +272,7 @@ public class RobotContainer {
                     && !shooter.hasNote()
                     && intake.hasNote()
                     && intake.getState() != Intake.State.DEACQUIRING)
+            // .onTrue(new ShooterAcquireFromIntakeWithRetry().andThen(new BuzzController(driver)));
             .onTrue(new ShooterAcquireFromIntake().andThen(new BuzzController(driver)));
         
         // feeder automatically pushes note further into shooter when its sticking too far out
