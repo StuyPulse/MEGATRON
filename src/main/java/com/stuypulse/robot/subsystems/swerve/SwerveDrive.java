@@ -172,8 +172,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public boolean isAlignedToSpeaker() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-        Rotation2d targetAngle = speakerPose.minus(currentPose).getAngle();
-
+        // Rotate by 180 because the shooter is on the back of the robot
+        Rotation2d targetAngle = speakerPose.minus(currentPose).getAngle().rotateBy(Rotation2d.fromDegrees(180));
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
@@ -215,11 +215,9 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             timestampSum += data.getTimestamp() * data.getArea();
         }
 
-        // addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            // DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
-        
-        addVisionMeasurement(new Pose2d(3, 3, new Rotation2d()), timestampSum / areaSum,
+        addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
             DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+        
     }
 
     public void setVisionEnabled(boolean enabled) {

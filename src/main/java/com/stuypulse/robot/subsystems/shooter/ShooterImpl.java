@@ -106,33 +106,24 @@ public class ShooterImpl extends Shooter {
         rightController.setReference(rpm, ControlType.kVelocity);
     }
 
-    @Override
-    public void feederIntake() {
-        feederMotor.set(+Settings.Shooter.FEEDER_INTAKE_SPEED);
-        isShooting = false;
-    }
-
-    @Override
-    public void feederDeacquire() {
-        feederMotor.set(-Settings.Shooter.FEEDER_DEAQUIRE_SPEED);
-        isShooting = false;
-    }
-
-    @Override
-    public void feederShoot() {
-        feederMotor.set(Settings.Shooter.FEEDER_SHOOT_SPEED);
-        isShooting = true;
-    }
-
-    @Override
-    public void feederStop() {
-        feederMotor.set(0);
-        isShooting = false;
-    }
-
-    @Override
-    public boolean isShooting() {
-        return isShooting;
+    private void setFeederBasedOnState() {
+        switch (getFeederState()) {
+            case INTAKING:
+                feederMotor.set(+Settings.Shooter.FEEDER_INTAKE_SPEED);
+                break;
+            case DEACQUIRING:
+                feederMotor.set(-Settings.Shooter.FEEDER_DEAQUIRE_SPEED);
+                break;
+            case SHOOTING:
+                feederMotor.set(Settings.Shooter.FEEDER_SHOOT_SPEED);
+                break;
+            case STOP:
+                feederMotor.set(0);
+                break;
+            default:
+                feederMotor.set(0);
+                break;
+        }
     }
 
     @Override
@@ -176,6 +167,8 @@ public class ShooterImpl extends Shooter {
             setRightShooterRPM(getRightTargetRPM());
         }
 
+        setFeederBasedOnState();
+
         SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 
         SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
@@ -193,6 +186,8 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
         SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
+
+        SmartDashboard.putString("Shooter/Feeder State", getFeederState().toString());
     }
 
 }

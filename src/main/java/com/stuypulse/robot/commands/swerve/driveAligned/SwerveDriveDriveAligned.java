@@ -21,6 +21,7 @@ import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 import com.stuypulse.stuylib.util.AngleVelocity;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public abstract class SwerveDriveDriveAligned extends Command {
@@ -63,7 +64,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
                 // make angleVelocity contribute less once distance is less than REDUCED_FF_DIST
                 // so that angular velocity doesn't oscillate
                 x -> x * Math.min(1, getDistanceToTarget() / Assist.REDUCED_FF_DIST),
-                new RateLimit(Settings.Swerve.MAX_ANGULAR_ACCEL),
+                // new RateLimit(Settings.Swerve.MAX_ANGULAR_ACCEL),
                 x -> SLMath.clamp(x, -Settings.Swerve.MAX_ANGULAR_VELOCITY, Settings.Swerve.MAX_ANGULAR_VELOCITY),
                 x -> -x
             );
@@ -99,5 +100,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
                     )
                 )         
             );
+        SmartDashboard.putNumber("Alignment/Distance to Target", getDistanceToTarget());
+        SmartDashboard.putNumber("Alignment/Target Angle", getTargetAngle().getDegrees());
     }
 }

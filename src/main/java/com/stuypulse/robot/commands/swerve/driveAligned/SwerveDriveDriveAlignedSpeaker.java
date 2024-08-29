@@ -17,7 +17,7 @@ public class SwerveDriveDriveAlignedSpeaker extends SwerveDriveDriveAligned{
     protected Rotation2d getTargetAngle() {
         Translation2d currentPose = SwerveDrive.getInstance().getPose().getTranslation();
         Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-        return speakerPose.minus(currentPose).getAngle();
+        return currentPose.minus(speakerPose).getAngle();
     }
 
     @Override

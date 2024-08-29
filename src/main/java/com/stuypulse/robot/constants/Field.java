@@ -277,11 +277,9 @@ public interface Field {
     }
 
     public static Translation2d getAmpCornerPose() {
-        Translation2d targetPose = Robot.isBlue()
-            ? new Translation2d(0.0, Field.WIDTH - 1.5)
-            : new Translation2d(0.0, 1.5);
-        
-        return targetPose;
+        return Robot.isBlue()
+            ? new Translation2d(2.0, WIDTH - 1.25)
+            : new Translation2d(LENGTH - 2.0, WIDTH - 1.25);
     }
 
     // MIDLINE: 8.27

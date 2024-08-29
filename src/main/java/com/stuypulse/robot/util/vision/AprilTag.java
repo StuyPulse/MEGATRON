@@ -31,10 +31,10 @@ public class AprilTag {
      * @return the location of the tag on the field
      */
     public Pose3d getLocation() {
-        if (Robot.isBlue()) {
+        // if (Robot.isBlue()) {
             return blueLocation;
-        } else {
-            return Field.transformToOppositeAlliance(blueLocation);
-        }
+        // } else {
+            // return Field.transformToOppositeAlliance(blueLocation);
+        // }
     }
 }

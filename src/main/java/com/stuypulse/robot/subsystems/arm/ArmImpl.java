@@ -69,9 +69,20 @@ public class ArmImpl extends Arm {
     @Override
     public boolean atTarget() {
         if (state == State.FEED) {
-            return getDegrees() < Settings.Arm.FEED_ANGLE.get() + Settings.Arm.MAX_ANGLE_ERROR.get();
+            return atValidFeedAngle();
         }
         return Math.abs(getTargetDegrees() - getDegrees()) < Settings.Arm.MAX_ANGLE_ERROR.get();
+    }
+
+    @Override
+    public boolean atValidFeedAngle() {
+        return getDegrees() > Settings.Arm.FEED_ANGLE.get() - Settings.Arm.MAX_ANGLE_ERROR.get()
+                    && getDegrees() < Settings.Arm.MAX_ACCEPTABLE_FEED_ANGLE.get() + Settings.Arm.MAX_ANGLE_ERROR.get();
+    }
+
+    @Override
+    public boolean atIntakeShouldShootAngle() {
+        return getDegrees() < Settings.Intake.MAX_ARM_ANGLE_FOR_INTAKE_SHOOT;
     }
 
     private double getTargetDegrees() {
@@ -140,6 +151,11 @@ public class ArmImpl extends Arm {
         return 360 * armEncoder.getPosition();
     }
 
+    @Override
+    public double getVelocity() {
+        return 360 / 60 * armEncoder.getVelocity();
+    }
+
     private void setVoltage(double voltage) {
         leftMotor.setVoltage(voltage);
         rightMotor.setVoltage(voltage);
@@ -160,9 +176,13 @@ public class ArmImpl extends Arm {
             setVoltage(-1.5);
             controller.update(Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MIN_ANGLE.get());
         }
+        else if (getTargetDegrees() == Settings.Arm.MIN_ANGLE.get() && bumpSwitchTriggered.get()) {
+            setVoltage(0);
+            controller.update(Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MIN_ANGLE.get());
+        }
         else {
             controller.update(SLMath.clamp(getTargetDegrees(), Settings.Arm.MIN_ANGLE.get(), Settings.Arm.MAX_ANGLE.get()), getDegrees());
-            if (Shooter.getInstance().isShooting()) {
+            if (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING && getDegrees() < Settings.Arm.MAX_ANGLE.get()) {
                 setVoltage(controller.getOutput() + 0.31);
             }
             else {
@@ -189,6 +209,8 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Right Duty Cycle", rightMotor.get());
 
         SmartDashboard.putNumber("Arm/Arm Angle", getDegrees());
-        SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)
+        SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)]
+
+        SmartDashboard.putBoolean("Arm/At Target", atTarget());
     }
 }
