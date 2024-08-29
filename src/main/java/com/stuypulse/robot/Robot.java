@@ -1,5 +1,7 @@
 package com.stuypulse.robot;
 
+import com.pathplanner.lib.pathfinding.LocalADStar;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
@@ -8,8 +10,10 @@ import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -25,6 +29,7 @@ public class Robot extends TimedRobot {
     }
 
     private RobotContainer robot;
+    private CommandScheduler scheduler;
     private Command auto;
 
     /*************************/
@@ -33,7 +38,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        Pathfinding.setPathfinder(new LocalADStar());
+
+        DataLogManager.start();
+
+        scheduler = CommandScheduler.getInstance();
+
         robot = new RobotContainer();
+
+        SmartDashboard.putString("Robot State", "DISABLED");
+        SmartDashboard.putString("Robot", ROBOT.name());
+
+        SmartDashboard.putData(CommandScheduler.getInstance());
     }
 
     @Override
@@ -80,6 +96,9 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.schedule();
         }
+
+        SmartDashboard.putString("Robot State", "AUTON");
+
     }
 
     @Override

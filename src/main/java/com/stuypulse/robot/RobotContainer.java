@@ -12,6 +12,8 @@ import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.Mobility;
+import com.stuypulse.robot.commands.auton.BAC.FourPieceBAC;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
@@ -46,6 +48,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
+import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.robot.util.SLColor;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
@@ -280,9 +283,19 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
-        autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+        autonChooser.addOption("Do Nothing", new DoNothingAuton());
+        autonChooser.addOption("Mobility", new Mobility());
+
+        AutonConfig BAC = new AutonConfig("4 BAC", FourPieceBAC::new,
+            "Center to B", "B to A", "A to C");
+        AutonConfig BAC_RED = new AutonConfig("4 BAC RED", FourPieceBAC::new,
+        "Center to B", "B to A", "A to C");
+
+        BAC.registerDefaultBlue(autonChooser);
+        BAC_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
+        
     }
 
     public Command getAutonomousCommand() {
@@ -293,7 +306,9 @@ public class RobotContainer {
         if (autonChooser.getSelected() == null) {
             return "Do Nothing";
         }
-        
+
         return autonChooser.getSelected().getName();
+
     }
+
 }

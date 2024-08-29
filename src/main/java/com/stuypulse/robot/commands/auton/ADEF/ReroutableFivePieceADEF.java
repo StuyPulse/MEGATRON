@@ -12,11 +12,11 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ReroutableFivePieceADEG extends SequentialCommandGroup {
+public class ReroutableFivePieceADEF extends SequentialCommandGroup {
     
-    public ReroutableFivePieceADEG(PathPlannerPath... paths) {
+    public ReroutableFivePieceADEF(PathPlannerPath... paths) {
 
-        PathPlannerPath E_TO_G = paths[7];
+        PathPlannerPath D_DOWN = paths[7];
 
         addCommands(
             // Preload
@@ -47,7 +47,7 @@ public class ReroutableFivePieceADEG extends SequentialCommandGroup {
                     Intake.getInstance()::hasNote)),
 
                     new SequentialCommandGroup(
-                        new FollowPathAndIntake(E_TO_G),
+                        new FollowPathAndIntake(D_DOWN),
 
                         new ConditionalCommand(
                             new FollowPathAlignAndShoot(paths[7], new SwerveDriveToShoot()),
@@ -55,7 +55,7 @@ public class ReroutableFivePieceADEG extends SequentialCommandGroup {
                             Intake.getInstance()::hasNote)
                     ),
                     Intake.getInstance()::hasNote)
-                        );
+                    );
 
     }
 
