@@ -67,8 +67,8 @@ public interface Settings {
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 49);
-        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
-        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", MIN_ANGLE.get());
+        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -50);
         SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 90);
         SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get());
 

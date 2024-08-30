@@ -182,7 +182,7 @@ public class RobotContainer {
                 () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
 
         // lob ferry align and shoot
-        driver.getRightStickButton()
+        driver.getLeftStickButton()
             .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
                     .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
@@ -199,7 +199,7 @@ public class RobotContainer {
 
 
         // low ferry align and shoot
-        driver.getLeftStickButton()
+        driver.getRightStickButton()
             .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
                     .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
