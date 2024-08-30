@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.BAC.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
@@ -318,10 +319,18 @@ public class RobotContainer {
         AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to C", "C to A");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
-        "Center to B", "B to C", "C to A");
+        "Center to B", "B to C Red", "C to A Red");
+        AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
+        "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
+        "Source to H", "H to Shoot Red", "H Shoot to G Red", "G to Shoot Red", "G Shoot to F Red", "F to Shoot Red");
+
 
         BCA.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
+
+        HGF.registerDefaultBlue(autonChooser);
+        HGF_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
         
