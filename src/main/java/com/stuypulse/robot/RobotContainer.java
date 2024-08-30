@@ -127,14 +127,12 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings() {
-        driver.getDPadUp()
-            .onTrue(new ArmToPreClimb()
-                .andThen(new ShooterStop())
-                .andThen(new IntakeStop())
-                .andThen(new ShooterFeederStop())
-                .andThen(new LEDSet(new LEDRainbow())));
-
         driver.getDPadRight().onTrue(new SwerveDriveSeedFieldRelative());
+
+        driver.getDPadUp()
+            .onTrue(new ArmToPreClimb())
+            .onTrue(new ShooterStop())
+            .onTrue(new IntakeStop());
 
         driver.getDPadDown().onTrue(new ArmToClimbing());
 
