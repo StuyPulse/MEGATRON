@@ -148,6 +148,4 @@ public class SwerveDriveToShoot extends Command {
         SmartDashboard.putBoolean("AutonAlignment", false);
     }
 
-    // NEED TO CHANGE SO THAT ALLOWED SHOOT DISTANCE IS ALL THE WAY FROM ALLIANCE WING LINE AND NOT AROUND PDOIUM
-
 }

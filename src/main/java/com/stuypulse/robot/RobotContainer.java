@@ -13,7 +13,7 @@ import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
-import com.stuypulse.robot.commands.auton.BAC.FourPieceBAC;
+import com.stuypulse.robot.commands.auton.BAC.FourPieceBCA;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
@@ -282,13 +282,13 @@ public class RobotContainer {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
 
-        AutonConfig BAC = new AutonConfig("4 BAC", FourPieceBAC::new,
-            "Center to B", "B to A", "A to C");
-        AutonConfig BAC_RED = new AutonConfig("4 BAC RED", FourPieceBAC::new,
-        "Center to B", "B to A", "A to C");
+        AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
+            "Center to B", "B to C", "C to A");
+        AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
+        "Center to B", "B to C", "C to A");
 
-        BAC.registerDefaultBlue(autonChooser);
-        BAC_RED.registerRed(autonChooser);
+        BCA.registerDefaultBlue(autonChooser);
+        BCA_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
         

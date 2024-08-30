@@ -36,7 +36,7 @@ public class FollowPathAlignAndShoot extends SequentialCommandGroup {
         );
 
         if (noteShot)
-            addCommands(new UntilNoteShot(0.75));
+            addCommands(new ShootRoutine(0.75));
         else
             addCommands(new ShooterScoreSpeaker());
     }

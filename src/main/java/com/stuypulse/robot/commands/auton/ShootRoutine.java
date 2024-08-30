@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class UntilNoteShot extends SequentialCommandGroup {
+public class ShootRoutine extends SequentialCommandGroup {
 
-    public UntilNoteShot(double delay) {
+    public ShootRoutine(double delay) {
         addCommands(
             new InstantCommand(SwerveDrive.getInstance()::stop, SwerveDrive.getInstance()),
             new WaitUntilCommand(Shooter.getInstance()::hasNote)
@@ -23,7 +23,7 @@ public class UntilNoteShot extends SequentialCommandGroup {
         );
     }
 
-    public UntilNoteShot() {
+    public ShootRoutine() {
         this(Settings.Auton.SHOOT_WAIT_DELAY.get());
     }
 
