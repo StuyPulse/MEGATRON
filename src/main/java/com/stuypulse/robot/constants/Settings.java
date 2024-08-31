@@ -238,13 +238,13 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 7.0);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 9.0);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
             SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.0);
-            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.5);
-            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0);
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.30718);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.42659);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0036513);
 
             boolean INVERTED = true;
 
@@ -252,13 +252,13 @@ public interface Settings {
         }
 
         public interface Drive {
-            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 3.0);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 9.0);
             SmartNumber kI = new SmartNumber("Swerve/Drive/PID/kI", 0);
             SmartNumber kD = new SmartNumber("Swerve/Drive/PID/kD", 0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.0);
-            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 0.0);
-            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0);
+            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.31007);
+            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 1.62153);
+            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0048373);
 
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
