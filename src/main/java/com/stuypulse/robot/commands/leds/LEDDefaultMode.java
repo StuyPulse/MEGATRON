@@ -39,6 +39,10 @@ public class LEDDefaultMode extends Command {
 
     private LEDInstruction getInstruction() {
 
+        if (Arm.getInstance().getState() == Arm.State.CLIMBING) {
+            return LEDInstructions.CLIMBING;
+        }
+
         if (Arm.getInstance().getState() == Arm.State.AMP) {
             return LEDInstructions.ARM_AT_AMP;
         }

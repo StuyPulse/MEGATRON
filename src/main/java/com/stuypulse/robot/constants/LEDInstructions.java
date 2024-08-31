@@ -55,8 +55,8 @@ public interface LEDInstructions {
 
     LEDInstruction DEFAULT = LEDInstructions.OFF;
 
-    LEDInstruction FIELD_RELATIVE_INTAKING = new LEDRainbow();
-    LEDInstruction ROBOT_RELATIVE_INTAKING = new LEDPulseColor(SLColor.BLUE);
+    LEDInstruction FIELD_RELATIVE_INTAKING = new LEDPulseColor(SLColor.BLUE);
+    LEDInstruction ROBOT_RELATIVE_INTAKING = new LEDRainbow();
     LEDInstruction DEACQUIRING = new LEDPulseColor(SLColor.GOLD);
 
     LEDInstruction SPEAKER_ALIGN = GREEN;
@@ -70,6 +70,8 @@ public interface LEDInstructions {
 
     LEDInstruction ARM_AT_AMP = YELLOW;
     LEDInstruction AMP_SCORE = GREEN;
+
+    LEDInstruction CLIMBING = new LEDRainbow();
 
     LEDInstruction ATTENTION = new LED694(0.01, SLColor.BLUE);
 
