@@ -34,10 +34,8 @@ import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLobFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualLobFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
@@ -183,7 +181,7 @@ public class RobotContainer {
 
         // lob ferry align and shoot
         driver.getLeftStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
                     .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -200,7 +198,7 @@ public class RobotContainer {
 
         // low ferry align and shoot
         driver.getRightStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
                     .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -232,7 +230,7 @@ public class RobotContainer {
         
         // manual lob ferry
         driver.getTopButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualLobFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
                     .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -248,7 +246,7 @@ public class RobotContainer {
 
         // manual low ferry
         driver.getLeftButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualLowFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
                     .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
