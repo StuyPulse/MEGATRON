@@ -410,6 +410,7 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.25;
     }
 
     public interface Buzz {
