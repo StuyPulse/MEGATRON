@@ -137,6 +137,9 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
+        // TODO: Find velocity
+        double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
+
         // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
         SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
