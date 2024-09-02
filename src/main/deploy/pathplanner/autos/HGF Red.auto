@@ -20,31 +20,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "H to Shoot Red"
+            "pathName": "H to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H Shoot to G Red"
+            "pathName": "H Shoot to G"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to Shoot Red"
+            "pathName": "G to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G Shoot to F Red"
+            "pathName": "G Shoot to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to Shoot Red"
+            "pathName": "F to Shoot"
           }
         }
       ]

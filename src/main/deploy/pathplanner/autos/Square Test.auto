@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4365936349060198,
-      "y": 5.5179740558513855
+      "x": 2,
+      "y": 7.0
     },
     "rotation": 0
   },
@@ -14,24 +14,30 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to B"
+            "pathName": "Square Top"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to C"
+            "pathName": "Square Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to A"
+            "pathName": "Square Bottom"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Left"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Tests",
   "choreoAuto": false
 }

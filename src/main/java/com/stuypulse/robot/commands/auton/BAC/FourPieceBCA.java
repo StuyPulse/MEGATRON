@@ -23,19 +23,19 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget()).withTimeout(1.0),
             new ShooterFeederShoot(),
 
-            // Drive to B + Shoot B
+            // Drive, Intake, Shoot B
             new FollowPathAndIntake(path[0]),
             new SwerveDriveToShoot()
                 .withTolerance(0.03, 3),
             new ShootRoutine(),
 
-            // Drive to C + Shoot C
+            // DDrive, Intake, Shoot C
             new FollowPathAndIntake(path[1]),
             new SwerveDriveToShoot()
                 .withTolerance(0.03, 3),
             new ShootRoutine(),
 
-            // Drive to A + Shoot A
+            // Drive, Intake, Shoot A
             new FollowPathAndIntake(path[2]),
             new SwerveDriveToShoot()
                 .withTolerance(0.03, 3),

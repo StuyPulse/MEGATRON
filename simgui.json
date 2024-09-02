@@ -1,5 +1,10 @@
 {
   "HALProvider": {
+    "Addressable LEDs": {
+      "0": {
+        "serpentine": true
+      }
+    },
     "Other Devices": {
       "window": {
         "visible": false
@@ -53,6 +58,12 @@
         "open": true
       },
       "SmartDashboard": {
+        "Alignment": {
+          "open": true
+        },
+        "Autonomous": {
+          "open": true
+        },
         "open": true
       }
     }
