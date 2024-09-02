@@ -66,11 +66,11 @@ public interface Settings {
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
-        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 43);
-        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", -50);
-        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", 50);
-        SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 80);
-        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get() + 7);
+        SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 49);
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", MIN_ANGLE.get());
+        SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -50);
+        SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 90);
+        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get());
 
         SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 0);
         SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 4);
@@ -108,7 +108,7 @@ public interface Settings {
         double INTAKE_FEED_SPEED = 0.4; 
 
         double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
-        double ARM_SPEED_THRESHOLD_TO_FEED = 2.5; // degrees per second
+        double ARM_SPEED_THRESHOLD_TO_FEED = 1.75; // degrees per second
 
         double INTAKE_SHOOT_SPEED = 0.9;
         double INTAKE_SHOOT_TIME = 0.75;
@@ -127,7 +127,7 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
-        boolean ALWAYS_KEEP_AT_SPEED = false;
+        boolean ALWAYS_KEEP_AT_SPEED = true;
 
         double TARGET_RPM_THRESHOLD = 200;
         double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
