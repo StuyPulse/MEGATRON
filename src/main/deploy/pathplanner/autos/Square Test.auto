@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 2,
+      "y": 7.0
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Top"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Bottom"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Left"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Tests",
+  "choreoAuto": false
+}

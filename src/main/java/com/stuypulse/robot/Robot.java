@@ -2,8 +2,10 @@ package com.stuypulse.robot;
 
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.intake.IntakeShoot;
+import com.stuypulse.robot.commands.leds.LEDReset;
 import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
 import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
@@ -89,6 +91,8 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.schedule();
         }
+
+        scheduler.schedule(new LEDReset());
 
         SmartDashboard.putString("Robot State", "AUTON");
 
