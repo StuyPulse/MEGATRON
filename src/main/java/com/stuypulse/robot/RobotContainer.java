@@ -126,7 +126,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         configureOperatorBindings();
         configureDriverBindings();
-        configureAutomaticCommandScheduling();
     }
 
     private void configureDriverBindings() {
@@ -275,7 +274,7 @@ public class RobotContainer {
 
     }
 
-    private void configureAutomaticCommandScheduling() {
+    protected void configureAutomaticCommandScheduling() {
         // automatic handoff
         new Trigger(() -> arm.getState() == Arm.State.FEED 
                     && arm.atTarget() 
