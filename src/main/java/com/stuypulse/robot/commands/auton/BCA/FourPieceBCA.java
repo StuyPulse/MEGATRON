@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.auton.BAC;
+package com.stuypulse.robot.commands.auton.BCA;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
@@ -26,19 +26,19 @@ public class FourPieceBCA extends SequentialCommandGroup {
             // Drive, Intake, Shoot B
             new FollowPathAndIntake(path[0]),
             new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
+                .withTolerance(0.03, 2),
             new ShootRoutine(),
 
-            // DDrive, Intake, Shoot C
+            // Drive, Intake, Shoot C
             new FollowPathAndIntake(path[1]),
             new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
+                .withTolerance(0.03, 2),
             new ShootRoutine(),
 
             // Drive, Intake, Shoot A
             new FollowPathAndIntake(path[2]),
             new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
+                .withTolerance(0.03, 2),
             new ShootRoutine(0.7)
         );
     }
