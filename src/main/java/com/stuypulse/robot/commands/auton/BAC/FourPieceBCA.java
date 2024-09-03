@@ -18,28 +18,19 @@ public class FourPieceBCA extends SequentialCommandGroup {
     public FourPieceBCA(PathPlannerPath... path) {
         addCommands(
             // Preload Shot
-            new ArmToSubwooferShot(),
-            new ShooterSetRPM(Settings.Shooter.SPEAKER),
-            new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget()).withTimeout(1.0),
-            new ShooterFeederShoot(),
+            ShootRoutine.fromSubwoofer(),
 
             // Drive to B + Shoot B
             new FollowPathAndIntake(path[0]),
-            new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
-            new ShootRoutine(),
+            ShootRoutine.fromAnywhere().withTimeout(2.5),
 
             // Drive to C + Shoot C
             new FollowPathAndIntake(path[1]),
-            new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
-            new ShootRoutine(),
+            ShootRoutine.fromAnywhere().withTimeout(2.5),
 
             // Drive to A + Shoot A
             new FollowPathAndIntake(path[2]),
-            new SwerveDriveToShoot()
-                .withTolerance(0.03, 3),
-            new ShootRoutine(0.7)
+            ShootRoutine.fromAnywhere().withTimeout(2.5)
         );
     }
 

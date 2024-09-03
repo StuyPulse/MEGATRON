@@ -1,38 +1,41 @@
 package com.stuypulse.robot.commands.auton;
 
-import com.stuypulse.robot.commands.intake.IntakeStop;
-import com.stuypulse.robot.commands.swerve.SwerveDriveStop;
+import com.stuypulse.robot.commands.arm.ArmToSpeaker;
+import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
+import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
+import com.stuypulse.robot.commands.leds.LEDSet;
+import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
+import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
+import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
+import com.stuypulse.robot.commands.swerve.SwerveDriveAlignToSpeaker;
+import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class ShootRoutine extends SequentialCommandGroup {
+public abstract class ShootRoutine {
 
-    public ShootRoutine(double delay) {
-        addCommands(
-            new InstantCommand(SwerveDrive.getInstance()::stop, SwerveDrive.getInstance()),
-            new WaitUntilCommand(Shooter.getInstance()::hasNote)
-                .withTimeout(delay),
-            new IntakeStop()
-        );
-    }
-
-    public ShootRoutine() {
-        this(Settings.Auton.SHOOT_WAIT_DELAY.get());
-    }
-
-public static Command UntilNoteShot(double timeout) {
+    public static Command fromSubwoofer() {
         return new SequentialCommandGroup(
-            new InstantCommand(SwerveDrive.getInstance()::stop, SwerveDrive.getInstance()),
-            new WaitCommand(timeout),
-            new IntakeStop()
+            new ArmToSubwooferShot(),
+            new ShooterSetRPM(Settings.Shooter.SPEAKER),
+            new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget()).withTimeout(1.0),
+            new ShooterFeederShoot()
         );
+    }
+
+    public static Command fromAnywhere() {
+        return new SwerveDriveAlignToSpeaker()
+            .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+                .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+                        .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+                .andThen(new WaitUntilCommand(() -> SwerveDrive.getInstance().isAlignedToSpeaker()))
+                .andThen(new ShooterFeederShoot())
+            )
+            .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN));
     }
 
 }
