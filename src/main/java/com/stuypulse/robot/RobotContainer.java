@@ -14,7 +14,7 @@ import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
-import com.stuypulse.robot.commands.auton.BAC.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
@@ -314,8 +314,6 @@ public class RobotContainer {
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
-        autonChooser.addOption("Square Test", new SquareTest());
-        autonChooser.addOption("Straight Line Test", new StraightLine());
 
         AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to C", "C to A");
