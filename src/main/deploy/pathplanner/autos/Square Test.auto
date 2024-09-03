@@ -20,12 +20,17 @@
         {
           "type": "path",
           "data": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/Square Test.auto
             "pathName": "Square Right"
+========
+            "pathName": "B to C"
+>>>>>>>> 7a9b4902c6973903cb64552237778325b95eeb47:src/main/deploy/pathplanner/autos/BCA Red.auto
           }
         },
         {
           "type": "path",
           "data": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/autos/Square Test.auto
             "pathName": "Square Bottom"
           }
         },
@@ -33,6 +38,9 @@
           "type": "path",
           "data": {
             "pathName": "Square Left"
+========
+            "pathName": "C to A"
+>>>>>>>> 7a9b4902c6973903cb64552237778325b95eeb47:src/main/deploy/pathplanner/autos/BCA Red.auto
           }
         }
       ]

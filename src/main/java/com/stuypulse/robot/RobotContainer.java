@@ -314,6 +314,8 @@ public class RobotContainer {
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
+        autonChooser.addOption("Square Test", new SquareTest());
+        autonChooser.addOption("Straight Line Test", new StraightLine());
 
         AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to C", "C to A");
