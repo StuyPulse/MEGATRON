@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands.intake;
 
 import com.stuypulse.robot.subsystems.intake.Intake;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class IntakeAcquire extends Command {
+public class IntakeAcquire extends InstantCommand {
 
     private final Intake intake;
 
@@ -16,15 +16,5 @@ public class IntakeAcquire extends Command {
     @Override
     public void initialize() {
         intake.setState(Intake.State.ACQUIRING);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        intake.setState(Intake.State.STOP);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return intake.hasNote();
     }
 }

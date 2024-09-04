@@ -2,18 +2,9 @@ package com.stuypulse.robot;
 
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.stuypulse.robot.commands.BuzzController;
-import com.stuypulse.robot.commands.intake.IntakeShoot;
 import com.stuypulse.robot.commands.leds.LEDReset;
-import com.stuypulse.robot.commands.shooter.ShooterAcquireFromIntake;
-import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.RobotType;
-import com.stuypulse.robot.subsystems.arm.Arm;
-import com.stuypulse.robot.subsystems.intake.Intake;
-import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;

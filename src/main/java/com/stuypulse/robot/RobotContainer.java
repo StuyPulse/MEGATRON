@@ -16,10 +16,7 @@ import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
-import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
-import com.stuypulse.robot.commands.intake.IntakeFeed;
-import com.stuypulse.robot.commands.intake.IntakeShoot;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDReset;
@@ -50,7 +47,6 @@ import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
-import com.stuypulse.robot.util.SLColor;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.robot.subsystems.arm.Arm;
@@ -111,7 +107,6 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        intake.setDefaultCommand(new IntakeStop());
         leds.setDefaultCommand(new LEDDefaultMode());
     }
 
@@ -236,9 +231,7 @@ public class RobotContainer {
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLowFerry()))
-                        .andThen(new ShooterFeederShoot()
-                            .alongWith(new IntakeShoot().onlyIf(() -> Arm.getInstance().atIntakeShouldShootAngle()))
-                        )
+                        .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
             )

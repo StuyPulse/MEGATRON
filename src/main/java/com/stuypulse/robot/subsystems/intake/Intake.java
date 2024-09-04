@@ -3,6 +3,7 @@ package com.stuypulse.robot.subsystems.intake;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.robot.subsystems.shooter.Shooter.FeederState;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,7 +56,8 @@ public abstract class Intake extends SubsystemBase {
                             && Arm.getInstance().atValidFeedAngle() 
                             && !Shooter.getInstance().hasNote()
                             && hasNote()
-                            && getState() != Intake.State.DEACQUIRING;
+                            && getState() != Intake.State.DEACQUIRING
+                            && Shooter.getInstance().getFeederState() != Shooter.FeederState.DEACQUIRING;
         
         if (shouldHandoff) {
             setState(State.FEEDING);

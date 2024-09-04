@@ -73,14 +73,15 @@ public abstract class Shooter extends SubsystemBase {
         // automatic handoff
         boolean shouldHandoff = Arm.getInstance().getState() == Arm.State.FEED 
                             && Arm.getInstance().atValidFeedAngle() 
-                            && hasNote()
+                            && !hasNote()
                             && Intake.getInstance().hasNote()
-                            && Intake.getInstance().getState() != Intake.State.DEACQUIRING;
+                            && Intake.getInstance().getState() != Intake.State.DEACQUIRING
+                            && getFeederState() != FeederState.DEACQUIRING;
 
         if (shouldHandoff) {
             setFeederState(FeederState.INTAKING);
         }
-        if (feederState == FeederState.INTAKING && !shouldHandoff) {
+        if (feederState == FeederState.INTAKING && (hasNote() || Arm.getInstance().getState() != Arm.State.FEED)) {
             setFeederState(FeederState.STOP);
         }
 
