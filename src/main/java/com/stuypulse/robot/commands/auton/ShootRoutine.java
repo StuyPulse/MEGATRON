@@ -13,7 +13,9 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 public abstract class ShootRoutine {
 
@@ -32,6 +34,7 @@ public abstract class ShootRoutine {
                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                 .andThen(new WaitUntilCommand(() -> SwerveDrive.getInstance().isAlignedToSpeaker()))
                 .andThen(new ShooterFeederShoot())
+                .andThen(new WaitCommand(0.25)) // give time for note to leave shooter
             )
             .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN));
     }
