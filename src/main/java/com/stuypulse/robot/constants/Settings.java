@@ -135,6 +135,9 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
+        // TODO: Find velocity
+        double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
+
         // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
         SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
@@ -238,7 +241,7 @@ public interface Settings {
         public interface Turn {
             SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 9.0);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.2);
 
             SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.30718);
             SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.42659);
@@ -408,6 +411,7 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.25;
     }
 
     public interface Buzz {
@@ -418,7 +422,7 @@ public interface Settings {
     public interface Auton {
         double MAX_SHOT_DISTANCE = 3.1;
 
-        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Conveyor/Shoot Wait Delay", 0.45);
+        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Shoot Wait Delay", 0.45);
 
         double SHOOTER_STARTUP_DELAY = 0.5;
         double DEFAULT_INTAKE_TIMEOUT = 0.75;

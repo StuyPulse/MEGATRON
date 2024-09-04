@@ -12,6 +12,9 @@ import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.Mobility;
+import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
+import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
@@ -31,10 +34,8 @@ import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedAmp;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLobFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedLowFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualLobFerry;
-import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualLowFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
+import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
@@ -48,6 +49,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
+import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.robot.util.SLColor;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
@@ -120,7 +122,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         configureOperatorBindings();
         configureDriverBindings();
-        configureAutomaticCommandScheduling();
     }
 
     private void configureDriverBindings() {
@@ -251,7 +252,7 @@ public class RobotContainer {
 
     }
 
-    private void configureAutomaticCommandScheduling() {
+    protected void configureAutomaticCommandScheduling() {
         // automatic handoff
         new Trigger(() -> arm.getState() == Arm.State.FEED 
                     && arm.atTarget() 
@@ -267,9 +268,33 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
-        autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+        autonChooser.addOption("Do Nothing", new DoNothingAuton());
+        autonChooser.addOption("Mobility", new Mobility());
+
+        AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
+            "Center to B", "B to C", "C to A");
+        AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
+        "Center to B", "B to C", "C to A");
+        // AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
+        // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        // AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
+        // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        AutonConfig ADEF = new AutonConfig("5 ADEF", FivePieceADEF::new,
+        "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
+        AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
+        "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
+
+        BCA.registerDefaultBlue(autonChooser);
+        BCA_RED.registerRed(autonChooser);
+
+        // HGF.registerBlue(autonChooser);
+        // HGF_RED.registerRed(autonChooser);
+
+        ADEF.registerBlue(autonChooser);
+        ADEF_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
+        
     }
 
     public Command getAutonomousCommand() {
@@ -280,7 +305,9 @@ public class RobotContainer {
         if (autonChooser.getSelected() == null) {
             return "Do Nothing";
         }
-        
+
         return autonChooser.getSelected().getName();
+
     }
+
 }

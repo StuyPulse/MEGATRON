@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4053936459807443,
-      "y": 5.5301848373414
+      "x": 0.7437038962619593,
+      "y": 4.320740582515391
     },
-    "rotation": 0
+    "rotation": -59.682052822906385
   },
   "command": {
     "type": "sequential",
@@ -14,31 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to B"
+            "pathName": "Source to H"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to F"
+            "pathName": "H to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to A Shoot"
+            "pathName": "H Shoot to G"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "FA Shoot to A"
+            "pathName": "G to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to A"
+            "pathName": "G Shoot to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F to Shoot"
           }
         }
       ]

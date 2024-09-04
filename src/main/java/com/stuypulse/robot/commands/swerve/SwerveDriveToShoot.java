@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.shooter;
+package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings.Alignment;
@@ -15,7 +15,6 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounceRC;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.Derivative;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
-
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -148,7 +147,5 @@ public class SwerveDriveToShoot extends Command {
         swerve.stop();
         SmartDashboard.putBoolean("AutonAlignment", false);
     }
-
-    // NEED TO CHANGE SO THAT ALLOWED SHOOT DISTANCE IS ALL THE WAY FROM ALLIANCE WING LINE AND NOT AROUND PDOIUM
 
 }
