@@ -252,17 +252,6 @@ public class RobotContainer {
 
     }
 
-    protected void configureAutomaticCommandScheduling() {
-        // automatic handoff
-        new Trigger(() -> arm.getState() == Arm.State.FEED 
-                    && arm.atTarget() 
-                    && !shooter.hasNote()
-                    && intake.hasNote()
-                    && intake.getState() != Intake.State.DEACQUIRING)
-            // .onTrue(new ShooterAcquireFromIntakeWithRetry().andThen(new BuzzController(driver)));
-            .onTrue(new ShooterAcquireFromIntake().andThen(new BuzzController(driver)));
-    }
-
     /**************/
     /*** AUTONS ***/
     /**************/

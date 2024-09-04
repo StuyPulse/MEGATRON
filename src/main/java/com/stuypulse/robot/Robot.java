@@ -113,7 +113,6 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.cancel();
         }
-        robot.configureAutomaticCommandScheduling();
     }
 
     @Override

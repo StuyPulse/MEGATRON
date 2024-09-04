@@ -46,6 +46,24 @@ public abstract class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (state == State.ACQUIRING && hasNote()) {
+            state = State.STOP;
+        }
+
+        // automatic handoff
+        boolean shouldHandoff = Arm.getInstance().getState() == Arm.State.FEED 
+                            && Arm.getInstance().atValidFeedAngle() 
+                            && !Shooter.getInstance().hasNote()
+                            && hasNote()
+                            && getState() != Intake.State.DEACQUIRING;
+        
+        if (shouldHandoff) {
+            setState(State.FEEDING);
+        }
+        if (state == State.FEEDING && !shouldHandoff) {
+            setState(State.STOP);
+        }
+
         // run the intake when the arm is moving up from a low angle (to prevent intake from gripping it)
         // run the intake when shooting in case the intake is holding onto the note also
         boolean shouldShoot = (Shooter.getInstance().getFeederState() == Shooter.FeederState.SHOOTING && Arm.getInstance().atIntakeShouldShootAngle())

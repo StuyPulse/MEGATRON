@@ -3,6 +3,7 @@ package com.stuypulse.robot.subsystems.shooter;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.arm.Arm;
+import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.util.ShooterSpeeds;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -65,9 +66,22 @@ public abstract class Shooter extends SubsystemBase {
         if (Arm.getInstance().getState() == Arm.State.AMP && !hasNote() && feederState != FeederState.DEACQUIRING) {
             feederState = FeederState.INTAKING;
         }
-
         if (feederState == FeederState.INTAKING && hasNote()) {
             feederState = FeederState.STOP;
+        }
+
+        // automatic handoff
+        boolean shouldHandoff = Arm.getInstance().getState() == Arm.State.FEED 
+                            && Arm.getInstance().atValidFeedAngle() 
+                            && hasNote()
+                            && Intake.getInstance().hasNote()
+                            && Intake.getInstance().getState() != Intake.State.DEACQUIRING;
+
+        if (shouldHandoff) {
+            setFeederState(FeederState.INTAKING);
+        }
+        if (feederState == FeederState.INTAKING && !shouldHandoff) {
+            setFeederState(FeederState.STOP);
         }
 
         // automatically determine flywheel speeds based on arm state
