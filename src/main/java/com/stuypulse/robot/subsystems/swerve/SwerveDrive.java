@@ -202,23 +202,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
-    public boolean isAlignedToLowFerry() {
+    public boolean isAlignedToFerry() {
         Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle();
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
-    public boolean isAlignedToLobFerry() {
-        Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
-        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
-    }
-
-    public boolean isAlignedToManualLowFerry() {
+    public boolean isAlignedToManualFerry() {
         Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle();
-        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
-    }
-
-    public boolean isAlignedToManualLobFerry() {
-        Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
