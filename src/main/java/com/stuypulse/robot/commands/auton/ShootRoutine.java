@@ -5,7 +5,6 @@ import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.leds.LEDSet;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
-import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveAlignToSpeaker;
 import com.stuypulse.robot.constants.LEDInstructions;
@@ -21,7 +20,6 @@ public abstract class ShootRoutine {
     public static Command fromSubwoofer() {
         return new SequentialCommandGroup(
             new ArmToSubwooferShot(),
-            new ShooterSetRPM(Settings.Shooter.SPEAKER),
             new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget()).withTimeout(1.0),
             new ShooterFeederShoot()
         );
@@ -29,7 +27,7 @@ public abstract class ShootRoutine {
 
     public static Command fromAnywhere() {
         return new SwerveDriveAlignToSpeaker()
-            .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+            .alongWith(new ArmToSpeaker()
                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                 .andThen(new WaitUntilCommand(() -> SwerveDrive.getInstance().isAlignedToSpeaker()))

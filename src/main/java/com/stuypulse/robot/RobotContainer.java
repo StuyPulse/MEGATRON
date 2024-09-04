@@ -178,7 +178,7 @@ public class RobotContainer {
 
         // lob ferry align and shoot
         driver.getLeftStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
                     .alongWith(new ArmToLobFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -192,7 +192,7 @@ public class RobotContainer {
 
         // low ferry align and shoot
         driver.getRightStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
                     .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -218,7 +218,7 @@ public class RobotContainer {
         
         // manual lob ferry
         driver.getTopButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualLobFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
                     .alongWith(new ArmToLobFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
@@ -231,7 +231,7 @@ public class RobotContainer {
 
         // manual low ferry
         driver.getLeftButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualLowFerry(driver)
+            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
                     .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
