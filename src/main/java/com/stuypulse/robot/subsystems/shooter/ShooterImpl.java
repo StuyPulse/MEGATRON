@@ -17,6 +17,7 @@ import com.stuypulse.robot.util.FilteredRelativeEncoder;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterLowFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
+import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
@@ -41,7 +42,8 @@ public class ShooterImpl extends Shooter {
 
     private final BStream hasNote;
 
-    private boolean isShooting;
+    private final SmartNumber leftTargetRPM;
+    private final SmartNumber rightTargetRPM;
 
     protected ShooterImpl() {
         leftMotor = new CANSparkMax(Ports.Shooter.LEFT_MOTOR, MotorType.kBrushless);
@@ -81,7 +83,8 @@ public class ShooterImpl extends Shooter {
         Motors.Shooter.RIGHT_SHOOTER.configure(rightMotor);
         Motors.Shooter.FEEDER_MOTOR.configure(feederMotor); 
 
-        isShooting = false;
+        leftTargetRPM = new SmartNumber("Shooter/Left Target RPM", Settings.Shooter.SPEAKER.getLeftRPM());
+        rightTargetRPM = new SmartNumber("Shooter/Right Target RPM", Settings.Shooter.SPEAKER.getRightRPM());
     }
 
     private double getLeftShooterRPM() {
@@ -94,8 +97,13 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public boolean atTargetSpeeds() {
-        return Math.abs(getLeftShooterRPM() - getLeftTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
-            && Math.abs(getRightShooterRPM() - getRightTargetRPM()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+        return Math.abs(getLeftShooterRPM() - leftTargetRPM.get()) < Settings.Shooter.TARGET_RPM_THRESHOLD 
+            && Math.abs(getRightShooterRPM() - rightTargetRPM.get()) < Settings.Shooter.TARGET_RPM_THRESHOLD;
+    }
+
+    private void setTargetSpeeds(ShooterSpeeds speeds) {
+        this.leftTargetRPM.set(speeds.getLeftRPM());
+        this.rightTargetRPM.set(speeds.getRightRPM());
     }
 
     private void setLeftShooterRPM(double rpm) {
@@ -126,48 +134,80 @@ public class ShooterImpl extends Shooter {
         }
     }
 
+    private void setFlywheelsBasedOnState() {
+        double manualFerryDistance = Units.metersToInches(Field.getManualFerryPosition().getDistance(Field.getAmpCornerPose()));
+        switch (getFlywheelState()) {
+            case SPEAKER:
+                setTargetSpeeds(Settings.Shooter.SPEAKER);
+                break;
+            case LOW_FERRY:
+                setTargetSpeeds(getLowFerrySpeeds());
+                break;
+            case LOW_FERRY_MANUAL:
+                setTargetSpeeds(new ShooterSpeeds(ShooterLowFerryInterpolation.getRPM(manualFerryDistance)));
+                break;
+            case LOB_FERRY:
+                setTargetSpeeds(getLobFerrySpeeds());
+                break;
+            case LOB_FERRY_MANUAL:
+                setTargetSpeeds(new ShooterSpeeds(ShooterLobFerryInterpolation.getRPM(manualFerryDistance)));
+                break;
+            case STOP:
+                setTargetSpeeds(new ShooterSpeeds());
+                break;
+            default:
+                setTargetSpeeds(new ShooterSpeeds());
+                break;
+        }
+
+        if (leftTargetRPM.get() == 0) {
+            leftMotor.set(0);
+        }
+        else {
+            setLeftShooterRPM(leftTargetRPM.get());
+        }
+
+        if (rightTargetRPM.get() == 0) {
+            rightMotor.set(0);
+        }
+        else {
+            setRightShooterRPM(rightTargetRPM.get());
+        }
+    }
+
     @Override
     public boolean hasNote() {
         return hasNote.get();
     }
 
-    @Override
-    public ShooterSpeeds getFerrySpeeds() {
+    private ShooterSpeeds getLowFerrySpeeds() {
         Translation2d ferryZone = Robot.isBlue()
             ? new Translation2d(0, Field.WIDTH - 1.5)
             : new Translation2d(0, 1.5);
         
         double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
         
-        if (Arm.getInstance().getState() == Arm.State.LOB_FERRY) {
-            double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
-            return new ShooterSpeeds(targetRPM, 500);
-        }
-        else {
-            double targetRPM = ShooterLowFerryInterpolation.getRPM(distanceToFerryInInches);
-            return new ShooterSpeeds(targetRPM, 500);
-        }
+        double targetRPM = ShooterLobFerryInterpolation.getRPM(distanceToFerryInInches);
+        return new ShooterSpeeds(targetRPM, 500);
+    }
+
+    private ShooterSpeeds getLobFerrySpeeds() {
+        Translation2d ferryZone = Robot.isBlue()
+            ? new Translation2d(0, Field.WIDTH - 1.5)
+            : new Translation2d(0, 1.5);
+        
+        double distanceToFerryInInches = Units.metersToInches(SwerveDrive.getInstance().getPose().getTranslation().getDistance(ferryZone));
+
+        double targetRPM = ShooterLowFerryInterpolation.getRPM(distanceToFerryInInches);
+        return new ShooterSpeeds(targetRPM, 500);
     }
 
     @Override
     public void periodic () {
         super.periodic();
 
-        if (getLeftTargetRPM() == 0) {
-            leftMotor.set(0);
-        }
-        else {
-            setLeftShooterRPM(getLeftTargetRPM());
-        }
-
-        if (getRightTargetRPM() == 0) {
-            rightMotor.set(0);
-        }
-        else {
-            setRightShooterRPM(getRightTargetRPM());
-        }
-
         setFeederBasedOnState();
+        setFlywheelsBasedOnState();
 
         SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 

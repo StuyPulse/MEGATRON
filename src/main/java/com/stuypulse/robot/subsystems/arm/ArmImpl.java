@@ -95,7 +95,11 @@ public class ArmImpl extends Arm {
                 return getSpeakerAngle();
             case LOW_FERRY:
                 return Settings.Arm.LOW_FERRY_ANGLE.get();
+            case LOW_FERRY_MANUAL:
+                return Settings.Arm.LOW_FERRY_ANGLE.get();
             case LOB_FERRY:
+                return Settings.Arm.LOB_FERRY_ANGLE.get();
+            case LOB_FERRY_MANUAL:
                 return Settings.Arm.LOB_FERRY_ANGLE.get();
             case FEED:
                 return Settings.Arm.FEED_ANGLE.get();
@@ -209,7 +213,6 @@ public class ArmImpl extends Arm {
         SmartDashboard.putNumber("Arm/Right Duty Cycle", rightMotor.get());
 
         SmartDashboard.putNumber("Arm/Arm Angle", getDegrees());
-        SmartDashboard.putNumber("Arm/Shooter Angle", getDegrees() + 96); // shooter is offset 96 degrees counterclockwise from arm (thanks kevin)]
 
         SmartDashboard.putBoolean("Arm/At Target", atTarget());
     }

@@ -27,9 +27,6 @@ import com.stuypulse.robot.commands.shooter.ShooterFeederDeacquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
 import com.stuypulse.robot.commands.shooter.ShooterManualIntake;
-import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
-import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
-import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
@@ -131,7 +128,7 @@ public class RobotContainer {
 
         driver.getDPadUp()
             .onTrue(new ArmToPreClimb())
-            .onTrue(new ShooterStop())
+            .onTrue(new ShooterFeederStop())
             .onTrue(new IntakeStop());
 
         driver.getDPadDown().onTrue(new ArmToClimbing());
@@ -168,7 +165,7 @@ public class RobotContainer {
                     .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                         .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE)))),
                 new SwerveDriveDriveAlignedSpeaker(driver)
-                    .alongWith(new ArmToSpeaker().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+                    .alongWith(new ArmToSpeaker()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
@@ -176,15 +173,12 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
 
         // lob ferry align and shoot
         driver.getLeftStickButton()
             .whileTrue(new SwerveDriveDriveAlignedLobFerry(driver)
-                    .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                    .alongWith(new ArmToLobFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLobFerry()))
@@ -192,16 +186,13 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
             )
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
 
 
         // low ferry align and shoot
         driver.getRightStickButton()
             .whileTrue(new SwerveDriveDriveAlignedLowFerry(driver)
-                    .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                    .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToLowFerry()))
@@ -209,31 +200,25 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
             )
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
 
         // arm to amp
         driver.getLeftBumper().onTrue(new ArmToAmp());
 
         // manual speaker at subwoofer
         driver.getRightMenuButton()
-            .whileTrue(new ArmToSubwooferShot().alongWith(new ShooterSetRPM(Settings.Shooter.SPEAKER))
+            .whileTrue(new ArmToSubwooferShot()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new ShooterFeederShoot())
                         )
             .whileTrue(new LEDSet(LEDInstructions.SPEAKER_MANUAL))
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
         
         // manual lob ferry
         driver.getTopButton()
             .whileTrue(new SwerveDriveDriveAlignedManualLobFerry(driver)
-                    .alongWith(new ArmToLobFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                    .alongWith(new ArmToLobFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLobFerry()))
@@ -241,15 +226,12 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
             )
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
 
         // manual low ferry
         driver.getLeftButton()
             .whileTrue(new SwerveDriveDriveAlignedManualLowFerry(driver)
-                    .alongWith(new ArmToLowFerry().alongWith(new ShooterSetRPM(() -> shooter.getFerrySpeeds()))
+                    .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualLowFerry()))
@@ -259,10 +241,7 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
             )
-            .onFalse(new ConditionalCommand(
-                new ShooterFeederStop(), 
-                new ShooterStop(), 
-                () -> Settings.Shooter.ALWAYS_KEEP_AT_SPEED));
+            .onFalse(new ShooterFeederStop());
         
         // human player attention button
         driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
@@ -281,27 +260,6 @@ public class RobotContainer {
                     && intake.getState() != Intake.State.DEACQUIRING)
             // .onTrue(new ShooterAcquireFromIntakeWithRetry().andThen(new BuzzController(driver)));
             .onTrue(new ShooterAcquireFromIntake().andThen(new BuzzController(driver)));
-        
-        // feeder automatically pushes note further into shooter when its sticking too far out
-        new Trigger(() -> arm.getState() == Arm.State.AMP 
-                    && !shooter.hasNote() 
-                    && shooter.getFeederState() != Shooter.FeederState.DEACQUIRING)
-            .onTrue(new ShooterManualIntake().until(() -> arm.getState() != Arm.State.AMP));
-        
-        // run the intake when the arm is moving up from a low angle (to prevent intake from gripping it)
-        new Trigger(() -> arm.getVelocity() > Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-                    && arm.atIntakeShouldShootAngle())
-            .onTrue(new IntakeShoot()
-                .until(
-                    () -> arm.getVelocity() < Settings.Intake.ARM_SPEED_THRESHOLD_TO_FEED
-                        || !arm.atIntakeShouldShootAngle()
-                )
-            );
-
-        // run the intake when shooting in case the intake is holding onto the note also
-        new Trigger(() -> shooter.getFeederState() == Shooter.FeederState.SHOOTING
-                    && arm.atIntakeShouldShootAngle())
-            .onTrue(new IntakeShoot().until(() -> shooter.getFeederState() != Shooter.FeederState.SHOOTING));
     }
 
     /**************/
