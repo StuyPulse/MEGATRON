@@ -170,7 +170,8 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed().onlyIf(() -> arm.getState() == Arm.State.SPEAKER));
 
         // lob ferry align and shoot
         driver.getLeftStickButton()
@@ -183,7 +184,8 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
             )
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed());
 
 
         // low ferry align and shoot
@@ -197,7 +199,8 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
             )
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed());
 
         // arm to amp
         driver.getLeftBumper().onTrue(new ArmToAmp());
@@ -210,7 +213,8 @@ public class RobotContainer {
                         .andThen(new ShooterFeederShoot())
                         )
             .whileTrue(new LEDSet(LEDInstructions.SPEAKER_MANUAL))
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed());
         
         // manual lob ferry
         driver.getTopButton()
@@ -223,7 +227,8 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
             )
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed());
 
         // manual low ferry
         driver.getLeftButton()
@@ -236,7 +241,8 @@ public class RobotContainer {
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
             )
-            .onFalse(new ShooterFeederStop());
+            .onFalse(new ShooterFeederStop())
+            .onFalse(new ArmToFeed());
         
         // human player attention button
         driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
