@@ -1,6 +1,7 @@
 package com.stuypulse.robot;
 
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
@@ -260,7 +261,7 @@ public class RobotContainer {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
 
-        AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
+        AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to C", "C to A");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
         "Center to B", "B to C", "C to A");
@@ -268,18 +269,18 @@ public class RobotContainer {
         // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         // AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
         // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
-        AutonConfig ADEF = new AutonConfig("5 ADEF", FivePieceADEF::new,
+        AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
 
-        BCA.registerDefaultBlue(autonChooser);
+        BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
 
         // HGF.registerBlue(autonChooser);
         // HGF_RED.registerRed(autonChooser);
 
-        ADEF.registerBlue(autonChooser);
+        ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);

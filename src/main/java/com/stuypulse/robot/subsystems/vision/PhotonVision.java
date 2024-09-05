@@ -104,15 +104,17 @@ public class PhotonVision extends AprilTagVision {
             final int index = i;
             if (enabled[index]) {
                 PhotonPipelineResult latestResult = cameras[index].getLatestResult();
-                if (latestResult.getBestTarget().getPoseAmbiguity() < Settings.Vision.POSE_AMBIGUITY_RATIO_THRESHOLD) {
-                    Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
-                    estimatedRobotPose.ifPresent(
-                        (EstimatedRobotPose robotPose) -> {
-                            VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
-                            outputs.add(data);
-                            updateTelemetry("Vision/" + cameras[index].getName(), data);
-                        }
-                    );
+                if (latestResult.hasTargets()) {
+                    if (latestResult.getBestTarget().getPoseAmbiguity() < Settings.Vision.POSE_AMBIGUITY_RATIO_THRESHOLD) {
+                        Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
+                        estimatedRobotPose.ifPresent(
+                            (EstimatedRobotPose robotPose) -> {
+                                VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
+                                outputs.add(data);
+                                updateTelemetry("Vision/" + cameras[index].getName(), data);
+                            }
+                        );
+                    }
                 }
             }
         }

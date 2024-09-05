@@ -277,7 +277,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
         field.setRobotPose(getPose());
 
-        applyOperatorPerspective();
+        // applyOperatorPerspective();
 
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {

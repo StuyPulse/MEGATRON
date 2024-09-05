@@ -23,7 +23,8 @@ public abstract class ShootRoutine {
         return new SequentialCommandGroup(
             new ArmToSubwooferShot(),
             new ArmWaitUntilAtTarget().alongWith(new ShooterWaitForTarget()).withTimeout(1.0),
-            new ShooterFeederShoot()
+            new ShooterFeederShoot(),
+            new WaitCommand(0.25) // give time for note to leave shooter
         );
     }
 
