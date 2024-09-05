@@ -146,9 +146,11 @@ public class RobotContainer {
         
         // deacquire
         driver.getDPadLeft()
-            .whileTrue(new IntakeDeacquire())
-            .whileTrue(new ShooterFeederDeacquire())
-            .whileTrue(new LEDSet(LEDInstructions.DEACQUIRING));
+            .onTrue(new IntakeDeacquire())
+            .onTrue(new ShooterFeederDeacquire())
+            .whileTrue(new LEDSet(LEDInstructions.DEACQUIRING))
+            .onFalse(new IntakeStop())
+            .onFalse(new ShooterFeederStop());
         
         // speaker align and score 
         // score amp
