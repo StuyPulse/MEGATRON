@@ -18,6 +18,7 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.tests.StraightLine;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
@@ -258,6 +259,8 @@ public class RobotContainer {
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
+        autonChooser.addOption("Straight Line", new StraightLine());
+
 
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to C", "C to A");
