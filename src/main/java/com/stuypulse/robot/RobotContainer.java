@@ -101,6 +101,9 @@ public class RobotContainer {
             swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
         }
         swerve.registerTelemetry(logger::telemeterize);
+
+        new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote())
+            .onTrue(new BuzzController(driver, 1));
     }
 
     /****************/
@@ -165,7 +168,7 @@ public class RobotContainer {
                     .alongWith(new ArmToSpeaker()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()).andThen(new WaitCommand(0.25)))
                         .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
@@ -194,7 +197,7 @@ public class RobotContainer {
                     .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()).andThen(new WaitCommand(1.0)))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
                         .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
