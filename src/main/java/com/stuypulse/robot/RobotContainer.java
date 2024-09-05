@@ -6,7 +6,9 @@ import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.arm.ArmToLobFerry;
+import com.stuypulse.robot.commands.arm.ArmToLobFerryManual;
 import com.stuypulse.robot.commands.arm.ArmToLowFerry;
+import com.stuypulse.robot.commands.arm.ArmToLowFerryManual;
 import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
@@ -213,7 +215,7 @@ public class RobotContainer {
         // manual lob ferry
         driver.getTopButton()
             .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
-                    .alongWith(new ArmToLobFerry()
+                    .alongWith(new ArmToLobFerryManual()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
@@ -226,7 +228,7 @@ public class RobotContainer {
         // manual low ferry
         driver.getLeftButton()
             .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
-                    .alongWith(new ArmToLowFerry()
+                    .alongWith(new ArmToLowFerryManual()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
                         .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
