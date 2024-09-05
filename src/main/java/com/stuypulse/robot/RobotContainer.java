@@ -63,6 +63,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -133,19 +134,16 @@ public class RobotContainer {
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
             // .whileTrue(new SwerveDriveDriveToNote(driver))
-            .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING))
-                .andThen(new BuzzController(driver))
-            );
+            .onTrue(new IntakeAcquire())
+            .whileTrue((new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING)))
+            .onFalse(new IntakeStop());
         
         // intake robot relative
         driver.getLeftTriggerButton()
             .onTrue(new ArmToFeed())
-            .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
-                .andThen(new BuzzController(driver))
-            )
-            .whileTrue(new SwerveDriveDriveRobotRelative(driver));
+            .onTrue(new IntakeAcquire())
+            .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
+            .onFalse(new IntakeStop());
         
         // deacquire
         driver.getDPadLeft()
@@ -195,7 +193,7 @@ public class RobotContainer {
                     .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()).andThen(new WaitCommand(1.0)))
                         .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
