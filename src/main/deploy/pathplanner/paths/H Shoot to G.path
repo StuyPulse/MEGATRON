@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 7.929219989764386,
-        "y": 2.728964260011853
+        "x": 8.287322790233379,
+        "y": 2.44
       },
       "prevControl": {
-        "x": 6.772224406613993,
-        "y": 3.2354713221331206
+        "x": 7.664236416642477,
+        "y": 2.2212553493187346
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
-      "rotationDegrees": -25.0,
+      "rotationDegrees": 127.53126500479296,
       "rotateFast": true
     }
   ],
@@ -45,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.317362875171,
+    "rotation": 178.56854890177945,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "HGF",
   "previewStartingState": {
-    "rotation": -5.742284345235014,
+    "rotation": 173.9845066722469,
     "velocity": 0
   },
   "useDefaultConstraints": false

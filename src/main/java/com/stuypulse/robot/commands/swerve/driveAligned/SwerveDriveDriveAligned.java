@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.swerve.driveAligned;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Swerve.Assist;
@@ -11,6 +12,7 @@ import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.numbers.filters.RateLimit;
@@ -28,7 +30,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
 
     private final SwerveDrive swerve;
     protected final Gamepad driver;
-    private final VStream velocity;
+    private final VStream speed;
 
     private final SwerveRequest.FieldCentric drive;
 
@@ -39,7 +41,7 @@ public abstract class SwerveDriveDriveAligned extends Command {
         swerve = SwerveDrive.getInstance();
         this.driver = driver;
 
-        velocity = VStream.create(driver::getLeftStick)
+        speed = VStream.create(driver::getLeftStick)
             .filtered(
                 new VDeadZone(Drive.DEADBAND),
                 x -> x.clamp(1),
@@ -80,16 +82,12 @@ public abstract class SwerveDriveDriveAligned extends Command {
         return controller.getError().getRotation2d().getDegrees();
     }
 
-    // @Override
-    // public boolean isFinished() {
-    //     return Math.abs(driver.getRightX()) > Settings.Driver.Turn.DISABLE_ALIGNMENT_DEADBAND.getAsDouble();
-    // }
-
     @Override
     public void execute() {
+        Vector2D velocity = Robot.isBlue() ? speed.get() : speed.get().mul(-1);
         swerve.setControl(
-            drive.withVelocityX(velocity.get().y)
-                .withVelocityY(-velocity.get().x)
+            drive.withVelocityX(velocity.y)
+                .withVelocityY(-velocity.x)
                 .withRotationalRate(
                     SLMath.clamp(angleVelocity.get() 
                                 + controller.update(

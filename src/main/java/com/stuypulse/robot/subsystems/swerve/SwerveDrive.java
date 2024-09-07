@@ -9,20 +9,28 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
+import com.stuypulse.robot.util.FollowPathPointSpeakerCommand;
 import com.stuypulse.robot.util.vision.VisionData;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -78,6 +86,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
         modules2D = new FieldObject2d[Modules.length];
         field = new Field2d();
+
+        configureAutoBuilder();
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -120,11 +130,51 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     }
 
     public void stop() {
-        stop();
+        setControl(new SwerveRequest.FieldCentric()
+                    .withVelocityX(0)
+                    .withVelocityY(0)
+                    .withRotationalRate(0));
+    }
+
+    public void configureAutoBuilder() {
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            (Pose2d pose) -> seedFieldRelative(pose),
+            this::getChassisSpeeds,
+            this::setChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                Settings.Swerve.Motion.XY,
+                Settings.Swerve.Motion.THETA,
+                4.9,
+                Settings.Swerve.WIDTH,
+                new ReplanningConfig(true, true)),
+            () -> false,
+            instance
+        );
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> getField().getObject("path").setPoses(poses));
     }
 
     public Command followPathCommand(String pathName) {
         return followPathCommand(PathPlannerPath.fromPathFile(pathName));
+    }
+
+    public Command followPathWithSpeakerAlignCommand(PathPlannerPath path) {
+        return new FollowPathPointSpeakerCommand(
+            path, 
+            () -> getPose(), 
+            this::getChassisSpeeds, 
+            this::setChassisSpeeds, 
+            new PPHolonomicDriveController(
+                Motion.XY, 
+                Motion.THETA, 
+                0.02, 
+                4.9, 
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH)),
+            new ReplanningConfig(false, false),
+            () -> false,
+            this
+        );
     }
 
     public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
@@ -133,6 +183,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             .withVelocityY(chassisSpeeds.vyMetersPerSecond)
             .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond)         
         );
+    }
+
+    public ChassisSpeeds getChassisSpeeds() {
+        return m_kinematics.toChassisSpeeds(m_moduleStates);
     }
 
     public Command followPathCommand(PathPlannerPath path) {
@@ -174,23 +228,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
-    public boolean isAlignedToLowFerry() {
+    public boolean isAlignedToFerry() {
         Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle();
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
-    public boolean isAlignedToLobFerry() {
-        Rotation2d targetAngle = getPose().getTranslation().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
-        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
-    }
-
-    public boolean isAlignedToManualLowFerry() {
+    public boolean isAlignedToManualFerry() {
         Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle();
-        return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
-    }
-
-    public boolean isAlignedToManualLobFerry() {
-        Rotation2d targetAngle = Field.getManualFerryPosition().minus(Field.getAmpCornerPose()).getAngle().plus(Rotation2d.fromDegrees(180));
         return Math.abs(getPose().getRotation().minus(targetAngle).getDegrees()) < Settings.Alignment.ANGLE_TOLERANCE.get();
     }
 
@@ -213,7 +257,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
 
         addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.2, 0.2, 1) : VecBuilder.fill(0.2, 0.2, 1));
         
     }
 

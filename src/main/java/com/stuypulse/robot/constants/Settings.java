@@ -127,15 +127,16 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
-        boolean ALWAYS_KEEP_AT_SPEED = true;
-
         double TARGET_RPM_THRESHOLD = 200;
-        double MAX_WAIT_TO_REACH_TARGET = ALWAYS_KEEP_AT_SPEED ? 1.5 : 2.0;
+        double MAX_WAIT_TO_REACH_TARGET = 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
             new SmartNumber("Shooter/Speaker RPM", 5500), 
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
+
+        // TODO: Find velocity
+        double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
 
         // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
@@ -196,9 +197,9 @@ public interface Settings {
             double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
 
             // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
+            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 8.5);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.0);
+            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.4);
 
             double ANGLE_DERIV_RC = 0.05;
             double REDUCED_FF_DIST = 0.75;
@@ -240,7 +241,7 @@ public interface Settings {
         public interface Turn {
             SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 9.0);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.2);
 
             SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.30718);
             SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.42659);
@@ -309,7 +310,7 @@ public interface Settings {
 
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
-        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 5);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 6);
 
         SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
         SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);
@@ -410,6 +411,7 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.25;
     }
 
     public interface Buzz {
@@ -420,7 +422,7 @@ public interface Settings {
     public interface Auton {
         double MAX_SHOT_DISTANCE = 3.1;
 
-        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Conveyor/Shoot Wait Delay", 0.45);
+        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Shoot Wait Delay", 0.45);
 
         double SHOOTER_STARTUP_DELAY = 0.5;
         double DEFAULT_INTAKE_TIMEOUT = 0.75;

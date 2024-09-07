@@ -13,7 +13,11 @@ public class ShooterLowFerryInterpolation {
 
     // RPM, distance (inches)
     private static final double[][] RPMAndDistance = {
-        
+        {2000, 204},
+        {2000, 130},
+        {2500, 235},
+        {2500, 246},
+        {2500, 284},
     };
 
     static {
