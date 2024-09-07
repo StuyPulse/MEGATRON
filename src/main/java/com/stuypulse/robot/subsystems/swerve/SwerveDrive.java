@@ -9,10 +9,15 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -81,6 +86,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
         modules2D = new FieldObject2d[Modules.length];
         field = new Field2d();
+
+        configureAutoBuilder();
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -127,6 +134,25 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
                     .withVelocityX(0)
                     .withVelocityY(0)
                     .withRotationalRate(0));
+    }
+
+    public void configureAutoBuilder() {
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            (Pose2d pose) -> seedFieldRelative(pose),
+            this::getChassisSpeeds,
+            this::setChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                Settings.Swerve.Motion.XY,
+                Settings.Swerve.Motion.THETA,
+                4.9,
+                Settings.Swerve.WIDTH,
+                new ReplanningConfig(true, true)),
+            () -> false,
+            instance
+        );
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> getField().getObject("path").setPoses(poses));
     }
 
     public Command followPathCommand(String pathName) {
@@ -231,7 +257,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
 
         addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.2, 0.2, 1) : VecBuilder.fill(0.2, 0.2, 1));
         
     }
 
