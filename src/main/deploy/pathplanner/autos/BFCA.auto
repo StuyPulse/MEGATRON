@@ -26,19 +26,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F to C Shoot"
+            "pathName": "F to Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "FC Shoot to C"
+            "pathName": "Center to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to Center"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Center to A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A to Center"
           }
         }
       ]
