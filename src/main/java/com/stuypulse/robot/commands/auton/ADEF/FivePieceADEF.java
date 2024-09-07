@@ -15,16 +15,18 @@ public class FivePieceADEF extends SequentialCommandGroup {
     public FivePieceADEF(PathPlannerPath... paths) {
         
         addCommands(
+            // Preload Shot
             ShootRoutine.fromSubwoofer(),
             new ArmToFeed(),
 
+            // Drive to A + Shoot A
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed(),
 
-            // Drive, Intake, Shoot D
+            // Drive to D + Shoot D
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[1]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
@@ -32,19 +34,19 @@ public class FivePieceADEF extends SequentialCommandGroup {
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed(),
 
-            // Drive, Intake, Shoot E
+            // Drive to E + Shoot E
             new IntakeSetAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[1]),
+            SwerveDrive.getInstance().followPathCommand(paths[3]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[2]),
+            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[4]),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed(),
 
-            // Drive, Intake, Shoot F
+            // Drive to F + Shoot F
             new IntakeSetAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[1]),
+            SwerveDrive.getInstance().followPathCommand(paths[5]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[2]),
+            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[6]),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed()
         );
