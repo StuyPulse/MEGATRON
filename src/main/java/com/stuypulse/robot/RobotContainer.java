@@ -1,5 +1,7 @@
 package com.stuypulse.robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.BuzzController;
@@ -266,10 +268,15 @@ public class RobotContainer {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         autonChooser.addOption("Mobility", new Mobility());
         autonChooser.addOption("Straight Line", new StraightLine());
-        autonChooser.addOption("Amp Side Preload + Mobility", new OnePieceAmpSide());
-        autonChooser.addOption("Source Side Preload + Mobility", new OnePieceSourceSide());
 
-
+        AutonConfig AMP_SIDE = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
+        "Amp Side Mobility");
+        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE ONE PIECE RED", OnePieceAmpSide::new,
+         "Amp Side Mobility");
+         AutonConfig SOURCE_SIDE = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
+        "Source Side Mobility");
+        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE ONE PIECE RED", OnePieceSourceSide::new,
+         "Source Side Mobility");
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
@@ -291,6 +298,12 @@ public class RobotContainer {
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
+
+        AMP_SIDE.registerBlue(autonChooser);
+        AMP_SIDE_RED.registerRed(autonChooser);
+
+        SOURCE_SIDE.registerBlue(autonChooser);
+        SOURCE_SIDE_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
         
