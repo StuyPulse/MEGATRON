@@ -19,8 +19,8 @@ import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.tests.StraightLine;
-import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDReset;
@@ -138,14 +138,14 @@ public class RobotContainer {
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
             // .whileTrue(new SwerveDriveDriveToNote(driver))
-            .onTrue(new IntakeAcquire())
+            .onTrue(new IntakeSetAcquire())
             .whileTrue((new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING)))
             .onFalse(new IntakeStop());
         
         // intake robot relative
         driver.getLeftTriggerButton()
             .onTrue(new ArmToFeed())
-            .onTrue(new IntakeAcquire())
+            .onTrue(new IntakeSetAcquire())
             .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
             .onFalse(new IntakeStop());
         
