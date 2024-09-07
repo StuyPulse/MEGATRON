@@ -12,7 +12,6 @@ public class SwerveDriveDriveAlignedAmp extends SwerveDriveDriveAligned {
         super(driver);
     }
 
-
     @Override
     protected Rotation2d getTargetAngle() {
         return Rotation2d.fromDegrees(Robot.isBlue() ? 90 : 270);

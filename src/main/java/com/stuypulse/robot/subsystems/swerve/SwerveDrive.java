@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -25,10 +26,13 @@ import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.FollowPathPointSpeakerCommand;
 import com.stuypulse.robot.util.vision.VisionData;
+import com.stuypulse.stuylib.math.Vector2D;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -69,8 +73,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private final Field2d field;
     private final FieldObject2d[] modules2D;
 
+    private final Rotation2d[] absoluteOffsets;
+    private final Translation2d[] moduleOffsets;
+
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+
+    private SwerveRequest.ApplyChassisSpeeds drive = new SwerveRequest.ApplyChassisSpeeds();
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private final Rotation2d BlueAlliancePerspectiveRotation = Rotation2d.fromDegrees(0);
@@ -85,13 +94,97 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         modules2D = new FieldObject2d[Modules.length];
+
+        absoluteOffsets = new Rotation2d[] {
+            Settings.Swerve.FrontLeft.ABSOLUTE_OFFSET,
+            Settings.Swerve.FrontRight.ABSOLUTE_OFFSET,
+            Settings.Swerve.BackLeft.ABSOLUTE_OFFSET,
+            Settings.Swerve.BackRight.ABSOLUTE_OFFSET,
+        };
+        moduleOffsets = new Translation2d[] {
+            Settings.Swerve.FrontLeft.MODULE_OFFSET,
+            Settings.Swerve.FrontRight.MODULE_OFFSET,
+            Settings.Swerve.BackLeft.MODULE_OFFSET,
+            Settings.Swerve.BackRight.MODULE_OFFSET,
+        };
+
         field = new Field2d();
+        initFieldObject();
 
         configureAutoBuilder();
     }
 
-    public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
-        return run(() -> this.setControl(requestSupplier.get()));
+    /*** PATH FOLLOWING ***/
+
+    public Command followPathCommand(String pathName) {
+        return followPathCommand(PathPlannerPath.fromPathFile(pathName));
+    }
+
+    public Command followPathCommand(PathPlannerPath path) {
+        return new FollowPathHolonomic(
+            path,
+            this::getPose,
+            this::getChassisSpeeds,
+            this::setChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                Motion.XY,
+                Motion.THETA,
+                4.9,
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
+                new ReplanningConfig(false, false)
+            ),
+            () -> false,
+            this
+        );
+    }
+
+    public Command followPathWithSpeakerAlignCommand(PathPlannerPath path) {
+        return new FollowPathPointSpeakerCommand(
+            path, 
+            this::getPose, 
+            this::getChassisSpeeds, 
+            this::setChassisSpeeds, 
+            new PPHolonomicDriveController(
+                Motion.XY, 
+                Motion.THETA, 
+                0.02, 
+                4.9, 
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH)),
+            new ReplanningConfig(false, false),
+            () -> false,
+            this
+        );
+    }
+
+    public ChassisSpeeds getChassisSpeeds() {
+        return m_kinematics.toChassisSpeeds(m_moduleStates);
+    }
+
+    public void setChassisSpeeds(ChassisSpeeds robotSpeeds) {
+        SmartDashboard.putNumber("Swerve/Chassis Target X", robotSpeeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Y", robotSpeeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Omega", robotSpeeds.omegaRadiansPerSecond);
+
+        setControl(drive.withSpeeds(robotSpeeds));
+    }
+
+    public void drive(Vector2D velocity, double rotation) {
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            velocity.y, -velocity.x,
+            -rotation,
+            getPose().getRotation());
+
+        Pose2d robotVel = new Pose2d(
+            Settings.DT * speeds.vxMetersPerSecond,
+            Settings.DT * speeds.vyMetersPerSecond,
+            Rotation2d.fromRadians(Settings.DT * speeds.omegaRadiansPerSecond));
+        Twist2d twistVel = new Pose2d().log(robotVel);
+
+        setChassisSpeeds(new ChassisSpeeds(
+            twistVel.dx / Settings.DT,
+            twistVel.dy / Settings.DT,
+            twistVel.dtheta / Settings.DT
+        ));
     }
 
     private void startSimThread() {
@@ -109,16 +202,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         m_simNotifier.startPeriodic(0.005);
     }
 
-    public SwerveDriveKinematics getKinematics() {
-        return m_kinematics;
-    }
-
     public Rotation2d getGyroAngle() {
         return Rotation2d.fromRotations(m_yawGetter.getValueAsDouble());
-    }
-
-    public SwerveModulePosition[] getModulePositions() {
-        return m_modulePositions;
     }
 
     public Pose2d getPose() {
@@ -127,13 +212,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     public Field2d getField() {
         return field;
-    }
-
-    public void stop() {
-        setControl(new SwerveRequest.FieldCentric()
-                    .withVelocityX(0)
-                    .withVelocityY(0)
-                    .withRotationalRate(0));
     }
 
     public void configureAutoBuilder() {
@@ -146,71 +224,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
                 Settings.Swerve.Motion.XY,
                 Settings.Swerve.Motion.THETA,
                 4.9,
-                Settings.Swerve.WIDTH,
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
                 new ReplanningConfig(true, true)),
             () -> false,
             instance
         );
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> getField().getObject("path").setPoses(poses));
-    }
-
-    public Command followPathCommand(String pathName) {
-        return followPathCommand(PathPlannerPath.fromPathFile(pathName));
-    }
-
-    public Command followPathWithSpeakerAlignCommand(PathPlannerPath path) {
-        return new FollowPathPointSpeakerCommand(
-            path, 
-            () -> getPose(), 
-            this::getChassisSpeeds, 
-            this::setChassisSpeeds, 
-            new PPHolonomicDriveController(
-                Motion.XY, 
-                Motion.THETA, 
-                0.02, 
-                4.9, 
-                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH)),
-            new ReplanningConfig(false, false),
-            () -> false,
-            this
-        );
-    }
-
-    public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
-        setControl(drive.withVelocityX(chassisSpeeds.vxMetersPerSecond)
-            .withVelocityY(chassisSpeeds.vyMetersPerSecond)
-            .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond)         
-        );
-    }
-
-    public ChassisSpeeds getChassisSpeeds() {
-        return m_kinematics.toChassisSpeeds(m_moduleStates);
-    }
-
-    public Command followPathCommand(PathPlannerPath path) {
-        return new FollowPathHolonomic(
-            path,
-            () -> getPose(),
-            () -> m_kinematics.toChassisSpeeds(m_moduleStates),
-            this::setChassisSpeeds,
-            new HolonomicPathFollowerConfig(
-                Motion.XY,
-                Motion.THETA,
-                4.9,
-                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
-                new ReplanningConfig(false, false)
-            ),
-            () -> false,
-            this
-        );
-    }
-
-    public void setFieldRelativeSpeeds(ChassisSpeeds chassisSpeeds) {
-        setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
-            chassisSpeeds,
-            getPose().getRotation()));
     }
 
     public void initFieldObject() {
@@ -310,5 +330,11 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             updateEstimatorWithVisionData(outputs);
         }
 
+        for (int i = 0; i < Modules.length; i++) {
+            modules2D[i].setPose(new Pose2d(
+                getPose().getTranslation().plus(moduleOffsets[i].rotateBy(getPose().getRotation())),
+                getModule(i).getCurrentState().angle.plus(getPose().getRotation())
+            ));
+        }
     }
 }

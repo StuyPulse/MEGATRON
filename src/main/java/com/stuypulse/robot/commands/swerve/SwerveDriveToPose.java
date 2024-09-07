@@ -174,7 +174,6 @@ public class SwerveDriveToPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        swerve.stop();
         Field.clearFieldObject(targetPose2d);
         SmartDashboard.putBoolean("AutonAlignment", false);
     }
