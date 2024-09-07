@@ -100,7 +100,7 @@ public class PathUtil {
     /*** PATH MIRRORING ***/
 
     public static Translation2d flipFieldTranslation(Translation2d pose) {
-        return new Translation2d(pose.getX(), Field.WIDTH - pose.getY());
+        return new Translation2d(Field.LENGTH-pose.getX(), pose.getY());
     }
 
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
