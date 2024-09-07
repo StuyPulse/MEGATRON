@@ -17,6 +17,7 @@ import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
@@ -118,43 +119,36 @@ public class ArmImpl extends Arm {
         }
     }
 
-    private double getNoteHeightAtSpeakerGivenArmAngle(double armAngle) {
-        Pose2d robotPose = SwerveDrive.getInstance().getPose();
-
-        Rotation2d robotAngleToSpeaker = Field.getAllianceSpeakerPose().minus(robotPose).getRotation();
-        Translation2d noteStartingPose = SwerveDrive.getInstance().getPose()
-                                .minus(new Pose2d(Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * -robotAngleToSpeaker.getCos(), Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * -robotAngleToSpeaker.getSin(), robotAngleToSpeaker))
-                                .getTranslation();
-        Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
-
-        double horizontalDistance = noteStartingPose.getDistance(speakerPose);
-
-        double shooterAngle = armAngle + 180 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER;
-
-        return -16 * Math.pow(horizontalDistance / (Settings.Shooter.SPEAKER_SHOT_VELOCITY * Math.cos(Angle.fromDegrees(shooterAngle).toRadians())), 2)
-                + Math.tan(Angle.fromDegrees(shooterAngle).toRadians()) * horizontalDistance
-                + Settings.HEIGHT_TO_ARM_PIVOT - (Math.sin(Angle.fromDegrees(armAngle).toRadians()) * Settings.Arm.LENGTH);
-    }
-
     private double getSpeakerAngle() {
         try {
-            double angle = Settings.Arm.MIN_ANGLE.get();
-            double angleIncrement = 0.4;
-            double heightToleranceAtSpeakerOpening = (Field.SPEAKER_MAX_HEIGHT - Field.SPEAKER_MIN_HEIGHT) / 4;
-            double lastError = Double.MAX_VALUE;
-            while (angle < Settings.Arm.SUBWOOFER_SHOT_ANGLE.get()) {
-                double error = Math.abs(getNoteHeightAtSpeakerGivenArmAngle(angle) - (Field.SPEAKER_MAX_HEIGHT +Field.SPEAKER_MIN_HEIGHT)/2);
-                if (error < heightToleranceAtSpeakerOpening) {
-                    return angle;
-                }
+            Pose3d speakerPose = new Pose3d(
+                Field.getAllianceSpeakerPose().getX(),
+                Field.getAllianceSpeakerPose().getY(),
+                Field.SPEAKER_MAX_HEIGHT,
+                new Rotation3d()
+            );
 
-                if (error > lastError) {
-                    return angle - angleIncrement * 0.75; 
-                }
+            Pose2d robotPose = SwerveDrive.getInstance().getPose();
 
-                angle += angleIncrement;
-            }
-            return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
+            Pose3d armPivotPose = new Pose3d(
+                robotPose.getX() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getCos(),
+                robotPose.getY() + Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * robotPose.getRotation().getSin(),
+                Settings.HEIGHT_TO_ARM_PIVOT,
+                new Rotation3d()
+            );
+
+            Translation3d pivotToSpeaker = speakerPose.minus(armPivotPose).getTranslation();
+
+            double angleFromPivotToSpeaker = Units.radiansToDegrees(
+                Math.atan(
+                    pivotToSpeaker.getZ()
+                    / pivotToSpeaker.toTranslation2d().getNorm()
+                )
+            );
+
+            double angleBetweenPivotToSpeakerAndArm = Units.radiansToDegrees(Math.acos(Settings.Arm.LENGTH / pivotToSpeaker.getNorm()));
+
+            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -162,11 +156,57 @@ public class ArmImpl extends Arm {
         }
     }
 
+    // private double getNoteHeightAtSpeakerGivenArmAngle(double armAngle) {
+    //     Pose2d robotPose = SwerveDrive.getInstance().getPose();
+
+    //     Rotation2d robotAngleToSpeaker = Field.getAllianceSpeakerPose().minus(robotPose).getRotation();
+    //     Translation2d noteStartingPose = SwerveDrive.getInstance().getPose()
+    //                             .minus(new Pose2d(Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * -robotAngleToSpeaker.getCos(), Settings.DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT * -robotAngleToSpeaker.getSin(), robotAngleToSpeaker))
+    //                             .getTranslation();
+    //     Translation2d speakerPose = Field.getAllianceSpeakerPose().getTranslation();
+
+    //     double horizontalDistance = noteStartingPose.getDistance(speakerPose);
+
+    //     double shooterAngle = armAngle + 180 - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER;
+
+    //     return -16 * Math.pow(horizontalDistance / (Settings.Shooter.SPEAKER_SHOT_VELOCITY * Math.cos(Angle.fromDegrees(shooterAngle).toRadians())), 2)
+    //             + Math.tan(Angle.fromDegrees(shooterAngle).toRadians()) * horizontalDistance
+    //             + Settings.HEIGHT_TO_ARM_PIVOT - (Math.sin(Angle.fromDegrees(armAngle).toRadians()) * Settings.Arm.LENGTH);
+    // }
+
+    // tries to account for actual arm to shooter angle and gravity
+    // private double getSpeakerAngle() {
+    //     try {
+    //         double angle = Settings.Arm.MIN_ANGLE.get();
+    //         double angleIncrement = 0.4;
+    //         double heightToleranceAtSpeakerOpening = (Field.SPEAKER_MAX_HEIGHT - Field.SPEAKER_MIN_HEIGHT) / 4;
+    //         double lastError = Double.MAX_VALUE;
+    //         while (angle < Settings.Arm.SUBWOOFER_SHOT_ANGLE.get()) {
+    //             double error = Math.abs(getNoteHeightAtSpeakerGivenArmAngle(angle) - (Field.SPEAKER_MAX_HEIGHT +Field.SPEAKER_MIN_HEIGHT)/2);
+    //             if (error < heightToleranceAtSpeakerOpening) {
+    //                 return angle;
+    //             }
+
+    //             if (error > lastError) {
+    //                 return angle - angleIncrement * 0.75; 
+    //             }
+
+    //             angle += angleIncrement;
+    //         }
+    //         return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
+    //     }
+    //     catch (Exception exception) {
+    //         exception.printStackTrace();
+    //         return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
+    //     }
+    // }
+
+    // accounts for actual shooter to arm angle and aims for the plane in front of speaker
     // private double getSpeakerAngle() {
     //     try {
     //         Pose3d speakerPose = new Pose3d(
-    //             Field.getAllianceSpeakerPose().getX(),
-    //             Field.getAllianceSpeakerPose().getY(),
+    //             Field.getAllianceSpeakerPose().getX() + (Robot.isBlue() ? Units.feetToMeters(18.5 / 12.0 / 2.0) : -Units.feetToMeters(18.5 / 12.0 / 2.0)),
+    //             Field.SPEAKER_MIN_HEIGHT + Units.feetToMeters(5.0 / 12.0 / 2.0),
     //             Field.SPEAKER_MAX_HEIGHT,
     //             new Rotation3d()
     //         );
@@ -189,7 +229,9 @@ public class ArmImpl extends Arm {
     //             )
     //         );
 
-    //         double angleBetweenPivotToSpeakerAndArm = Units.radiansToDegrees(Math.acos(Settings.Arm.LENGTH / pivotToSpeaker.getNorm()));
+    //         double angleFromPivotToSpeakerToShooter = Units.radiansToDegrees(Math.asin(Settings.Arm.LENGTH * Math.sin(Units.degreesToRadians(Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER)) / pivotToSpeaker.getNorm()));
+
+    //         double angleBetweenPivotToSpeakerAndArm = 180 - angleFromPivotToSpeakerToShooter - Settings.ANGLE_BETWEEN_ARM_AND_SHOOTER;
 
     //         return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
     //     }
