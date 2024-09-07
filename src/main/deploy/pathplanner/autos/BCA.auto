@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4053936459807443,
+      "x": 1.4,
       "y": 5.5301848373414
     },
-    "rotation": 179.43822267700324
+    "rotation": 0.7711444982014979
   },
   "command": {
     "type": "sequential",
@@ -20,13 +20,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "B to C"
+            "pathName": "B to Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to A"
+            "pathName": "Center to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center to A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A to Center"
           }
         }
       ]
