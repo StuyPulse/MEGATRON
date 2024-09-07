@@ -3,9 +3,11 @@ package com.stuypulse.robot.commands.auton.BCA;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.arm.ArmSetState;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
+import com.stuypulse.robot.constants.Settings.Alignment.Shoot;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
@@ -25,20 +27,23 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[1]),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed(),
 
             // Drive to C + Shoot C
             new IntakeSetAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[1]),
+            SwerveDrive.getInstance().followPathCommand(paths[2]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[3]),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
             new IntakeSetAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[2]),
+            SwerveDrive.getInstance().followPathCommand(paths[4]),
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[5]),
             ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
             new ArmToFeed()
         );

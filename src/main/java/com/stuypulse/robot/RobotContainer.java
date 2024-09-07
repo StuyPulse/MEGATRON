@@ -266,9 +266,9 @@ public class RobotContainer {
 
 
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
-            "Center to B", "B to C", "C to A");
+            "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
-        "Center to B", "B to C", "C to A");
+            "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         // AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
         // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         // AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
