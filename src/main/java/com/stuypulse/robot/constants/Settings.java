@@ -2,6 +2,7 @@ package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.PIDConstants;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
@@ -219,7 +220,7 @@ public interface Settings {
                     MAX_ANGULAR_ACCELERATION.get());
 
             PIDConstants XY = new PIDConstants(2.5, 0, 0.02);
-            PIDConstants THETA = new PIDConstants(4, 0, 0.1);
+            PIDConstants THETA = new PIDConstants(4.0, 0, 0.1);
         }
 
         public interface Encoder {
@@ -239,13 +240,13 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 9.0);
-            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.2);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", Robot.isReal() ? 9.0 : 9.0);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", Robot.isReal() ? 0.0 : 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", Robot.isReal() ? 0.2 : 0.0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.30718);
-            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.42659);
-            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0036513);
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", Robot.isReal() ? 0.30718 : Simulation.TURN_FRICTION_VOLTAGE);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", Robot.isReal() ? 1.42659 : 0.0);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", Robot.isReal() ? 0.0036513 : 0.0);
 
             boolean INVERTED = true;
 
@@ -253,13 +254,13 @@ public interface Settings {
         }
 
         public interface Drive {
-            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 9.0);
-            SmartNumber kI = new SmartNumber("Swerve/Drive/PID/kI", 0);
-            SmartNumber kD = new SmartNumber("Swerve/Drive/PID/kD", 0);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", Robot.isReal() ? 9.0 : 1.0);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", Robot.isReal() ? 0.0 : 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", Robot.isReal() ? 0.0 : 0.1);
 
-            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.31007);
-            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 1.62153);
-            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0048373);
+            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", Robot.isReal() ? 0.31007 : Simulation.DRIVE_FRICTION_VOLTAGE);
+            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", Robot.isReal() ? 1.62153 : 0.25);
+            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", Robot.isReal() ? 0.0048373 : 0.01);
 
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
@@ -296,7 +297,7 @@ public interface Settings {
 
         public interface Simulation {
             double TURN_INERTIA = 0.00001;
-            double DRIVE_INERTIA = 0.001;
+            double DRIVE_INERTIA = 0.00001;
             // Simulated voltage necessary to overcome friction
             double TURN_FRICTION_VOLTAGE = 0.25;
             double DRIVE_FRICTION_VOLTAGE = 0.25;
@@ -357,8 +358,6 @@ public interface Settings {
     }
 
     public interface Driver {
-        double TIME_UNTIL_HOLD = 0.7;
-
         public interface Drive {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);
 
@@ -420,8 +419,6 @@ public interface Settings {
     }
 
     public interface Auton {
-        double MAX_SHOT_DISTANCE = 3.1;
-
         SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Shoot Wait Delay", 0.45);
 
         double SHOOTER_STARTUP_DELAY = 0.5;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.MountPoseConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -70,7 +71,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private final Field2d field;
     private final FieldObject2d[] modules2D;
 
-    private final Rotation2d[] absoluteOffsets;
     private final Translation2d[] moduleOffsets;
 
     private Notifier m_simNotifier = null;
@@ -91,13 +91,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         modules2D = new FieldObject2d[Modules.length];
-
-        absoluteOffsets = new Rotation2d[] {
-            Settings.Swerve.FrontLeft.ABSOLUTE_OFFSET,
-            Settings.Swerve.FrontRight.ABSOLUTE_OFFSET,
-            Settings.Swerve.BackLeft.ABSOLUTE_OFFSET,
-            Settings.Swerve.BackRight.ABSOLUTE_OFFSET,
-        };
+        
         moduleOffsets = new Translation2d[] {
             Settings.Swerve.FrontLeft.MODULE_OFFSET,
             Settings.Swerve.FrontRight.MODULE_OFFSET,
@@ -195,7 +189,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             m_lastSimTime = currentTime;
 
             /* use the measured time delta, get battery voltage from WPILib */
-            updateSimState(deltaTime, RobotController.getBatteryVoltage());
+            updateSimState(Settings.DT, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(0.005);
     }
@@ -309,8 +303,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         for (int i = 0; i < Modules.length; i++) {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Angle (deg)", Modules[i].getTargetState().angle.getDegrees());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle (deg)", Modules[i].getCurrentState().angle.getDegrees());
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Velocity (m/s)", Modules[i].getTargetState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (m/s)", Modules[i].getCurrentState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Velocity (meters per s)", Modules[i].getTargetState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (meters per s)", Modules[i].getCurrentState().speedMetersPerSecond);
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle Error", Modules[i].getTargetState().angle.minus(Modules[i].getCurrentState().angle).getDegrees());
 
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
@@ -318,6 +312,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
         }
+
+        SmartDashboard.putNumber("Swerve/Chassis X", getChassisSpeeds().vxMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Y", getChassisSpeeds().vyMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Omega", getChassisSpeeds().omegaRadiansPerSecond);
 
         field.setRobotPose(getPose());
 
