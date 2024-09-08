@@ -35,7 +35,7 @@ public abstract class ShootRoutine {
         return new SequentialCommandGroup(
             new ArmToSpeaker(),
             new ParallelCommandGroup(
-                new SwerveDriveAlignToSpeaker().withTimeout(1.0),
+                new SwerveDriveAlignToSpeaker().withTimeout(2.0),
                 new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),

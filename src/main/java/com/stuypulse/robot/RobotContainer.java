@@ -98,7 +98,7 @@ public class RobotContainer {
         configureAutons();
 
         if (Utils.isSimulation()) {
-            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
         }
         swerve.registerTelemetry(logger::telemeterize);
 
