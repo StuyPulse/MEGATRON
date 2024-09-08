@@ -1,5 +1,7 @@
 package com.stuypulse.robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.BuzzController;
@@ -18,6 +20,9 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
+import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
+import com.stuypulse.robot.commands.auton.SideAutons.OnePieceSourceSide;
 import com.stuypulse.robot.commands.auton.tests.StraightLine;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
@@ -264,15 +269,22 @@ public class RobotContainer {
         autonChooser.addOption("Mobility", new Mobility());
         autonChooser.addOption("Straight Line", new StraightLine());
 
-
+        AutonConfig AMP_SIDE = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
+        "Amp Side Mobility");
+        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE ONE PIECE RED", OnePieceAmpSide::new,
+         "Amp Side Mobility");
+         AutonConfig SOURCE_SIDE = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
+        "Source Side Mobility");
+        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE ONE PIECE RED", OnePieceSourceSide::new,
+         "Source Side Mobility");
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
-        // AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
-        // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
-        // AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
-        // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
+        "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
+        "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
@@ -281,11 +293,17 @@ public class RobotContainer {
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
 
-        // HGF.registerBlue(autonChooser);
-        // HGF_RED.registerRed(autonChooser);
+        HGF.registerBlue(autonChooser);
+        HGF_RED.registerRed(autonChooser);
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
+
+        AMP_SIDE.registerBlue(autonChooser);
+        AMP_SIDE_RED.registerRed(autonChooser);
+
+        SOURCE_SIDE.registerBlue(autonChooser);
+        SOURCE_SIDE_RED.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
         
