@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
-      "rotationDegrees": 147.06548083331427,
+      "rotationDegrees": -29.673109088583157,
       "rotateFast": true
     }
   ],
@@ -45,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 170.34501153780897,
+    "rotation": -6.637472418243549,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "HGF",
   "previewStartingState": {
-    "rotation": 178.17768989239653,
+    "rotation": 1.6826420893398992,
     "velocity": 0
   },
   "useDefaultConstraints": false
