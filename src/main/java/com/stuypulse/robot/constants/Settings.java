@@ -219,8 +219,8 @@ public interface Settings {
                     MAX_ANGULAR_VELOCITY.get(),
                     MAX_ANGULAR_ACCELERATION.get());
 
-            PIDConstants XY = new PIDConstants(2.5, 0, 0.02);
-            PIDConstants THETA = new PIDConstants(4.0, 0, 0.1);
+            PIDConstants XY = new PIDConstants(1.0, 0, 0.02);
+            PIDConstants THETA = new PIDConstants(2.0, 0, 0.02);
         }
 
         public interface Encoder {
