@@ -7,6 +7,7 @@ import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
+import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
 import com.stuypulse.robot.constants.Settings.Alignment.Shoot;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
@@ -29,6 +30,7 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[1]),
             ShootRoutine.fromAnywhere().withTimeout(2.5),
+            new ShooterFeederStop(),
             new ArmToFeed(),
 
             // Drive to C + Shoot C
@@ -37,6 +39,7 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[3]),
             ShootRoutine.fromAnywhere().withTimeout(2.5),
+            new ShooterFeederStop(),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
@@ -45,6 +48,7 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[5]),
             ShootRoutine.fromAnywhere().withTimeout(2.5),
+            new ShooterFeederStop(),
             new ArmToFeed()
         );
     }
