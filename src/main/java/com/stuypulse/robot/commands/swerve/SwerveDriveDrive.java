@@ -51,10 +51,6 @@ public class SwerveDriveDrive extends Command {
 
     @Override
     public void execute() {
-        if (driver.getLeftTriggerPressed()) {
-            swerve.setChassisSpeeds(new ChassisSpeeds(speed.get().y, -speed.get().x, -turn.get()));
-        } else {
-            swerve.drive(speed.get(), turn.get());
-        }
+        swerve.drive(speed.get(), turn.get());
     }
 }
