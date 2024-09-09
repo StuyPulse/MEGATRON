@@ -25,7 +25,7 @@ public abstract class ShootRoutine {
             new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)),
             new ShooterFeederShoot(),
-            new WaitCommand(1.0), // give time for note to leave shooter (should implement a way to check if the note is shot)
+            new WaitCommand(0.4), // give time for note to leave shooter (should implement a way to check if the note is shot)
             new ShooterFeederStop()
         );
     }
@@ -34,12 +34,12 @@ public abstract class ShootRoutine {
         return new SequentialCommandGroup(
             new ArmToSpeaker(),
             new ParallelCommandGroup(
-                new SwerveDriveAlignToSpeaker().withTimeout(2.5),
+                new SwerveDriveAlignToSpeaker(),
                 new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitCommand(1.0),
+            new WaitCommand(0.4),
             new ShooterFeederStop()
         );
     }

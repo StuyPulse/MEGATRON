@@ -11,6 +11,7 @@ import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.AngleVelocity;
@@ -78,20 +79,21 @@ public class SwerveDriveAlignToSpeaker extends Command {
 
     @Override
     public void execute() {
-        swerve.setControl(
-            drive.withVelocityX(0)
-                .withVelocityY(0)
-                .withRotationalRate(
-                    SLMath.clamp(angleVelocity.get() 
-                                + controller.update(
-                                    Angle.fromRotation2d(getTargetAngle()), 
-                                    Angle.fromRotation2d(swerve.getPose().getRotation())),
-                                -Settings.Swerve.MAX_ANGULAR_VELOCITY,
-                                Settings.Swerve.MAX_ANGULAR_VELOCITY
-                    )
-                )         
-            );
+        swerve.drive(new Vector2D(new Translation2d()), SLMath.clamp(angleVelocity.get() 
+                                                        + controller.update(
+                                                            Angle.fromRotation2d(getTargetAngle()), 
+                                                            Angle.fromRotation2d(swerve.getPose().getRotation())),
+                                                        -Settings.Swerve.MAX_ANGULAR_VELOCITY,
+                                                        Settings.Swerve.MAX_ANGULAR_VELOCITY
+                                                        )
+                                                        );
+        
         SmartDashboard.putNumber("Alignment/Distance to Target", getDistanceToTarget());
         SmartDashboard.putNumber("Alignment/Target Angle", getTargetAngle().getDegrees());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        swerve.drive(new Vector2D(new Translation2d()), 0);
     }
 }
