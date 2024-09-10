@@ -27,27 +27,27 @@ public class FourPieceBCA extends SequentialCommandGroup {
             // Drive to B + Shoot B
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
-            new WaitCommand(0.8).until(() -> Shooter.getInstance().hasNote()),
+            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathCommand(paths[1]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5),
+            ShootRoutine.fromAnywhere().withTimeout(1),
             new ShooterFeederStop(),
             new ArmToFeed(),
 
             // Drive to C + Shoot C
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[2]),
-            new WaitCommand(0.8).until(() -> Shooter.getInstance().hasNote()),
+            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathCommand(paths[3]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5),
+            ShootRoutine.fromAnywhere().withTimeout(1),
             new ShooterFeederStop(),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[4]),
-            new WaitCommand(0.8).until(() -> Shooter.getInstance().hasNote()),
+            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathCommand(paths[5]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5),
+            ShootRoutine.fromAnywhere().withTimeout(1),
             new ShooterFeederStop(),
             new ArmToFeed()
         );
