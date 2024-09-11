@@ -27,7 +27,7 @@ public class AltFourPieceBCA extends SequentialCommandGroup {
             new ShooterFeederStop(),
             new ArmToFeed(),
 
-            // Drive to C + + Drive to Shoot + Shoot C
+            // Drive to C + Drive to Shoot + Shoot C
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[1]),
             new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
@@ -36,7 +36,7 @@ public class AltFourPieceBCA extends SequentialCommandGroup {
             new ShooterFeederStop(),
             new ArmToFeed(),
 
-            // Drive to A + + Drive to Shoot + Shoot A
+            // Drive to A + Drive to Shoot + Shoot A
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[3]),
             new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),

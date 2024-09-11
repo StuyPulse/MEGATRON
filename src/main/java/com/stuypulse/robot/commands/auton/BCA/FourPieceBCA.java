@@ -47,7 +47,7 @@ public class FourPieceBCA extends SequentialCommandGroup {
             SwerveDrive.getInstance().followPathCommand(paths[4]),
             new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
             SwerveDrive.getInstance().followPathCommand(paths[5]),
-            ShootRoutine.fromAnywhere().withTimeout(1),
+            ShootRoutine.fromAnywhere().withTimeout(5),
             new ShooterFeederStop(),
             new ArmToFeed()
         );
