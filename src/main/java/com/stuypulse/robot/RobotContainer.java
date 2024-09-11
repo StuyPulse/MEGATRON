@@ -19,6 +19,7 @@ import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
+import com.stuypulse.robot.commands.auton.BCA.AltFourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
@@ -281,6 +282,10 @@ public class RobotContainer {
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
+        AutonConfig BCA_ALT_BLUE = new AutonConfig("4 BCA ALT", AltFourPieceBCA::new, 
+        "Center to B", "B to C", "C to Shoot", "C Shoot to A", "A to Shoot");
+        AutonConfig BCA_ALT_RED = new AutonConfig("4 BCA ALT RED", AltFourPieceBCA::new, 
+        "Center to B", "B to C", "C to Shoot", "C Shoot to A", "A to Shoot");
         AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
@@ -292,6 +297,9 @@ public class RobotContainer {
 
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
+
+        BCA_ALT_BLUE.registerBlue(autonChooser);
+        BCA_ALT_RED.registerRed(autonChooser);
 
         HGF.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
