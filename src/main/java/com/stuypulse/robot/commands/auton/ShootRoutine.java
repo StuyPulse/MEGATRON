@@ -10,12 +10,14 @@ import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveAlignToSpeaker;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public abstract class ShootRoutine {
 
@@ -25,7 +27,7 @@ public abstract class ShootRoutine {
             new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)),
             new ShooterFeederShoot(),
-            new WaitCommand(0.4), // give time for note to leave shooter (should implement a way to check if the note is shot)
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
             new ShooterFeederStop()
         );
     }
@@ -39,7 +41,7 @@ public abstract class ShootRoutine {
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitCommand(0.4),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
             new ShooterFeederStop()
         );
     }
