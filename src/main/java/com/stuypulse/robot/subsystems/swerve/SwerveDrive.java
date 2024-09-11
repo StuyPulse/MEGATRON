@@ -1,8 +1,13 @@
 package com.stuypulse.robot.subsystems.swerve;
 
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoControlFunction;
+import com.choreo.lib.ChoreoTrajectory;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -21,6 +26,7 @@ import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.FollowPathPointSpeakerCommand;
 import com.stuypulse.robot.util.vision.VisionData;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,6 +43,8 @@ import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import com.stuypulse.robot.constants.Settings.Alignment.Rotation;
+import com.stuypulse.robot.constants.Settings.Alignment.Translation;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -178,6 +186,21 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             ),
             () -> false,
             this
+        );
+    }
+
+    public Command choreoSwervePath(ChoreoTrajectory trajectory) {
+        return Choreo.choreoSwerveCommand(
+            trajectory,
+            () -> getPose(),
+            Choreo.choreoSwerveController(
+                new PIDController(Translation.kP.getAsDouble(), Translation.kI.getAsDouble(), Translation.kD.getAsDouble()),
+                new PIDController(Translation.kP.getAsDouble(), Translation.kI.getAsDouble(), Translation.kD.getAsDouble()),
+                new PIDController(Rotation.kP.getAsDouble(), Rotation.kI.getAsDouble(), Rotation.kD.getAsDouble())
+            ),
+            (chassisSpeeds) -> setChassisSpeeds(chassisSpeeds),
+            () -> false,
+            SwerveDrive.getInstance()
         );
     }
 
