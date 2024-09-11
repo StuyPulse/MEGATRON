@@ -270,34 +270,27 @@ public class RobotContainer {
 
         AutonConfig AMP_SIDE = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
         "Amp Side Mobility");
-        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE ONE PIECE RED", OnePieceAmpSide::new,
+        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
          "Amp Side Mobility");
-         AutonConfig SOURCE_SIDE = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
+        AutonConfig SOURCE_SIDE = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
         "Source Side Mobility");
-        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE ONE PIECE RED", OnePieceSourceSide::new,
+        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
          "Source Side Mobility");
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
             "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
-        AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
-            "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
-        AutonConfig BCA_ALT_BLUE = new AutonConfig("4 BCA ALT", AltFourPieceBCA::new, 
-        "Center to B", "B to C", "C to Shoot", "C Shoot to A", "A to Shoot");
-        AutonConfig BCA_ALT_RED = new AutonConfig("4 BCA ALT RED", AltFourPieceBCA::new, 
-        "Center to B", "B to C", "C to Shoot", "C Shoot to A", "A to Shoot");
+        AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
+            "RED Center to B", "RED B to Center", "RED Center to C", "RED C to Center", "RED Center to A", "RED A to Center");
         AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
-        AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
+        AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
-        AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
+        AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
 
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
-
-        BCA_ALT_BLUE.registerBlue(autonChooser);
-        BCA_ALT_RED.registerRed(autonChooser);
 
         HGF.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);

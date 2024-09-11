@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.auton.ADEF;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.auton.FollowPathThenShoot;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
@@ -16,38 +17,31 @@ public class FivePieceADEF extends SequentialCommandGroup {
         
         addCommands(
             // Preload Shot
-            ShootRoutine.fromSubwoofer(),
+            ShootRoutine.fromAnywhere(),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            ShootRoutine.fromAnywhere(),
             new ArmToFeed(),
 
             // Drive to D + Shoot D
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[1]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[2]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new FollowPathThenShoot(paths[2], false),
             new ArmToFeed(),
 
             // Drive to E + Shoot E
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[3]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[4]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new FollowPathThenShoot(paths[4], false),
             new ArmToFeed(),
 
             // Drive to F + Shoot F
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[5]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[6]),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new FollowPathThenShoot(paths[6], true),
             new ArmToFeed()
         );
     }

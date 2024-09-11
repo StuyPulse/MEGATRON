@@ -25,7 +25,7 @@ public abstract class ShootRoutine {
         return new SequentialCommandGroup(
             new ArmToSubwooferShot(),
             new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)),
+                .alongWith(new ShooterWaitForTarget().withTimeout(1.0)),
             new ShooterFeederShoot(),
             new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
             new ShooterFeederStop()
@@ -37,7 +37,7 @@ public abstract class ShootRoutine {
             new ArmToSpeaker(),
             new ParallelCommandGroup(
                 new SwerveDriveAlignToSpeaker(),
-                new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
+            new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
@@ -45,4 +45,32 @@ public abstract class ShootRoutine {
             new ShooterFeederStop()
         );
     }
+
+    public static Command fromAnywhereLastShot() {
+        return new SequentialCommandGroup(
+            new ArmToSpeaker(),
+            new ParallelCommandGroup(
+                new SwerveDriveAlignToSpeaker(),
+            new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
+                new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
+            ),
+            new ShooterFeederShoot(),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote())
+                .alongWith(new WaitCommand(2.5)),
+            new ShooterFeederStop()
+        );
+    }
+
+    // public static Command fromLastShot() {
+    //     return new SequentialCommandGroup(
+    //         new ArmToSpeaker().onlyIf(() -> Shooter.getInstance().hasNote()),
+    //         new ParallelCommandGroup(
+    //             new SwerveDriveAlignToSpeaker(),
+    //         new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
+    //             new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
+    //         ),
+    //         new ShooterFeederShoot(),
+    //         new WaitUntilCommand(() -> !Shooter.getInstance().hasNote())
+    //     );
+    // }
 }

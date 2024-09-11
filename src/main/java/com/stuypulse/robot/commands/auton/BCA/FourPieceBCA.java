@@ -4,6 +4,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.arm.ArmSetState;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
+import com.stuypulse.robot.commands.auton.FollowPathThenShoot;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
@@ -27,28 +28,19 @@ public class FourPieceBCA extends SequentialCommandGroup {
             // Drive to B + Shoot B
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
-            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathCommand(paths[1]),
-            ShootRoutine.fromAnywhere().withTimeout(1),
-            new ShooterFeederStop(),
+            new FollowPathThenShoot(paths[1], false),
             new ArmToFeed(),
 
             // Drive to C + Shoot C
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[2]),
-            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathCommand(paths[3]),
-            ShootRoutine.fromAnywhere().withTimeout(1),
-            new ShooterFeederStop(),
+            new FollowPathThenShoot(paths[3], false),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
             new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[4]),
-            new WaitCommand(0).until(() -> Shooter.getInstance().hasNote()),
-            SwerveDrive.getInstance().followPathCommand(paths[5]),
-            ShootRoutine.fromAnywhere().withTimeout(5),
-            new ShooterFeederStop(),
+            new FollowPathThenShoot(paths[5], true),
             new ArmToFeed()
         );
     }

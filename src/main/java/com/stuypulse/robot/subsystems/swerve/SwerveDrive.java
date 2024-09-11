@@ -22,6 +22,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
@@ -164,7 +165,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     public void drive(Vector2D velocity, double rotation) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            velocity.y, -velocity.x,
+            Robot.isBlue() ? velocity.y : -velocity.y, 
+            Robot.isBlue() ? -velocity.x : velocity.y,
             -rotation,
             getPose().getRotation());
 
@@ -321,7 +323,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
         field.setRobotPose(getPose());
 
-        applyOperatorPerspective();
+        // applyOperatorPerspective();
 
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {

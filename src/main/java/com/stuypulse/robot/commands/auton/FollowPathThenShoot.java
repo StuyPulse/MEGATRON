@@ -17,16 +17,18 @@ public class FollowPathThenShoot extends SequentialCommandGroup{
 
     private final double totalPathTime;
     
-    public FollowPathThenShoot(PathPlannerPath path) {
+    public FollowPathThenShoot(PathPlannerPath path, boolean isLastShot) {
         totalPathTime = path.getTrajectory(new ChassisSpeeds(), path.getPathPoses().get(0).getRotation()).getTotalTimeSeconds();
         addCommands(
             new ParallelCommandGroup(
                 SwerveDrive.getInstance().followPathCommand(path),
-                new WaitCommand(totalPathTime - 1.0)
-                    .andThen(new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).onlyIf(() -> Intake.getInstance().hasNote()))
+                new WaitCommand(totalPathTime > 1.5 ? totalPathTime - 1.0 : 0)
+                    // wait for handoff
+                    .andThen(new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).onlyIf(() -> Intake.getInstance().hasNote()).alongWith(new WaitCommand(0.75)))
                     .andThen(new ArmToSpeaker().onlyIf(() -> Shooter.getInstance().hasNote()))
             ),
-            ShootRoutine.fromAnywhere().onlyIf(() -> Shooter.getInstance().hasNote())
+            isLastShot ? ShootRoutine.fromAnywhereLastShot()
+                    : ShootRoutine.fromAnywhere().onlyIf(() -> Shooter.getInstance().hasNote())
         );
     }
 }
