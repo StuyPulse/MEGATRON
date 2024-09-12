@@ -166,7 +166,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     public void drive(Vector2D velocity, double rotation) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             Robot.isBlue() ? velocity.y : -velocity.y, 
-            Robot.isBlue() ? -velocity.x : velocity.y,
+            Robot.isBlue() ? -velocity.x : velocity.x,
             -rotation,
             getPose().getRotation());
 
