@@ -348,7 +348,7 @@ public interface Settings {
     }
 
     public interface LED {
-        int LED_LENGTH = 61;
+        int LED_LENGTH = 106;
         SmartNumber BLINK_TIME = new SmartNumber("LED/LED Blink Time", .15);
 
         SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
@@ -410,7 +410,7 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
-        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.35;
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.50;
     }
 
     public interface Buzz {

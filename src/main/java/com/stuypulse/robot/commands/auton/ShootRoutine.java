@@ -10,6 +10,7 @@ import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveAlignToSpeaker;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
@@ -34,6 +35,7 @@ public abstract class ShootRoutine {
 
     public static Command fromAnywhere() {
         return new SequentialCommandGroup(
+            new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).onlyIf(() -> Intake.getInstance().hasNote()).withTimeout(2.0),
             new ArmToSpeaker(),
             new ParallelCommandGroup(
                 new SwerveDriveAlignToSpeaker(),
