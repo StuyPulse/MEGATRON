@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.83,
-        "y": 4.58
+        "x": 2.8299207212253714,
+        "y": 4.577599659291581
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4541747837215917,
-        "y": 6.167933763508896
+        "x": 2.454095504946963,
+        "y": 6.165533422800476
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "C"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Close Shoot"
     }
   ],
   "rotationTargets": [],

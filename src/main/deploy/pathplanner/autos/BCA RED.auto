@@ -14,13 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED B to Center"
+            "pathName": "RED Center to B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED Center to B"
+            "pathName": "RED B to Center"
           }
         },
         {

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9411296653694499,
-        "y": 6.152742397560689
+        "x": 1.964541675549125,
+        "y": 6.441955237891131
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.199479034374737,
-        "y": 6.356095175918032
+        "x": 2.918569071885168,
+        "y": 6.841305481346081
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Close Shoot"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 6.974422229164399
       },
       "prevControl": {
-        "x": 2.892897586390411,
-        "y": 6.7824629752682135
+        "x": 2.1927967563152393,
+        "y": 6.550986940329536
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "A"
     }
   ],
   "rotationTargets": [],
