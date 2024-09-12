@@ -4,8 +4,7 @@
   "holonomicMode": true,
   "pathFolders": [
     "ABCDE",
-    "HGF",
-    "Mobilities"
+    "HGF"
   ],
   "autoFolders": [
     "Tests"

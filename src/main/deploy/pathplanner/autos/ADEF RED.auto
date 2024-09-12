@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7905759905641836,
-      "y": 4.310885424226206
+      "x": 1.3334750274411264,
+      "y": 7.002978151231599
     },
-    "rotation": -60.092064589198905
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,37 +14,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED Source to H"
+            "pathName": "RED Amp to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED H to Shoot"
+            "pathName": "RED A to D"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED H Shoot to G"
+            "pathName": "RED D to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED G to Shoot"
+            "pathName": "RED D Shoot to E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED G Shoot to F"
+            "pathName": "RED E to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED F to Shoot"
+            "pathName": "RED E Shoot to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "REDA F to Shoot"
           }
         }
       ]

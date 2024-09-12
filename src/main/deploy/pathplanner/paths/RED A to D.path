@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.29,
-        "y": 0.77
+        "x": 3.0579354322771146,
+        "y": 7.2383001016002035
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.294726177430418,
-        "y": 4.093543128491389
+        "x": 9.0915517805738,
+        "y": 7.971139286772622
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Amp A"
     },
     {
       "anchor": {
-        "x": 8.29,
-        "y": 7.44
+        "x": 9.583540511947096,
+        "y": 8.029356831593127
       },
       "prevControl": {
-        "x": 8.285399832512846,
-        "y": 4.093495054548515
+        "x": 3.301381878991437,
+        "y": 7.275365111556117
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "D"
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Reroutes",
+  "folder": "ABCDE",
   "previewStartingState": {
-    "rotation": 90.0,
+    "rotation": 24.479897927083506,
     "velocity": 0
   },
   "useDefaultConstraints": false
