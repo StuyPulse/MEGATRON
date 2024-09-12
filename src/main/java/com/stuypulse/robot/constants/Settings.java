@@ -307,8 +307,6 @@ public interface Settings {
     public interface Alignment {
         double DEBOUNCE_TIME = 0.05;
 
-        SmartNumber PODIUM_SHOT_DISTANCE = new SmartNumber("Shooter/Podium Distance", 2.85);
-
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
         SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 6);
@@ -349,7 +347,7 @@ public interface Settings {
 
     public interface LED {
         int LED_LENGTH = 106;
-        SmartNumber BLINK_TIME = new SmartNumber("LED/LED Blink Time", .15);
+        double BLINK_TIME = .15;
 
         SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
         SmartNumber ROTATION_SPREAD = new SmartNumber("LED/LED Rotation Spread (deg)", 15);

@@ -311,15 +311,15 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (meters per s)", Modules[i].getCurrentState().speedMetersPerSecond);
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle Error", Modules[i].getTargetState().angle.minus(Modules[i].getCurrentState().angle).getDegrees());
 
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
+            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
+            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
+            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
         }
 
-        SmartDashboard.putNumber("Swerve/Chassis X", getChassisSpeeds().vxMetersPerSecond);
-        SmartDashboard.putNumber("Swerve/Chassis Y", getChassisSpeeds().vyMetersPerSecond);
-        SmartDashboard.putNumber("Swerve/Chassis Omega", getChassisSpeeds().omegaRadiansPerSecond);
+        // SmartDashboard.putNumber("Swerve/Chassis X", getChassisSpeeds().vxMetersPerSecond);
+        // SmartDashboard.putNumber("Swerve/Chassis Y", getChassisSpeeds().vyMetersPerSecond);
+        // SmartDashboard.putNumber("Swerve/Chassis Omega", getChassisSpeeds().omegaRadiansPerSecond);
 
         field.setRobotPose(getPose());
 
