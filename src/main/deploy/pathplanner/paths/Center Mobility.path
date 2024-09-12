@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 5.55
+        "x": 1.41,
+        "y": 5.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.897224241249078,
-        "y": 5.567009477582943
+        "x": 2.807224241249078,
+        "y": 5.6170094775829424
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Subwoofer"
     },
     {
       "anchor": {
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Mobilities",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

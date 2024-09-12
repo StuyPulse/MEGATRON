@@ -266,46 +266,68 @@ public class RobotContainer {
 
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
-        autonChooser.addOption("Mobility", new Mobility());
 
-        AutonConfig AMP_SIDE = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
+        /*
+         * Mobilities
+         */
+        AutonConfig CENTER_BLUE = new AutonConfig("Center One Piece + Mobility", Mobility::new, 
+            "Center Mobility");
+        AutonConfig CENTER_RED = new AutonConfig("Center One Piece + Mobility", Mobility::new, 
+            "Center Mobility");
+        
+        AutonConfig AMP_SIDE_BLUE = new AutonConfig("AMP SIDE One Piece + Mobility", OnePieceAmpSide::new,
         "Amp Side Mobility");
-        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE ONE PIECE", OnePieceAmpSide::new,
+        AutonConfig AMP_SIDE_RED = new AutonConfig("AMP SIDE One Piece + Mobility", OnePieceAmpSide::new,
          "Amp Side Mobility");
-        AutonConfig SOURCE_SIDE = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
+
+        AutonConfig SOURCE_SIDE_BLUE = new AutonConfig("SOURCE SIDE One Piece + Mobility", OnePieceSourceSide::new,
         "Source Side Mobility");
-        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE ONE PIECE", OnePieceSourceSide::new,
+        AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE One Piece + Mobility", OnePieceSourceSide::new,
          "Source Side Mobility");
+
+        /*
+         * BCA
+         */
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
-            "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
+        "Center to B", "B to Center", "Center to C", "C to Center", "Center to A", "A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
-            "RED Center to B", "RED B to Center", "RED Center to C", "RED C to Center", "RED Center to A", "RED A to Center");
-        AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
+        "RED Center to B", "RED B to Center", "RED Center to C", "RED C to Center", "RED Center to A", "RED A to Center");
+
+        /*
+         * HGF
+         */
+        AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        
+        /*
+         * ADEF
+         */
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
 
-        BCA_BLUE.registerDefaultBlue(autonChooser);
-        BCA_RED.registerRed(autonChooser);
+        CENTER_BLUE.registerBlue(autonChooser);
+        CENTER_RED.registerBlue(autonChooser);
 
-        HGF.registerBlue(autonChooser);
+        AMP_SIDE_BLUE.registerBlue(autonChooser);
+        AMP_SIDE_RED.registerBlue(autonChooser);
+
+        SOURCE_SIDE_BLUE.registerBlue(autonChooser);
+        SOURCE_SIDE_RED.registerBlue(autonChooser);
+
+        BCA_BLUE.registerDefaultBlue(autonChooser);
+        BCA_RED.registerDefaultRed(autonChooser);
+
+        HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
 
-        AMP_SIDE.registerBlue(autonChooser);
-        AMP_SIDE_RED.registerRed(autonChooser);
-
-        SOURCE_SIDE.registerBlue(autonChooser);
-        SOURCE_SIDE_RED.registerRed(autonChooser);
-
         SmartDashboard.putData("Autonomous", autonChooser);
-        
     }
 
     public Command getAutonomousCommand() {

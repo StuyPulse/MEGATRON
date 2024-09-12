@@ -1,12 +1,11 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.92,
+  "robotLength": 0.82,
   "holonomicMode": true,
   "pathFolders": [
     "ABCDE",
     "HGF",
-    "Tests",
-    "Reroutes"
+    "Mobilities"
   ],
   "autoFolders": [
     "Tests"

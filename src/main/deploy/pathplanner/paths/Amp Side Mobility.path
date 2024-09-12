@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7451461145481816,
-        "y": 6.788856809670465
+        "x": 1.185791602352437,
+        "y": 6.788456653836385
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7477762671299155,
-        "y": 6.479260617561414
+        "x": 1.7152395754539713,
+        "y": 7.3800730666508265
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Subwoofer Amp Side"
     },
     {
       "anchor": {
-        "x": 2.2644750051404867,
-        "y": 6.33922122196923
+        "x": 2.60663136710889,
+        "y": 7.676481506809169
       },
       "prevControl": {
-        "x": 1.745661013643456,
-        "y": 6.478154916875311
+        "x": 1.3732635157578028,
+        "y": 7.7455501064848296
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 90.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Tests",
+  "folder": "Mobilities",
   "previewStartingState": {
-    "rotation": 60.0,
+    "rotation": 45.855097396266686,
     "velocity": 0
   },
   "useDefaultConstraints": false
