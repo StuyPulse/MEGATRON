@@ -40,7 +40,6 @@ import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedA
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
-import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Ports;
@@ -51,7 +50,6 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
-import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
@@ -81,7 +79,6 @@ public class RobotContainer {
     
     // Subsystem
     public final AprilTagVision vision = AprilTagVision.getInstance();
-    public final NoteVision noteVision = NoteVision.getInstance();
     
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();

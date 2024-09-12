@@ -63,7 +63,9 @@ public class Robot extends TimedRobot {
     /*********************/
 
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        SmartDashboard.putString("Robot State", "DISABLED");
+    }
 
     @Override
     public void disabledPeriodic() {
@@ -86,7 +88,6 @@ public class Robot extends TimedRobot {
         scheduler.schedule(new LEDReset());
 
         SmartDashboard.putString("Robot State", "AUTON");
-
     }
 
     @Override
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.cancel();
         }
+        SmartDashboard.putString("Robot State", "TELEOP");
     }
 
     @Override

@@ -98,10 +98,7 @@ public class IntakeImpl extends Intake {
                 break;
         }
 
-        SmartDashboard.putNumber("Intake/Intake Speed", intakeMotor.get());
-
         SmartDashboard.putBoolean("Intake/Has Note", hasNote());
-        SmartDashboard.putBoolean("Intake/IR Sensor", !IRSensor.get());
 
         SmartDashboard.putNumber("Intake/Left Funnel Current", funnelMotorLeft.getOutputCurrent());
         SmartDashboard.putNumber("Intake/Left Funnel Current", funnelMotorRight.getOutputCurrent());

@@ -5,7 +5,6 @@ import com.stuypulse.robot.commands.arm.ArmToFeed;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
-import com.stuypulse.robot.constants.Settings.Auton;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 

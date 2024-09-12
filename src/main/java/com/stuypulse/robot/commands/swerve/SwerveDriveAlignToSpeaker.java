@@ -87,9 +87,6 @@ public class SwerveDriveAlignToSpeaker extends Command {
                                                         Settings.Swerve.MAX_ANGULAR_VELOCITY
                                                         )
                                                         );
-        
-        SmartDashboard.putNumber("Alignment/Distance to Target", getDistanceToTarget());
-        SmartDashboard.putNumber("Alignment/Target Angle", getTargetAngle().getDegrees());
     }
 
     @Override

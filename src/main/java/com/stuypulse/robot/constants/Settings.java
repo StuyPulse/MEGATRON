@@ -128,7 +128,7 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
-        double TARGET_RPM_THRESHOLD = 200;
+        double TARGET_RPM_THRESHOLD = 250;
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
@@ -140,8 +140,8 @@ public interface Settings {
         double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
 
         // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0);
 
         // left runs faster than right
         public interface LEFT {
@@ -349,8 +349,8 @@ public interface Settings {
         int LED_LENGTH = 106;
         double BLINK_TIME = .15;
 
-        SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
-        SmartNumber ROTATION_SPREAD = new SmartNumber("LED/LED Rotation Spread (deg)", 15);
+        double TRANSLATION_SPREAD = 0.5;
+        double ROTATION_SPREAD = 15;
 
         SmartBoolean LED_AUTON_TOGGLE = new SmartBoolean("LED/Auton Align Display", false);
     }
@@ -378,34 +378,6 @@ public interface Settings {
         }
     }
 
-    public interface NoteDetection {
-        double X_ANGLE_RC = 0.05;
-
-        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Note Detection/Has Note Debounce", 0.2);
-
-        SmartNumber THRESHOLD_X = new SmartNumber("Note Detection/X Threshold", 0.2);
-        SmartNumber THRESHOLD_Y = new SmartNumber("Note Detection/Y Threshold", Units.inchesToMeters(2));
-        SmartNumber THRESHOLD_ANGLE = new SmartNumber("Note Detection/Angle Threshold", 1);
-
-        SmartNumber DRIVE_SPEED = new SmartNumber("Note Detection/Drive Speed", 1);
-
-        SmartNumber INTAKE_THRESHOLD_DISTANCE = new SmartNumber("Note Detection/In Intake Path Distance", 0.9);
-
-        double MAX_FULLY_IN_VIEW_ANGLE = 20;
-        
-        public interface Translation {
-            SmartNumber kP = new SmartNumber("Note Detection/Translation/kP", 8.0);
-            SmartNumber kI = new SmartNumber("Note Detection/Translation/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Note Detection/Translation/kD", 0.0);
-        }
-
-        public interface Rotation {
-            SmartNumber kP = new SmartNumber("Note Detection/Rotation/kP", 2.0);
-            SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
-        }
-    }
-
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
         double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.50;
@@ -414,13 +386,5 @@ public interface Settings {
     public interface Buzz {
         double BUZZ_DURATION = 1.0;
         double BUZZ_INTENSITY = 1.0;
-    }
-
-    public interface Auton {
-        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Shoot Wait Delay", 0.45);
-
-        double SHOOTER_STARTUP_DELAY = 0.5;
-        double DEFAULT_INTAKE_TIMEOUT = 0.75;
-        double SHOOTER_START_PRE = 1.0;
     }
 }

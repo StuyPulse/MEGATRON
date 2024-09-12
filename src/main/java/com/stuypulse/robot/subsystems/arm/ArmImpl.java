@@ -286,15 +286,14 @@ public class ArmImpl extends Arm {
 
         SmartDashboard.putNumber("Arm/Setpoint (deg)", controller.getSetpoint());
         SmartDashboard.putNumber("Arm/Error (deg)", controller.getError());
-        // SmartDashboard.putNumber("Arm/Output (V)", controller.getOutput());
 
         SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", !bumpSwitch.get());
 
         SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
         // SmartDashboard.putNumber("Arm/Raw Encoder Angle (rot)", armEncoder.getPosition());
 
-        // SmartDashboard.putNumber("Arm/Left Bus Voltage (V)", leftMotor.getBusVoltage());
-        // SmartDashboard.putNumber("Arm/Right Bus Voltage (V)", rightMotor.getBusVoltage());
+        // SmartDashboard.putNumber("Arm/Left Voltage (V)", leftMotor.getBusVoltage());
+        // SmartDashboard.putNumber("Arm/Right Voltage (V)", rightMotor.getBusVoltage());
 
         // SmartDashboard.putNumber("Arm/Left Current (amps)", leftMotor.getOutputCurrent());
         // SmartDashboard.putNumber("Arm/Right Current (amps)", rightMotor.getOutputCurrent());

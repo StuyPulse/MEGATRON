@@ -290,16 +290,16 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
      * 
      * <p>Should call this periodically
      */
-    private void applyOperatorPerspective() {
-        if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-            DriverStation.getAlliance().ifPresent((allianceColor) -> {
-                this.setOperatorPerspectiveForward(
-                        allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
-                                : BlueAlliancePerspectiveRotation);
-                hasAppliedOperatorPerspective = true;
-            });
-        }
-    }
+    // private void applyOperatorPerspective() {
+    //     if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
+    //         DriverStation.getAlliance().ifPresent((allianceColor) -> {
+    //             this.setOperatorPerspectiveForward(
+    //                     allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
+    //                             : BlueAlliancePerspectiveRotation);
+    //             hasAppliedOperatorPerspective = true;
+    //         });
+    //     }
+    // }
 
     @Override
     public void periodic() {
@@ -311,19 +311,13 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (meters per s)", Modules[i].getCurrentState().speedMetersPerSecond);
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle Error", Modules[i].getTargetState().angle.minus(Modules[i].getCurrentState().angle).getDegrees());
 
-            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
-            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
-            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
-            // SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Voltage", Modules[i].getDriveMotor().getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Current", Modules[i].getSteerMotor().getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Turn Voltage", Modules[i].getSteerMotor().getMotorVoltage().getValueAsDouble());
         }
 
-        // SmartDashboard.putNumber("Swerve/Chassis X", getChassisSpeeds().vxMetersPerSecond);
-        // SmartDashboard.putNumber("Swerve/Chassis Y", getChassisSpeeds().vyMetersPerSecond);
-        // SmartDashboard.putNumber("Swerve/Chassis Omega", getChassisSpeeds().omegaRadiansPerSecond);
-
         field.setRobotPose(getPose());
-
-        // applyOperatorPerspective();
 
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {

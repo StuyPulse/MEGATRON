@@ -70,18 +70,18 @@ public class LEDAlign implements LEDInstruction {
 
             if (!isXAligned.get()) {
                 ledController.runLEDInstruction(LEDInstructions.RED);
-                index = linearInterp(pose.getX(), startPose.getX(), LED.TRANSLATION_SPREAD.get());
+                index = linearInterp(pose.getX(), startPose.getX(), LED.TRANSLATION_SPREAD);
             }
             if (!isYAligned.get() && isXAligned()) {
                 ledController.runLEDInstruction(LEDInstructions.GREEN);
-                index = linearInterp(pose.getY(), startPose.getY(), LED.TRANSLATION_SPREAD.get());
+                index = linearInterp(pose.getY(), startPose.getY(), LED.TRANSLATION_SPREAD);
             }
             if (!isThetaAligned.get() && isXAligned() && isYAligned()) {
                 ledController.runLEDInstruction(LEDInstructions.DARK_BLUE);
                 index = linearInterp(
                     pose.getRotation().getDegrees(),
                     startPose.getRotation().getDegrees(),
-                    LED.ROTATION_SPREAD.get());
+                    LED.ROTATION_SPREAD);
             }
 
             ledsBuffer.setLED(index, Color.kWhite);
