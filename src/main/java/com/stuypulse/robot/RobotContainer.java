@@ -267,10 +267,11 @@ public class RobotContainer {
         /*
          * Mobilities
          */
+        /* 
         AutonConfig CENTER_BLUE = new AutonConfig("Center One Piece + Mobility", Mobility::new, 
-            "Center Mobility");
+            "Mobility");
         AutonConfig CENTER_RED = new AutonConfig("Center One Piece + Mobility", Mobility::new, 
-            "Center Mobility");
+            "Mobility");
         
         AutonConfig AMP_SIDE_BLUE = new AutonConfig("AMP SIDE One Piece + Mobility", OnePieceAmpSide::new,
         "Amp Side Mobility");
@@ -281,6 +282,7 @@ public class RobotContainer {
         "Source Side Mobility");
         AutonConfig SOURCE_SIDE_RED = new AutonConfig("SOURCE SIDE One Piece + Mobility", OnePieceSourceSide::new,
          "Source Side Mobility");
+         */
 
         /*
          * BCA
@@ -296,7 +298,7 @@ public class RobotContainer {
         AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
-        "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
+        "RED Source to H", "RED H to Shoot", "RED H Shoot to G", "RED G to Shoot", "RED G Shoot to F", "RED F to Shoot");
         
         /*
          * ADEF
@@ -304,16 +306,16 @@ public class RobotContainer {
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
-        "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
+        "RED Amp to A", "RED A to D", "RED D to Shoot", "RED D Shoot to E", "RED E to Shoot", "RED E Shoot to F", "REDA F to Shoot");
 
-        CENTER_BLUE.registerBlue(autonChooser);
-        CENTER_RED.registerBlue(autonChooser);
+        // CENTER_BLUE.registerBlue(autonChooser);
+        // CENTER_RED.registerBlue(autonChooser);
 
-        AMP_SIDE_BLUE.registerBlue(autonChooser);
-        AMP_SIDE_RED.registerBlue(autonChooser);
+        // AMP_SIDE_BLUE.registerBlue(autonChooser);
+        // AMP_SIDE_RED.registerBlue(autonChooser);
 
-        SOURCE_SIDE_BLUE.registerBlue(autonChooser);
-        SOURCE_SIDE_RED.registerBlue(autonChooser);
+        // SOURCE_SIDE_BLUE.registerBlue(autonChooser);
+        // SOURCE_SIDE_RED.registerBlue(autonChooser);
 
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerDefaultRed(autonChooser);

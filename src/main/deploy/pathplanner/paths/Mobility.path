@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3334750274411264,
-        "y": 7.002978151231599
+        "x": 1.41,
+        "y": 5.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.674449589970609,
-        "y": 7.199023690272083
+        "x": 2.7005544812853595,
+        "y": 5.6
       },
       "isLocked": false,
-      "linkedName": "amp"
+      "linkedName": "Center Subwoofer"
     },
     {
       "anchor": {
-        "x": 3.0579354322771146,
-        "y": 7.2383001016002035
+        "x": 3.0,
+        "y": 5.6
       },
       "prevControl": {
-        "x": 1.601871850507094,
-        "y": 7.065858868510892
+        "x": 1.6580381329233314,
+        "y": 5.6
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Amp A"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -39,14 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.9005777857670384,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ABCDE",
-  "previewStartingState": {
-    "rotation": 0.2809818448982869,
-    "velocity": 0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
