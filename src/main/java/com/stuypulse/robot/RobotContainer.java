@@ -266,20 +266,20 @@ public class RobotContainer {
         
         
         // Mobility
-        AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
-        AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
+    //     AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
+    //     AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
 
-        // BCA
-        AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
-        "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
-        AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
-        "Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
+    //     // BCA
+    //     AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
+    //     "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
+    //     AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
+    //     "Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
 
-       // HGF
-        AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
-        "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
-        AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
-        "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
+    //    // HGF
+    //     AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
+    //     "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
+    //     AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
+    //     "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
         
         // ADEF
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
@@ -287,14 +287,14 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot");
 
-        MOBILITY_BLUE.registerBlue(autonChooser);
-        MOBILITY_RED.registerRed(autonChooser);
+        // MOBILITY_BLUE.registerBlue(autonChooser);
+        // MOBILITY_RED.registerRed(autonChooser);
 
-        BCA_BLUE.registerDefaultBlue(autonChooser);
-        BCA_RED.registerDefaultRed(autonChooser);
+        // BCA_BLUE.registerDefaultBlue(autonChooser);
+        // BCA_RED.registerDefaultRed(autonChooser);
 
-        HGF_BLUE.registerBlue(autonChooser);
-        HGF_RED.registerRed(autonChooser);
+        // HGF_BLUE.registerBlue(autonChooser);
+        // HGF_RED.registerRed(autonChooser);
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
