@@ -12,7 +12,7 @@
         "y": 5.532684682370853
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA Starting Pose"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA B"
     }
   ],
   "rotationTargets": [],

@@ -12,29 +12,23 @@
         "y": 1.9121879705812976
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue HGF Starting Pose"
     },
     {
       "anchor": {
-        "x": 9.08448491097131,
-        "y": 1.3743847716490074
+        "x": 8.29,
+        "y": 0.77
       },
       "prevControl": {
-        "x": 7.092156496440969,
-        "y": 0.7592305986323273
+        "x": 5.675946213313558,
+        "y": 1.5535082827978157
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue H"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.8,
-      "rotationDegrees": 3.72951590341523,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {

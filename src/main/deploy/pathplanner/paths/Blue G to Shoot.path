@@ -12,7 +12,7 @@
         "y": 4.805277852743206
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue G"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Midline Shoot Pose"
     }
   ],
   "rotationTargets": [

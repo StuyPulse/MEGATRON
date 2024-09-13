@@ -6,14 +6,15 @@
     "Blue To Notes",
     "Blue To Shoots",
     "Blue To Subwoofers",
-    "Utils",
+    "Misc",
     "Red To Notes",
     "Red To Shoots",
-    "Red To Subwoofers"
+    "Red To Subwoofers",
+    "Utils"
   ],
   "autoFolders": [
-    "Blue",
-    "Red"
+    "Blue Autons",
+    "Red Autons"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 4.0,

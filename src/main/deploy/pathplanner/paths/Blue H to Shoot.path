@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 9.08448491097131,
-        "y": 1.3743847716490074
+        "x": 8.29,
+        "y": 0.77
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.972453395442507,
-        "y": 3.0380788745282836
+        "x": 7.1779684844711955,
+        "y": 2.4336941028792762
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue H"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Midline Shoot Pose"
     }
   ],
   "rotationTargets": [],
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 2.098784623000032,
+    "rotation": 7.957397728998733,
     "rotateFast": false
   },
   "reversed": false,

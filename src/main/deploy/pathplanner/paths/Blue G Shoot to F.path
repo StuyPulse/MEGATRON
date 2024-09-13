@@ -12,7 +12,7 @@
         "y": 6.800875295388985
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue Midline Shoot Pose"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue F"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Blue To Notes",
   "previewStartingState": {
-    "rotation": -4.221027031436816,
+    "rotation": 5.880944330975369,
     "velocity": 0
   },
   "useDefaultConstraints": false

@@ -265,31 +265,23 @@ public class RobotContainer {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         
         
-        /*
-         * Mobility
-         */
+        // Mobility
         AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
         AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
 
-        /*
-         * BCA
-         */
+        // BCA
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
         "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
         AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
         "Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
 
-        /*
-         * HGF
-         */
+       // HGF
         AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
         
-        /*
-         * ADEF
-         */
+        // ADEF
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Blue Amp to A", "Blue A to D", "Blue D to Shoot", "Blue D Shoot to E", "Blue E to Shoot", "Blue E Shoot to F", "Blue F to Shoot");
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,

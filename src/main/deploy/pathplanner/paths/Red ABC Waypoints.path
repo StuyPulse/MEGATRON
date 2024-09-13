@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.154852501111252,
-        "y": 6.474422229164399
+        "x": 3.053464555589826,
+        "y": 5.956552636691583
       },
       "isLocked": false,
-      "linkedName": "Red A"
+      "linkedName": "Red BCA A"
     },
     {
       "anchor": {
@@ -20,15 +20,15 @@
         "y": 5.5301848373414
       },
       "prevControl": {
-        "x": 2.148650962480497,
-        "y": 6.5301848373414
+        "x": 3.220906098620233,
+        "y": 6.95980775053068
       },
       "nextControl": {
-        "x": 4.148650962480497,
-        "y": 4.5301848373414
+        "x": 3.0960436896664576,
+        "y": 4.489309867984168
       },
       "isLocked": false,
-      "linkedName": "Red B"
+      "linkedName": "Red BCA B"
     },
     {
       "anchor": {
@@ -44,84 +44,68 @@
         "y": 4.184181817527208
       },
       "isLocked": false,
-      "linkedName": "Red C"
+      "linkedName": "Red BCA C"
     },
     {
       "anchor": {
-        "x": 5.832313537597656,
-        "y": 4.1514739990234375
+        "x": 1.964541675549125,
+        "y": 6.441955237891131
       },
       "prevControl": {
-        "x": 5.916156768798828,
-        "y": 4.075736999511719
+        "x": 2.0483849067502966,
+        "y": 6.366218238379412
       },
       "nextControl": {
-        "x": 5.748470306396484,
-        "y": 4.227210998535156
+        "x": 1.8806984443479529,
+        "y": 6.51769223740285
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA C Shoot Pose"
     },
     {
       "anchor": {
-        "x": 5.8634033203125,
-        "y": 4.084716796875
+        "x": 1.5588456716347956,
+        "y": 5.5301848373414
       },
       "prevControl": {
-        "x": 5.93170166015625,
-        "y": 4.0423583984375
+        "x": 1.6271440114785456,
+        "y": 5.4878264389039
       },
       "nextControl": {
-        "x": 5.79510498046875,
-        "y": 4.1270751953125
+        "x": 1.4905473317910456,
+        "y": 5.5725432357789
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA Starting Pose"
     },
     {
       "anchor": {
-        "x": 5.962890625,
-        "y": 3.87109375
+        "x": 1.95,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 5.9814453125,
-        "y": 3.935546875
+        "x": 1.9685546875000002,
+        "y": 5.614453125
       },
       "nextControl": {
-        "x": 5.9443359375,
-        "y": 3.806640625
+        "x": 1.9314453125000002,
+        "y": 5.485546875
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA B Shoot Pose"
     },
     {
       "anchor": {
-        "x": 6.28125,
-        "y": 3.1875
+        "x": 1.964541675549125,
+        "y": 6.441955237891131
       },
       "prevControl": {
-        "x": 6.140625,
-        "y": 3.59375
-      },
-      "nextControl": {
-        "x": 6.421875,
-        "y": 2.78125
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.0,
-        "y": 1.0
-      },
-      "prevControl": {
-        "x": 6.75,
-        "y": 2.5
+        "x": 1.8239166755491247,
+        "y": 6.848205237891131
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA A Shoot Pose"
     }
   ],
   "rotationTargets": [],

@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.918569071885168,
-        "y": 6.841305481346081
+        "x": 2.914867378283864,
+        "y": 6.852122118492749
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA C Shoot Pose"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Red BCA A"
     }
   ],
   "rotationTargets": [],

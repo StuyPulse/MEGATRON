@@ -8,27 +8,33 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.866841509352662,
-        "y": 7.042927597759958
+        "x": 2.8901573716465885,
+        "y": 6.887841058048188
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue BCA C Shoot Pose"
     },
     {
       "anchor": {
-        "x": 3.0394269642705956,
-        "y": 7.178592264550601
+        "x": 3.0,
+        "y": 7.0
       },
       "prevControl": {
-        "x": 2.551091852555729,
-        "y": 6.631078129157746
+        "x": 2.5359966344932694,
+        "y": 6.550650422729418
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue BCA A"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {

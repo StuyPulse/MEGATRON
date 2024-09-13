@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.0394269642705956,
-        "y": 7.178592264550601
+        "x": 3.0,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3810062426672474,
-        "y": 6.530507440665178
+        "x": 2.2278907346133145,
+        "y": 6.402053865305648
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue BCA A"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 6.298406444469139
       },
       "prevControl": {
-        "x": 2.8033839047588813,
-        "y": 6.942597278981761
+        "x": 2.789538609211147,
+        "y": 6.851593305121134
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue BCA A Shoot Pose"
     }
   ],
   "rotationTargets": [],
