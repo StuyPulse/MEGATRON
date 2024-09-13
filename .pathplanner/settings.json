@@ -11,7 +11,10 @@
     "Red To Shoots",
     "Red To Subwoofers"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Blue",
+    "Red"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
