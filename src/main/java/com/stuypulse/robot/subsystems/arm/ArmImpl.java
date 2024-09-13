@@ -289,7 +289,6 @@ public class ArmImpl extends Arm {
 
         SmartDashboard.putBoolean("Arm/Bump Switch Triggered?", !bumpSwitch.get());
 
-        SmartDashboard.putNumber("Arm/Encoder Angle (deg))", getDegrees());
         // SmartDashboard.putNumber("Arm/Raw Encoder Angle (rot)", armEncoder.getPosition());
 
         // SmartDashboard.putNumber("Arm/Left Voltage (V)", leftMotor.getBusVoltage());
