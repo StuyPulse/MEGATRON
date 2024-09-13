@@ -126,10 +126,10 @@ public class PhotonVision extends AprilTagVision {
         SmartDashboard.putNumber(prefix + "/Pose X", data.getPose().getX());
         SmartDashboard.putNumber(prefix + "/Pose Y", data.getPose().getY());
         SmartDashboard.putNumber(prefix + "/Pose Z", data.getPose().getZ());
+        SmartDashboard.putNumber(prefix + "/Pose Rotation", Units.radiansToDegrees(data.getPose().getRotation().getAngle()));
 
         SmartDashboard.putNumber(prefix + "/Distance to Tag", data.getDistanceToPrimaryTag());
 
-        SmartDashboard.putNumber(prefix + "/Pose Rotation", Units.radiansToDegrees(data.getPose().getRotation().getAngle()));
         SmartDashboard.putNumber(prefix + "/Timestamp", data.getTimestamp());
 
         robot.setPose(data.getPose().toPose2d());

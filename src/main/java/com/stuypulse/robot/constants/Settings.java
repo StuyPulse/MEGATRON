@@ -357,7 +357,7 @@ public interface Settings {
 
     public interface Driver {
         public interface Drive {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
@@ -368,7 +368,6 @@ public interface Settings {
 
         public interface Turn {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.03);
-            SmartNumber DISABLE_ALIGNMENT_DEADBAND = new SmartNumber("Driver Settings/Turn/Disable Alignment Deadband", 0.08);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);

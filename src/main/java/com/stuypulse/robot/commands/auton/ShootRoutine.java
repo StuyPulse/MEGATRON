@@ -35,11 +35,13 @@ public abstract class ShootRoutine {
 
     public static Command fromAnywhere() {
         return new SequentialCommandGroup(
-            new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).onlyIf(() -> Intake.getInstance().hasNote()).withTimeout(2.0),
+            new WaitUntilCommand(() -> Shooter.getInstance().hasNote())
+                .onlyIf(() -> Intake.getInstance().hasNote())
+                .withTimeout(2.0),
             new ArmToSpeaker(),
             new ParallelCommandGroup(
                 new SwerveDriveAlignToSpeaker(),
-            new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
+                new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
