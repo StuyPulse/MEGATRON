@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8299207212253714,
-        "y": 4.577599659291581
+        "x": 2.6557969001354675,
+        "y": 4.098014005179796
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.454095504946963,
-        "y": 6.165533422800476
+        "x": 2.099677528968153,
+        "y": 5.947322439659761
       },
       "isLocked": false,
-      "linkedName": "C"
+      "linkedName": "Red C"
     },
     {
       "anchor": {
-        "x": 2.4,
-        "y": 6.43
+        "x": 1.964541675549125,
+        "y": 6.441955237891131
       },
       "prevControl": {
-        "x": 2.7701167362900203,
-        "y": 4.7639342618714995
+        "x": 2.5069599729973273,
+        "y": 4.456982136620524
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue Close Shoot"
+      "linkedName": "Close Shoot"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Subwoofers",
+  "folder": "Red To Shoots",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

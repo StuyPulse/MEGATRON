@@ -6,13 +6,12 @@
     "Blue To Notes",
     "Blue To Shoots",
     "Blue To Subwoofers",
+    "Utils",
     "Red To Notes",
     "Red To Shoots",
     "Red To Subwoofers"
   ],
-  "autoFolders": [
-    "Tests"
-  ],
+  "autoFolders": [],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
