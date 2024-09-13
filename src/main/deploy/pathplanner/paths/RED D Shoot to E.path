@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 9.355670022723976,
-        "y": 6.501230409454866
+        "x": 8.398526797053595,
+        "y": 5.762294601512281
       },
       "prevControl": {
-        "x": 5.447739206490318,
-        "y": 6.345759278200104
+        "x": 4.490595980819937,
+        "y": 5.606823470257519
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ABCDE",
+  "folder": "Red To Notes",
   "previewStartingState": {
     "rotation": 9.162544566292167,
     "velocity": 0

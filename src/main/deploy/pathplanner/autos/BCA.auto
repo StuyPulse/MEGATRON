@@ -14,37 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to B"
+            "pathName": "Blue Center to B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to Center"
+            "pathName": "Blue B to Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to C"
+            "pathName": "Blue Center to C"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to Center"
+            "pathName": "Blue C to Subwoofer Before A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center to A"
+            "pathName": "Blue Center to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A to Center"
+            "pathName": "Blue A to Center"
           }
         }
       ]

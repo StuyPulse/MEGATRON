@@ -14,43 +14,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to B"
+            "pathName": "Blue Center to B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to F"
+            "pathName": "Blue B to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to Shoot ALT"
+            "pathName": "Blue F to Shoot Around Stage"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F Shoot ALT to E"
+            "pathName": "Blue F Shoot Around Stage to E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to Shoot"
+            "pathName": "Blue E to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E Shoot to D"
+            "pathName": "Blue E Shoot to D"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "D to Shoot"
+            "pathName": "Blue D to Shoot"
           }
         }
       ]

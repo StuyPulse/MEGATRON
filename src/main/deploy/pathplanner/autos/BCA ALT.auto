@@ -14,31 +14,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to B"
+            "pathName": "Blue Center to B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to C"
+            "pathName": "Blue B to C"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to Shoot"
+            "pathName": "Blue C to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C Shoot to A"
+            "pathName": "Blue C Shoot to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A to Shoot"
+            "pathName": "Blue A to Subwoofer Shoot"
           }
         }
       ]

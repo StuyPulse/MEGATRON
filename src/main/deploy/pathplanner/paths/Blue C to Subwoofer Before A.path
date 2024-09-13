@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.8299207212253714,
+        "y": 4.577599659291581
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.454095504946963,
+        "y": 6.165533422800476
+      },
+      "isLocked": false,
+      "linkedName": "C"
+    },
+    {
+      "anchor": {
+        "x": 2.4,
+        "y": 6.43
+      },
+      "prevControl": {
+        "x": 2.7701167362900203,
+        "y": 4.7639342618714995
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Blue Close Shoot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 38.766552008153084,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Blue To Subwoofers",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

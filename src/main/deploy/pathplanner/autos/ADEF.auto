@@ -14,43 +14,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp to A"
+            "pathName": "Blue Amp to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A to D"
+            "pathName": "Blue A to D"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "D to Shoot"
+            "pathName": "Blue D to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "D Shoot to E"
+            "pathName": "Blue D Shoot to E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to Shoot"
+            "pathName": "Blue E to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E Shoot to F"
+            "pathName": "Blue E Shoot to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to Shoot"
+            "pathName": "Blue F to Shoot"
           }
         }
       ]

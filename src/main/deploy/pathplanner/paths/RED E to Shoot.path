@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 9.355670022723976,
-        "y": 6.501230409454866
+        "x": 8.398526797053595,
+        "y": 5.762294601512281
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.502529587090424,
-        "y": 6.413255093995307
+        "x": 5.545386361420044,
+        "y": 5.674319286052722
       },
       "isLocked": false,
       "linkedName": "E "
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "ABCDE",
+  "folder": "Red To Shoots",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

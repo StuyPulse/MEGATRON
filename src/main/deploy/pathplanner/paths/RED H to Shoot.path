@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 9.255195482117156,
-        "y": 1.5762953317201276
+        "x": 9.08448491097131,
+        "y": 1.3743847716490074
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.449682409595474,
-        "y": 4.86099555253426
+        "x": 7.278971838449629,
+        "y": 4.65908499246314
       },
       "isLocked": false,
       "linkedName": "H"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "HGF",
+  "folder": "Red To Shoots",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

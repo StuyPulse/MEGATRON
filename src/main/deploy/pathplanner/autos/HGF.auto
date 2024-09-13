@@ -14,37 +14,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source to H"
+            "pathName": "Blue Source to H"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H to Shoot"
+            "pathName": "Blue H to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H Shoot to G"
+            "pathName": "Blue H Shoot to G"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to Shoot"
+            "pathName": "Blue G to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G Shoot to F"
+            "pathName": "Blue G Shoot to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to Shoot"
+            "pathName": "Blue F to Shoot"
           }
         }
       ]
