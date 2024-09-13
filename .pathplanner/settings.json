@@ -3,8 +3,12 @@
   "robotLength": 0.82,
   "holonomicMode": true,
   "pathFolders": [
-    "ABCDE",
-    "HGF"
+    "Blue To Notes",
+    "Blue To Shoots",
+    "Blue To Subwoofers",
+    "Red To Notes",
+    "Red To Shoots",
+    "Red To Subwoofers"
   ],
   "autoFolders": [
     "Tests"

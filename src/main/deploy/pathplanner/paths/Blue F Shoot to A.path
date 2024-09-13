@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue To Notes",
   "previewStartingState": {
     "rotation": -16.0,
     "velocity": 0
