@@ -927,6 +927,30 @@
                         "last"
                     ],
                     "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        2
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        2
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        5
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        7
+                    ],
+                    "type": "StopPoint"
                 }
             ],
             "usesControlIntervalGuessing": true,
@@ -934,7 +958,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         }
     },
     "splitTrajectoriesAtStopPoints": false,

@@ -3760,6 +3760,12 @@
                         15
                     ],
                     "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        18
+                    ],
+                    "type": "StopPoint"
                 }
             ],
             "usesControlIntervalGuessing": true,

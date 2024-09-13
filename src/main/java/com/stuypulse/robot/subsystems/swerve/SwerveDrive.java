@@ -159,6 +159,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         );
     }
 
+    // public Command followPathwithSpeakerAlignCommand(ChoreoTrajectory traj) {
+
+    // }
+
     public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
         SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
         setControl(drive.withVelocityX(chassisSpeeds.vxMetersPerSecond)

@@ -2244,7 +2244,25 @@
                 },
                 {
                     "scope": [
-                        "last"
+                        2
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        5
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        7
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        10
                     ],
                     "type": "StopPoint"
                 }
@@ -2254,7 +2272,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         }
     },
     "splitTrajectoriesAtStopPoints": false,

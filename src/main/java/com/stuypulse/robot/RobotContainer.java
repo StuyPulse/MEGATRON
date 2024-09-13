@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.tests.ChoreoStraightLine;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
@@ -46,6 +47,7 @@ import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
+import com.stuypulse.robot.util.PathUtil.ChoreoAutonConfig;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.robot.subsystems.arm.Arm;
@@ -273,6 +275,16 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
         "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
 
+        /*********************/
+        /*** CHOREO AUTONS ***/
+        /*********************/
+
+        // ChoreoAutonConfig ChoreoFivePieceBFAC = new ChoreoAutonConfig("Choreo BFAC", ChoreoFivePieceBFAC::new,
+        // "BFAC");
+
+        ChoreoAutonConfig StraightLine = new ChoreoAutonConfig("Straight Line", ChoreoStraightLine::new, "Straight Line");
+        
+
         BCA.registerDefaultBlue(autonChooser);
         BCA_RED.registerRed(autonChooser);
 
@@ -281,6 +293,8 @@ public class RobotContainer {
 
         ADEF.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
+
+        StraightLine.registerChoreoBlue(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
         

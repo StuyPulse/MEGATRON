@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoTrajectory;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPoint;
@@ -26,7 +28,48 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class PathUtil {
-    public static class AutonConfig {
+    public static class ChoreoAutonConfig {
+        private final String name;
+        private final Function<ChoreoTrajectory[], Command> auton;
+        private final String[] trajs;
+
+            public ChoreoAutonConfig(String name, Function<ChoreoTrajectory[], Command> auton, String... trajs) {
+                this.name = name;
+                this.auton = auton;
+                this.trajs = trajs;
+
+                for (String traj : trajs) {
+                    try {
+                        Choreo.getTrajectory(traj);
+                    } catch (RuntimeException e) {
+                        DriverStation.reportError("Trajectory \"" + traj + "\" not found. Did you mean \"" + PathUtil.findClosestMatch(PathUtil.getTrajectoryFileNames(), traj) + "\"?", false);
+
+                        throw e;
+                    }
+                }
+            }
+
+        
+        }
+
+        // public ChoreoAutonConfig registerChoreoBlue(SendableChooser<Command> chooser) {
+        //     chooser.addOption("Blue " + name, auton.apply(loadTrajectories(trajs)));
+        //     return this;
+        // }
+    
+        public static ChoreoTrajectory[] loadTrajectories(String... names) {
+            ChoreoTrajectory[] output = new ChoreoTrajectory[names.length];
+            for (int i = 0; i < names.length; i++) {
+            output[i] = loadChoreo(names[i]);
+            }
+            return output;
+        }
+
+        public static ChoreoTrajectory loadChoreo(String name) {
+            return Choreo.getTrajectory(name);
+        }
+    
+        public static class AutonConfig {
     
         private final String name;
         private final Function<PathPlannerPath[], Command> auton;
@@ -47,11 +90,15 @@ public class PathUtil {
                 }
             }
         }
+
+        
         
         public AutonConfig registerBlue(SendableChooser<Command> chooser) {
             chooser.addOption("Blue " + name, auton.apply(loadPaths(paths)));
             return this;
         }
+
+        
 
         public AutonConfig registerRed(SendableChooser<Command> chooser) {
             chooser.addOption("Red " + name, auton.apply(loadPathsRed(paths)));
@@ -149,6 +196,22 @@ public class PathUtil {
         Path path = Paths.get("").toAbsolutePath().resolve("src/main/deploy/pathplanner/paths");
         ArrayList<String> fileList = new ArrayList<String>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path, "*.path")) {
+            for (Path file : stream) {
+                fileList.add(file.getFileName().toString().replaceFirst(".path",""));
+            }
+        } catch (IOException error) {
+            DriverStation.reportError(error.getMessage(), false);
+        }
+        Collections.sort(fileList);
+        return fileList;
+    }
+
+    public static List<String> getTrajectoryFileNames() {
+        //  ../../../../../deploy/choreo
+
+        Path path = Paths.get("").toAbsolutePath().resolve("src/main/deploy/choreo");
+        ArrayList<String> fileList = new ArrayList<String>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path, "*.traj")) {
             for (Path file : stream) {
                 fileList.add(file.getFileName().toString().replaceFirst(".path",""));
             }

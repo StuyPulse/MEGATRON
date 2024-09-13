@@ -3144,7 +3144,43 @@
                 },
                 {
                     "scope": [
-                        "last"
+                        2
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        4
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        6
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        8
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        10
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        12
+                    ],
+                    "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        13
                     ],
                     "type": "StopPoint"
                 }
@@ -3154,7 +3190,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         }
     },
     "splitTrajectoriesAtStopPoints": false,
