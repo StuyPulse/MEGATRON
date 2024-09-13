@@ -5,6 +5,8 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.stuypulse.robot.commands.leds.LEDReset;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -32,9 +34,9 @@ public class Robot extends TimedRobot {
 
         robot = new RobotContainer();
 
-        SmartDashboard.putString("Robot State", "DISABLED");
+        if (Robot.isReal()) CameraServer.startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 80, 60, 30);
 
-        SmartDashboard.putData(CommandScheduler.getInstance());
+        SmartDashboard.putString("Robot State", "DISABLED");
     }
 
     @Override
