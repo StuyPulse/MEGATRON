@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3334750274411264,
-        "y": 7.002978151231599
+        "x": 1.3824623752298102,
+        "y": 6.555650112788321
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7550215182275606,
-        "y": 7.173544500548823
+        "x": 2.759059729428983,
+        "y": 7.0723488507988925
       },
       "isLocked": false,
       "linkedName": "Red ADEF Starting Pose"
     },
     {
       "anchor": {
-        "x": 3.0579354322771146,
-        "y": 7.2383001016002035
+        "x": 3.001400475457201,
+        "y": 7.146094279167726
       },
       "prevControl": {
-        "x": 1.6703772191026527,
-        "y": 7.036726059129202
+        "x": 1.6141307059399834,
+        "y": 6.624203555326754
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 34.32633732715843,
     "rotateFast": false
   },
   "reversed": false,
