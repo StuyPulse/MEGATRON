@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.44,
-        "y": 4.92
+        "x": 2.8299207212253714,
+        "y": 4.58
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.590230373169081,
-        "y": 2.934143848198411
+        "x": 3.092452523260701,
+        "y": 6.699823867467676
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.29,
-        "y": 5.78
+        "x": 3.1548525011112525,
+        "y": 6.974422229164399
       },
       "prevControl": {
-        "x": 7.126129843018615,
-        "y": 6.127863050636817
+        "x": 2.9725080357898817,
+        "y": 5.774688910798953
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,28 +30,28 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": 27.738650602589555,
-      "rotateFast": false
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 83.48461145679269,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 2.0861407973812502,
+    "rotation": 85.39557844916084,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Notes",
+  "folder": "Blue To Notes",
   "previewStartingState": {
-    "rotation": -3.5408335937068656,
+    "rotation": 83.35190685163934,
     "velocity": 0
   },
   "useDefaultConstraints": false

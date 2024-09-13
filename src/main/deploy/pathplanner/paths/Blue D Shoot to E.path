@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.002374616542388,
-        "y": 6.500653522140378
+        "x": 6.579303673860324,
+        "y": 6.340999957855571
       },
       "isLocked": false,
-      "linkedName": "DEF Shoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,15 +20,21 @@
         "y": 5.762294601512281
       },
       "prevControl": {
-        "x": 4.47670261132933,
-        "y": 5.612640417345283
+        "x": 5.532878159320307,
+        "y": 6.17528907676863
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "E "
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -29.576784217189907,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {

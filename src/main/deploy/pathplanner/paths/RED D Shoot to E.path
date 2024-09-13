@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.304821705439542,
-        "y": 6.471088047272821
+        "x": 6.678528291952418,
+        "y": 6.478106842932436
       },
       "isLocked": false,
-      "linkedName": "DEF Shoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,15 +20,21 @@
         "y": 5.762294601512281
       },
       "prevControl": {
-        "x": 4.490595980819937,
-        "y": 5.606823470257519
+        "x": 5.501437800680661,
+        "y": 6.388737383129529
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "E "
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -20.607589471852908,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,7 +51,7 @@
   "reversed": false,
   "folder": "Red To Notes",
   "previewStartingState": {
-    "rotation": 9.162544566292167,
+    "rotation": 9.121601501824317,
     "velocity": 0
   },
   "useDefaultConstraints": false

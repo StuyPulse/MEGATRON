@@ -14,13 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED Amp to A"
+            "pathName": "Red Amp to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RED A to D"
+            "pathName": "Red A to D"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED D Shoot to E"
+            "pathName": "Red D Shoot to E"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED E Shoot to F"
+            "pathName": "Red E Shoot to F"
           }
         },
         {

@@ -12,7 +12,7 @@
         "y": 6.165533422800476
       },
       "isLocked": false,
-      "linkedName": "C"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue Close Shoot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],

@@ -1,0 +1,113 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.1548525011112525,
+        "y": 6.974422229164399
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.154852501111252,
+        "y": 6.474422229164399
+      },
+      "isLocked": false,
+      "linkedName": "A"
+    },
+    {
+      "anchor": {
+        "x": 2.6938714628917357,
+        "y": 5.631284339205584
+      },
+      "prevControl": {
+        "x": 2.7848282418975603,
+        "y": 5.585833203357358
+      },
+      "nextControl": {
+        "x": 2.602914683885911,
+        "y": 5.6767354750538095
+      },
+      "isLocked": false,
+      "linkedName": "B"
+    },
+    {
+      "anchor": {
+        "x": 2.8299207212253714,
+        "y": 4.58
+      },
+      "prevControl": {
+        "x": 2.9209824140440084,
+        "y": 4.5345563652856775
+      },
+      "nextControl": {
+        "x": 2.7388590284067345,
+        "y": 4.625443634714323
+      },
+      "isLocked": false,
+      "linkedName": "C"
+    },
+    {
+      "anchor": {
+        "x": 1.964541675549125,
+        "y": 6.441955237891131
+      },
+      "prevControl": {
+        "x": 2.055939092568763,
+        "y": 6.396535606805298
+      },
+      "nextControl": {
+        "x": 1.8731442585294866,
+        "y": 6.487374868976964
+      },
+      "isLocked": false,
+      "linkedName": "Close Shoot"
+    },
+    {
+      "anchor": {
+        "x": 1.41,
+        "y": 5.6
+      },
+      "prevControl": {
+        "x": 1.5024717344628415,
+        "y": 5.554657180525331
+      },
+      "nextControl": {
+        "x": 1.3175282655371587,
+        "y": 5.645342819474668
+      },
+      "isLocked": false,
+      "linkedName": "Center Subwoofer"
+    },
+    {
+      "anchor": {
+        "x": 3.0579354322771146,
+        "y": 7.2383001016002035
+      },
+      "prevControl": {
+        "x": 3.153844982558209,
+        "y": 7.193203079281266
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Amp A"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Utils",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

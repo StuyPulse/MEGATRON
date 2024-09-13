@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.423736394719814,
-        "y": 6.529834405464943
+        "x": 6.737563093801783,
+        "y": 6.744051894911826
       },
       "isLocked": false,
-      "linkedName": "DEF Shoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 4.877773358597312
       },
       "prevControl": {
-        "x": 8.076085885244687,
-        "y": 5.403606145753957
+        "x": 8.698835741235472,
+        "y": 4.399629922771751
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "F"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -29.721764065422597,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
