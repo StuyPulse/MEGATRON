@@ -34,15 +34,15 @@ public interface Cameras {
             3000
         ), //10.6.94.11:5800/#/dashboard
 
-        // new CameraConfig(
-        //     "plate-cam",
-        //     new Pose3d(
-        //         new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(-4.863591), Units.inchesToMeters(19.216471)),
-        //         new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(-10), Units.degreesToRadians(0))
-        //     ),
-        //     "96",
-        //     3001
-        // ) //10.6.94.96:5802
+        new CameraConfig(
+            "plate-cam",
+            new Pose3d(
+                new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(-4.863591), Units.inchesToMeters(19.216471)),
+                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(-10), Units.degreesToRadians(0))
+            ),
+            "96",
+            3001
+        ) //10.6.94.96:5802
     };
 
     /*** LINEAR REGRESSION ***/
