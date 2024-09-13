@@ -33,29 +33,6 @@ public interface Settings {
     double DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT = Units.inchesToMeters(Units.metersToInches(LENGTH) / 2 - 14.875);
     double ANGLE_BETWEEN_ARM_AND_SHOOTER = 84; // shooter is tilted up
   
-    // checks the current RIO's serial number to determine which robot is running
-    public enum RobotType {
-        // TODO: Add serial numbers from RIOs
-        SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER(""),
-        SIM("");
-
-        public final String serialNum;
-
-        RobotType(String serialNum) {
-            this.serialNum = serialNum;
-        }
-
-        public static RobotType fromString(String serialNum) {
-            for (RobotType robot : RobotType.values()) {
-                if (robot.serialNum.equals(serialNum.toUpperCase())) {
-                    return robot;
-                }
-            }
-
-            return RobotType.SIM;
-        }
-    }
-  
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
 
@@ -108,11 +85,10 @@ public interface Settings {
 
         double INTAKE_FEED_SPEED = 0.4; 
 
-        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
+        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 20;
         double ARM_SPEED_THRESHOLD_TO_FEED = 1.75; // degrees per second
 
         double INTAKE_SHOOT_SPEED = 0.9;
-        double INTAKE_SHOOT_TIME = 0.75;
 
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -139,7 +115,6 @@ public interface Settings {
         // TODO: Find velocity
         double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
 
-        // Different falling debounce is used to detect note shooting;
         SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0);
         SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0);
 

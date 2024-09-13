@@ -4,7 +4,6 @@ import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.RobotType;
 import com.stuypulse.robot.subsystems.leds.instructions.LEDInstruction;
 
 import edu.wpi.first.wpilibj.AddressableLED;
