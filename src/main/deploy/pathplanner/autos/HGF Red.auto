@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED H to Shoot"
+            "pathName": "Red H to Shoot"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED G to Shoot"
+            "pathName": "Red G to Shoot"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED F to Shoot"
+            "pathName": "Red F to Shoot"
           }
         }
       ]
