@@ -211,23 +211,21 @@ public class ShooterImpl extends Shooter {
 
         SmartDashboard.putNumber("Shooter/Feeder Speed", feederMotor.get());
 
-        // SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
-        // SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());
+        SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage());
+        SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage());
 
         SmartDashboard.putBoolean("Shooter/Has Note", hasNote());
 
         SmartDashboard.putNumber("Shooter/Left RPM", getLeftShooterRPM());
         SmartDashboard.putNumber("Shooter/Right RPM", getRightShooterRPM());
 
-        // SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage() * leftMotor.getAppliedOutput());
-        // SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage() * rightMotor.getAppliedOutput());
-        // SmartDashboard.putNumber("Shooter/Feeder Voltage", feederMotor.getBusVoltage() * feederMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Shooter/Left Voltage", leftMotor.getBusVoltage() * leftMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Shooter/Right Voltage", rightMotor.getBusVoltage() * rightMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Shooter/Feeder Voltage", feederMotor.getBusVoltage() * feederMotor.getAppliedOutput());
 
-        // SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
-        // SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
-        // SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
-
-        SmartDashboard.putString("Shooter/Feeder State", getFeederState().toString());
+        SmartDashboard.putNumber("Shooter/Left Current", leftMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Shooter/Right Current", rightMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Shooter/Feeder Current", feederMotor.getOutputCurrent());
     }
 
 }
