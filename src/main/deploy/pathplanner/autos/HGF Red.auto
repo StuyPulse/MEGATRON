@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7437038962619593,
-      "y": 4.320740582515391
+      "x": 0.7905759905641836,
+      "y": 4.310885424226206
     },
-    "rotation": -59.682052822906385
+    "rotation": -60.092064589198905
   },
   "command": {
     "type": "sequential",
@@ -14,42 +14,42 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source to H"
+            "pathName": "Red Source to H"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H to Shoot"
+            "pathName": "Red H to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H Shoot to G"
+            "pathName": "Red H Shoot to G"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to Shoot"
+            "pathName": "Red G to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G Shoot to F"
+            "pathName": "Red G Shoot to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "F to Shoot"
+            "pathName": "Red F to Shoot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Red Autons",
   "choreoAuto": false
 }

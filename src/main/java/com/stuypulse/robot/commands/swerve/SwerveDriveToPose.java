@@ -47,10 +47,6 @@ public class SwerveDriveToPose extends Command {
         );
     }
 
-    public static SwerveDriveToPose speakerRelative(double angleToSpeaker) {
-        return speakerRelative(angleToSpeaker, Alignment.PODIUM_SHOT_DISTANCE.get());
-    }
-
     private final SwerveDrive swerve;
 
     private final HolonomicController controller;
@@ -174,7 +170,6 @@ public class SwerveDriveToPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        swerve.stop();
         Field.clearFieldObject(targetPose2d);
         SmartDashboard.putBoolean("AutonAlignment", false);
     }

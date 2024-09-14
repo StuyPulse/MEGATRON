@@ -15,7 +15,7 @@ public class LEDPulseColor implements LEDInstruction {
     private final double pulseTime;
 
     public LEDPulseColor(SLColor color1, SLColor color2) {
-        this(color1, color2, Settings.LED.BLINK_TIME.get());
+        this(color1, color2, Settings.LED.BLINK_TIME);
     }
 
     public LEDPulseColor(SLColor color1, SLColor color2, double pulseTime) {
@@ -30,7 +30,7 @@ public class LEDPulseColor implements LEDInstruction {
     }
 
     public LEDPulseColor(SLColor color) {
-        this(color, SLColor.BLACK, Settings.LED.BLINK_TIME.get());
+        this(color, SLColor.BLACK, Settings.LED.BLINK_TIME);
     }
 
     @Override

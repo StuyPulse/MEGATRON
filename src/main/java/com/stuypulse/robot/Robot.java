@@ -4,8 +4,9 @@ import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.stuypulse.robot.commands.leds.LEDReset;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
-import com.stuypulse.robot.constants.Settings.RobotType;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,15 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
-    
-    public static final RobotType ROBOT;
-
-    static {
-        if (Robot.isSimulation())
-            ROBOT = RobotType.SIM;
-        else
-            ROBOT = RobotType.fromString(System.getenv("serialnum"));
-    }
 
     private RobotContainer robot;
     private CommandScheduler scheduler;
@@ -42,10 +34,9 @@ public class Robot extends TimedRobot {
 
         robot = new RobotContainer();
 
-        SmartDashboard.putString("Robot State", "DISABLED");
-        SmartDashboard.putString("Robot", ROBOT.name());
+        if (Robot.isReal()) CameraServer.startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 80, 60, 30);
 
-        SmartDashboard.putData(CommandScheduler.getInstance());
+        SmartDashboard.putString("Robot State", "DISABLED");
     }
 
     @Override
@@ -63,7 +54,9 @@ public class Robot extends TimedRobot {
     /*********************/
 
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        SmartDashboard.putString("Robot State", "DISABLED");
+    }
 
     @Override
     public void disabledPeriodic() {
@@ -86,7 +79,6 @@ public class Robot extends TimedRobot {
         scheduler.schedule(new LEDReset());
 
         SmartDashboard.putString("Robot State", "AUTON");
-
     }
 
     @Override
@@ -104,6 +96,7 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.cancel();
         }
+        SmartDashboard.putString("Robot State", "TELEOP");
     }
 
     @Override

@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.148650962480497,
+        "y": 5.5301848373414
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.2524565194219677,
+        "y": 5.561625195981047
+      },
+      "isLocked": false,
+      "linkedName": "Red BCA B"
+    },
+    {
+      "anchor": {
+        "x": 1.95,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 2.7986726583572215,
+        "y": 5.559173424894468
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red BCA B Shoot Pose"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Red To Subwoofers",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

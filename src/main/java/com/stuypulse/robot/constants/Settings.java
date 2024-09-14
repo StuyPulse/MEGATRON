@@ -2,6 +2,7 @@ package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.PIDConstants;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
@@ -31,29 +32,6 @@ public interface Settings {
     double HEIGHT_TO_ARM_PIVOT = Units.inchesToMeters(23.75);
     double DISTANCE_FROM_TOWER_TO_CENTER_OF_ROBOT = Units.inchesToMeters(Units.metersToInches(LENGTH) / 2 - 14.875);
     double ANGLE_BETWEEN_ARM_AND_SHOOTER = 84; // shooter is tilted up
-  
-    // checks the current RIO's serial number to determine which robot is running
-    public enum RobotType {
-        // TODO: Add serial numbers from RIOs
-        SELF_REINFORCED_VELVEETA_CHEESE_POLYPROPYLENE_GOOBER(""),
-        SIM("");
-
-        public final String serialNum;
-
-        RobotType(String serialNum) {
-            this.serialNum = serialNum;
-        }
-
-        public static RobotType fromString(String serialNum) {
-            for (RobotType robot : RobotType.values()) {
-                if (robot.serialNum.equals(serialNum.toUpperCase())) {
-                    return robot;
-                }
-            }
-
-            return RobotType.SIM;
-        }
-    }
   
     public interface Arm {
         double LENGTH = Units.inchesToMeters(16.5);
@@ -107,11 +85,10 @@ public interface Settings {
 
         double INTAKE_FEED_SPEED = 0.4; 
 
-        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 25;
+        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 20;
         double ARM_SPEED_THRESHOLD_TO_FEED = 1.75; // degrees per second
 
         double INTAKE_SHOOT_SPEED = 0.9;
-        double INTAKE_SHOOT_TIME = 0.75;
 
         double FUNNEL_ACQUIRE = 1.0;
         double FUNNEL_DEACQUIRE = 1.0;
@@ -127,7 +104,7 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
-        double TARGET_RPM_THRESHOLD = 200;
+        double TARGET_RPM_THRESHOLD = 250;
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
@@ -138,9 +115,8 @@ public interface Settings {
         // TODO: Find velocity
         double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
 
-        // Different falling debounce is used to detect note shooting;
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0); //0.01
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0); //0.005
+        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0);
+        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0);
 
         // left runs faster than right
         public interface LEFT {
@@ -218,8 +194,8 @@ public interface Settings {
                     MAX_ANGULAR_VELOCITY.get(),
                     MAX_ANGULAR_ACCELERATION.get());
 
-            PIDConstants XY = new PIDConstants(2.5, 0, 0.02);
-            PIDConstants THETA = new PIDConstants(4, 0, 0.1);
+            PIDConstants XY = new PIDConstants(1.0, 0, 0.02);
+            PIDConstants THETA = new PIDConstants(2.0, 0, 0.02);
         }
 
         public interface Encoder {
@@ -239,13 +215,13 @@ public interface Settings {
         }
 
         public interface Turn {
-            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", 9.0);
-            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", 0.2);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", Robot.isReal() ? 9.0 : 9.0);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", Robot.isReal() ? 0.0 : 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", Robot.isReal() ? 0.2 : 0.0);
 
-            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", 0.30718);
-            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", 1.42659);
-            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", 0.0036513);
+            SmartNumber kS = new SmartNumber("Swerve/Turn/FF/kS", Robot.isReal() ? 0.30718 : Simulation.TURN_FRICTION_VOLTAGE);
+            SmartNumber kV = new SmartNumber("Swerve/Turn/FF/kV", Robot.isReal() ? 1.42659 : 0.0);
+            SmartNumber kA = new SmartNumber("Swerve/Turn/FF/kA", Robot.isReal() ? 0.0036513 : 0.0);
 
             boolean INVERTED = true;
 
@@ -253,13 +229,13 @@ public interface Settings {
         }
 
         public interface Drive {
-            SmartNumber kP = new SmartNumber("Swerve/Drive/PID/kP", 9.0);
-            SmartNumber kI = new SmartNumber("Swerve/Drive/PID/kI", 0);
-            SmartNumber kD = new SmartNumber("Swerve/Drive/PID/kD", 0);
+            SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", Robot.isReal() ? 9.0 : 1.0);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", Robot.isReal() ? 0.0 : 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/PID/kD", Robot.isReal() ? 0.0 : 0.1);
 
-            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", 0.31007);
-            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", 1.62153);
-            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", 0.0048373);
+            SmartNumber kS = new SmartNumber("Swerve/Drive/FF/kS", Robot.isReal() ? 0.31007 : Simulation.DRIVE_FRICTION_VOLTAGE);
+            SmartNumber kV = new SmartNumber("Swerve/Drive/FF/kV", Robot.isReal() ? 1.62153 : 0.25);
+            SmartNumber kA = new SmartNumber("Swerve/Drive/FF/kA", Robot.isReal() ? 0.0048373 : 0.01);
 
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
@@ -296,7 +272,7 @@ public interface Settings {
 
         public interface Simulation {
             double TURN_INERTIA = 0.00001;
-            double DRIVE_INERTIA = 0.001;
+            double DRIVE_INERTIA = 0.00001;
             // Simulated voltage necessary to overcome friction
             double TURN_FRICTION_VOLTAGE = 0.25;
             double DRIVE_FRICTION_VOLTAGE = 0.25;
@@ -305,8 +281,6 @@ public interface Settings {
 
     public interface Alignment {
         double DEBOUNCE_TIME = 0.05;
-
-        SmartNumber PODIUM_SHOT_DISTANCE = new SmartNumber("Shooter/Podium Distance", 2.85);
 
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
@@ -347,22 +321,20 @@ public interface Settings {
     }
 
     public interface LED {
-        int LED_LENGTH = 61;
-        SmartNumber BLINK_TIME = new SmartNumber("LED/LED Blink Time", .15);
+        int LED_LENGTH = 106;
+        double BLINK_TIME = .15;
 
-        SmartNumber TRANSLATION_SPREAD = new SmartNumber("LED/LED Translation Spread (m)", 0.5);
-        SmartNumber ROTATION_SPREAD = new SmartNumber("LED/LED Rotation Spread (deg)", 15);
+        double TRANSLATION_SPREAD = 0.5;
+        double ROTATION_SPREAD = 15;
 
         SmartBoolean LED_AUTON_TOGGLE = new SmartBoolean("LED/Auton Align Display", false);
     }
 
     public interface Driver {
-        double TIME_UNTIL_HOLD = 0.7;
-
         public interface Drive {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.015);
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
 
             SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_LINEAR_VELOCITY);
@@ -371,7 +343,6 @@ public interface Settings {
 
         public interface Turn {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.03);
-            SmartNumber DISABLE_ALIGNMENT_DEADBAND = new SmartNumber("Driver Settings/Turn/Disable Alignment Deadband", 0.08);
 
             SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
@@ -381,51 +352,13 @@ public interface Settings {
         }
     }
 
-    public interface NoteDetection {
-        double X_ANGLE_RC = 0.05;
-
-        SmartNumber HAS_NOTE_DEBOUNCE = new SmartNumber("Note Detection/Has Note Debounce", 0.2);
-
-        SmartNumber THRESHOLD_X = new SmartNumber("Note Detection/X Threshold", 0.2);
-        SmartNumber THRESHOLD_Y = new SmartNumber("Note Detection/Y Threshold", Units.inchesToMeters(2));
-        SmartNumber THRESHOLD_ANGLE = new SmartNumber("Note Detection/Angle Threshold", 1);
-
-        SmartNumber DRIVE_SPEED = new SmartNumber("Note Detection/Drive Speed", 1);
-
-        SmartNumber INTAKE_THRESHOLD_DISTANCE = new SmartNumber("Note Detection/In Intake Path Distance", 0.9);
-
-        double MAX_FULLY_IN_VIEW_ANGLE = 20;
-        
-        public interface Translation {
-            SmartNumber kP = new SmartNumber("Note Detection/Translation/kP", 8.0);
-            SmartNumber kI = new SmartNumber("Note Detection/Translation/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Note Detection/Translation/kD", 0.0);
-        }
-
-        public interface Rotation {
-            SmartNumber kP = new SmartNumber("Note Detection/Rotation/kP", 2.0);
-            SmartNumber kI = new SmartNumber("Note Detection/Rotation/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Note Detection/Rotation/kD", 0.0);
-        }
-    }
-
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
-        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.25;
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.50;
     }
 
     public interface Buzz {
         double BUZZ_DURATION = 1.0;
         double BUZZ_INTENSITY = 1.0;
-    }
-
-    public interface Auton {
-        double MAX_SHOT_DISTANCE = 3.1;
-
-        SmartNumber SHOOT_WAIT_DELAY = new SmartNumber("Shoot Wait Delay", 0.45);
-
-        double SHOOTER_STARTUP_DELAY = 0.5;
-        double DEFAULT_INTAKE_TIMEOUT = 0.75;
-        double SHOOTER_START_PRE = 1.0;
     }
 }

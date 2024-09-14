@@ -39,20 +39,20 @@ public interface Motors {
     /** Classes to store all of the values a motor needs */
 
     public interface Arm {
-        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.25, false); 
-        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25, false); 
+        CANSparkConfig LEFT_MOTOR = new CANSparkConfig(false, IdleMode.kBrake, 40, 0.35, true); 
+        CANSparkConfig RIGHT_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.35, true); 
     }
 
     public interface Intake {
-        CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kCoast, 500, 0.25, true);
-        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25, true);
-        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 500, 0.25, true);
+        CANSparkConfig LEFT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(false, IdleMode.kCoast, 60, 0.35, false);
+        CANSparkConfig RIGHT_FUNNEL_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 60, 0.35, false);
+        CANSparkConfig INTAKE_MOTOR_CONFIG = new CANSparkConfig(true, IdleMode.kCoast, 60, 0.25, false);
     }
 
     public interface Shooter {
-        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 0.5, true);
-        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 0.5, true);
-        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25, true);
+        CANSparkConfig LEFT_SHOOTER = new CANSparkConfig(true, IdleMode.kCoast, 40, 0.5, false);
+        CANSparkConfig RIGHT_SHOOTER = new CANSparkConfig(false, IdleMode.kCoast, 40, 0.5, false);
+        CANSparkConfig FEEDER_MOTOR = new CANSparkConfig(true, IdleMode.kBrake, 40, 0.25, false);
     }
   
     /* Configurations */

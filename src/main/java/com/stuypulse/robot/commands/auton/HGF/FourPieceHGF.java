@@ -1,46 +1,44 @@
-// package com.stuypulse.robot.commands.auton.HGF;
+package com.stuypulse.robot.commands.auton.HGF;
 
-// import com.pathplanner.lib.path.PathPlannerPath;
-// import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
-// import com.stuypulse.robot.commands.auton.ShootRoutine;
-// import com.stuypulse.robot.commands.shooter.ShooterScoreSpeaker;
-// import com.stuypulse.robot.commands.swerve.SwerveDriveToShoot;
-// import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
-// import com.stuypulse.robot.constants.Settings.Auton;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.auton.FollowPathThenShoot;
+import com.stuypulse.robot.commands.auton.ShootRoutine;
+import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
-// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-// public class FourPieceHGF extends SequentialCommandGroup {
+public class FourPieceHGF extends SequentialCommandGroup {
     
-//      public FourPieceHGF(PathPlannerPath... paths) {
-//         addCommands(
-//             new ParallelCommandGroup(
-//                 new WaitCommand(Auton.SHOOTER_STARTUP_DELAY)
-//                     .andThen(new ShooterScoreSpeaker()),
-                
-//                 SwerveDriveToPose.speakerRelative(-15)
-//                     .withTolerance(0.03, 0.03, 3)
-//             ),
+     public FourPieceHGF(PathPlannerPath... paths) {
+        addCommands(
+            // Preload Shot
+            ShootRoutine.fromAnywhere(),
+            new ArmToFeed(),
 
-//             new ShootRoutine(0.7),
+            // Drive to H + Shoot H
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[0]),
+            new FollowPathThenShoot(paths[1], false),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[0]),
-//             new SwerveDriveToShoot()
-//                 .withTolerance(0.03, 3),
-//             new ShootRoutine(),
+            // Drive to G + Shoot G
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[2]),
+            new FollowPathThenShoot(paths[3], false),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[1]),
-//             new SwerveDriveToShoot()
-//                 .withTolerance(0.03, 3),
-//             new ShootRoutine(),
+            // Drive to F + Shoot F
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[4]),
+            new FollowPathThenShoot(paths[5], true),
+            new ArmToFeed()
+        );
+    }
 
-//             new FollowPathAndIntake(paths[2]),
-//             new SwerveDriveToShoot()
-//                 .withTolerance(0.03, 3),
-//             new ShootRoutine(0.7)
-//         );
-//     }
-
-// }
+}
