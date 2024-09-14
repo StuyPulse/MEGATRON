@@ -334,7 +334,7 @@ public interface Settings {
         public interface Drive {
             SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.03);
 
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.01);
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.05);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
 
             SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Drive/Max Speed", Swerve.MAX_LINEAR_VELOCITY);

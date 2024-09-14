@@ -7,6 +7,7 @@ import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.VStream;
 import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
+import com.stuypulse.stuylib.streams.vectors.filters.VMotionProfile;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
@@ -34,15 +35,15 @@ public class SwerveDriveDrive extends Command {
                 x -> x.clamp(1),
                 x -> x.pow(Drive.POWER.get()),
                 x -> x.mul(Drive.MAX_TELEOP_SPEED.get()),
-                new VRateLimit(Drive.MAX_TELEOP_ACCEL.get()),
-                new VLowPassFilter(Drive.RC.get()));
+                new VRateLimit(Drive.MAX_TELEOP_ACCEL),
+                new VLowPassFilter(Drive.RC));
 
         turn = IStream.create(driver::getRightX)
             .filtered(
                 x -> SLMath.deadband(x, Turn.DEADBAND.get()),
                 x -> SLMath.spow(x, Turn.POWER.get()),
                 x -> x * Turn.MAX_TELEOP_TURN_SPEED.get(),
-                new LowPassFilter(Turn.RC.get()));
+                new LowPassFilter(Turn.RC));
 
         this.driver = driver;
 
