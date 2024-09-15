@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class PathUtil {
     public static class ChoreoAutonConfig {
+        
         private final String name;
         private final Function<ChoreoTrajectory[], Command> auton;
         private final String[] trajs;
@@ -43,24 +44,37 @@ public class PathUtil {
                         Choreo.getTrajectory(traj);
                     } catch (RuntimeException e) {
                         DriverStation.reportError("Trajectory \"" + traj + "\" not found. Did you mean \"" + PathUtil.findClosestMatch(PathUtil.getTrajectoryFileNames(), traj) + "\"?", false);
-
                         throw e;
                     }
                 }
             }
 
-        
+            public ChoreoAutonConfig registerChoreoBlue(SendableChooser<Command> chooser){
+                chooser.addOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+                return this;
+            }
+
+            public ChoreoAutonConfig registerChoreoRed(SendableChooser<Command> chooser){
+                chooser.addOption("Red " + this.name, auton.apply(loadTrajectories(this.trajs)));
+                return this;
+            }
+
+            public ChoreoAutonConfig registerDefaultChoreoBlue(SendableChooser<Command> chooser) {
+                chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+                return this;
+            }
+
+            public ChoreoAutonConfig registerDefaultChoreoRed(SendableChooser<Command> chooser) {
+                chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+                return this;
+            }
+
         }
 
-        // public ChoreoAutonConfig registerChoreoBlue(SendableChooser<Command> chooser) {
-        //     chooser.addOption("Blue " + name, auton.apply(loadTrajectories(trajs)));
-        //     return this;
-        // }
-    
         public static ChoreoTrajectory[] loadTrajectories(String... names) {
             ChoreoTrajectory[] output = new ChoreoTrajectory[names.length];
             for (int i = 0; i < names.length; i++) {
-            output[i] = loadChoreo(names[i]);
+                output[i] = loadChoreo(names[i]);
             }
             return output;
         }
@@ -69,7 +83,7 @@ public class PathUtil {
             return Choreo.getTrajectory(name);
         }
     
-        public static class AutonConfig {
+    public static class AutonConfig {
     
         private final String name;
         private final Function<PathPlannerPath[], Command> auton;
@@ -91,14 +105,10 @@ public class PathUtil {
             }
         }
 
-        
-        
         public AutonConfig registerBlue(SendableChooser<Command> chooser) {
             chooser.addOption("Blue " + name, auton.apply(loadPaths(paths)));
             return this;
         }
-
-        
 
         public AutonConfig registerRed(SendableChooser<Command> chooser) {
             chooser.addOption("Red " + name, auton.apply(loadPathsRed(paths)));
@@ -114,6 +124,8 @@ public class PathUtil {
             chooser.setDefaultOption("Red " + name, auton.apply(loadPathsRed(paths)));
             return this;
         }
+
+        
 
     }
     
