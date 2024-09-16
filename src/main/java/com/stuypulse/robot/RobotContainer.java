@@ -18,6 +18,7 @@ import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
+import com.stuypulse.robot.commands.auton.ADEF.ChoreoFivePieceADEF;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.AltFourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
@@ -51,6 +52,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
+import com.stuypulse.robot.util.PathUtil.ChoreoAutonConfig;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
 import com.stuypulse.robot.util.ShooterSpeeds;
 import com.stuypulse.robot.subsystems.arm.Arm;
@@ -290,6 +292,9 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot");
 
+        ChoreoAutonConfig Choreo_ADEF_BLUE = new ChoreoAutonConfig("Choreo ADEF", ChoreoFivePieceADEF::new, 
+        "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
+
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);
 
@@ -301,6 +306,8 @@ public class RobotContainer {
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
+
+        Choreo_ADEF_BLUE.registerChoreoBlue(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
