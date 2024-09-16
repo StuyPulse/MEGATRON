@@ -55,8 +55,8 @@ public interface LEDInstructions {
 
     LEDInstruction DEFAULT = LEDInstructions.OFF;
 
-    LEDInstruction FIELD_RELATIVE_INTAKING = new LEDPulseColor(SLColor.BLUE);
-    LEDInstruction ROBOT_RELATIVE_INTAKING = new LEDRainbow();
+    LEDInstruction FIELD_RELATIVE_INTAKING = new LEDRainbow();
+    LEDInstruction ROBOT_RELATIVE_INTAKING = BLUE;
     LEDInstruction DEACQUIRING = new LEDPulseColor(SLColor.GOLD);
 
     LEDInstruction SPEAKER_ALIGN = GREEN;

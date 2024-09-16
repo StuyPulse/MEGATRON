@@ -44,7 +44,7 @@ public class LEDSection implements LEDInstruction {
     public void setLED(AddressableLEDBuffer ledBuffer) {
         if (isBlinking){
             double time = stopWatch.getTime();
-            double pulseTime = Settings.LED.BLINK_TIME.get();
+            double pulseTime = Settings.LED.BLINK_TIME;
 
             if (time < pulseTime) {
                 setColorSections(ledBuffer, this.sections, this.separatorIndexes);

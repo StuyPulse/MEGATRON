@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.numbers.filters.RateLimit;
@@ -11,6 +12,7 @@ import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Driver.Drive;
 import com.stuypulse.robot.constants.Settings.Driver.Turn;
@@ -61,8 +63,9 @@ public class SwerveDriveDriveRobotRelative extends Command {
 
     @Override
     public void execute() {
-        swerve.setControl(drive.withVelocityX(speed.get().y)
-                .withVelocityY(-speed.get().x)
+        Vector2D velocity = Robot.isBlue() ? speed.get() : speed.get().mul(-1);
+        swerve.setControl(drive.withVelocityX(velocity.y)
+                .withVelocityY(-velocity.x)
                 .withRotationalRate(turn.get())         
             );
     }

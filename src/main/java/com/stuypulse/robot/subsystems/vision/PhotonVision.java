@@ -104,15 +104,17 @@ public class PhotonVision extends AprilTagVision {
             final int index = i;
             if (enabled[index]) {
                 PhotonPipelineResult latestResult = cameras[index].getLatestResult();
-                if (latestResult.getBestTarget().getPoseAmbiguity() < Settings.Vision.POSE_AMBIGUITY_RATIO_THRESHOLD) {
-                    Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
-                    estimatedRobotPose.ifPresent(
-                        (EstimatedRobotPose robotPose) -> {
-                            VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
-                            outputs.add(data);
-                            updateTelemetry("Vision/" + cameras[index].getName(), data);
-                        }
-                    );
+                if (latestResult.hasTargets()) {
+                    if (latestResult.getBestTarget().getPoseAmbiguity() < Settings.Vision.POSE_AMBIGUITY_RATIO_THRESHOLD) {
+                        Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
+                        estimatedRobotPose.ifPresent(
+                            (EstimatedRobotPose robotPose) -> {
+                                VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
+                                outputs.add(data);
+                                updateTelemetry("Vision/" + cameras[index].getName(), data);
+                            }
+                        );
+                    }
                 }
             }
         }
@@ -124,10 +126,10 @@ public class PhotonVision extends AprilTagVision {
         SmartDashboard.putNumber(prefix + "/Pose X", data.getPose().getX());
         SmartDashboard.putNumber(prefix + "/Pose Y", data.getPose().getY());
         SmartDashboard.putNumber(prefix + "/Pose Z", data.getPose().getZ());
+        SmartDashboard.putNumber(prefix + "/Pose Rotation", Units.radiansToDegrees(data.getPose().getRotation().getAngle()));
 
         SmartDashboard.putNumber(prefix + "/Distance to Tag", data.getDistanceToPrimaryTag());
 
-        SmartDashboard.putNumber(prefix + "/Pose Rotation", Units.radiansToDegrees(data.getPose().getRotation().getAngle()));
         SmartDashboard.putNumber(prefix + "/Timestamp", data.getTimestamp());
 
         robot.setPose(data.getPose().toPose2d());

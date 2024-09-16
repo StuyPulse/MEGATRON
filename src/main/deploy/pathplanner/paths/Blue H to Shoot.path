@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.29,
+        "y": 0.77
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.1779684844711955,
+        "y": 2.4336941028792762
+      },
+      "isLocked": false,
+      "linkedName": "Blue H"
+    },
+    {
+      "anchor": {
+        "x": 4.844074705820543,
+        "y": 6.341528771227186
+      },
+      "prevControl": {
+        "x": 6.985047751717528,
+        "y": 7.12657625836085
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Blue Midline Shoot Pose"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 7.957397728998733,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Blue To Shoots",
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

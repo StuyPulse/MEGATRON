@@ -3,8 +3,13 @@ package com.stuypulse.robot.commands.auton.BCA;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.arm.ArmSetState;
 import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
+import com.stuypulse.robot.commands.auton.FollowPathThenShoot;
 import com.stuypulse.robot.commands.auton.ShootRoutine;
-import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
+import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
+import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
+import com.stuypulse.robot.constants.Settings.Alignment.Shoot;
 import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
@@ -21,24 +26,21 @@ public class FourPieceBCA extends SequentialCommandGroup {
             new ArmToFeed(),
 
             // Drive to B + Shoot B
-            new IntakeAcquire(),
+            new IntakeSetAcquire(),
             SwerveDrive.getInstance().followPathCommand(paths[0]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new FollowPathThenShoot(paths[1], false),
             new ArmToFeed(),
 
             // Drive to C + Shoot C
-            new IntakeAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[1]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[2]),
+            new FollowPathThenShoot(paths[3], false),
             new ArmToFeed(),
 
             // Drive to A + Shoot A
-            new IntakeAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[2]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[4]),
+            new FollowPathThenShoot(paths[5], true),
             new ArmToFeed()
         );
     }

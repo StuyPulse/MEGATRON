@@ -1,39 +1,47 @@
 package com.stuypulse.robot.subsystems.swerve;
 
 import java.util.ArrayList;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.choreo.lib.Choreo;
-import com.choreo.lib.ChoreoControlFunction;
 import com.choreo.lib.ChoreoTrajectory;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.MountPoseConfigs;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Alignment.Rotation;
+import com.stuypulse.robot.constants.Settings.Alignment.Translation;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.FollowPathPointSpeakerCommand;
 import com.stuypulse.robot.util.vision.VisionData;
+import com.stuypulse.stuylib.math.Vector2D;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.Odometry;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -43,8 +51,6 @@ import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import com.stuypulse.robot.constants.Settings.Alignment.Rotation;
-import com.stuypulse.robot.constants.Settings.Alignment.Translation;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -72,8 +78,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
     private final Field2d field;
     private final FieldObject2d[] modules2D;
 
+    private final Translation2d[] moduleOffsets;
+
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+
+    private SwerveRequest.ApplyChassisSpeeds drive = new SwerveRequest.ApplyChassisSpeeds();
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private final Rotation2d BlueAlliancePerspectiveRotation = Rotation2d.fromDegrees(0);
@@ -88,98 +98,32 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         modules2D = new FieldObject2d[Modules.length];
+        
+        moduleOffsets = new Translation2d[] {
+            Settings.Swerve.FrontLeft.MODULE_OFFSET,
+            Settings.Swerve.FrontRight.MODULE_OFFSET,
+            Settings.Swerve.BackLeft.MODULE_OFFSET,
+            Settings.Swerve.BackRight.MODULE_OFFSET,
+        };
+
         field = new Field2d();
+        initFieldObject();
+        SmartDashboard.putData("Field", field);
+
+        configureAutoBuilder();
     }
 
-    public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
-        return run(() -> this.setControl(requestSupplier.get()));
-    }
-
-    private void startSimThread() {
-        m_lastSimTime = Utils.getCurrentTimeSeconds();
-
-        /* Run simulation at a faster rate so PID gains behave more reasonably */
-        m_simNotifier = new Notifier(() -> {
-            final double currentTime = Utils.getCurrentTimeSeconds();
-            double deltaTime = currentTime - m_lastSimTime;
-            m_lastSimTime = currentTime;
-
-            /* use the measured time delta, get battery voltage from WPILib */
-            updateSimState(deltaTime, RobotController.getBatteryVoltage());
-        });
-        m_simNotifier.startPeriodic(0.005);
-    }
-
-    public SwerveDriveKinematics getKinematics() {
-        return m_kinematics;
-    }
-
-    public Rotation2d getGyroAngle() {
-        return Rotation2d.fromRotations(m_yawGetter.getValueAsDouble());
-    }
-
-    public SwerveModulePosition[] getModulePositions() {
-        return m_modulePositions;
-    }
-
-    public Pose2d getPose() {
-        return m_odometry.getEstimatedPosition();
-    }
-
-    public Field2d getField() {
-        return field;
-    }
-
-    public void stop() {
-        setControl(new SwerveRequest.FieldCentric()
-                    .withVelocityX(0)
-                    .withVelocityY(0)
-                    .withRotationalRate(0));
-    }
+    /*** PATH FOLLOWING ***/
 
     public Command followPathCommand(String pathName) {
         return followPathCommand(PathPlannerPath.fromPathFile(pathName));
     }
 
-    public Command followPathWithSpeakerAlignCommand(PathPlannerPath path) {
-        return new FollowPathPointSpeakerCommand(
-            path, 
-            () -> getPose(), 
-            this::getChassisSpeeds, 
-            this::setChassisSpeeds, 
-            new PPHolonomicDriveController(
-                Motion.XY, 
-                Motion.THETA, 
-                0.02, 
-                4.9, 
-                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH)),
-            new ReplanningConfig(false, false),
-            () -> false,
-            this
-        );
-    }
-
-    // public Command followPathwithSpeakerAlignCommand(ChoreoTrajectory traj) {
-
-    // }
-
-    public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-        SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
-        setControl(drive.withVelocityX(chassisSpeeds.vxMetersPerSecond)
-            .withVelocityY(chassisSpeeds.vyMetersPerSecond)
-            .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond)         
-        );
-    }
-
-    public ChassisSpeeds getChassisSpeeds() {
-        return m_kinematics.toChassisSpeeds(m_moduleStates);
-    }
-
     public Command followPathCommand(PathPlannerPath path) {
         return new FollowPathHolonomic(
             path,
-            () -> getPose(),
-            () -> m_kinematics.toChassisSpeeds(m_moduleStates),
+            this::getPose,
+            this::getChassisSpeeds,
             this::setChassisSpeeds,
             new HolonomicPathFollowerConfig(
                 Motion.XY,
@@ -208,10 +152,101 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         );
     }
 
-    public void setFieldRelativeSpeeds(ChassisSpeeds chassisSpeeds) {
-        setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
-            chassisSpeeds,
-            getPose().getRotation()));
+    public Command followPathWithSpeakerAlignCommand(PathPlannerPath path) {
+        return new FollowPathPointSpeakerCommand(
+            path, 
+            this::getPose, 
+            this::getChassisSpeeds, 
+            this::setChassisSpeeds, 
+            new PPHolonomicDriveController(
+                Motion.XY, 
+                Motion.THETA, 
+                0.02, 
+                4.9, 
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH)),
+            new ReplanningConfig(false, false),
+            () -> false,
+            this
+        );
+    }
+
+    public ChassisSpeeds getChassisSpeeds() {
+        return m_kinematics.toChassisSpeeds(m_moduleStates);
+    }
+
+    public void setChassisSpeeds(ChassisSpeeds robotSpeeds) {
+        SmartDashboard.putNumber("Swerve/Chassis Target X", robotSpeeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Y", robotSpeeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Chassis Target Omega", robotSpeeds.omegaRadiansPerSecond);
+
+        ChassisSpeeds speeds = new ChassisSpeeds(robotSpeeds.vxMetersPerSecond, robotSpeeds.vyMetersPerSecond, -robotSpeeds.omegaRadiansPerSecond);
+        setControl(drive.withSpeeds(speeds));
+    }
+
+    public void drive(Vector2D velocity, double rotation) {
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            Robot.isBlue() ? velocity.y : -velocity.y, 
+            Robot.isBlue() ? -velocity.x : velocity.x,
+            -rotation,
+            getPose().getRotation());
+
+        Pose2d robotVel = new Pose2d(
+            Settings.DT * speeds.vxMetersPerSecond,
+            Settings.DT * speeds.vyMetersPerSecond,
+            Rotation2d.fromRadians(Settings.DT * speeds.omegaRadiansPerSecond));
+        Twist2d twistVel = new Pose2d().log(robotVel);
+
+        setChassisSpeeds(new ChassisSpeeds(
+            twistVel.dx / Settings.DT,
+            twistVel.dy / Settings.DT,
+            twistVel.dtheta / Settings.DT
+        ));
+    }
+
+    private void startSimThread() {
+        m_lastSimTime = Utils.getCurrentTimeSeconds();
+
+        /* Run simulation at a faster rate so PID gains behave more reasonably */
+        m_simNotifier = new Notifier(() -> {
+            final double currentTime = Utils.getCurrentTimeSeconds();
+            double deltaTime = currentTime - m_lastSimTime;
+            m_lastSimTime = currentTime;
+
+            /* use the measured time delta, get battery voltage from WPILib */
+            updateSimState(Settings.DT, RobotController.getBatteryVoltage());
+        });
+        m_simNotifier.startPeriodic(0.005);
+    }
+
+    public Rotation2d getGyroAngle() {
+        return Rotation2d.fromRotations(m_yawGetter.getValueAsDouble());
+    }
+
+    public Pose2d getPose() {
+        return m_odometry.getEstimatedPosition();
+    }
+
+    public Field2d getField() {
+        return field;
+    }
+
+    public void configureAutoBuilder() {
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            (Pose2d pose) -> seedFieldRelative(pose),
+            this::getChassisSpeeds,
+            this::setChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                Settings.Swerve.Motion.XY,
+                Settings.Swerve.Motion.THETA,
+                4.9,
+                Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
+                new ReplanningConfig(true, true)),
+            () -> false,
+            instance
+        );
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> getField().getObject("path").setPoses(poses));
     }
 
     public void initFieldObject() {
@@ -258,7 +293,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
 
         addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 10) : VecBuilder.fill(0.7, 0.7, 10));
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.2, 0.2, 1) : VecBuilder.fill(0.2, 0.2, 1));
         
     }
 
@@ -275,16 +310,16 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
      * 
      * <p>Should call this periodically
      */
-    private void applyOperatorPerspective() {
-        if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-            DriverStation.getAlliance().ifPresent((allianceColor) -> {
-                this.setOperatorPerspectiveForward(
-                        allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
-                                : BlueAlliancePerspectiveRotation);
-                hasAppliedOperatorPerspective = true;
-            });
-        }
-    }
+    // private void applyOperatorPerspective() {
+    //     if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
+    //         DriverStation.getAlliance().ifPresent((allianceColor) -> {
+    //             this.setOperatorPerspectiveForward(
+    //                     allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
+    //                             : BlueAlliancePerspectiveRotation);
+    //             hasAppliedOperatorPerspective = true;
+    //         });
+    //     }
+    // }
 
     @Override
     public void periodic() {
@@ -292,8 +327,8 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         for (int i = 0; i < Modules.length; i++) {
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Angle (deg)", Modules[i].getTargetState().angle.getDegrees());
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle (deg)", Modules[i].getCurrentState().angle.getDegrees());
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Velocity (m/s)", Modules[i].getTargetState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (m/s)", Modules[i].getCurrentState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Target Velocity (meters per s)", Modules[i].getTargetState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Velocity (meters per s)", Modules[i].getCurrentState().speedMetersPerSecond);
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Angle Error", Modules[i].getTargetState().angle.minus(Modules[i].getCurrentState().angle).getDegrees());
 
             SmartDashboard.putNumber("Swerve/Modules/" + moduleIds[i] + "/Drive Current", Modules[i].getDriveMotor().getSupplyCurrent().getValueAsDouble());
@@ -304,12 +339,16 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
         field.setRobotPose(getPose());
 
-        applyOperatorPerspective();
-
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {
             updateEstimatorWithVisionData(outputs);
         }
 
+        for (int i = 0; i < Modules.length; i++) {
+            modules2D[i].setPose(new Pose2d(
+                getPose().getTranslation().plus(moduleOffsets[i].rotateBy(getPose().getRotation())),
+                getModule(i).getCurrentState().angle.plus(getPose().getRotation())
+            ));
+        }
     }
 }

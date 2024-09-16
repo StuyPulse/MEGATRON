@@ -28,61 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class PathUtil {
-    public static class ChoreoAutonConfig {
-        
-        private final String name;
-        private final Function<ChoreoTrajectory[], Command> auton;
-        private final String[] trajs;
-
-            public ChoreoAutonConfig(String name, Function<ChoreoTrajectory[], Command> auton, String... trajs) {
-                this.name = name;
-                this.auton = auton;
-                this.trajs = trajs;
-
-                for (String traj : trajs) {
-                    try {
-                        Choreo.getTrajectory(traj);
-                    } catch (RuntimeException e) {
-                        DriverStation.reportError("Trajectory \"" + traj + "\" not found. Did you mean \"" + PathUtil.findClosestMatch(PathUtil.getTrajectoryFileNames(), traj) + "\"?", false);
-                        throw e;
-                    }
-                }
-            }
-
-            public ChoreoAutonConfig registerChoreoBlue(SendableChooser<Command> chooser){
-                chooser.addOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
-                return this;
-            }
-
-            public ChoreoAutonConfig registerChoreoRed(SendableChooser<Command> chooser){
-                chooser.addOption("Red " + this.name, auton.apply(loadTrajectories(this.trajs)));
-                return this;
-            }
-
-            public ChoreoAutonConfig registerDefaultChoreoBlue(SendableChooser<Command> chooser) {
-                chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
-                return this;
-            }
-
-            public ChoreoAutonConfig registerDefaultChoreoRed(SendableChooser<Command> chooser) {
-                chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
-                return this;
-            }
-
-        }
-
-        public static ChoreoTrajectory[] loadTrajectories(String... names) {
-            ChoreoTrajectory[] output = new ChoreoTrajectory[names.length];
-            for (int i = 0; i < names.length; i++) {
-                output[i] = loadChoreo(names[i]);
-            }
-            return output;
-        }
-
-        public static ChoreoTrajectory loadChoreo(String name) {
-            return Choreo.getTrajectory(name);
-        }
-    
+    /* PATHPLANNER */
     public static class AutonConfig {
     
         private final String name;
@@ -104,7 +50,7 @@ public class PathUtil {
                 }
             }
         }
-
+        
         public AutonConfig registerBlue(SendableChooser<Command> chooser) {
             chooser.addOption("Blue " + name, auton.apply(loadPaths(paths)));
             return this;
@@ -125,11 +71,55 @@ public class PathUtil {
             return this;
         }
 
+    }
+
+    /* CHOREO */
+
+    public static class ChoreoAutonConfig {
         
+        private final String name;
+        private final Function<ChoreoTrajectory[], Command> auton;
+        private final String[] trajs;
+
+        public ChoreoAutonConfig(String name, Function<ChoreoTrajectory[], Command> auton, String... trajs) {
+            this.name = name;
+            this.auton = auton;
+            this.trajs = trajs;
+
+            for (String traj : trajs) {
+                try {
+                    Choreo.getTrajectory(traj);
+                } catch (RuntimeException e) {
+                    DriverStation.reportError("Trajectory \"" + traj + "\" not found. Did you mean \"" + PathUtil.findClosestMatch(PathUtil.getTrajectoryFileNames(), traj) + "\"?", false);
+                    throw e;
+                }
+            }
+        }
+
+        public ChoreoAutonConfig registerChoreoBlue(SendableChooser<Command> chooser){
+            chooser.addOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+            return this;
+        }
+
+        public ChoreoAutonConfig registerChoreoRed(SendableChooser<Command> chooser){
+            chooser.addOption("Red " + this.name, auton.apply(loadTrajectories(this.trajs)));
+            return this;
+        }
+
+        public ChoreoAutonConfig registerDefaultChoreoBlue(SendableChooser<Command> chooser) {
+            chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+            return this;
+        }
+
+        public ChoreoAutonConfig registerDefaultChoreoRed(SendableChooser<Command> chooser) {
+            chooser.setDefaultOption("Blue " + this.name, auton.apply(loadTrajectories(this.trajs)));
+            return this;
+        }
 
     }
     
     /*** PATH LOADING ***/
+    /* PATHPLANNER */
 
     public static PathPlannerPath[] loadPathsRed(String... names) {
         PathPlannerPath[] output = new PathPlannerPath[names.length];
@@ -155,15 +145,40 @@ public class PathUtil {
         return flipPath(PathPlannerPath.fromPathFile(name));
     }
     
+    /* CHOREO */
+
+    public static ChoreoTrajectory[] loadTrajectoriesRed(String... names) {
+        ChoreoTrajectory[] output = new ChoreoTrajectory[names.length];
+        for (int i = 0; i < names.length; i++) {
+            output[i] = loadChoreoRed(names[i]);
+        }
+        return output;
+    }
+    
+    public static ChoreoTrajectory[] loadTrajectories(String... names) {
+        ChoreoTrajectory[] output = new ChoreoTrajectory[names.length];
+        for (int i = 0; i < names.length; i++) {
+            output[i] = loadChoreo(names[i]);
+        }
+        return output;
+    }
+
+    public static ChoreoTrajectory loadChoreo(String name) {
+        return Choreo.getTrajectory(name);
+    }
+
+    public static ChoreoTrajectory loadChoreoRed(String name) {
+        return Choreo.getTrajectory(name).flipped();
+    }
     
     /*** PATH MIRRORING ***/
 
     public static Translation2d flipFieldTranslation(Translation2d pose) {
-        return new Translation2d(pose.getX(), Field.WIDTH - pose.getY());
+        return new Translation2d(Field.LENGTH-pose.getX(), pose.getY());
     }
 
     public static Rotation2d flipFieldRotation(Rotation2d rotation) {
-        return rotation.times(-1);
+        return Rotation2d.fromDegrees(180).minus(rotation);
     }
 
     public static Pose2d flipFieldPose(Pose2d pose) {
@@ -202,6 +217,8 @@ public class PathUtil {
 
     /*** PATH FILENAME CORRECTION ***/
 
+    /* PATHPLANNER */
+
     public static List<String> getPathFileNames() {
         //  ../../../../../deploy/pathplanner/paths
 
@@ -217,6 +234,8 @@ public class PathUtil {
         Collections.sort(fileList);
         return fileList;
     }
+
+    /* CHOREO */
 
     public static List<String> getTrajectoryFileNames() {
         //  ../../../../../deploy/choreo

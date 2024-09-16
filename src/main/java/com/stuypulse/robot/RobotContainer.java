@@ -1,6 +1,9 @@
 package com.stuypulse.robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.arm.ArmToAmp;
 import com.stuypulse.robot.commands.arm.ArmToClimbing;
@@ -17,12 +20,13 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.ChoreoFivePieceADEF;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
+import com.stuypulse.robot.commands.auton.BCA.AltFourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
-import com.stuypulse.robot.commands.auton.BF_Series.ChoreoFivePieceBFAC;
-import com.stuypulse.robot.commands.auton.tests.ChoreoStraightLine;
-import com.stuypulse.robot.commands.auton.tests.StraightLine;
-import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
+import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
+import com.stuypulse.robot.commands.auton.SideAutons.OnePieceSourceSide;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDReset;
@@ -37,7 +41,6 @@ import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedA
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
-import com.stuypulse.robot.commands.swerve.noteAlignment.SwerveDriveDriveToNote;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Ports;
@@ -48,7 +51,6 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
-import com.stuypulse.robot.subsystems.vision.NoteVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.robot.util.PathUtil.ChoreoAutonConfig;
 import com.stuypulse.robot.util.ShooterLobFerryInterpolation;
@@ -63,10 +65,12 @@ import com.stuypulse.robot.subsystems.leds.instructions.LEDRainbow;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -78,7 +82,6 @@ public class RobotContainer {
     
     // Subsystem
     public final AprilTagVision vision = AprilTagVision.getInstance();
-    public final NoteVision noteVision = NoteVision.getInstance();
     
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();
@@ -87,7 +90,7 @@ public class RobotContainer {
 
     public final LEDController leds = LEDController.getInstance();
 
-    private final Telemetry logger = new Telemetry();
+    // private final Telemetry logger = new Telemetry();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -100,9 +103,14 @@ public class RobotContainer {
         configureAutons();
 
         if (Utils.isSimulation()) {
-            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
         }
-        swerve.registerTelemetry(logger::telemeterize);
+        // swerve.registerTelemetry(logger::telemeterize);
+
+        LiveWindow.disableAllTelemetry();
+
+        new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote())
+            .onTrue(new BuzzController(driver, 1));
     }
 
     /****************/
@@ -137,19 +145,16 @@ public class RobotContainer {
         driver.getRightTriggerButton()
             .onTrue(new ArmToFeed())
             // .whileTrue(new SwerveDriveDriveToNote(driver))
-            .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING))
-                .andThen(new BuzzController(driver))
-            );
+            .onTrue(new IntakeSetAcquire())
+            .whileTrue((new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING)))
+            .onFalse(new IntakeStop());
         
         // intake robot relative
         driver.getLeftTriggerButton()
             .onTrue(new ArmToFeed())
-            .whileTrue(new IntakeAcquire()
-                .deadlineWith(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
-                .andThen(new BuzzController(driver))
-            )
-            .whileTrue(new SwerveDriveDriveRobotRelative(driver));
+            .onTrue(new IntakeSetAcquire())
+            .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
+            .onFalse(new IntakeStop());
         
         // deacquire
         driver.getDPadLeft()
@@ -170,7 +175,7 @@ public class RobotContainer {
                     .alongWith(new ArmToSpeaker()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                                 .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()))
+                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()).andThen(new WaitCommand(0.25)))
                         .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
@@ -262,57 +267,49 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
-        // autonChooser.addOption("Do Nothing", new DoNothingAuton());
-        // autonChooser.addOption("Mobility", new Mobility());
-
-        // AutonConfig BCA = new AutonConfig("4 BCA", FourPieceBCA::new,
-        //     "Center to B", "B to C", "C to A");
-        // AutonConfig BCA_RED = new AutonConfig("4 BCA RED", FourPieceBCA::new,
-        // "Center to B", "B to C", "C to A");
-        // // AutonConfig HGF = new AutonConfig("4 HGF", FourPieceHGF::new,
-        // // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
-        // // AutonConfig HGF_RED = new AutonConfig("4 HGF RED", FourPieceHGF::new,
-        // // "Source to H", "H to Shoot", "H Shoot to G", "G to Shoot", "G Shoot to F", "F to Shoot");
-        // AutonConfig ADEF = new AutonConfig("5 ADEF", FivePieceADEF::new,
-        // "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
-        // AutonConfig ADEF_RED = new AutonConfig("5 ADEF RED", FivePieceADEF::new,
-        // "Amp to A", "A to D", "D to Shoot", "D Shoot to E", "E to Shoot", "E Shoot to F", "F to Shoot");
-
-        /*********************/
-        /*** CHOREO AUTONS ***/
-        /*********************/
-
-        // ChoreoAutonConfig FivePieceADEF = new ChoreoAutonConfig("Choreo ADEF", ChoreoFivePieceADEF::new,
-        // "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
-        // FivePieceADEF.registerChoreoRed(autonChooser);
-
-        // ChoreoAutonConfig FullFivePieceADEF = new ChoreoAutonConfig("Choreo ADEF", FullFivePieceADEF::new,
-        // "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
-        // FivePieceADEF.registerChoreoRed(autonChooser);
+        autonChooser.addOption("Do Nothing", new DoNothingAuton());
         
-        // autonChooser.addOption("FivePieceADEF", new ChoreoFivePieceADEF());
-
         
+        // Mobility
+        AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
+        AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
 
-        // ChoreoAutonConfig FullFivePieceADEF = new ChoreoAutonConfig("ADEF 1 thing", ChoreoADEFpath)
+        // BCA
+        AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
+        "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
+        AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
+        "Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
 
-
-        autonChooser.addOption("Straight Line", new ChoreoStraightLine());
-
-        // BCA.registerDefaultBlue(autonChooser);
-        // BCA_RED.registerRed(autonChooser);
-
-        // HGF.registerBlue(autonChooser);
-        // HGF_RED.registerRed(autonChooser);
-
-        // ADEF.registerBlue(autonChooser);
-        // ADEF_RED.registerRed(autonChooser);
-
-        //StraightLine.registerChoreoBlue(autonChooser);
-        // StraightLine.registerChoreoRed(autonChooser);
-
-        SmartDashboard.putData(autonChooser);
+       // HGF
+        AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
+        "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
+        AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
+        "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
         
+        // ADEF
+        AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
+        "Blue Amp to A", "Blue A to D", "Blue D to Shoot", "Blue D Shoot to E", "Blue E to Shoot", "Blue E Shoot to F", "Blue F to Shoot");
+        AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
+        "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot");
+
+        ChoreoAutonConfig Choreo_ADEF_BLUE = new ChoreoAutonConfig("Choreo ADEF", ChoreoFivePieceADEF::new, 
+        "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
+
+        MOBILITY_BLUE.registerBlue(autonChooser);
+        MOBILITY_RED.registerRed(autonChooser);
+
+        BCA_BLUE.registerDefaultBlue(autonChooser);
+        BCA_RED.registerDefaultRed(autonChooser);
+
+        HGF_BLUE.registerBlue(autonChooser);
+        HGF_RED.registerRed(autonChooser);
+
+        ADEF_BLUE.registerBlue(autonChooser);
+        ADEF_RED.registerRed(autonChooser);
+
+        Choreo_ADEF_BLUE.registerChoreoBlue(autonChooser);
+
+        SmartDashboard.putData("Autonomous", autonChooser);
     }
 
     public Command getAutonomousCommand() {
