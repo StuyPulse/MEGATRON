@@ -282,10 +282,17 @@ public class RobotContainer {
         /*** CHOREO AUTONS ***/
         /*********************/
 
-        ChoreoAutonConfig FivePieceADEF = new ChoreoAutonConfig("Choreo ADEF", ChoreoFivePieceADEF::new,
-        "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
-        FivePieceADEF.registerChoreoRed(autonChooser);
-        autonChooser.addOption("FivePieceADEF", new ChoreoFivePieceADEF());
+        // ChoreoAutonConfig FivePieceADEF = new ChoreoAutonConfig("Choreo ADEF", ChoreoFivePieceADEF::new,
+        // "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
+        // FivePieceADEF.registerChoreoRed(autonChooser);
+
+        // ChoreoAutonConfig FullFivePieceADEF = new ChoreoAutonConfig("Choreo ADEF", FullFivePieceADEF::new,
+        // "ADEF.1","ADEF.2","ADEF.3","ADEF.4","ADEF.5","ADEF.6","ADEF.7");
+        // FivePieceADEF.registerChoreoRed(autonChooser);
+        
+        // autonChooser.addOption("FivePieceADEF", new ChoreoFivePieceADEF());
+
+        
 
         // ChoreoAutonConfig FullFivePieceADEF = new ChoreoAutonConfig("ADEF 1 thing", ChoreoADEFpath)
 

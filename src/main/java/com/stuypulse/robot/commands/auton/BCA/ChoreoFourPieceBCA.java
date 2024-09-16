@@ -17,31 +17,35 @@ public class ChoreoFourPieceBCA extends SequentialCommandGroup {
 
     public ChoreoFourPieceBCA(ChoreoTrajectory... trajectories) {
         
+    //     addCommands(
+    //         // Preload Shot
+    //         ShootRoutine.fromSubwoofer(),
+    //         new ArmToFeed(),
+
+    //         // Drive to B + Shoot B
+    //         new IntakeAcquire(),
+    //         SwerveDrive.getInstance().choreoSwervePath(trajectories[0]),
+    //         new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+    //         ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+    //         new ArmToFeed(),
+
+    //         // Drive to C + Shoot C
+    //         new IntakeAcquire(),
+    //         SwerveDrive.getInstance().choreoSwervePath(trajectories[1]),
+    //         new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+    //         ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+    //         new ArmToFeed(),
+
+    //         // Drive to A + Shoot A
+    //         new IntakeAcquire(),
+    //         SwerveDrive.getInstance().choreoSwervePath(trajectories[2]),
+    //         new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
+    //         ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
+    //         new ArmToFeed()
+    //     );
+
         addCommands(
-            // Preload Shot
-            ShootRoutine.fromSubwoofer(),
-            new ArmToFeed(),
-
-            // Drive to B + Shoot B
-            new IntakeAcquire(),
-            SwerveDrive.getInstance().choreoSwervePath(trajectories[0]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
-            new ArmToFeed(),
-
-            // Drive to C + Shoot C
-            new IntakeAcquire(),
-            SwerveDrive.getInstance().choreoSwervePath(trajectories[1]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
-            new ArmToFeed(),
-
-            // Drive to A + Shoot A
-            new IntakeAcquire(),
-            SwerveDrive.getInstance().choreoSwervePath(trajectories[2]),
-            new WaitCommand(1.0).until(() -> Shooter.getInstance().hasNote()),
-            ShootRoutine.fromAnywhere().withTimeout(2.5).onlyIf(() -> Shooter.getInstance().hasNote()),
-            new ArmToFeed()
+        SwerveDrive.getInstance().choreoSwervePath(trajectories[0])
         );
     }
 }
