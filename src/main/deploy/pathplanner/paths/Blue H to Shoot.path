@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.3888144668030415,
-        "y": 1.752870923896609
+        "x": 4.060360941234703,
+        "y": 1.3448277608805934
       },
       "isLocked": false,
       "linkedName": "Blue H"
     },
     {
       "anchor": {
-        "x": 2.0027123861911416,
-        "y": 4.198007806357874
+        "x": 1.6981417438618351,
+        "y": 3.7772118849081013
       },
       "prevControl": {
-        "x": 1.46808206748854,
-        "y": 3.479398508276183
+        "x": 1.1635114251592336,
+        "y": 3.05860258682641
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.96827356677917,
+    "rotation": -48.990913098429836,
     "rotateFast": false
   },
   "reversed": false,
