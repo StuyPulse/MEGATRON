@@ -40,6 +40,8 @@ import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedA
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
+import com.stuypulse.robot.commands.vision.VisionChangeWhiteList;
+import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Ports;
@@ -88,7 +90,7 @@ public class RobotContainer {
 
     public final LEDController leds = LEDController.getInstance();
 
-    // private final Telemetry logger = new Telemetry();
+    private final Telemetry logger = new Telemetry();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -103,12 +105,12 @@ public class RobotContainer {
         if (Utils.isSimulation()) {
             swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
         }
-        // swerve.registerTelemetry(logger::telemeterize);
+        swerve.registerTelemetry(logger::telemeterize);
 
         LiveWindow.disableAllTelemetry();
 
         new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote())
-            .onTrue(new BuzzController(driver, 1));
+            .onTrue(new BuzzController(driver, 1, 1));
     }
 
     /****************/
@@ -165,6 +167,10 @@ public class RobotContainer {
         // speaker align and score 
         // score amp
         driver.getRightBumper()
+            .onTrue(new ConditionalCommand(
+                new VisionChangeWhiteList(7, 8), 
+                new VisionChangeWhiteList(3, 4), 
+                () -> Robot.isBlue()))
             .whileTrue(new ConditionalCommand(
                 new SwerveDriveDrive(driver)
                     .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
@@ -179,7 +185,8 @@ public class RobotContainer {
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
                 () -> Arm.getInstance().getState() == Arm.State.AMP))
             .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed().onlyIf(() -> arm.getState() == Arm.State.SPEAKER));
+            .onFalse(new ArmToFeed().onlyIf(() -> arm.getState() == Arm.State.SPEAKER))
+            .onFalse(new VisionReloadWhiteList());
 
         // lob ferry align and shoot
         driver.getLeftStickButton()
