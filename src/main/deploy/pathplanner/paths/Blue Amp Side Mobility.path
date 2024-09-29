@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5588456716347956,
-        "y": 5.5301848373414
+        "x": 0.7023114046228107,
+        "y": 6.739121939782341
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5783978521082047,
-        "y": 5.532684682370853
+        "x": 1.702311404622812,
+        "y": 6.739121939782341
       },
       "isLocked": false,
-      "linkedName": "Red BCA Starting Pose"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.148650962480497,
-        "y": 5.5301848373414
+        "x": 2.9026396514331507,
+        "y": 6.9956624528633675
       },
       "prevControl": {
-        "x": 2.146405401441756,
-        "y": 5.54350131951752
+        "x": 1.9026396514331507,
+        "y": 6.9956624528633675
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Red BCA B"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -0.14529343403600373,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Notes",
+  "folder": "Misc",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 60.94539590092292,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
