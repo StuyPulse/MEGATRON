@@ -28,7 +28,7 @@ public abstract class ShootRoutine {
             new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
                 .alongWith(new ShooterWaitForTarget().withTimeout(1.0)),
             new ShooterFeederShoot(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(1.25)),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(0.5)),
             new ShooterFeederStop()
         );
     }
