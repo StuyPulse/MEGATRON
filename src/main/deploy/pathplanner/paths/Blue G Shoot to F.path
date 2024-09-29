@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8609201144334573,
-        "y": 0.9659919274607456
+        "x": 1.0549632495276386,
+        "y": 1.204497907571314
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
@@ -20,8 +20,8 @@
         "y": 4.07671724848658
       },
       "prevControl": {
-        "x": 5.444037512889015,
-        "y": 4.851861503388185
+        "x": 8.281950694955519,
+        "y": 0.5730135676795581
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.0333876477886335,
+    "rotation": 61.3046916104419,
     "rotateFast": false
   },
   "reversed": false,
