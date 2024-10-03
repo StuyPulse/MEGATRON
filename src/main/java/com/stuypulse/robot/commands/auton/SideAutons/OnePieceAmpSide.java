@@ -24,9 +24,9 @@ public class OnePieceAmpSide extends SequentialCommandGroup {
 
             new IntakeSetAcquire(),
             // Mobility
-            SwerveDrive.getInstance().followPathCommand(paths[0]),
-            new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).andThen(ShootRoutine.fromAnywhere())
-                .onlyIf(() -> Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())
+            SwerveDrive.getInstance().followPathCommand(paths[0])
+            // new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).andThen(ShootRoutine.fromAnywhere())
+            //     .onlyIf(() -> Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())
         );
     }
 

@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.arm.ArmToPreClimb;
 import com.stuypulse.robot.commands.arm.ArmToSpeaker;
 import com.stuypulse.robot.commands.arm.ArmToSubwooferShot;
 import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
+import com.stuypulse.robot.commands.auton.CenterMobilityWithWait;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
@@ -276,6 +277,11 @@ public class RobotContainer {
         AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
         AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
 
+        AutonConfig CENTER_MOBILITY_BLUE = new AutonConfig("Center Mobility", CenterMobilityWithWait::new, 
+            "Mobility");
+        AutonConfig CENTER_MOBILITY_RED = new AutonConfig("Center Mobility", CenterMobilityWithWait::new, 
+        "Mobility");
+
         // BCA
         AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
         "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
@@ -294,10 +300,10 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F");
 
-        // AutonConfig AMP_SIDE_ONE_PIECE_BLUE = new AutonConfig("Amp Side One Piece", OnePieceAmpSide::new, 
-        //     "Blue Amp Side Mobility");
-        // AutonConfig AMP_SIDE_ONE_PIECE_RED = new AutonConfig("Amp Side One Piece", OnePieceAmpSide::new, 
-        //     "Red Amp Side Mobility");
+        AutonConfig AMP_SIDE_ONE_PIECE_BLUE = new AutonConfig("Amp Side One Piece", OnePieceAmpSide::new, 
+            "Blue Amp Side Mobility");
+        AutonConfig AMP_SIDE_ONE_PIECE_RED = new AutonConfig("Amp Side One Piece", OnePieceAmpSide::new, 
+            "Red Amp Side Mobility");
 
         AutonConfig SOURCE_SIDE_ONE_PIECE_BLUE = new AutonConfig("Source Side One Piece", OnePieceSourceSide::new, 
         "Blue Source Side Mobility");
@@ -305,8 +311,11 @@ public class RobotContainer {
         AutonConfig SOURCE_SIDE_ONE_PIECE_RED = new AutonConfig("Source Side One Piece", OnePieceSourceSide::new, 
         "Red Source Side Mobility");
 
-        // AMP_SIDE_ONE_PIECE_BLUE.registerBlue(autonChooser);
-        // AMP_SIDE_ONE_PIECE_RED.registerRed(autonChooser);
+        AMP_SIDE_ONE_PIECE_BLUE.registerBlue(autonChooser);
+        AMP_SIDE_ONE_PIECE_RED.registerRed(autonChooser);
+
+        CENTER_MOBILITY_BLUE.registerBlue(autonChooser);
+        CENTER_MOBILITY_RED.registerRed(autonChooser);
 
         SOURCE_SIDE_ONE_PIECE_BLUE.registerBlue(autonChooser);
         SOURCE_SIDE_ONE_PIECE_RED.registerRed(autonChooser);
