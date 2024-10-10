@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,14 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.3898658008179314,
-    "rotateFast": false
+    "rotation": -3.3898658008179314
   },
   "reversed": false,
-  "folder": "Red To Shoots",
-  "previewStartingState": {
-    "rotation": 2.5273065948629965,
-    "velocity": 0
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }
