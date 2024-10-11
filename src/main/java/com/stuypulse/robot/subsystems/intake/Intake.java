@@ -79,5 +79,6 @@ public abstract class Intake extends SubsystemBase {
         }
 
         SmartDashboard.putString("Intake/State", state.name());
+        SmartDashboard.putString("States/Intake", state.name());
     }
 }

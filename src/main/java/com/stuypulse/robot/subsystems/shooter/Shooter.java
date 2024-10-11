@@ -64,6 +64,7 @@ public abstract class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putString("Shooter/Feeder State", getFeederState().toString());
+        SmartDashboard.putString("States/Feeder", getFeederState().toString());
         
         // feeder automatically pushes note further into shooter when its sticking too far out
         if (Arm.getInstance().getState() == Arm.State.AMP && !hasNote() && feederState != FeederState.DEACQUIRING) {

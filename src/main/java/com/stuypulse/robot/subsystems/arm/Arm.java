@@ -63,5 +63,6 @@ public abstract class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putString("Arm/State", state.toString());
+        SmartDashboard.putString("States/Arm", state.toString());
     }
 }
