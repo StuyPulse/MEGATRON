@@ -33,10 +33,7 @@
           "width": 0.8679999709129333
         },
         "top": 79,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
+        "width": 16.541748046875
       },
       "/SmartDashboard/Autonomous": {
         "window": {
@@ -81,6 +78,9 @@
     }
   },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
     "visible": true
   },
   "NetworkTables View": {

@@ -16,6 +16,7 @@ import com.stuypulse.robot.commands.arm.ArmWaitUntilAtTarget;
 import com.stuypulse.robot.commands.auton.CenterMobilityWithWait;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.Mobility;
+import com.stuypulse.robot.commands.auton.RerouteTest;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
@@ -302,6 +303,12 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot");
 
+        // Reroute Test
+        AutonConfig Reroute_Test_Blue = new AutonConfig("Reroute Test", RerouteTest::new,
+        "Blue Center to B", "Blue B to Center", "B to A Reroute Test", "Blue A to Center");
+        AutonConfig Reroute_Test_Red = new AutonConfig("Reroute Test", RerouteTest::new,
+        "Red Center to B", "Red B to Center", "B to A Reroute Test", "Red A to Center");
+
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);
 
@@ -316,6 +323,9 @@ public class RobotContainer {
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
+
+        Reroute_Test_Blue.registerBlue(autonChooser);
+        Reroute_Test_Red.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
