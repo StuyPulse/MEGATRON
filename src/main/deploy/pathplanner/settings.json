@@ -3,9 +3,11 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "Blue Reroutes",
     "Blue To Note",
     "Blue To Shoot",
     "Blue Util",
+    "Red Reroutes",
     "Red To Note",
     "Red To Shoot",
     "Red Util"
