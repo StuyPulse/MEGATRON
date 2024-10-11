@@ -50,6 +50,7 @@
       ]
     }
   },
+  "resetOdom": true,
   "folder": "Red Autons",
   "choreoAuto": false
 }

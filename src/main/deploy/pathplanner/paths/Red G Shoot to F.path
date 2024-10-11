@@ -20,8 +20,8 @@
         "y": 4.107340350097367
       },
       "prevControl": {
-        "x": 5.386156485668626,
-        "y": 4.755617469754285
+        "x": 5.164920200562127,
+        "y": 4.889743770372958
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,11 +31,11 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
-      "rotationDegrees": 40.376097780771914,
-      "rotateFast": false
+      "rotationDegrees": 40.376097780771914
     }
   ],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -45,14 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Red To Notes",
-  "previewStartingState": {
-    "rotation": 4.900031264073487,
-    "velocity": 0
+  "folder": "Red To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

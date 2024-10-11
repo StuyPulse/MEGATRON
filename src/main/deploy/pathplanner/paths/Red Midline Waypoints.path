@@ -20,12 +20,12 @@
         "y": 5.762294601512281
       },
       "prevControl": {
-        "x": 8.48940488246149,
-        "y": 5.716858400979277
+        "x": 8.622136392049091,
+        "y": 5.650496797303296
       },
       "nextControl": {
-        "x": 8.307648711645701,
-        "y": 5.807730802045285
+        "x": 8.174917202058099,
+        "y": 5.874092405721266
       },
       "isLocked": false,
       "linkedName": "Red E"
@@ -36,12 +36,12 @@
         "y": 4.107340350097367
       },
       "prevControl": {
-        "x": 8.375969336109307,
-        "y": 4.061944508391754
+        "x": 8.508775218216513,
+        "y": 3.995554868341857
       },
       "nextControl": {
-        "x": 8.194349589498785,
-        "y": 4.15273619180298
+        "x": 8.061543707391579,
+        "y": 4.219125831852876
       },
       "isLocked": false,
       "linkedName": "Red F"
@@ -52,12 +52,12 @@
         "y": 2.4289828564776177
       },
       "prevControl": {
-        "x": 8.38526969806995,
-        "y": 2.3837161630196566
+        "x": 8.518313632286112,
+        "y": 2.3172369381562925
       },
       "nextControl": {
-        "x": 8.204086508916278,
-        "y": 2.4742495499355788
+        "x": 8.071042574700115,
+        "y": 2.540728774798943
       },
       "isLocked": false,
       "linkedName": "Red G"
@@ -68,12 +68,12 @@
         "y": 0.8097082386501073
       },
       "prevControl": {
-        "x": 8.400002941801565,
-        "y": 0.7648548195846314
+        "x": 8.533809264069246,
+        "y": 0.6980902862708193
       },
       "nextControl": {
-        "x": 8.220216736509817,
-        "y": 0.8545616577155823
+        "x": 8.086410414242136,
+        "y": 0.9213261910293936
       },
       "isLocked": false,
       "linkedName": "Red H"
@@ -132,8 +132,8 @@
         "y": 4.3183368853716875
       },
       "prevControl": {
-        "x": 0.8071861047925966,
-        "y": 4.2925800494341875
+        "x": 0.9778019316074724,
+        "y": 4.216308991260588
       },
       "nextControl": null,
       "isLocked": false,
@@ -142,6 +142,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -151,11 +152,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Utils",
-  "previewStartingState": null,
+  "folder": "Red Util",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }
