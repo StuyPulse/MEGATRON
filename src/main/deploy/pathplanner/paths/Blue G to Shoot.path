@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.532555555996529,
-        "y": 0.27820272623432096
+        "x": 4.57490373670206,
+        "y": 0.058470772212200116
       },
       "isLocked": false,
       "linkedName": "Blue G"
     },
     {
       "anchor": {
-        "x": 2.0027123861911416,
-        "y": 4.198007806357874
+        "x": 1.6981417438618351,
+        "y": 3.7772118849081013
       },
       "prevControl": {
-        "x": 1.9231500107345454,
-        "y": 3.3438299893712884
+        "x": 1.5695060449949956,
+        "y": 2.970315228379746
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -25.262184205889845
+    "rotation": -44.999999999999986,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Blue To Shoot",

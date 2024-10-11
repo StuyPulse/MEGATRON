@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0027123861911416,
-        "y": 4.198007806357874
+        "x": 1.6981417438618351,
+        "y": 3.7772118849081013
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1654907567627637,
-        "y": 1.3867878489105188
+        "x": 1.0549632495276386,
+        "y": 1.204497907571314
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
@@ -20,8 +20,8 @@
         "y": 4.07671724848658
       },
       "prevControl": {
-        "x": 5.444037512889015,
-        "y": 4.851861503388186
+        "x": 8.281950694955519,
+        "y": 0.5730135676795581
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.0333876477886335
+    "rotation": 61.3046916104419,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Blue To Note",

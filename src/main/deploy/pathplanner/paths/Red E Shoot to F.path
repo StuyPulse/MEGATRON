@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0638143675840928,
-        "y": 4.273868488213167
+        "x": 4.457962192277661,
+        "y": 6.455173252226847
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2052339932432847,
-        "y": 4.588031704895254
+        "x": 5.599381817936853,
+        "y": 6.769336468908934
       },
       "isLocked": false,
       "linkedName": "Red Midline Shoot Pose"
@@ -20,8 +20,8 @@
         "y": 4.107340350097367
       },
       "prevControl": {
-        "x": 6.418735452612276,
-        "y": 4.813339179691751
+        "x": 7.942820216124693,
+        "y": 6.3148433989167545
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -26.708005631201473
+    "rotation": -76.9119463322888,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Red To Note",
