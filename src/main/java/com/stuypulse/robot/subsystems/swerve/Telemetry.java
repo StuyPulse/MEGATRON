@@ -41,32 +41,32 @@ public class Telemetry {
     private double lastTime = Utils.getCurrentTimeSeconds();
 
     /* Mechanisms to represent the swerve module states */
-    // private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
-    //     new Mechanism2d(1, 1),
-    //     new Mechanism2d(1, 1),
-    //     new Mechanism2d(1, 1),
-    //     new Mechanism2d(1, 1),
-    // };
+    private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
+        new Mechanism2d(1, 1),
+        new Mechanism2d(1, 1),
+        new Mechanism2d(1, 1),
+        new Mechanism2d(1, 1),
+    };
     
     /* A direction and length changing ligament for speed representation */
-    // private final MechanismLigament2d[] m_moduleSpeeds = new MechanismLigament2d[] {
-    //     m_moduleMechanisms[0].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-    //     m_moduleMechanisms[1].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-    //     m_moduleMechanisms[2].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-    //     m_moduleMechanisms[3].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-    // };
+    private final MechanismLigament2d[] m_moduleSpeeds = new MechanismLigament2d[] {
+        m_moduleMechanisms[0].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        m_moduleMechanisms[1].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        m_moduleMechanisms[2].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        m_moduleMechanisms[3].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+    };
 
     /* A direction changing and length constant ligament for module direction */
-    // private final MechanismLigament2d[] m_moduleDirections = new MechanismLigament2d[] {
-    //     m_moduleMechanisms[0].getRoot("RootDirection", 0.5, 0.5)
-    //         .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-    //     m_moduleMechanisms[1].getRoot("RootDirection", 0.5, 0.5)
-    //         .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-    //     m_moduleMechanisms[2].getRoot("RootDirection", 0.5, 0.5)
-    //         .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-    //     m_moduleMechanisms[3].getRoot("RootDirection", 0.5, 0.5)
-    //         .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-    // };
+    private final MechanismLigament2d[] m_moduleDirections = new MechanismLigament2d[] {
+        m_moduleMechanisms[0].getRoot("RootDirection", 0.5, 0.5)
+            .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        m_moduleMechanisms[1].getRoot("RootDirection", 0.5, 0.5)
+            .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        m_moduleMechanisms[2].getRoot("RootDirection", 0.5, 0.5)
+            .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        m_moduleMechanisms[3].getRoot("RootDirection", 0.5, 0.5)
+            .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+    };
 
     /* Accept the swerve drive state and telemeterize it to smartdashboard */
     public void telemeterize(SwerveDriveState state) {
@@ -94,12 +94,12 @@ public class Telemetry {
         odomPeriod.set(state.OdometryPeriod);
 
         /* Telemeterize the module's states */
-        // for (int i = 0; i < 4; ++i) {
-        //     m_moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
-        //     m_moduleDirections[i].setAngle(state.ModuleStates[i].angle);
-        //     m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * Settings.Swerve.MAX_LINEAR_VELOCITY));
+        for (int i = 0; i < 4; ++i) {
+            m_moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
+            m_moduleDirections[i].setAngle(state.ModuleStates[i].angle);
+            m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * Settings.Swerve.MAX_LINEAR_VELOCITY));
 
-        //     SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
-        // }
+            SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
+        }
     }
 }
