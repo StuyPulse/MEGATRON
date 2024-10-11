@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.398526797053595,
-        "y": 5.762294601512281
+        "x": 8.310109839155691,
+        "y": 0.8097082386501073
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.564270444017079,
-        "y": 6.29686807829717
+        "x": 8.30593631905659,
+        "y": 1.1023933241191974
       },
       "isLocked": false,
-      "linkedName": "Red E"
+      "linkedName": "Red H"
     },
     {
       "anchor": {
-        "x": 4.457962192277661,
-        "y": 6.455173252226847
+        "x": 8.294678103493114,
+        "y": 2.4289828564776177
       },
       "prevControl": {
-        "x": 5.82874259938907,
-        "y": 6.723281631635568
+        "x": 8.291639482657367,
+        "y": 1.4737865042304326
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Red Midline Shoot Pose"
+      "linkedName": "Red G"
     }
   ],
   "rotationTargets": [],
@@ -34,19 +34,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 11.086538893198085
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Red To Shoot",
+  "folder": "Red Reroutes",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

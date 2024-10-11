@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9075282655371586,
-        "y": 7.045342819474668
+        "x": 2.775532808819606,
+        "y": 7.110065798882234
       },
       "isLocked": false,
       "linkedName": "Blue BCA A"
@@ -20,12 +20,12 @@
         "y": 5.75
       },
       "prevControl": {
-        "x": 3.3415525097874537,
-        "y": 5.754086506726766
+        "x": 3.1249498626139145,
+        "y": 5.858868892078977
       },
       "nextControl": {
-        "x": 3.3584474902125465,
-        "y": 5.745913493273234
+        "x": 3.5750501373860857,
+        "y": 5.641131107921023
       },
       "isLocked": false,
       "linkedName": "Blue BCA B"
@@ -36,12 +36,12 @@
         "y": 4.73
       },
       "prevControl": {
-        "x": 2.9214623782124196,
-        "y": 4.734008257630718
+        "x": 2.7036989465538874,
+        "y": 4.836244214944532
       },
       "nextControl": {
-        "x": 2.93853762178758,
-        "y": 4.725991742369283
+        "x": 3.156301053446112,
+        "y": 4.623755785055469
       },
       "isLocked": false,
       "linkedName": "Blue BCA C"
@@ -52,12 +52,12 @@
         "y": 6.298406444469139
       },
       "prevControl": {
-        "x": 2.117196006835459,
-        "y": 6.302164304992502
+        "x": 1.8960030914004606,
+        "y": 6.396341519083642
       },
       "nextControl": {
-        "x": 2.1348480924908353,
-        "y": 6.294648583945776
+        "x": 2.356041007925834,
+        "y": 6.200471369854635
       },
       "isLocked": false,
       "linkedName": "Blue BCA A Shoot Pose"
@@ -68,12 +68,12 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.9402510098439658,
-        "y": 5.552956589779829
+        "x": 1.7107599127148272,
+        "y": 5.622554673424824
       },
       "nextControl": {
-        "x": 1.959748990156034,
-        "y": 5.54704341022017
+        "x": 2.1892400872851727,
+        "y": 5.477445326575175
       },
       "isLocked": false,
       "linkedName": "Blue BCA B Shoot Pose"
@@ -84,12 +84,12 @@
         "y": 5.5301848373414
       },
       "prevControl": {
-        "x": 1.5461432500280547,
-        "y": 5.530577360741923
+        "x": 1.308964948763653,
+        "y": 5.53790651704178
       },
       "nextControl": {
-        "x": 1.5715480932415364,
-        "y": 5.529792313940877
+        "x": 1.8087263945059382,
+        "y": 5.52246315764102
       },
       "isLocked": false,
       "linkedName": "Blue BCA Starting Pose"
@@ -100,8 +100,8 @@
         "y": 6.43
       },
       "prevControl": {
-        "x": 2.377846597750998,
-        "y": 6.4221875109867375
+        "x": 2.1642311849658524,
+        "y": 6.346855151347819
       },
       "nextControl": null,
       "isLocked": false,
@@ -110,6 +110,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -119,11 +120,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Utils",
-  "previewStartingState": null,
+  "folder": "Blue Util",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }
