@@ -39,6 +39,12 @@
           "data": {
             "pathName": "Red E Shoot to F"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red F to Shoot"
+          }
         }
       ]
     }

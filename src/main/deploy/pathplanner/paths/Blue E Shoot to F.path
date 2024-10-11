@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 3.7806787928390673,
+        "y": 6.027870676111723
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.719778923311217,
-        "y": 4.520148051841561
+        "x": 4.978996157066389,
+        "y": 6.932057215966284
       },
       "isLocked": false,
-      "linkedName": "Blue Midline Shoot Pose"
+      "linkedName": "Blue DEF Shoot"
     },
     {
       "anchor": {
@@ -20,20 +20,15 @@
         "y": 4.07671724848658
       },
       "prevControl": {
-        "x": 5.381778431396835,
-        "y": 3.889245335081215
+        "x": 6.607315802594568,
+        "y": 6.342073420257952
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Blue F"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": -19.34074487837396
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -45,7 +40,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -0.1285171141429038
+    "rotation": -67.94269283671294
   },
   "reversed": false,
   "folder": "Blue To Note",

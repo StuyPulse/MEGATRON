@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 9.27634801698175,
-        "y": 7.530253156674468
+        "x": 8.303868098476938,
+        "y": 7.429163844438801
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.325377107599455,
-        "y": 6.478010695046689
+        "x": 5.381303446027345,
+        "y": 6.520162874561078
       },
       "isLocked": false,
       "linkedName": "Blue D"
     },
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 3.7806787928390673,
+        "y": 6.027870676111723
       },
       "prevControl": {
-        "x": 4.554551207610822,
-        "y": 4.801907977269035
+        "x": 6.65225436733672,
+        "y": 6.925044975688779
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue Midline Shoot Pose"
+      "linkedName": "Blue DEF Shoot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 16.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -45,7 +40,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 17.438531624411638
+    "rotation": 11.961303526373325
   },
   "reversed": false,
   "folder": "Blue To Shoot",

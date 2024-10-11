@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.398526797053595,
-        "y": 5.762294601512281
+        "x": 8.304224404745106,
+        "y": 5.774418150688153
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.445623953003859,
-        "y": 6.495269240538482
+        "x": 5.35132156069537,
+        "y": 6.507392789714355
       },
       "isLocked": false,
       "linkedName": "Blue E"
     },
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 3.7806787928390673,
+        "y": 6.027870676111723
       },
       "prevControl": {
-        "x": 2.7499515400037486,
-        "y": 3.779663655994678
+        "x": 4.849538212965315,
+        "y": 6.758714216502507
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue Midline Shoot Pose"
+      "linkedName": "Blue DEF Shoot"
     }
   ],
   "rotationTargets": [],
