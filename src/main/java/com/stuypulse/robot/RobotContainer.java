@@ -19,7 +19,6 @@ import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
-import com.stuypulse.robot.commands.auton.HGF.ReroutableFourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceSourceSide;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
@@ -294,12 +293,6 @@ public class RobotContainer {
         "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
-
-        // Reroutable HGF
-        AutonConfig ReroutableHGF_BLUE = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
-            "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot", "Blue H to G Reroute", "Blue G to F Reroute");
-        AutonConfig ReroutableHGF_RED = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
-        "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot", "Red H to G Reroute", "Red G to F Reroute");
         
         // ADEF
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
@@ -335,9 +328,6 @@ public class RobotContainer {
 
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
-
-        ReroutableHGF_BLUE.registerBlue(autonChooser);
-        ReroutableHGF_RED.registerRed(autonChooser);
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
