@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8873789264864103,
-        "y": 6.791673861205373
+        "x": 2.8901573716465885,
+        "y": 6.887841058048188
       },
       "isLocked": false,
       "linkedName": "Blue BCA C Shoot Pose"
@@ -20,8 +20,8 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 2.696629495328732,
-        "y": 6.75631427957679
+        "x": 2.5359966344932694,
+        "y": 6.550650422729418
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,11 +31,11 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": 0.0
+      "rotationDegrees": 0,
+      "rotateFast": false
     }
   ],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -45,13 +45,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 32.52489028779099
+    "rotation": 32.52489028779099,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Note",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+  "folder": "Blue To Notes",
+  "previewStartingState": {
+    "rotation": 31.8239059025087,
+    "velocity": 0
   },
   "useDefaultConstraints": false
 }

@@ -36,12 +36,12 @@
         "y": 4.098014005179796
       },
       "prevControl": {
-        "x": 2.8351156165893374,
-        "y": 3.923816422161728
+        "x": 2.7444979098858338,
+        "y": 4.011846192832384
       },
       "nextControl": {
-        "x": 2.4764781836815977,
-        "y": 4.272211588197864
+        "x": 2.5670958903851013,
+        "y": 4.184181817527208
       },
       "isLocked": false,
       "linkedName": "Red BCA C"
@@ -52,12 +52,12 @@
         "y": 6.441955237891131
       },
       "prevControl": {
-        "x": 2.1500589388775917,
-        "y": 6.274374376790836
+        "x": 2.0483849067502966,
+        "y": 6.366218238379412
       },
       "nextControl": {
-        "x": 1.779024412220658,
-        "y": 6.609536098991425
+        "x": 1.8806984443479529,
+        "y": 6.51769223740285
       },
       "isLocked": false,
       "linkedName": "Red BCA C Shoot Pose"
@@ -68,12 +68,12 @@
         "y": 5.5301848373414
       },
       "prevControl": {
-        "x": 1.7713026358721444,
-        "y": 5.398419749601704
+        "x": 1.6271440114785456,
+        "y": 5.4878264389039
       },
       "nextControl": {
-        "x": 1.3463887073974468,
-        "y": 5.661949925081096
+        "x": 1.4905473317910456,
+        "y": 5.5725432357789
       },
       "isLocked": false,
       "linkedName": "Red BCA Starting Pose"
@@ -84,12 +84,12 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.0191609056264928,
-        "y": 5.790243145860446
+        "x": 1.9685546875000002,
+        "y": 5.614453125
       },
       "nextControl": {
-        "x": 1.8808390943735087,
-        "y": 5.309756854139554
+        "x": 1.9314453125000002,
+        "y": 5.485546875
       },
       "isLocked": false,
       "linkedName": "Red BCA B Shoot Pose"
@@ -110,7 +110,6 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -120,13 +119,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 0,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red Util",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
-  },
+  "folder": "Utils",
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
