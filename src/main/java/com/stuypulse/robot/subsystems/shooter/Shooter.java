@@ -106,6 +106,9 @@ public abstract class Shooter extends SubsystemBase {
             case SPEAKER:
                 flywheelState = FlywheelState.SPEAKER;
                 break;
+            case SUBWOOFER_SHOT:
+                flywheelState = FlywheelState.SPEAKER;
+                break;
             case CLIMBING:
                 flywheelState = FlywheelState.STOP;
                 break;
