@@ -274,7 +274,6 @@ public class RobotContainer {
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         
-        
         // Mobility
         AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
         AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");

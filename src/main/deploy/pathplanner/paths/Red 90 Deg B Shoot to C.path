@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.95,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.9191117995331228,
+        "y": 4.0189323691519405
+      },
+      "isLocked": false,
+      "linkedName": "Red BCA B Shoot Pose"
+    },
+    {
+      "anchor": {
+        "x": 2.6557969001354675,
+        "y": 4.098014005179796
+      },
+      "prevControl": {
+        "x": 1.6557969001354675,
+        "y": 4.098014005179796
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red BCA C"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

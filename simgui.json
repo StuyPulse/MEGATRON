@@ -33,7 +33,10 @@
           "width": 0.8679999709129333
         },
         "top": 79,
-        "width": 16.541748046875
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/Autonomous": {
         "window": {

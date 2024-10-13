@@ -28,12 +28,7 @@
       "linkedName": "Blue BCA A"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -50,8 +45,8 @@
   "reversed": false,
   "folder": "Blue To Note",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 32.52
   },
   "useDefaultConstraints": false
 }
