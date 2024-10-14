@@ -134,21 +134,20 @@ public class RobotContainer {
 
         driver.getDPadDown().onTrue(new ArmToClimbing());
 
-        // intake field relative
-        driver.getRightTriggerButton()
+        // intake with either trigger and when driving
+        new Trigger(() -> (driver.getRightTriggerPressed() 
+                        || driver.getLeftTriggerPressed() 
+                        || (driver.getLeftStick().distance() > Settings.Driver.Drive.DEADBAND.get() + 0.1 
+                            && !Intake.getInstance().hasNote()
+                            && !Shooter.getInstance().hasNote())))
             .onTrue(new ArmToFeed())
-            // .whileTrue(new SwerveDriveDriveToNote(driver))
             .onTrue(new IntakeSetAcquire())
-            .whileTrue((new LEDSet(LEDInstructions.FIELD_RELATIVE_INTAKING)))
             .onFalse(new IntakeStop());
         
-        // intake robot relative
+        // drive robot relative
         driver.getLeftTriggerButton()
             .whileTrue(new SwerveDriveDriveRobotRelative(driver))
-            .onTrue(new ArmToFeed())
-            .onTrue(new IntakeSetAcquire())
-            .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING))
-            .onFalse(new IntakeStop());
+            .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING));
         
         // deacquire
         driver.getDPadLeft()
