@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 2.2594611570989525,
-        "y": 0.7835083476434771
+        "y": 0.7835083476434762
       },
       "isLocked": false,
       "linkedName": "Red H"
@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,11 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -28.8131676274699,
-    "rotateFast": false
+    "rotation": -28.813167627469895
   },
   "reversed": false,
-  "folder": "Red To Shoots",
-  "previewStartingState": null,
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }
