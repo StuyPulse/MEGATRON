@@ -19,6 +19,7 @@ import com.stuypulse.robot.commands.auton.Mobility;
 import com.stuypulse.robot.commands.auton.RerouteTest;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
+import com.stuypulse.robot.commands.auton.BCA.RightAngleFourPieceBCA;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.auton.HGF.ReroutableFourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
@@ -307,11 +308,20 @@ public class RobotContainer {
         AutonConfig Reroute_Test_Red = new AutonConfig("Reroute Test", RerouteTest::new,
         "Red Center to B", "Red B to Center", "B to A Reroute Test", "Red A to Center");
 
+        // New BCA
+        AutonConfig New_BCA_Blue = new AutonConfig("New BCA", RightAngleFourPieceBCA::new,
+        "Blue Center to B", "Blue B to Center", "Blue 90 Deg B Shoot to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
+        AutonConfig New_BCA_Red = new AutonConfig("New BCA", RightAngleFourPieceBCA::new,
+        "Red Center to B", "Red B to Center", "Red 90 Deg B Shoot to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
+
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);
 
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerDefaultRed(autonChooser);
+
+        New_BCA_Blue.registerBlue(autonChooser);
+        New_BCA_Red.registerRed(autonChooser);
 
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
