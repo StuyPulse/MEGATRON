@@ -8,6 +8,7 @@ import com.stuypulse.robot.util.vision.VisionData;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -119,7 +120,17 @@ public class PhotonVision extends AprilTagVision {
                 PhotonPipelineResult latestResult = cameras[index].getLatestResult();
                 filterResult(latestResult);
                 Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
-                if (latestResult.hasTargets()) {
+                //have to change fieldToCamera into Pose3d for VisionData
+                // if (latestResult.getMultiTagResult().estimatedPose.isPresent) {
+                //     Transform3d fieldToCamera = latestResult.getMultiTagResult().estimatedPose.best;
+                //     estimatedRobotPose.ifPresent(
+                //         (EstimatedRobotPose robotPose) -> {
+                //             VisionData data = new VisionData(fieldToCamera, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
+                //             outputs.add(data);
+                //             updateTelemetry("Vision/" + cameras[index].getName(), data);
+                //         }
+                //     );
+                /*     } else */if (latestResult.hasTargets()) {
                     estimatedRobotPose.ifPresent(
                         (EstimatedRobotPose robotPose) -> {
                             VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
