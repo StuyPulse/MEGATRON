@@ -8,14 +8,12 @@ import com.stuypulse.robot.util.vision.VisionData;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -52,7 +50,7 @@ public class PhotonVision extends AprilTagVision {
         for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
             poseEstimators[i] = new PhotonPoseEstimator(
                 AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo), 
-                PoseStrategy.AVERAGE_BEST_TARGETS, 
+                PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, 
                 Cameras.APRILTAG_CAMERAS[i].getLocation().minus(new Pose3d())
                 );
         }
@@ -120,17 +118,7 @@ public class PhotonVision extends AprilTagVision {
                 PhotonPipelineResult latestResult = cameras[index].getLatestResult();
                 filterResult(latestResult);
                 Optional<EstimatedRobotPose> estimatedRobotPose = poseEstimators[index].update(latestResult);
-                //have to change fieldToCamera into Pose3d for VisionData
-                // if (latestResult.getMultiTagResult().estimatedPose.isPresent) {
-                //     Transform3d fieldToCamera = latestResult.getMultiTagResult().estimatedPose.best;
-                //     estimatedRobotPose.ifPresent(
-                //         (EstimatedRobotPose robotPose) -> {
-                //             VisionData data = new VisionData(fieldToCamera, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
-                //             outputs.add(data);
-                //             updateTelemetry("Vision/" + cameras[index].getName(), data);
-                //         }
-                //     );
-                /*     } else */if (latestResult.hasTargets()) {
+                if (latestResult.hasTargets()) {
                     estimatedRobotPose.ifPresent(
                         (EstimatedRobotPose robotPose) -> {
                             VisionData data = new VisionData(robotPose.estimatedPose, getIDs(latestResult), robotPose.timestampSeconds, latestResult.getBestTarget().getArea());
