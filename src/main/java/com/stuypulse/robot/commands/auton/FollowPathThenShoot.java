@@ -25,7 +25,6 @@ public class FollowPathThenShoot extends SequentialCommandGroup{
                 new WaitCommand(totalPathTime > 1.5 ? totalPathTime - 1.0 : 0)
                     // wait for handoff
                     .andThen(new WaitUntilCommand(() -> Shooter.getInstance().hasNote()).withTimeout(3.0).onlyIf(() -> Intake.getInstance().hasNote()))
-                    .andThen(new ArmToSpeaker().onlyIf(() -> Shooter.getInstance().hasNote()))
             ),
             isLastShot ? ShootRoutine.fromAnywhereLastShot()
                     : ShootRoutine.fromAnywhere().onlyIf(() -> Shooter.getInstance().hasNote())

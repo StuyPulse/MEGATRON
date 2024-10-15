@@ -273,7 +273,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
 
         addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            DriverStation.isAutonomous() ? VecBuilder.fill(0.2, 0.2, 1) : VecBuilder.fill(0.2, 0.2, 1));
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.9, 0.9, 5) : VecBuilder.fill(0.7, 0.7, 5));
         
     }
 

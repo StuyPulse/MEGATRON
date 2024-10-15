@@ -29,6 +29,7 @@ import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.leds.LEDDefaultMode;
 import com.stuypulse.robot.commands.leds.LEDSet;
+import com.stuypulse.robot.commands.shooter.ShooterFeederAcquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederDeacquire;
 import com.stuypulse.robot.commands.shooter.ShooterFeederShoot;
 import com.stuypulse.robot.commands.shooter.ShooterFeederStop;
@@ -256,11 +257,11 @@ public class RobotContainer {
         // human player attention button
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
 
-        // driver.getRightButton()
-        //     .onTrue(new IntakeDeacquire())
-        //     .onTrue(new ShooterFeederAcquire())
-        //     .onFalse(new IntakeStop())
-        //     .onFalse(new ShooterFeederStop());
+        driver.getRightButton()
+            .onTrue(new IntakeDeacquire())
+            .onTrue(new ShooterFeederAcquire())
+            .onFalse(new IntakeStop())
+            .onFalse(new ShooterFeederStop());
     }
 
     private void configureOperatorBindings() {
