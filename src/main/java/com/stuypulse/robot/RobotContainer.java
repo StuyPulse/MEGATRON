@@ -142,12 +142,14 @@ public class RobotContainer {
                         || (driver.getLeftStick().distance() > Settings.Driver.Drive.DEADBAND.get() + 0.1 
                             && !Intake.getInstance().hasNote()
                             && !Shooter.getInstance().hasNote())))
-            .onTrue(new ArmToFeed())
             .onTrue(new IntakeSetAcquire())
             .onFalse(new IntakeStop());
         
+        driver.getRightTriggerButton().onTrue(new ArmToFeed());
+        
         // drive robot relative
         driver.getLeftTriggerButton()
+            .onTrue(new ArmToFeed())
             .whileTrue(new SwerveDriveDriveRobotRelative(driver))
             .whileTrue(new LEDSet(LEDInstructions.ROBOT_RELATIVE_INTAKING));
         
@@ -349,7 +351,5 @@ public class RobotContainer {
         }
 
         return autonChooser.getSelected().getName();
-
     }
-
 }
