@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.0549632495276389,
-        "y": 1.2044979075713136
+        "y": 1.2044979075713131
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 8.281950694955519,
-        "y": 0.5730135676795576
+        "y": 0.5730135676795571
       },
       "nextControl": null,
       "isLocked": false,
