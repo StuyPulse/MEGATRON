@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4026881446396824,
-        "y": 5.599459389022944
+        "x": 2.369711113629195,
+        "y": 5.530775383617674
       },
       "isLocked": false,
       "linkedName": "Blue BCA Starting Pose"
     },
     {
       "anchor": {
-        "x": 3.35,
-        "y": 5.75
+        "x": 2.898167550964732,
+        "y": 5.5301848373414
       },
       "prevControl": {
-        "x": 2.5051004539881103,
-        "y": 5.665486008427374
+        "x": 2.192021019487159,
+        "y": 5.531440156326696
       },
       "nextControl": null,
       "isLocked": false,

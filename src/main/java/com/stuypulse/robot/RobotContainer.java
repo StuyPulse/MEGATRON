@@ -331,8 +331,8 @@ public class RobotContainer {
         BCA_BLUE.registerDefaultBlue(autonChooser);
         BCA_RED.registerDefaultRed(autonChooser);
 
-        New_BCA_Blue.registerBlue(autonChooser);
-        New_BCA_Red.registerRed(autonChooser);
+        New_BCA_Blue.registerDefaultBlue(autonChooser);
+        New_BCA_Red.registerDefaultRed(autonChooser);
 
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);

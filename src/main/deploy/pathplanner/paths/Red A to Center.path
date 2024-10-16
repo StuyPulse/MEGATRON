@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1577027780171636,
-        "y": 6.548006355871343
+        "x": 2.4376886874108092,
+        "y": 6.497015083541839
       },
       "isLocked": false,
       "linkedName": "Red BCA A"
     },
     {
       "anchor": {
-        "x": 1.964541675549125,
-        "y": 6.441955237891131
+        "x": 2.0236138157461503,
+        "y": 6.111008805350944
       },
       "prevControl": {
-        "x": 2.9477980291526062,
-        "y": 6.8998595437667065
+        "x": 2.868854841825627,
+        "y": 6.874936161136255
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 28.70481879170682
+    "rotation": 20.25534005429403
   },
   "reversed": false,
   "folder": "Red To Shoot",
