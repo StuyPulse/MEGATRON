@@ -268,7 +268,7 @@ public class RobotContainer {
         //     .onFalse(new ShooterFeederStop());
 
         driver.getRightButton()
-            .whileTrue(new SwerveDriveToPose(() -> new Pose2d(Field.getAmpCornerPose(), new Rotation2d()))
+            .whileTrue(new SwerveDriveToPose(() -> new Pose2d(Field.getAllianceSpeakerPose().getTranslation().plus(new Translation2d(3.0, 0)), new Rotation2d()))
                         .withTranslationConstants(Settings.Swerve.Motion.XY)
                         .withRotationConstants(Settings.Swerve.Motion.THETA)
                         .withTolerance(0, 0, 0));
