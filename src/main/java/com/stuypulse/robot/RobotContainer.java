@@ -37,11 +37,13 @@ import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDriveRobotRelative;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSeedFieldRelative;
+import com.stuypulse.robot.commands.swerve.SwerveDriveToPose;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.vision.VisionChangeWhiteList;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.LEDInstructions;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -259,11 +261,17 @@ public class RobotContainer {
         // human player attention button
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
 
+        // driver.getRightButton()
+        //     .onTrue(new IntakeDeacquire())
+        //     .onTrue(new ShooterFeederAcquire())
+        //     .onFalse(new IntakeStop())
+        //     .onFalse(new ShooterFeederStop());
+
         driver.getRightButton()
-            .onTrue(new IntakeDeacquire())
-            .onTrue(new ShooterFeederAcquire())
-            .onFalse(new IntakeStop())
-            .onFalse(new ShooterFeederStop());
+            .whileTrue(new SwerveDriveToPose(() -> new Pose2d(Field.getAmpCornerPose(), new Rotation2d()))
+                        .withTranslationConstants(Settings.Swerve.Motion.XY)
+                        .withRotationConstants(Settings.Swerve.Motion.THETA)
+                        .withTolerance(0, 0, 0));
     }
 
     private void configureOperatorBindings() {
