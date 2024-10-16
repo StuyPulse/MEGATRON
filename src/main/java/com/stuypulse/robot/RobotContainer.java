@@ -261,17 +261,12 @@ public class RobotContainer {
         // human player attention button
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
 
-        // driver.getRightButton()
-        //     .onTrue(new IntakeDeacquire())
-        //     .onTrue(new ShooterFeederAcquire())
-        //     .onFalse(new IntakeStop())
-        //     .onFalse(new ShooterFeederStop());
-
+        // "special deacquire"
         driver.getRightButton()
-            .whileTrue(new SwerveDriveToPose(() -> new Pose2d(Field.getAllianceSpeakerPose().getTranslation().plus(new Translation2d(3.0, 0)), new Rotation2d()))
-                        .withTranslationConstants(Settings.Swerve.Motion.XY)
-                        .withRotationConstants(Settings.Swerve.Motion.THETA)
-                        .withTolerance(0, 0, 0));
+            .onTrue(new IntakeDeacquire())
+            .onTrue(new ShooterFeederAcquire())
+            .onFalse(new IntakeStop())
+            .onFalse(new ShooterFeederStop());
     }
 
     private void configureOperatorBindings() {

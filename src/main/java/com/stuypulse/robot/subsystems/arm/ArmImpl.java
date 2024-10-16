@@ -151,6 +151,9 @@ public class ArmImpl extends Arm {
             if (speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm() < 2.0) {
                 return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) + 8; 
             }
+            if (speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm() > 5) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 3; 
+            }
             return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
         }
         catch (Exception exception) {

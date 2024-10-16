@@ -196,13 +196,10 @@ public interface Settings {
 
             PIDConstants XY = new PIDConstants(2.0, 0, 0.25);
             PIDConstants THETA = new PIDConstants(5.0, 0, 0.2);
-
-
         }
 
         public interface Encoder {
             public interface Drive {
-
                 double WHEEL_DIAMETER = Units.inchesToMeters(4);
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
                 double GEAR_RATIO = 1.0 / Swerve.Drive.L4;
