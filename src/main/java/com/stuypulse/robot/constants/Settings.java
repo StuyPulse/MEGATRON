@@ -149,8 +149,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = Units.inchesToMeters(36); // intake side 
-        double LENGTH = Units.inchesToMeters(32); 
+        double WIDTH = 0.673; // intake side 
+        double LENGTH = 0.495; 
 
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
@@ -175,7 +175,7 @@ public interface Settings {
             // angle PID
             SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.05);
+            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.2);
 
             double ANGLE_DERIV_RC = 0.05;
             double REDUCED_FF_DIST = 0.75;
@@ -194,12 +194,15 @@ public interface Settings {
                     MAX_ANGULAR_VELOCITY.get(),
                     MAX_ANGULAR_ACCELERATION.get());
 
-            PIDConstants XY = new PIDConstants(6.0, 0, 0.5);
-            PIDConstants THETA = new PIDConstants(5.0, 0, 0.05);
+            PIDConstants XY = new PIDConstants(2.0, 0, 0.25);
+            PIDConstants THETA = new PIDConstants(5.0, 0, 0.2);
+
+
         }
 
         public interface Encoder {
             public interface Drive {
+
                 double WHEEL_DIAMETER = Units.inchesToMeters(4);
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
                 double GEAR_RATIO = 1.0 / Swerve.Drive.L4;
