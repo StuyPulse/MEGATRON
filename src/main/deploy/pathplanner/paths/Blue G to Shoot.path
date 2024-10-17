@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.984914604088467,
-        "y": 2.441707471377906
+        "x": 8.276788822096163,
+        "y": 2.4039983913301164
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9286382044986325,
-        "y": 0.4207383183284894
+        "x": 5.220512422506329,
+        "y": 0.3830292382806997
       },
       "isLocked": false,
       "linkedName": "Blue G"
@@ -39,7 +39,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

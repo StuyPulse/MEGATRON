@@ -21,7 +21,7 @@ public class ReroutableFourPieceHGF extends SequentialCommandGroup {
         addCommands(
 
              // Preload Shot
-            ShootRoutine.fromAnywhere(),
+            ShootRoutine.fromSubwoofer(),
             new ArmToFeed(),
 
             // Drive to H
@@ -85,7 +85,7 @@ public class ReroutableFourPieceHGF extends SequentialCommandGroup {
                 ),
 
                 // Runs H to G redirection if hasNote is false at H
-                Intake.getInstance()::hasNote
+                Intake.getInstance()::hasNote 
                 
             )
 
