@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.920031087925423,
-        "y": 0.7367317298737168
+        "x": 4.460629921259843,
+        "y": 1.5530202541886569
       },
       "isLocked": false,
       "linkedName": "Blue HGF Starting Pose"
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

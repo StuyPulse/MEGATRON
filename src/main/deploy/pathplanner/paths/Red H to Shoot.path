@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2594611570989525,
-        "y": 0.7835083476434762
+        "x": 2.281342016387736,
+        "y": 2.4810199296324527
       },
       "isLocked": false,
       "linkedName": "Red H"
     },
     {
       "anchor": {
-        "x": 4.457962192277661,
-        "y": 6.455173252226847
+        "x": 1.9824604417727356,
+        "y": 3.685275731662575
       },
       "prevControl": {
-        "x": 4.808786825550858,
-        "y": 5.601499977928731
+        "x": 2.5909127790477804,
+        "y": 3.0407770769245244
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -28.813167627469895
+    "rotation": -48.12974887559607
   },
   "reversed": false,
   "folder": "Red To Shoot",
