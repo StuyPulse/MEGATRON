@@ -1,5 +1,7 @@
 package com.stuypulse.robot.subsystems.arm;
 
+import org.ejml.dense.row.mult.SubmatrixOps_FDRM;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
@@ -148,12 +150,22 @@ public class ArmImpl extends Arm {
 
             double angleBetweenPivotToSpeakerAndArm = Units.radiansToDegrees(Math.acos(Settings.Arm.LENGTH / pivotToSpeaker.getNorm()));
 
-            if (speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm() < 2.0) {
+            double distanceToSpeaker = speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm();
+
+            if (distanceToSpeaker < 2.0) {
                 return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) + 8; 
             }
-            if (speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm() > 5) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 1.75; 
+            if (distanceToSpeaker > 3.0) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 3.0; 
             }
+            if (distanceToSpeaker > 3.5) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 3.7; 
+            }
+            if (distanceToSpeaker > 4.0) {
+                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 4.0; 
+            }
+
+            SmartDashboard.putNumber("Distance to speaker", distanceToSpeaker);
             return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
         }
         catch (Exception exception) {

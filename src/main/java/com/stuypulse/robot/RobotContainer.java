@@ -60,6 +60,7 @@ import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -177,8 +178,8 @@ public class RobotContainer {
                 new SwerveDriveDriveAlignedSpeaker(driver)
                     .alongWith(new ArmToSpeaker()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker()).andThen(new WaitCommand(0.25)))
+                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET))
+                                .alongWith(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker())))
                         .andThen(new ShooterFeederShoot())
                     )
                     .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
@@ -262,15 +263,18 @@ public class RobotContainer {
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
 
         // "special deacquire"
+        // driver.getRightButton()
+        //     .onTrue(new IntakeDeacquire())
+        //     .onTrue(new ShooterFeederAcquire())
+        //     .onFalse(new IntakeStop())
+        //     .onFalse(new ShooterFeederStop());
+
         driver.getRightButton()
-            .onTrue(new IntakeDeacquire())
-            .onTrue(new ShooterFeederAcquire())
-            .onFalse(new IntakeStop())
-            .onFalse(new ShooterFeederStop());
+            .whileTrue(new SwerveDriveToPose(() -> Field.getAllianceSpeakerPose().plus(new Transform2d(3.75, 0, new Rotation2d()))));
     }
 
     private void configureOperatorBindings() {
-
+        operator.getRightTriggerButton().whileTrue(new LEDSet(LEDInstructions.RAINBOW));
     }
 
     /**************/
