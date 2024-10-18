@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.310109839155691,
-        "y": 0.8097082386501073
+        "x": 7.139,
+        "y": 1.595
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.281342016387736,
-        "y": 2.4810199296324527
+        "x": 3.7179883460360195,
+        "y": 1.8566109008482452
       },
       "isLocked": false,
       "linkedName": "Red H"
     },
     {
       "anchor": {
-        "x": 1.9824604417727356,
-        "y": 3.685275731662575
+        "x": 2.484,
+        "y": 3.043
       },
       "prevControl": {
-        "x": 2.5909127790477804,
-        "y": 3.0407770769245244
+        "x": 3.6140439979948553,
+        "y": 2.322860733888366
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,14 +33,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -48.12974887559607
+    "rotation": -49.484
   },
   "reversed": false,
   "folder": "Red To Shoot",

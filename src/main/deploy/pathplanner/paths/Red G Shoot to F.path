@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9824604417727356,
-        "y": 3.685275731662575
+        "x": 2.484,
+        "y": 3.043
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1048427860537933,
-        "y": 0.9151109214296795
+        "x": 3.606382344281058,
+        "y": 0.27283518976710486
       },
       "isLocked": false,
       "linkedName": "Red Midline Shoot Pose"
