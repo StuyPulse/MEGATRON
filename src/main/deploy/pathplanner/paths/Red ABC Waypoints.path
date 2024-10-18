@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 2.925603133613675,
-        "y": 5.5301848373414
+        "y": 5.55
       },
       "prevControl": {
         "x": 2.997858269753411,
-        "y": 6.95980775053068
+        "y": 6.97962291318928
       },
       "nextControl": {
         "x": 2.8729958607996355,
-        "y": 4.489309867984168
+        "y": 4.5091250306427675
       },
       "isLocked": false,
       "linkedName": "Red BCA B"
@@ -110,7 +110,6 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -120,13 +119,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 0.0,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red Util",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }

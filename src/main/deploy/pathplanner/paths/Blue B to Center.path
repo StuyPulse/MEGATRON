@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.898167550964732,
-        "y": 5.5301848373414
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.318107356246128,
-        "y": 5.4549971906863455
+        "x": 2.7232527196953313,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": "Blue BCA B"
@@ -20,8 +20,8 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.486143955732852,
-        "y": 5.598113318622471
+        "x": 2.142944471926001,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,6 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -40,13 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 1.0588668160039703
+    "rotation": 1.0588668160039703,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Shoot",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
