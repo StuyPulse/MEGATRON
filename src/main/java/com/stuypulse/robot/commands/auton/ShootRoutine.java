@@ -42,7 +42,7 @@ public abstract class ShootRoutine {
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(1.25)),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(1)),
             new ShooterFeederStop()
         );
     }
@@ -56,7 +56,7 @@ public abstract class ShootRoutine {
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitCommand(2.5),
+            new WaitCommand(2),
             new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
             new ShooterFeederStop()
         );
