@@ -42,6 +42,7 @@ import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedF
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedManualFerry;
 import com.stuypulse.robot.commands.swerve.driveAligned.SwerveDriveDriveAlignedSpeaker;
 import com.stuypulse.robot.commands.vision.VisionChangeWhiteList;
+import com.stuypulse.robot.commands.vision.VisionDisable;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.LEDInstructions;
@@ -108,6 +109,8 @@ public class RobotContainer {
         new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote()
                     || ((driver.getLeftTriggerPressed() || driver.getRightTriggerPressed()) && (Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())))
             .onTrue(new BuzzController(driver, 1, 1));
+
+        // new VisionDisable();
     }
 
     /****************/
@@ -203,7 +206,7 @@ public class RobotContainer {
 
 
         // low ferry align and shoot
-        driver.getLeftMenuButton()
+        driver.getRightStickButton()
             .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
                     .alongWith(new ArmToLowFerry()
                         .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
