@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.984914604088467,
-        "y": 2.441707471377906
+        "x": 7.454009064454142,
+        "y": 2.7589143264224028
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9286382044986325,
-        "y": 0.4207383183284894
+        "x": 5.009485796067327,
+        "y": 0.4659178082410387
       },
       "isLocked": false,
       "linkedName": "Blue G"
     },
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 2.483902129841297,
+        "y": 3.0430930676676176
       },
       "prevControl": {
-        "x": 2.07658468094714,
-        "y": 3.0673218939030473
+        "x": 2.8623450669266015,
+        "y": 2.3332030766625635
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,20 +38,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -44.999999999999986
+    "rotation": -61.35137455444792
   },
   "reversed": false,
   "folder": "Blue To Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 48.144882323579054
   },
   "useDefaultConstraints": false
 }

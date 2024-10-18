@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 2.483902129841297,
+        "y": 3.0430930676676176
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8964467582174,
-        "y": 2.4450348539245748
+        "x": 5.637153218750882,
+        "y": 1.4851439101026358
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
     },
     {
       "anchor": {
-        "x": 4.703539435568899,
-        "y": 1.5436283864020728
+        "x": 7.454009064454142,
+        "y": 2.7589143264224028
       },
       "prevControl": {
-        "x": 3.1666372872398076,
-        "y": 2.0016256678567665
-      },
-      "nextControl": {
-        "x": 6.003480742048733,
-        "y": 1.1562455038511537
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.984914604088467,
-        "y": 2.441707471377906
-      },
-      "prevControl": {
-        "x": 5.985923788603592,
-        "y": 1.6599421759318065
+        "x": 5.223426189039878,
+        "y": 1.395200788913483
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,14 +33,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 31.29378192563241
+    "rotation": 37.58348553725079
   },
   "reversed": false,
   "folder": "Blue To Note",

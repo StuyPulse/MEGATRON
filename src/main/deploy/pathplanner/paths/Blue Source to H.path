@@ -8,33 +8,38 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.460629921259843,
-        "y": 1.5530202541886569
+        "x": 4.332616027583246,
+        "y": 1.3502516523262207
       },
       "isLocked": false,
       "linkedName": "Blue HGF Starting Pose"
     },
     {
       "anchor": {
-        "x": 7.890552827401951,
-        "y": 0.7784104271912251
+        "x": 7.1392689604575645,
+        "y": 1.5949480215552685
       },
       "prevControl": {
-        "x": 5.2764990407155095,
-        "y": 1.5619187099890413
+        "x": 2.752233229540864,
+        "y": 1.506684262438464
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Blue H"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

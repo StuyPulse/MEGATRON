@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 2.483902129841297,
+        "y": 3.0430930676676176
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0549632495276389,
-        "y": 1.2044979075713131
+        "x": 4.5277342684315,
+        "y": 1.1588267528386917
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
     },
     {
       "anchor": {
-        "x": 8.282659617774593,
-        "y": 4.07671724848658
+        "x": 7.740726041637269,
+        "y": 3.815446288299984
       },
       "prevControl": {
-        "x": 8.281950694955519,
-        "y": 0.5730135676795571
+        "x": 6.485102752612913,
+        "y": 0.9461119107423408
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.25,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
