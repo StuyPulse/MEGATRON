@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.1574662038212966,
-        "y": 6.075378178534135
+        "x": 0.7905759905641836,
+        "y": 4.310885424226206
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.871312386039951,
-        "y": 6.788712587841843
+        "x": 4.082343080980806,
+        "y": 2.461384693974744
       },
       "isLocked": false,
-      "linkedName": "Red BCA C Shoot Pose"
+      "linkedName": "Blue HGF Starting Pose"
     },
     {
       "anchor": {
-        "x": 3.1232679206429843,
-        "y": 7.075233287371337
+        "x": 7.454009064454142,
+        "y": 2.7589143264224028
       },
       "prevControl": {
-        "x": 2.389130739012966,
-        "y": 6.301098585270088
+        "x": 5.652197685533765,
+        "y": 0.24863725136676385
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Red BCA A"
+      "linkedName": "Blue G"
     }
   ],
   "rotationTargets": [],
@@ -40,13 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 32.52489028779099
+    "rotation": 47.89574324189973
   },
   "reversed": false,
-  "folder": "Red To Note",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
