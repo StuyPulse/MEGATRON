@@ -8,20 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4477848223097363,
-        "y": 5.5343352943193125
+        "x": 2.415890296403431,
+        "y": 5.341891828178641
       },
       "isLocked": false,
       "linkedName": "Red BCA Starting Pose"
     },
     {
       "anchor": {
+<<<<<<< HEAD
         "x": 2.925603133613675,
         "y": 5.55
       },
       "prevControl": {
         "x": 2.035294883302703,
         "y": 5.53979189272133
+=======
+        "x": 2.889388188560604,
+        "y": 5.236933785809536
+      },
+      "prevControl": {
+        "x": 2.0420752909822886,
+        "y": 5.42476282526858
+>>>>>>> 351df75 (bca changes)
       },
       "nextControl": null,
       "isLocked": false,
