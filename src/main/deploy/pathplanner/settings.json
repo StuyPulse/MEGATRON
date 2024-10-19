@@ -1,7 +1,7 @@
 {
-  "robotWidth": 1.001,
-  "robotLength": 0.872505,
-  "holonomicMode": true,
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
+  "holonomicMode": false,
   "pathFolders": [
     "Blue To Note",
     "Blue To Shoot",
@@ -24,8 +24,8 @@
   "robotMOI": 6.883,
   "robotWheelbase": 0.495,
   "robotTrackwidth": 0.673,
-  "driveWheelRadius": 0.0508,
-  "driveGearing": 5.357142857,
+  "driveWheelRadius": 0.048,
+  "driveGearing": 5.143,
   "maxDriveSpeed": 5.45,
   "driveMotorType": "krakenX60",
   "driveCurrentLimit": 60.0,

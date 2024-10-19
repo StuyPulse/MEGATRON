@@ -43,7 +43,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Blue To Note",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

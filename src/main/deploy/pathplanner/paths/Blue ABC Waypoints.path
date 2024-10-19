@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 2.898167550964732,
-        "y": 5.5301848373414
+        "y": 5.55
       },
       "prevControl": {
         "x": 2.6731174135786464,
-        "y": 5.639053729420377
+        "y": 5.658868892078977
       },
       "nextControl": {
         "x": 3.1232176883508176,
-        "y": 5.421315945262423
+        "y": 5.441131107921023
       },
       "isLocked": false,
       "linkedName": "Blue BCA B"
@@ -110,7 +110,6 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -120,13 +119,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 0.0,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue Util",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
