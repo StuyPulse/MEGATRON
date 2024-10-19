@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8823119220312514,
-        "y": 4.294440681473956
+        "x": 2.8909454969907094,
+        "y": 4.1046482092964185
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3599577968386725,
-        "y": 4.242785408647741
+        "x": 2.3685913717981304,
+        "y": 4.052992936470203
       },
       "isLocked": false,
       "linkedName": "Blue BCA C"
@@ -30,7 +30,6 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -40,13 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 38.766552008153084
+    "rotation": 38.766552008153084,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Shoot",
-  "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }

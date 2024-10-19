@@ -152,21 +152,32 @@ public class ArmImpl extends Arm {
 
             double distanceToSpeaker = speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm();
 
-            if (distanceToSpeaker < 2.0) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) + 8; 
-            }
-            if (distanceToSpeaker > 3.0) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 3.0; 
-            }
-            if (distanceToSpeaker > 3.5) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 3.7; 
-            }
-            if (distanceToSpeaker > 4.0) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) - 4.0; 
-            }
+            double targetAngle = -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
 
-            SmartDashboard.putNumber("Distance to speaker", distanceToSpeaker);
-            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
+            if (distanceToSpeaker < 2.0) {
+                targetAngle += 8.0;
+            }
+            // else if (distanceToSpeaker > 3.0) {
+            //     targetAngle -= 3.0;
+            // }
+            // else if (distanceToSpeaker > 3.5) {
+            //     targetAngle -= 3.7;
+            // }
+            // else if (distanceToSpeaker > 4.0) {
+            //     targetAngle -= 4.0;
+            // }
+
+            // double angleFromSpeakerBaseToRobot = Math.abs(Units.radiansToDegrees(Math.atan((speakerPose.getY() - robotPose.getY())/(speakerPose.getX() - robotPose.getX()))));
+            // SmartDashboard.putNumber("Angle to speaker base", angleFromSpeakerBaseToRobot);
+
+            // // if the robot is more than 30 degrees off to the side from the perspective of the speaker
+            // // this is intended to help with shooting from the sides
+            // if (angleFromSpeakerBaseToRobot > 30) {
+            //     targetAngle += 2;
+            // }
+
+            // SmartDashboard.putNumber("Distance to speaker", distanceToSpeaker);
+            return targetAngle;
         }
         catch (Exception exception) {
             exception.printStackTrace();

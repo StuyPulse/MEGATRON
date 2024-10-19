@@ -73,6 +73,9 @@
         "Alignment": {
           "open": true
         },
+        "Arm": {
+          "open": true
+        },
         "Autonomous": {
           "open": true
         },
@@ -84,9 +87,17 @@
     "Clients": {
       "open": true
     },
-    "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
+    "Connections": {
+      "open": true
+    },
+    "DartClient_68954872@1": {
+      "open": true
+    },
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "open": true
+    }
   }
 }
