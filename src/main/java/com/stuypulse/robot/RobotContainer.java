@@ -21,6 +21,7 @@ import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.RightAngleFourPieceBCA;
 import com.stuypulse.robot.commands.auton.HGF.ThreePieceGF;
+import com.stuypulse.robot.commands.auton.HGF.FixedFourPieceHGF;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.auton.HGF.ReroutableFourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
@@ -304,6 +305,12 @@ public class RobotContainer {
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
 
+        // Fixed HGF
+        AutonConfig Fixed_HGF_BLUE = new AutonConfig("4 HGF Fixed", FixedFourPieceHGF::new,
+        "Blue Fixed Source to H", "Blue Fixed H to Shoot", "Blue Fixed H Shoot to G", "Blue Fixed G to Shoot", "Blue Fixed G Shoot to F", "Blue Fixed F to Shoot");
+        AutonConfig Fixed_HGF_RED = new AutonConfig("4 HGF Fixed", FixedFourPieceHGF::new,
+        "Red Fixed Source to H", "Red Fixed H to Shoot", "Red Fixed H Shoot to G", "Red Fixed G to Shoot", "Red Fixed G Shoot to F", "Red Fixed F to Shoot");
+
         // GF
         AutonConfig GF_BLUE = new AutonConfig("3 GF Alt", ThreePieceGF::new,
         "Blue Source to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
@@ -345,6 +352,9 @@ public class RobotContainer {
 
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
+
+        Fixed_HGF_BLUE.registerBlue(autonChooser);
+        Fixed_HGF_RED.registerRed(autonChooser);
 
         GF_BLUE.registerBlue(autonChooser);
         GF_RED.registerRed(autonChooser);

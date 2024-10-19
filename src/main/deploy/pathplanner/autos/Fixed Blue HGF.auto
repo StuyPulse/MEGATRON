@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed Source to H"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed H to Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed H Shoot to G"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed G to Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed G Shoot to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue Fixed F to Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

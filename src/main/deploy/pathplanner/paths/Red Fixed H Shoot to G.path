@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.484,
+        "y": 3.043
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.015893905964427,
+        "y": 1.071274867182748
+      },
+      "isLocked": false,
+      "linkedName": "Red Midline Shoot Pose"
+    },
+    {
+      "anchor": {
+        "x": 8.292288144761475,
+        "y": 2.4404603994393175
+      },
+      "prevControl": {
+        "x": 5.707167400445912,
+        "y": 1.514064102202279
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 20.590541991485043
+  },
+  "reversed": false,
+  "folder": "Fixed HGF",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -44.0
+  },
+  "useDefaultConstraints": true
+}
