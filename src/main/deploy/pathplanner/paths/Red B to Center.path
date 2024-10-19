@@ -3,23 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-<<<<<<< HEAD
-        "x": 2.925603133613675,
-        "y": 5.55
+        "x": 2.9857595085560544,
+        "y": 5.413598669789932
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.028857363665259,
-        "y": 5.55
-=======
-        "x": 2.889388188560604,
-        "y": 5.236933785809536
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 1.9931937455020745,
-        "y": 5.268374144449183
->>>>>>> 351df75 (bca changes)
+        "x": 2.1560993513055813,
+        "y": 5.5306071263193655
       },
       "isLocked": false,
       "linkedName": "Red BCA B"
@@ -30,8 +20,8 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.7987222353440537,
-        "y": 5.55
+        "x": 2.574017998345307,
+        "y": 5.469059196745233
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,20 +30,23 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
-    "rotateFast": false
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
 }
