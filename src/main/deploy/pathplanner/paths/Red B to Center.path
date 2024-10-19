@@ -3,7 +3,6 @@
   "waypoints": [
     {
       "anchor": {
-<<<<<<< HEAD
         "x": 2.925603133613675,
         "y": 5.55
       },
@@ -11,15 +10,6 @@
       "nextControl": {
         "x": 2.028857363665259,
         "y": 5.55
-=======
-        "x": 2.889388188560604,
-        "y": 5.236933785809536
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 1.9931937455020745,
-        "y": 5.268374144449183
->>>>>>> 351df75 (bca changes)
       },
       "isLocked": false,
       "linkedName": "Red BCA B"

@@ -8,13 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-<<<<<<< HEAD
         "x": 2.034348684081985,
         "y": 3.986244895566715
-=======
-        "x": 2.2339674721155482,
-        "y": 5.90846337336413
->>>>>>> 351df75 (bca changes)
       },
       "isLocked": false,
       "linkedName": "Red BCA C"
@@ -25,13 +20,8 @@
         "y": 6.075378178534135
       },
       "prevControl": {
-<<<<<<< HEAD
         "x": 2.1922197690549243,
         "y": 5.811629315566324
-=======
-        "x": 2.6149021511004906,
-        "y": 4.185794140744253
->>>>>>> 351df75 (bca changes)
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,12 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-<<<<<<< HEAD
     "rotation": 39.13146746301114,
     "rotateFast": false
-=======
-    "rotation": 39.13146746301115
->>>>>>> 351df75 (bca changes)
   },
   "reversed": false,
   "folder": null,
