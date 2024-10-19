@@ -24,8 +24,8 @@ public interface Settings {
 
     boolean SAFE_MODE_ENABLED = false;
 
-    double WIDTH = Units.inchesToMeters(36); // intake side 
-    double LENGTH = Units.inchesToMeters(32);
+    double WIDTH = Units.inchesToMeters(26.75); // intake side 
+    double LENGTH = Units.inchesToMeters(19.25);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
@@ -149,8 +149,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = 0.673; // intake side 
-        double LENGTH = 0.495; 
+        double WIDTH = 0.67945; // intake side 
+        double LENGTH = 0.48895; 
 
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
@@ -202,7 +202,7 @@ public interface Settings {
             public interface Drive {
                 double WHEEL_DIAMETER = Units.inchesToMeters(4);
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-                double GEAR_RATIO = 1.0 / Swerve.Drive.L3;
+                double GEAR_RATIO = 1.0 / Swerve.Drive.L4;
 
                 double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
