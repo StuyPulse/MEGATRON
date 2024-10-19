@@ -24,8 +24,8 @@ public interface Settings {
 
     boolean SAFE_MODE_ENABLED = false;
 
-    double WIDTH = Units.inchesToMeters(36); // intake side 
-    double LENGTH = Units.inchesToMeters(32);
+    double WIDTH = Units.inchesToMeters(39.4); // intake side 
+    double LENGTH = Units.inchesToMeters(34.3);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
@@ -202,7 +202,7 @@ public interface Settings {
             public interface Drive {
                 double WHEEL_DIAMETER = Units.inchesToMeters(4);
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-                double GEAR_RATIO = 1.0 / Swerve.Drive.L3;
+                double GEAR_RATIO = 1.0 / Swerve.Drive.L4;
 
                 double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
