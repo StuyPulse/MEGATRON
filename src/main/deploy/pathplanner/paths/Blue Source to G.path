@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7905759905641836,
-        "y": 4.310885424226206
+        "x": 0.8529101873018563,
+        "y": 4.2673614050931805
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.082343080980806,
-        "y": 2.461384693974744
+        "x": 4.144677277718478,
+        "y": 2.4178606748417186
       },
       "isLocked": false,
       "linkedName": "Blue HGF Starting Pose"
@@ -46,7 +46,7 @@
   "folder": "Blue To Note",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -58.059887763494935
   },
   "useDefaultConstraints": true
 }
