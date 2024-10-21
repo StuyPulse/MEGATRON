@@ -20,7 +20,8 @@ import com.stuypulse.robot.commands.auton.RerouteTest;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.RightAngleFourPieceBCA;
-import com.stuypulse.robot.commands.auton.HGF.ThreePieceGF;
+import com.stuypulse.robot.commands.auton.HGF.ThreePieceGH;
+import com.stuypulse.robot.commands.auton.HGF.ThreePieceHG;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.auton.HGF.ReroutableFourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
@@ -267,14 +268,14 @@ public class RobotContainer {
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
 
         // "special deacquire"
-        // driver.getRightButton()
-        //     .onTrue(new IntakeDeacquire())
-        //     .onTrue(new ShooterFeederAcquire())
-        //     .onFalse(new IntakeStop())
-        //     .onFalse(new ShooterFeederStop());
-
         driver.getRightButton()
-            .whileTrue(new SwerveDriveToPose(() -> Field.getAllianceSpeakerPose().plus(new Transform2d(3.75, 0, new Rotation2d()))));
+            .onTrue(new IntakeDeacquire())
+            .onTrue(new ShooterFeederAcquire())
+            .onFalse(new IntakeStop())
+            .onFalse(new ShooterFeederStop());
+
+        // driver.getRightButton()
+        //     .whileTrue(new SwerveDriveToPose(() -> Field.getAllianceSpeakerPose().plus(new Transform2d(3.75, 0, new Rotation2d()))));
     }
 
     private void configureOperatorBindings() {
@@ -304,11 +305,17 @@ public class RobotContainer {
         AutonConfig HGF_RED = new AutonConfig("4 HGF", FourPieceHGF::new,
         "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
 
-        // GF
-        AutonConfig GF_BLUE = new AutonConfig("3 GF Alt", ThreePieceGF::new,
-        "Blue Source to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot");
-        AutonConfig GF_RED = new AutonConfig("3 GF Alt", ThreePieceGF::new,
-        "Red Source to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot");
+        // GH
+        AutonConfig GH_BLUE = new AutonConfig("3 GH", ThreePieceGH::new,
+        "Blue Source to G", "Blue G to Shoot", "Blue G Shoot to H", "Blue H to Shoot");
+        AutonConfig GH_RED = new AutonConfig("3 GH", ThreePieceGH::new,
+        "Red Source to G", "Red G to Shoot", "Red G Shoot to H", "Red H to Shoot");
+
+        // HG
+        AutonConfig HG_BLUE = new AutonConfig("3 HG", ThreePieceHG::new,
+        "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot");
+        AutonConfig HG_RED = new AutonConfig("3 HG", ThreePieceHG::new,
+        "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot");
 
         // Reroutable HGF
         AutonConfig ReroutableHGF_BLUE = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
@@ -334,6 +341,11 @@ public class RobotContainer {
         AutonConfig New_BCA_Red = new AutonConfig("New BCA", RightAngleFourPieceBCA::new,
         "Red Center to B", "Red B to Center", "Red 90 Deg B Shoot to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
 
+        AutonConfig One_Piece_Mobility_Amp_Side_Blue = new AutonConfig("One Piece Amp Side", OnePieceAmpSide::new, 
+            "Blue Amp Side Mobility");
+
+        One_Piece_Mobility_Amp_Side_Blue.registerBlue(autonChooser);
+
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);
 
@@ -346,8 +358,11 @@ public class RobotContainer {
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
 
-        GF_BLUE.registerBlue(autonChooser);
-        GF_RED.registerRed(autonChooser);
+        HG_BLUE.registerBlue(autonChooser);
+        HG_RED.registerRed(autonChooser);
+
+        GH_BLUE.registerBlue(autonChooser);
+        GH_RED.registerRed(autonChooser);
 
         ReroutableHGF_BLUE.registerBlue(autonChooser);
         ReroutableHGF_RED.registerRed(autonChooser);

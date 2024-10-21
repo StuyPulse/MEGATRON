@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.791,
-        "y": 4.311
+        "x": 0.88,
+        "y": 4.21
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.1113177542575325,
-        "y": 1.7709467264172623
+        "x": 5.4870477832123745,
+        "y": 0.6431784943341966
       },
       "isLocked": false,
       "linkedName": "Red HGF Starting Pose"
@@ -20,8 +20,8 @@
         "y": 2.759
       },
       "prevControl": {
-        "x": 5.847906706974128,
-        "y": 0.5147265251747757
+        "x": 6.013284733122172,
+        "y": 0.9589206642800752
       },
       "nextControl": null,
       "isLocked": false,
@@ -44,6 +44,9 @@
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -59.59000000000003,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

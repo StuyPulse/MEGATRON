@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7905759905641836,
-        "y": 4.310885424226206
+        "x": 0.8795509328910394,
+        "y": 4.209895599278378
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.082343080980806,
-        "y": 2.461384693974744
+        "x": 4.42287972895034,
+        "y": 1.6488757763840323
       },
       "isLocked": false,
       "linkedName": "Blue HGF Starting Pose"
@@ -20,8 +20,8 @@
         "y": 2.7589143264224028
       },
       "prevControl": {
-        "x": 5.652197685533765,
-        "y": 0.24863725136676385
+        "x": 5.510436092097255,
+        "y": 0.3625187877156391
       },
       "nextControl": null,
       "isLocked": false,
@@ -44,6 +44,9 @@
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -59.59000000000003,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

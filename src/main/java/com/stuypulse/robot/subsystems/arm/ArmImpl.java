@@ -177,7 +177,7 @@ public class ArmImpl extends Arm {
             // }
 
             // SmartDashboard.putNumber("Distance to speaker", distanceToSpeaker);
-            return targetAngle;
+            return targetAngle + 2;
         }
         catch (Exception exception) {
             exception.printStackTrace();
