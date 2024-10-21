@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9299999999999997,
-        "y": 4.73
+        "x": 2.9026396514331485,
+        "y": 4.291754680375458
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5541747837215913,
-        "y": 6.317933763508896
+        "x": 2.3802855262405695,
+        "y": 4.240099407549243
       },
       "isLocked": false,
       "linkedName": "Blue BCA C"
@@ -20,8 +20,8 @@
         "y": 6.43
       },
       "prevControl": {
-        "x": 2.7701167362900203,
-        "y": 4.7639342618714995
+        "x": 2.4487602821359506,
+        "y": 6.028702057404115
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Shoots",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

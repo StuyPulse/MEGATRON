@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Center to B"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red B to Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red 90 Deg B Shoot to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red C to Shoot Before A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Center to A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red A to Center"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

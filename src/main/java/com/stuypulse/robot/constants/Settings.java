@@ -149,8 +149,8 @@ public interface Settings {
     }
     
     public interface Swerve {
-        double WIDTH = Units.inchesToMeters(36); // intake side 
-        double LENGTH = Units.inchesToMeters(32); 
+        double WIDTH = 0.673; // intake side 
+        double LENGTH = 0.495; 
 
         double MAX_LINEAR_VELOCITY = SAFE_MODE_ENABLED ? 1.0 : 4.9;
         double MAX_LINEAR_ACCEL = SAFE_MODE_ENABLED ? 10 : 15;
@@ -162,7 +162,7 @@ public interface Settings {
         SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Swerve/Align Omega Deadband", 0.05);
 
         // The stator current at which the wheels start to slip;
-        double SLIP_CURRENT = 150.0;
+        double SLIP_CURRENT = 100;
 
         // Theoretical free speed (m/s) at 12v applied output;
         double SPEED_AT_12_VOLTS = 5.21;
@@ -173,17 +173,17 @@ public interface Settings {
             double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
 
             // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 8.5);
+            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
             SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.4);
+            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.2);
 
             double ANGLE_DERIV_RC = 0.05;
             double REDUCED_FF_DIST = 0.75;
         }
 
         public interface Motion {
-            SmartNumber MAX_VELOCITY = new SmartNumber("Swerve/Motion/Max Velocity", 3.0);
-            SmartNumber MAX_ACCELERATION = new SmartNumber("Swerve/Motion/Max Acceleration", 4.0);
+            SmartNumber MAX_VELOCITY = new SmartNumber("Swerve/Motion/Max Velocity", 2.5);
+            SmartNumber MAX_ACCELERATION = new SmartNumber("Swerve/Motion/Max Acceleration", 2.5);
             SmartNumber MAX_ANGULAR_VELOCITY = new SmartNumber("Swerve/Motion/Max Angular Velocity", Units.degreesToRadians(540));
             SmartNumber MAX_ANGULAR_ACCELERATION = new SmartNumber("Swerve/Motion/Max Angular Acceleration", Units.degreesToRadians(720));
 
@@ -194,15 +194,15 @@ public interface Settings {
                     MAX_ANGULAR_VELOCITY.get(),
                     MAX_ANGULAR_ACCELERATION.get());
 
-            PIDConstants XY = new PIDConstants(1.0, 0, 0.02);
-            PIDConstants THETA = new PIDConstants(2.0, 0, 0.02);
+            PIDConstants XY = new PIDConstants(2.0, 0, 0.25);
+            PIDConstants THETA = new PIDConstants(5.0, 0, 0.2);
         }
 
         public interface Encoder {
             public interface Drive {
                 double WHEEL_DIAMETER = Units.inchesToMeters(4);
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-                double GEAR_RATIO = 1.0 / Swerve.Drive.L4;
+                double GEAR_RATIO = 1.0 / Swerve.Drive.L3;
 
                 double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
@@ -354,7 +354,7 @@ public interface Settings {
 
     public interface Vision {
         SmartBoolean IS_ACTIVE = new SmartBoolean("Vision/Is Active", true);
-        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.50;
+        double POSE_AMBIGUITY_RATIO_THRESHOLD = 0.60;
     }
 
     public interface Buzz {

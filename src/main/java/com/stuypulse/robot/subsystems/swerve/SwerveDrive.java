@@ -80,13 +80,6 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     private SwerveRequest.ApplyChassisSpeeds drive = new SwerveRequest.ApplyChassisSpeeds();
 
-    /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
-    private final Rotation2d BlueAlliancePerspectiveRotation = Rotation2d.fromDegrees(0);
-    /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
-    private final Rotation2d RedAlliancePerspectiveRotation = Rotation2d.fromDegrees(180);
-    /* Keep track if we've ever applied the operator perspective before or not */
-    private boolean hasAppliedOperatorPerspective = false;
-
     protected SwerveDrive(SwerveDrivetrainConstants driveTrainConstants, double UpdateOdometryFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, UpdateOdometryFrequency, modules);
         if (Utils.isSimulation()) {
@@ -125,7 +118,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
                 Motion.THETA,
                 4.9,
                 Math.hypot(Settings.Swerve.LENGTH, Settings.Swerve.WIDTH),
-                new ReplanningConfig(false, false)
+                new ReplanningConfig(true, true)
             ),
             () -> false,
             this
@@ -181,7 +174,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
             twistVel.dy / Settings.DT,
             twistVel.dtheta / Settings.DT
         ));
-    }
+    }///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
@@ -204,6 +197,10 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
+    }
+
+    public void setPose(Pose2d pose) {
+        m_odometry.resetPosition(getGyroAngle(), m_modulePositions, pose);
     }
 
     public Field2d getField() {
@@ -273,33 +270,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         }
 
         addVisionMeasurement(poseSum.div(areaSum), timestampSum / areaSum,
-            DriverStation.isAutonomous() ? VecBuilder.fill(0.2, 0.2, 1) : VecBuilder.fill(0.2, 0.2, 1));
-        
+            DriverStation.isAutonomous() ? VecBuilder.fill(0.7, 0.7, 5) : VecBuilder.fill(0.7, 0.7, 5));
     }
 
     public void setVisionEnabled(boolean enabled) {
         Settings.Vision.IS_ACTIVE.set(enabled);
     }
-
-    /**
-     * Try to apply the operator perspective 
-     * If we haven't applied the operator perspective before, then we should apply it regardless of DS state 
-     * This allows us to correct the perspective in case the robot code restarts mid-match 
-     * Otherwise, only check and apply the operator perspective if the DS is disabled
-     * This ensures driving behavior doesn't change until an explicit disable event occurs during testing
-     * 
-     * <p>Should call this periodically
-     */
-    // private void applyOperatorPerspective() {
-    //     if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-    //         DriverStation.getAlliance().ifPresent((allianceColor) -> {
-    //             this.setOperatorPerspectiveForward(
-    //                     allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
-    //                             : BlueAlliancePerspectiveRotation);
-    //             hasAppliedOperatorPerspective = true;
-    //         });
-    //     }
-    // }
 
     @Override
     public void periodic() {
@@ -322,6 +298,7 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
         ArrayList<VisionData> outputs = AprilTagVision.getInstance().getOutputs();
         if (Settings.Vision.IS_ACTIVE.get() && outputs.size() > 0) {
             updateEstimatorWithVisionData(outputs);
+       
         }
 
         for (int i = 0; i < Modules.length; i++) {

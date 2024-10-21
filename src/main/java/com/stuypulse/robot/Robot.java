@@ -3,6 +3,7 @@ package com.stuypulse.robot;
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.stuypulse.robot.commands.leds.LEDReset;
+import com.stuypulse.robot.commands.vision.VisionChangeWhiteList;
 import com.stuypulse.robot.commands.vision.VisionReloadWhiteList;
 
 import edu.wpi.first.cameraserver.CameraServer;

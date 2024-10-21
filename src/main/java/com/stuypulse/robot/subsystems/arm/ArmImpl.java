@@ -1,5 +1,7 @@
 package com.stuypulse.robot.subsystems.arm;
 
+import org.ejml.dense.row.mult.SubmatrixOps_FDRM;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
@@ -148,10 +150,34 @@ public class ArmImpl extends Arm {
 
             double angleBetweenPivotToSpeakerAndArm = Units.radiansToDegrees(Math.acos(Settings.Arm.LENGTH / pivotToSpeaker.getNorm()));
 
-            if (speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm() < 2.0) {
-                return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker) + 8; 
+            double distanceToSpeaker = speakerPose.toPose2d().minus(robotPose).getTranslation().getNorm();
+
+            double targetAngle = -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
+
+            if (distanceToSpeaker < 2.0) {
+                targetAngle += 8.0;
             }
-            return -(angleBetweenPivotToSpeakerAndArm - angleFromPivotToSpeaker);
+            // else if (distanceToSpeaker > 3.0) {
+            //     targetAngle -= 3.0;
+            // }
+            // else if (distanceToSpeaker > 3.5) {
+            //     targetAngle -= 3.7;
+            // }
+            // else if (distanceToSpeaker > 4.0) {
+            //     targetAngle -= 4.0;
+            // }
+
+            // double angleFromSpeakerBaseToRobot = Math.abs(Units.radiansToDegrees(Math.atan((speakerPose.getY() - robotPose.getY())/(speakerPose.getX() - robotPose.getX()))));
+            // SmartDashboard.putNumber("Angle to speaker base", angleFromSpeakerBaseToRobot);
+
+            // // if the robot is more than 30 degrees off to the side from the perspective of the speaker
+            // // this is intended to help with shooting from the sides
+            // if (angleFromSpeakerBaseToRobot > 30) {
+            //     targetAngle += 2;
+            // }
+
+            // SmartDashboard.putNumber("Distance to speaker", distanceToSpeaker);
+            return targetAngle + 2;
         }
         catch (Exception exception) {
             exception.printStackTrace();

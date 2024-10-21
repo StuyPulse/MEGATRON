@@ -9,19 +9,19 @@
       "prevControl": null,
       "nextControl": {
         "x": 5.564270444017079,
-        "y": 6.2968680782971695
+        "y": 6.29686807829717
       },
       "isLocked": false,
       "linkedName": "Red E"
     },
     {
       "anchor": {
-        "x": 4.457962192277661,
-        "y": 6.455173252226847
+        "x": 1.8735540604984342,
+        "y": 3.92923589265982
       },
       "prevControl": {
-        "x": 5.82874259938907,
-        "y": 6.723281631635568
+        "x": 3.2443344676098436,
+        "y": 4.197344272068541
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Shoots",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

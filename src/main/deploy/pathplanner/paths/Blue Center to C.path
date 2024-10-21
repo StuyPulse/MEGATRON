@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.9299999999999997,
-        "y": 4.73
+        "x": 2.9026396514331485,
+        "y": 4.291754680375458
       },
       "prevControl": {
-        "x": 2.2115349237469304,
-        "y": 5.50283670564365
+        "x": 2.184174575180079,
+        "y": 5.064591386019107
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Notes",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

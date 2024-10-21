@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1653087408738925,
-        "y": 6.946327738809324
+        "x": 6.165308740873893,
+        "y": 6.946327738809323
       },
       "isLocked": false,
       "linkedName": "Red D"
     },
     {
       "anchor": {
-        "x": 4.457962192277661,
-        "y": 6.455173252226847
+        "x": 1.8735540604984342,
+        "y": 3.92923589265982
       },
       "prevControl": {
-        "x": 6.613405494979742,
-        "y": 7.144120927555232
+        "x": 4.028997363200515,
+        "y": 4.618183567988207
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Shoots",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

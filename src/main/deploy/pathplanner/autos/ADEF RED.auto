@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.3824623752298102,
-      "y": 6.555650112788321
-    },
-    "rotation": 41.05050977995274
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -45,6 +39,12 @@
           "type": "path",
           "data": {
             "pathName": "Red E Shoot to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red F to Shoot"
           }
         }
       ]

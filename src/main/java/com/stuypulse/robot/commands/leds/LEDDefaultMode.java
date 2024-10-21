@@ -39,6 +39,10 @@ public class LEDDefaultMode extends Command {
 
     private LEDInstruction getInstruction() {
 
+        if (Intake.getInstance().getState() == Intake.State.ACQUIRING) {
+            return LEDInstructions.FIELD_RELATIVE_INTAKING;
+        }
+
         if (Arm.getInstance().getState() == Arm.State.CLIMBING) {
             return LEDInstructions.CLIMBING;
         }

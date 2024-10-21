@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6981417438618351,
-        "y": 3.7772118849081013
+        "x": 1.9554131415955136,
+        "y": 3.8122943482354206
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8964467582174,
-        "y": 2.4450348539245748
+        "x": 5.017029567178791,
+        "y": 1.5994862459810397
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
     },
     {
       "anchor": {
-        "x": 4.703539435568899,
-        "y": 1.5436283864020728
+        "x": 7.454009064454142,
+        "y": 2.7589143264224028
       },
       "prevControl": {
-        "x": 3.166637287239808,
-        "y": 2.001625667856766
-      },
-      "nextControl": {
-        "x": 6.003480742048733,
-        "y": 1.1562455038511537
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.304629409668046,
-        "y": 2.4540293807150113
-      },
-      "prevControl": {
-        "x": 6.30563859418317,
-        "y": 1.6722640852689115
+        "x": 5.299941312133336,
+        "y": 0.9589206642800752
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,14 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 31.29378192563241,
+    "rotation": 37.58348553725079,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Notes",
-  "previewStartingState": {
-    "rotation": -32.58720422762288,
-    "velocity": 0
-  },
-  "useDefaultConstraints": false
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": true
 }

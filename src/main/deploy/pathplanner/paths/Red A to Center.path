@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1548525011112525,
-        "y": 6.974422229164399
+        "x": 3.1232679206429843,
+        "y": 7.075233287371337
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1577027780171636,
-        "y": 6.548006355871343
+        "x": 2.406104106942541,
+        "y": 6.597826141748778
       },
       "isLocked": false,
       "linkedName": "Red BCA A"
     },
     {
       "anchor": {
-        "x": 1.964541675549125,
-        "y": 6.441955237891131
+        "x": 2.4348734737355513,
+        "y": 6.583808951093687
       },
       "prevControl": {
-        "x": 2.9477980291526062,
-        "y": 6.8998595437667065
+        "x": 2.5284267092750707,
+        "y": 6.642279723305886
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 28.70481879170682,
+    "rotation": 27.59729586864363,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Subwoofers",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

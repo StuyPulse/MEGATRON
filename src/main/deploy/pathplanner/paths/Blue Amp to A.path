@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6604119986513783,
-        "y": 6.9303384235488705
+        "x": 1.8598514847351095,
+        "y": 6.746049877940562
       },
       "isLocked": false,
       "linkedName": "Blue ADEF Starting Pose"
@@ -20,8 +20,8 @@
         "y": 7.029418819812343
       },
       "prevControl": {
-        "x": 1.6866262117940904,
-        "y": 6.629683984814398
+        "x": 1.5093951667101788,
+        "y": 6.588627448229724
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,14 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 10.233677721117825,
-    "rotateFast": false
+    "rotation": 10.233677721117825
   },
   "reversed": false,
-  "folder": "Blue To Notes",
-  "previewStartingState": {
-    "rotation": 0.2809818448982869,
-    "velocity": 0
+  "folder": "Blue To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

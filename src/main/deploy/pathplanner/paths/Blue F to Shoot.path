@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.282659617774593,
-        "y": 4.07671724848658
+        "x": 7.740726041637269,
+        "y": 3.815446288299984
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.738621898896219,
-        "y": 3.88245927489006
+        "x": 4.196688322758893,
+        "y": 3.6211883147034643
       },
       "isLocked": false,
       "linkedName": "Blue F"
@@ -30,23 +30,23 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.25,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -2.200416275819262,
-    "rotateFast": false
+    "rotation": -2.200416275819262
   },
   "reversed": false,
-  "folder": "Blue To Shoots",
-  "previewStartingState": {
-    "rotation": 1.6826420893398992,
-    "velocity": 0
+  "folder": "Blue To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

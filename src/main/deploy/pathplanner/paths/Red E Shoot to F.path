@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.457962192277661,
-        "y": 6.455173252226847
+        "x": 1.8735540604984342,
+        "y": 3.92923589265982
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.599381817936853,
-        "y": 6.769336468908934
+        "x": 3.014973686157626,
+        "y": 4.243399109341907
       },
       "isLocked": false,
       "linkedName": "Red Midline Shoot Pose"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red To Notes",
+  "folder": null,
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

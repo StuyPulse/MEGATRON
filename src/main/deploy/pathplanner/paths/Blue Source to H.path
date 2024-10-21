@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7905759905641836,
-        "y": 4.310885424226206
+        "x": 0.8795509328910394,
+        "y": 4.209895599278378
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9200310879254237,
-        "y": 0.7367317298737166
+        "x": 3.639371381306865,
+        "y": 0.7952025020859156
       },
       "isLocked": false,
       "linkedName": "Blue HGF Starting Pose"
     },
     {
       "anchor": {
-        "x": 8.29,
-        "y": 0.77
+        "x": 7.6387722006213234,
+        "y": 1.0875563631469138
       },
       "prevControl": {
-        "x": 5.675946213313558,
-        "y": 1.5535082827978157
+        "x": 3.251736469704623,
+        "y": 0.9992926040301093
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Blue H"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -43,10 +49,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Notes",
+  "folder": null,
   "previewStartingState": {
-    "rotation": -60.7473892158758,
+    "rotation": -59.588918732874625,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

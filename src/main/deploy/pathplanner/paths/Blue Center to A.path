@@ -16,25 +16,19 @@
     },
     {
       "anchor": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 3.101440276954628,
+        "y": 7.133434209888363
       },
       "prevControl": {
-        "x": 2.5359966344932694,
-        "y": 6.550650422729418
+        "x": 2.6374369114478973,
+        "y": 6.684084632617781
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Blue BCA A"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -49,10 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue To Notes",
-  "previewStartingState": {
-    "rotation": 31.8239059025087,
-    "velocity": 0
-  },
+  "folder": null,
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }

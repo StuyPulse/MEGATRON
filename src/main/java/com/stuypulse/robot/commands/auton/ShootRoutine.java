@@ -26,9 +26,9 @@ public abstract class ShootRoutine {
         return new SequentialCommandGroup(
             new ArmToSubwooferShot(),
             new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                .alongWith(new ShooterWaitForTarget().withTimeout(1.0)),
+                .alongWith(new ShooterWaitForTarget().withTimeout(0.5)),
             new ShooterFeederShoot(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(0.5)),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(0.3)),
             new ShooterFeederStop()
         );
     }
@@ -42,7 +42,7 @@ public abstract class ShootRoutine {
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(1.25)),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()).alongWith(new WaitCommand(0.5)),
             new ShooterFeederStop()
         );
     }
@@ -52,12 +52,12 @@ public abstract class ShootRoutine {
             new ArmToSpeaker(),
             new ParallelCommandGroup(
                 new SwerveDriveAlignToSpeaker(),
-            new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
+                new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET),
                 new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)
             ),
             new ShooterFeederShoot(),
-            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote())
-                .alongWith(new WaitCommand(2.5)),
+            new WaitCommand(2),
+            new WaitUntilCommand(() -> !Shooter.getInstance().hasNote()),
             new ShooterFeederStop()
         );
     }

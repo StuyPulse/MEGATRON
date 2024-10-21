@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.95,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8887518932445275,
+        "y": 4.32662701436514
+      },
+      "isLocked": false,
+      "linkedName": "Blue BCA B Shoot Pose"
+    },
+    {
+      "anchor": {
+        "x": 2.9026396514331485,
+        "y": 4.291754680375458
+      },
+      "prevControl": {
+        "x": 1.8369869877204144,
+        "y": 4.291576527241374
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Blue BCA C"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": true
+}

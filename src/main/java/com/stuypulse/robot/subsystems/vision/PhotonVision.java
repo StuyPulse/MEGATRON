@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -51,7 +50,7 @@ public class PhotonVision extends AprilTagVision {
         for (int i = 0; i < Cameras.APRILTAG_CAMERAS.length; i++) {
             poseEstimators[i] = new PhotonPoseEstimator(
                 AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo), 
-                PoseStrategy.AVERAGE_BEST_TARGETS, 
+                PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, 
                 Cameras.APRILTAG_CAMERAS[i].getLocation().minus(new Pose3d())
                 );
         }

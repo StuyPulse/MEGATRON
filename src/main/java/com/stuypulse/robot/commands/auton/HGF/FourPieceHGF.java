@@ -18,7 +18,7 @@ public class FourPieceHGF extends SequentialCommandGroup {
      public FourPieceHGF(PathPlannerPath... paths) {
         addCommands(
             // Preload Shot
-            ShootRoutine.fromAnywhere(),
+            ShootRoutine.fromSubwoofer(),
             new ArmToFeed(),
 
             // Drive to H + Shoot H
