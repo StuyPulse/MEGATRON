@@ -26,6 +26,7 @@ import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
 import com.stuypulse.robot.commands.auton.HGF.ReroutableFourPieceHGF;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceAmpSide;
 import com.stuypulse.robot.commands.auton.SideAutons.OnePieceSourceSide;
+import com.stuypulse.robot.commands.auton.tests.StraightLine;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
 import com.stuypulse.robot.commands.intake.IntakeStop;
@@ -344,7 +345,13 @@ public class RobotContainer {
         AutonConfig One_Piece_Mobility_Amp_Side_Blue = new AutonConfig("One Piece Amp Side", OnePieceAmpSide::new, 
             "Blue Amp Side Mobility");
 
+        // Straight Line
+        AutonConfig Straight_Line = new AutonConfig("Straight Line Test", StraightLine::new,
+        "Straight Line");
+
         One_Piece_Mobility_Amp_Side_Blue.registerBlue(autonChooser);
+
+        Straight_Line.registerBlue(autonChooser);
 
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);

@@ -200,9 +200,9 @@ public interface Settings {
 
         public interface Encoder {
             public interface Drive {
-                double WHEEL_DIAMETER = Units.inchesToMeters(4);
+                double WHEEL_DIAMETER = 4;
                 double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-                double GEAR_RATIO = 1.0 / Swerve.Drive.L3;
+                double GEAR_RATIO = Swerve.Drive.L4;
 
                 double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
