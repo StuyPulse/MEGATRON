@@ -11,6 +11,7 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.ArmEncoderFeedforward;
 import com.stuypulse.robot.util.FilteredRelativeEncoder;
+import com.stuypulse.robot.util.SpeakerAngleElinInterpolation;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
@@ -99,7 +100,8 @@ public class ArmImpl extends Arm {
             case SUBWOOFER_SHOT:
                 return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
             case SPEAKER:
-                return getSpeakerAngle();
+                // return getSpeakerAngle();
+                return getSpeakerAngleElin();
             case LOW_FERRY:
                 return Settings.Arm.LOW_FERRY_ANGLE.get();
             case LOW_FERRY_MANUAL:
@@ -118,6 +120,18 @@ public class ArmImpl extends Arm {
                 return Settings.Arm.POST_CLIMB_ANGLE.get();
             default:
                 return Settings.Arm.MIN_ANGLE.get();   
+        }
+    }
+
+    private double getSpeakerAngleElin() {
+        try {
+            Pose2d speakerPose = Field.getAllianceSpeakerPose();
+            double distanceToSpeaker = Units.metersToInches(SwerveDrive.getInstance().getPose().minus(speakerPose).getTranslation().getNorm());
+            return SpeakerAngleElinInterpolation.getAngleInDegrees(distanceToSpeaker);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return Settings.Arm.SUBWOOFER_SHOT_ANGLE.get();
         }
     }
 
