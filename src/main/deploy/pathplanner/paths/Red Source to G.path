@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.4870477832123745,
-        "y": 0.6431784943341966
+        "x": 5.487047783212375,
+        "y": 0.6431784943341965
       },
       "isLocked": false,
       "linkedName": "Red HGF Starting Pose"
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 6.013284733122172,
-        "y": 0.9589206642800752
+        "y": 0.9589206642800749
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,14 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 45.820024158319185,
-    "rotateFast": false
+    "rotation": 45.820024158319185
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": {
-    "rotation": -59.59000000000003,
-    "velocity": 0
+  "folder": "Red To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

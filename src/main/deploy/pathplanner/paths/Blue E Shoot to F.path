@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.978996157066389,
-        "y": 6.932057215966284
+        "x": 4.683796180278373,
+        "y": 3.722508437390387
       },
       "isLocked": false,
       "linkedName": "Blue DEF Shoot"
     },
     {
       "anchor": {
-        "x": 7.740726041637269,
-        "y": 3.815446288299984
+        "x": 8.288957304291097,
+        "y": 4.0969083044936925
       },
       "prevControl": {
-        "x": 6.065382226457245,
-        "y": 6.0808024600713555
+        "x": 5.226887512926812,
+        "y": 4.141857441080955
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -67.94269283671294
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Blue To Note",

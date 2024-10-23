@@ -1,0 +1,73 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.285159462804046,
+        "y": 4.107340350097367
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.741121743925669,
+        "y": 3.913082376500847
+      },
+      "isLocked": false,
+      "linkedName": "Red F"
+    },
+    {
+      "anchor": {
+        "x": 4.590444617119941,
+        "y": 4.527401755529436
+      },
+      "prevControl": {
+        "x": 4.985219802098831,
+        "y": 3.937158592323137
+      },
+      "nextControl": {
+        "x": 4.1083373280769155,
+        "y": 5.248218418068103
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.3521618769428017,
+        "y": 4.5938005780401445
+      },
+      "prevControl": {
+        "x": 3.225184679536026,
+        "y": 5.982512565843585
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red FC Shoot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.1,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.25,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -36.204
+  },
+  "reversed": false,
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

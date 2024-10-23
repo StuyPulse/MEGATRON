@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.1,
+        "y": 5.57
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.09653456185508,
+        "y": 5.937887071242202
+      },
+      "isLocked": false,
+      "linkedName": "Red BCA B"
+    },
+    {
+      "anchor": {
+        "x": 8.281950694955519,
+        "y": 7.472564688719121
+      },
+      "prevControl": {
+        "x": 7.286255790776338,
+        "y": 7.109811541220302
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red D"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 16.281060042006033
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

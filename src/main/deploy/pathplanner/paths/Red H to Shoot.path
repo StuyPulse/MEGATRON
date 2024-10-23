@@ -8,28 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9083369334829836,
-        "y": 1.321439451995713
+        "x": 3.9047098620610936,
+        "y": 1.581054652064661
       },
       "isLocked": false,
       "linkedName": "Red H"
     },
     {
       "anchor": {
-        "x": 1.8735540604984342,
-        "y": 3.92923589265982
+        "x": 2.365670654890417,
+        "y": 3.567518045564365
       },
       "prevControl": {
-        "x": 2.820780570336069,
-        "y": 2.8416795295129056
+        "x": 3.464785210820422,
+        "y": 2.154528716609517
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Red Midline Shoot Pose"
+      "linkedName": "Red HG Shoot Pose"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.5,
@@ -39,11 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.100907546212255,
-    "rotateFast": false
+    "rotation": -42.377464368931555
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }

@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 2.7951402231152036,
-        "y": 1.6228745548659187
+        "y": 1.622874554865919
       },
       "isLocked": false,
       "linkedName": "Blue Midline Shoot Pose"
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 6.6387722006213234,
-        "y": 1.0875563631469138
+        "y": 1.087556363146914
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,11 +31,11 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.1,
-      "rotationDegrees": 0,
-      "rotateFast": false
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -45,14 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Utils",
-  "previewStartingState": {
-    "rotation": -42.734040696705854,
-    "velocity": 0
+  "folder": "Blue To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

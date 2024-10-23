@@ -13,37 +13,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Blue B to F"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Blue F to Shoot"
+            "pathName": "Blue F to Close C Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Blue FC Shoot to C"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Blue C to Shoot Before A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Blue Center to A"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Blue A to Center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue A Shoot to D"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue D to Shoot"
           }
         }
       ]

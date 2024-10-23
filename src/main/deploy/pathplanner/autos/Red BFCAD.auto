@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Center to B"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red B to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red F to Close C Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red FC Shoot to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red C to Shoot Before A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Center to A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red A to D"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red D to Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

@@ -20,6 +20,9 @@ import com.stuypulse.robot.commands.auton.RerouteTest;
 import com.stuypulse.robot.commands.auton.ADEF.FivePieceADEF;
 import com.stuypulse.robot.commands.auton.BCA.FourPieceBCA;
 import com.stuypulse.robot.commands.auton.BCA.RightAngleFourPieceBCA;
+import com.stuypulse.robot.commands.auton.BF_Series.FivePieceBFGH;
+import com.stuypulse.robot.commands.auton.BF_Series.SixPieceBDEFA;
+import com.stuypulse.robot.commands.auton.BF_Series.SixPieceBFCAD;
 import com.stuypulse.robot.commands.auton.HGF.ThreePieceGH;
 import com.stuypulse.robot.commands.auton.HGF.ThreePieceHG;
 import com.stuypulse.robot.commands.auton.HGF.FourPieceHGF;
@@ -295,10 +298,10 @@ public class RobotContainer {
         AutonConfig MOBILITY_RED = new AutonConfig("Mobility", Mobility::new, "Mobility");
 
         // BCA
-        AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
-        "Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
-        AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
-        "Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
+        //AutonConfig BCA_BLUE = new AutonConfig("4 BCA", FourPieceBCA::new,
+        //"Blue Center to B", "Blue B to Center", "Blue Center to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center");
+        //AutonConfig BCA_RED = new AutonConfig("4 BCA", FourPieceBCA::new,
+        //"Red Center to B", "Red B to Center", "Red Center to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center");
 
        // HGF
         AutonConfig HGF_BLUE = new AutonConfig("4 HGF", FourPieceHGF::new,
@@ -319,10 +322,10 @@ public class RobotContainer {
         "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot");
 
         // Reroutable HGF
-        AutonConfig ReroutableHGF_BLUE = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
-            "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot", "Blue H to G Reroute", "Blue G to F Reroute");
-        AutonConfig ReroutableHGF_RED = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
-        "Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot", "Red H to G Reroute", "Red G to F Reroute");
+        //AutonConfig ReroutableHGF_BLUE = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
+        //    "Blue Source to H", "Blue H to Shoot", "Blue H Shoot to G", "Blue G to Shoot", "Blue G Shoot to F", "Blue F to Shoot", "Blue H to G Reroute", "Blue G to F Reroute");
+        //AutonConfig ReroutableHGF_RED = new AutonConfig("4 HGF Reroute", ReroutableFourPieceHGF::new, 
+        //"Red Source to H", "Red H to Shoot", "Red H Shoot to G", "Red G to Shoot", "Red G Shoot to F", "Red F to Shoot", "Red H to G Reroute", "Red G to F Reroute");
         
         // ADEF
         AutonConfig ADEF_BLUE = new AutonConfig("5 ADEF", FivePieceADEF::new,
@@ -330,11 +333,29 @@ public class RobotContainer {
         AutonConfig ADEF_RED = new AutonConfig("5 ADEF", FivePieceADEF::new,
         "Red Amp to A", "Red A to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot");
 
+        // BDEFA
+        AutonConfig BDEFA_BLUE = new AutonConfig("6 BDEFA", SixPieceBDEFA::new,
+        "Blue Center to B", "Blue B to D", "Blue D to Shoot", "Blue D Shoot to E", "Blue E to Shoot", "Blue E Shoot to F", "Blue F to Shoot", "Blue F Shoot to A", "Blue Center to A");
+        AutonConfig BDEFA_RED = new AutonConfig("6 BDEFA", SixPieceBDEFA::new,
+        "Red Center to B", "Red B to D", "Red D to Shoot", "Red D Shoot to E", "Red E to Shoot", "Red E Shoot to F", "Red F to Shoot", "Red F Shoot to A", "Red Center to A");
+
+        // BFCAD
+        AutonConfig BFCAD_BLUE = new AutonConfig("6 BFCAD", SixPieceBFCAD::new,
+        "Blue Center to B", "Blue B to F", "Blue F to Close C Shoot", "Blue FC Shoot to C", "Blue C to Shoot Before A", "Blue Center to A", "Blue A to Center", "Blue A Shoot to D", "Blue D to Shoot");
+        AutonConfig BFCAD_RED = new AutonConfig("6 BFCAD", SixPieceBFCAD::new,
+        "Red Center to B", "Red B to F", "Red F to Close C Shoot", "Red FC Shoot to C", "Red C to Shoot Before A", "Red Center to A", "Red A to Center", "Red A Shoot to D", "Red D to Shoot");
+
+        // BFGH
+        AutonConfig BFGH_BLUE = new AutonConfig("5 BFGH", FivePieceBFGH:: new,
+        "Blue Center to B", "Blue B to F", "Blue F to Shoot", "Blue F Shoot to G", "Blue G to F Shoot", "Blue GF SHoot to H", "Blue H to F Shoot");
+        AutonConfig BFGH_RED = new AutonConfig("5 BFGH", FivePieceBFGH:: new,
+        "Red Center to B", "Red B to F", "Red F to Shoot", "Red F Shoot to G", "Red G to F Shoot", "Red GF SHoot to H", "Red H to F Shoot");
+        
         // Reroute Test
-        AutonConfig Reroute_Test_Blue = new AutonConfig("Reroute Test", RerouteTest::new,
-        "Blue Center to B", "Blue B to Center", "B to A Reroute Test", "Blue A to Center");
-        AutonConfig Reroute_Test_Red = new AutonConfig("Reroute Test", RerouteTest::new,
-        "Red Center to B", "Red B to Center", "B to A Reroute Test", "Red A to Center");
+        //AutonConfig Reroute_Test_Blue = new AutonConfig("Reroute Test", RerouteTest::new,
+        //"Blue Center to B", "Blue B to Center", "B to A Reroute Test", "Blue A to Center");
+        //AutonConfig Reroute_Test_Red = new AutonConfig("Reroute Test", RerouteTest::new,
+        //"Red Center to B", "Red B to Center", "B to A Reroute Test", "Red A to Center");
 
         // New BCA
         AutonConfig New_BCA_Blue = new AutonConfig("New BCA", RightAngleFourPieceBCA::new,
@@ -356,11 +377,20 @@ public class RobotContainer {
         MOBILITY_BLUE.registerBlue(autonChooser);
         MOBILITY_RED.registerRed(autonChooser);
 
-        BCA_BLUE.registerDefaultBlue(autonChooser);
-        BCA_RED.registerDefaultRed(autonChooser);
+        //BCA_BLUE.registerDefaultBlue(autonChooser);
+        //BCA_RED.registerDefaultRed(autonChooser);
 
         New_BCA_Blue.registerDefaultBlue(autonChooser);
         New_BCA_Red.registerDefaultRed(autonChooser);
+
+        BDEFA_BLUE.registerBlue(autonChooser);
+        BDEFA_RED.registerRed(autonChooser);
+
+        BFCAD_BLUE.registerBlue(autonChooser);
+        BFCAD_RED.registerRed(autonChooser);
+
+        BFGH_BLUE.registerBlue(autonChooser);
+        BFGH_RED.registerRed(autonChooser);
 
         HGF_BLUE.registerBlue(autonChooser);
         HGF_RED.registerRed(autonChooser);
@@ -371,14 +401,14 @@ public class RobotContainer {
         GH_BLUE.registerBlue(autonChooser);
         GH_RED.registerRed(autonChooser);
 
-        ReroutableHGF_BLUE.registerBlue(autonChooser);
-        ReroutableHGF_RED.registerRed(autonChooser);
+        //ReroutableHGF_BLUE.registerBlue(autonChooser);
+        //ReroutableHGF_RED.registerRed(autonChooser);
 
         ADEF_BLUE.registerBlue(autonChooser);
         ADEF_RED.registerRed(autonChooser);
 
-        Reroute_Test_Blue.registerBlue(autonChooser);
-        Reroute_Test_Red.registerRed(autonChooser);
+        //Reroute_Test_Blue.registerBlue(autonChooser);
+        //Reroute_Test_Red.registerRed(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }

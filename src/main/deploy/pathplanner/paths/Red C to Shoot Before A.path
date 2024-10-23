@@ -20,8 +20,8 @@
         "y": 6.075378178534135
       },
       "prevControl": {
-        "x": 2.130825458232113,
-        "y": 5.905547993432169
+        "x": 2.1187232445698765,
+        "y": 5.828398456474928
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,11 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 38.19580416075567,
-    "rotateFast": false
+    "rotation": 38.19580416075567
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
+  "folder": "Red To Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": true
 }

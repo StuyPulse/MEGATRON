@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.1,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.044398825776819,
+        "y": 4.782298508049397
+      },
+      "isLocked": false,
+      "linkedName": "Blue BCA B"
+    },
+    {
+      "anchor": {
+        "x": 5.381541387152715,
+        "y": 4.0969083044936925
+      },
+      "prevControl": {
+        "x": 4.692305268167084,
+        "y": 4.115224476728716
+      },
+      "nextControl": {
+        "x": 6.112392080426523,
+        "y": 4.077486241709475
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.288957304291097,
+        "y": 4.0969083044936925
+      },
+      "prevControl": {
+        "x": 6.643001648168476,
+        "y": 4.0836879702033215
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Blue F"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Blue To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

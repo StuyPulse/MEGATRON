@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Red Center to B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Red B to Center"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Red C to Shoot Before A"
           }
         },
         {

@@ -1,39 +1,49 @@
-// package com.stuypulse.robot.commands.auton.BF_Series;
+package com.stuypulse.robot.commands.auton.BF_Series;
 
-// import com.pathplanner.lib.path.PathPlannerPath;
-// import com.stuypulse.robot.commands.arm.ArmToFeed;
-// import com.stuypulse.robot.commands.auton.FollowPathAndIntake;
-// import com.stuypulse.robot.commands.auton.ShootRoutine;
-// import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
-// import com.stuypulse.robot.commands.swerve.SwerveDriveToShoot;
-// import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.stuypulse.robot.commands.arm.ArmToFeed;
+import com.stuypulse.robot.commands.auton.FollowPathThenShoot;
+import com.stuypulse.robot.commands.auton.ShootRoutine;
+import com.stuypulse.robot.commands.intake.IntakeSetAcquire;
+import com.stuypulse.robot.commands.shooter.ShooterWaitForTarget;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-// public class FivePieceBFGH extends SequentialCommandGroup {
+public class FivePieceBFGH extends SequentialCommandGroup {
     
-//     public FivePieceBFGH(PathPlannerPath... paths) {
+    public FivePieceBFGH(PathPlannerPath... paths) {
 
-//         addCommands(
-//             ShootRoutine.fromSubwoofer(),
-//             new ArmToFeed(),
+        addCommands(
+            ShootRoutine.fromSubwoofer(),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[0]),
-//             ShootRoutine.fromAnywhere(),
+            // Get B + Shoot B from there
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[0]),
+            ShootRoutine.fromAnywhere(),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[1]),
-//             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[2]),
-//             ShootRoutine.fromAnywhere(),
+            // Get F + Shoot F
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[1]),
+            new FollowPathThenShoot(paths[2], false),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[3]),
-//             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[4]),
-//             ShootRoutine.fromAnywhere(),
+            // Get G + Shoot G
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[3]),
+            new FollowPathThenShoot(paths[4], false),
+            new ArmToFeed(),
 
-//             new FollowPathAndIntake(paths[5]),
-//             SwerveDrive.getInstance().followPathWithSpeakerAlignCommand(paths[6]),
-//             ShootRoutine.fromAnywhere()
-//         );
+            // Get H + Shoot H
+            new IntakeSetAcquire(),
+            SwerveDrive.getInstance().followPathCommand(paths[5]),
+            new FollowPathThenShoot(paths[6], true),
+            new ArmToFeed()
 
-//     }
+        );
 
-// }
+    }
+
+}
