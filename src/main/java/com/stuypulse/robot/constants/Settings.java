@@ -24,8 +24,8 @@ public interface Settings {
 
     boolean SAFE_MODE_ENABLED = false;
 
-    double WIDTH = Units.inchesToMeters(36); // intake side 
-    double LENGTH = Units.inchesToMeters(32);
+    double WIDTH = Units.inchesToMeters(39.4); // intake side 
+    double LENGTH = Units.inchesToMeters(34.3);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
