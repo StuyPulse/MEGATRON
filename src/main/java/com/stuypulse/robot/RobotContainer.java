@@ -347,9 +347,9 @@ public class RobotContainer {
 
         // BFGH
         AutonConfig BFGH_BLUE = new AutonConfig("5 BFGH", FivePieceBFGH:: new,
-        "Blue Center to B", "Blue B to F", "Blue F to Shoot", "Blue F Shoot to G", "Blue G to F Shoot", "Blue GF SHoot to H", "Blue H to F Shoot");
+        "Blue Center to B", "Blue B to F", "Blue F to Shoot", "Blue F Shoot to G", "Blue G to F Shoot", "Blue GF Shoot to H", "Blue H to F Shoot");
         AutonConfig BFGH_RED = new AutonConfig("5 BFGH", FivePieceBFGH:: new,
-        "Red Center to B", "Red B to F", "Red F to Shoot", "Red F Shoot to G", "Red G to F Shoot", "Red GF SHoot to H", "Red H to F Shoot");
+        "Red Center to B", "Red B to F", "Red F to Shoot", "Red F Shoot to G", "Red G to F Shoot", "Red GF Shoot to H", "Red H to F Shoot");
         
         // Reroute Test
         //AutonConfig Reroute_Test_Blue = new AutonConfig("Reroute Test", RerouteTest::new,

@@ -126,7 +126,8 @@ public class ArmImpl extends Arm {
     private double getSpeakerAngleElin() {
         try {
             Pose2d speakerPose = Field.getAllianceSpeakerPose();
-            double distanceToSpeaker = Units.metersToInches(SwerveDrive.getInstance().getPose().minus(speakerPose).getTranslation().getNorm());
+            double distanceToSpeaker = Units.metersToInches(SwerveDrive.getInstance().getPose().minus(speakerPose).getTranslation().getNorm()) - Units.metersToInches(Settings.WIDTH / 2);
+            SmartDashboard.putNumber("harry", distanceToSpeaker);
             return SpeakerAngleElinInterpolation.getAngleInDegrees(distanceToSpeaker);
         }
         catch (Exception e) {

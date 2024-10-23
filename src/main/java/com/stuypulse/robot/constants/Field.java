@@ -151,7 +151,7 @@ public interface Field {
 
     /*** SPEAKER ***/
 
-    double SPEAKER_OPENING_X = Units.inchesToMeters(9.952119);
+    double SPEAKER_OPENING_X = Units.inchesToMeters(9.952119); 
 
     public static Pose2d getAllianceSpeakerPose() {
         return (Robot.isBlue() ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER)
