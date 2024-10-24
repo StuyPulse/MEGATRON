@@ -104,7 +104,7 @@ public interface Settings {
         double FEEDER_DEAQUIRE_SPEED = 0.5;
         double FEEDER_SHOOT_SPEED = 1.0;
 
-        double TARGET_RPM_THRESHOLD = 250;
+        double TARGET_RPM_THRESHOLD = 1000;
         double MAX_WAIT_TO_REACH_TARGET = 2.0;
         
         ShooterSpeeds SPEAKER = new ShooterSpeeds(
@@ -263,7 +263,7 @@ public interface Settings {
 
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
-        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 3);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 6);
 
         SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
         SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);

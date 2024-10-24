@@ -38,8 +38,7 @@ public class FourPieceBCA extends SequentialCommandGroup {
 
             // Drive to A + Shoot A
             new IntakeSetAcquire(),
-            SwerveDrive.getInstance().followPathCommand(paths[4]),
-            new FollowPathThenShoot(paths[5], true),
+            new FollowPathThenShoot(paths[4], true),
             new ArmToFeed()
         );
     }

@@ -120,9 +120,26 @@ public class ArmImpl extends Arm {
     private double getSpeakerAngleElin() {
         try {
             Pose2d speakerPose = Field.getAllianceSpeakerPose().transformBy(new Transform2d(Field.SPEAKER_OPENING_X, 0, new Rotation2d()));
+            Pose2d robotPose = SwerveDrive.getInstance().getPose();
+
             double distanceToSpeaker = Units.metersToInches(SwerveDrive.getInstance().getPose().minus(speakerPose).getTranslation().getNorm()) - Units.metersToInches(Settings.WIDTH / 2);
-            SmartDashboard.putNumber("harry", distanceToSpeaker);
-            return SpeakerAngleElinInterpolation.getAngleInDegrees(distanceToSpeaker);
+            double angleFromSpeakerBaseToRobot = Math.abs(Units.radiansToDegrees(Math.atan((speakerPose.getY() - robotPose.getY())/(speakerPose.getX() - robotPose.getX()))));
+
+            double targetAngle = SpeakerAngleElinInterpolation.getAngleInDegrees(distanceToSpeaker);
+
+            if (distanceToSpeaker > 120) {
+                targetAngle += 2;
+            }
+
+            SmartDashboard.putNumber("distance to speaker", distanceToSpeaker);
+            SmartDashboard.putNumber("Angle to speaker base", angleFromSpeakerBaseToRobot);
+
+            // if the robot is more than 30 degrees off to the side from the perspective of the speaker
+            // this is intended to help with shooting from the sides
+            if (angleFromSpeakerBaseToRobot > 30) {
+                targetAngle += 2;
+            }
+            return targetAngle;
         }
         catch (Exception e) {
             e.printStackTrace();
