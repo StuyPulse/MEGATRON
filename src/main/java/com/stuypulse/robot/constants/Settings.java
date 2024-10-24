@@ -39,18 +39,18 @@ public interface Settings {
         SmartNumber MAX_VELOCITY = new SmartNumber("Arm/Max Velocity (deg/s)", SAFE_MODE_ENABLED ? 200 : 750);
         SmartNumber MAX_ACCELERATION = new SmartNumber("Arm/Max Acceleration (deg/s^2)", SAFE_MODE_ENABLED ? 200 : 700);
 
-        SmartNumber MAX_ANGLE = new SmartNumber("Arm/Max Angle (deg)", 85);
-        SmartNumber MIN_ANGLE = new SmartNumber("Arm/Min Angle (deg)", -90 + 12.25);
+        double MAX_ANGLE = 85;
+        double MIN_ANGLE = -90 + 12.25;
         
         SmartNumber MAX_ANGLE_ERROR = new SmartNumber("Arm/Max Angle Error", 2.5);
 
         SmartNumber AMP_ANGLE = new SmartNumber("Arm/Amp Angle", 49);
-        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", MIN_ANGLE.get());
+        SmartNumber LOW_FERRY_ANGLE = new SmartNumber("Arm/Low Ferry Angle", MIN_ANGLE);
         SmartNumber LOB_FERRY_ANGLE = new SmartNumber("Arm/Lob Ferry Angle", -50);
-        SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 90);
-        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE.get());
+        SmartNumber PRE_CLIMB_ANGLE = new SmartNumber("Arm/Pre climb angle", 85);
+        SmartNumber POST_CLIMB_ANGLE = new SmartNumber("Arm/Post Climb Angle", MIN_ANGLE);
 
-        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE.get() + 0);
+        SmartNumber FEED_ANGLE = new SmartNumber("Arm/Feed Angle", MIN_ANGLE + 0);
         SmartNumber MAX_ACCEPTABLE_FEED_ANGLE = new SmartNumber("Arm/Max Acceptable Feed Angle", FEED_ANGLE.get() + 4);
 
         SmartNumber SUBWOOFER_SHOT_ANGLE = new SmartNumber("Arm/Subwoofer Shot Angle", -33);
@@ -85,7 +85,7 @@ public interface Settings {
 
         double INTAKE_FEED_SPEED = 0.4; 
 
-        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE.get() + 20;
+        double MAX_ARM_ANGLE_FOR_INTAKE_SHOOT = Arm.MIN_ANGLE + 20;
         double ARM_SPEED_THRESHOLD_TO_FEED = 1.75; // degrees per second
 
         double INTAKE_SHOOT_SPEED = 0.9;
@@ -112,11 +112,8 @@ public interface Settings {
             new SmartNumber("Shooter/Speaker RPM differential", 500)
         );
 
-        // TODO: Find velocity
-        double SPEAKER_SHOT_VELOCITY = 10.0; // m/s
-
-        SmartNumber HAS_NOTE_FALLING_DEBOUNCE = new SmartNumber("Shooter/Has Note Falling Debounce", 0.0);
-        SmartNumber HAS_NOTE_RISING_DEBOUNCE = new SmartNumber("Shooter/Has Note Rising Debounce", 0.0);
+        double HAS_NOTE_FALLING_DEBOUNCE = 0.0;
+        double HAS_NOTE_RISING_DEBOUNCE = 0.0;
 
         // left runs faster than right
         public interface LEFT {
@@ -168,14 +165,7 @@ public interface Settings {
         double SPEED_AT_12_VOLTS = 5.21;
 
         public interface Assist {
-            SmartNumber ALIGN_MIN_SPEAKER_DIST = new SmartNumber("SwerveAssist/Minimum Distance to Speaker", 4); 
-
             double AMP_WALL_SCORE_DISTANCE = (Settings.LENGTH / 2) + Units.inchesToMeters(2.5);
-
-            // angle PID
-            SmartNumber kP = new SmartNumber("SwerveAssist/kP", 5.0);
-            SmartNumber kI = new SmartNumber("SwerveAssist/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SwerveAssist/kD", 0.2);
 
             double ANGLE_DERIV_RC = 0.05;
             double REDUCED_FF_DIST = 0.75;
@@ -273,7 +263,7 @@ public interface Settings {
 
         SmartNumber X_TOLERANCE = new SmartNumber("Alignment/X Tolerance", 0.1);
         SmartNumber Y_TOLERANCE = new SmartNumber("Alignment/Y Tolerance", 0.1);
-        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 6);
+        SmartNumber ANGLE_TOLERANCE = new SmartNumber("Alignment/Angle Tolerance", 3);
 
         SmartNumber CLIMB_SETUP_DISTANCE = new SmartNumber("Alignment/Climb/Setup Distance", Units.inchesToMeters(21.0));
         SmartNumber INTO_CHAIN_SPEED = new SmartNumber("Alignment/Climb/Into Chain Speed", 0.25);
@@ -292,20 +282,6 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Alignment/Rotation/kD", 0.4);
 
             SmartNumber ALIGN_OMEGA_DEADBAND = new SmartNumber("Alignment/Rotation/Omega Deadband", 0.05);
-        }
-
-        public interface Shoot {
-            public interface Translation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Translation/kP", 7.5);
-                SmartNumber kI = new SmartNumber("ShootAlign/Translation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Translation/kD", 0.7);
-            }
-
-            public interface Rotation {
-                SmartNumber kP = new SmartNumber("ShootAlign/Rotation/kP", 6.0);
-                SmartNumber kI = new SmartNumber("ShootAlign/Rotation/kI", 0.0);
-                SmartNumber kD = new SmartNumber("ShootAlign/Rotation/kD", 0.4);
-            }
         }
     }
 

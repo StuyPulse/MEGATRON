@@ -155,12 +155,7 @@ public interface Field {
 
     public static Pose2d getAllianceSpeakerPose() {
         return (Robot.isBlue() ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER)
-            .getLocation().toPose2d().transformBy(new Transform2d(SPEAKER_OPENING_X, 0, new Rotation2d()));
-    }
-
-    public static Pose2d getSpeakerPathFindPose() {
-        return getAllianceSpeakerPose().transformBy(
-            new Transform2d(0, Units.inchesToMeters(200), new Rotation2d()));
+            .getLocation().toPose2d();
     }
 
     /*** AMP ***/
