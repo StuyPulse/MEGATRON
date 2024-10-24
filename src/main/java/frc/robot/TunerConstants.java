@@ -163,5 +163,6 @@ public class TunerConstants {
             .withSteerMotorInverted(kBackRightSteerInvert);
     public static final CommandSwerveDrivetrain DriveTrain = new CommandSwerveDrivetrain(DrivetrainConstants, FrontLeft,
             FrontRight, BackLeft, BackRight);
+    public static final double UpdateOdometryFrequency = 50.0;
 }
     
