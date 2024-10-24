@@ -58,6 +58,7 @@ import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 // import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
@@ -93,7 +94,7 @@ public class RobotContainer {
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();
     public final Arm arm = Arm.getInstance();
-    // public final SwerveDrive swerve = SwerveDrive.getInstance();
+    public final SwerveDrive swerve = SwerveDrive.getInstance();
 
     public final LEDController leds = LEDController.getInstance();
 
@@ -111,18 +112,18 @@ public class RobotContainer {
         configureButtonBindings();
         configureAutons();
     
-    //     if (Utils.isSimulation()) {
-    //         swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
-    //     }
-    //     swerve.registerTelemetry(logger::telemeterize);
+        if (Utils.isSimulation()) {
+            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
+        }
+        swerve.registerTelemetry(logger::telemeterize);
 
-    //     LiveWindow.disableAllTelemetry();
+        LiveWindow.disableAllTelemetry();
 
-    //     new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote()
-    //                 || ((driver.getLeftTriggerPressed() || driver.getRightTriggerPressed()) && (Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())))
-    //         .onTrue(new BuzzController(driver, 1, 1));
+        new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote()
+                    || ((driver.getLeftTriggerPressed() || driver.getRightTriggerPressed()) && (Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())))
+            .onTrue(new BuzzController(driver, 1, 1));
 
-    //     // new VisionDisable();
+        // new VisionDisable();
      }
 
     /****************/
@@ -130,7 +131,7 @@ public class RobotContainer {
     /****************/
 
     private void configureDefaultCommands() {
-        // swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         leds.setDefaultCommand(new LEDDefaultMode());
     }
 
