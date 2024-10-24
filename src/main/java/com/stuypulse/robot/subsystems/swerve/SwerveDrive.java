@@ -57,12 +57,12 @@ public class SwerveDrive extends SwerveDrivetrain implements Subsystem {
 
     static {
         instance = new SwerveDrive(
-            SwerveDriveConstants.DrivetrainConstants,
-            SwerveDriveConstants.UpdateOdometryFrequency,
-            SwerveDriveConstants.FrontLeft,
-            SwerveDriveConstants.FrontRight,
-            SwerveDriveConstants.BackLeft,
-            SwerveDriveConstants.BackRight
+            TunerConstants.DrivetrainConstants,
+            TunerConstants.UpdateOdometryFrequency,
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight
         );
     }
 

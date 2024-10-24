@@ -58,7 +58,7 @@ import com.stuypulse.robot.subsystems.arm.Arm;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
-import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
+// import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.swerve.Telemetry;
 import com.stuypulse.robot.subsystems.vision.AprilTagVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
@@ -77,6 +77,9 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.TunerConstants;
 
 public class RobotContainer {
 
@@ -90,11 +93,13 @@ public class RobotContainer {
     public final Intake intake = Intake.getInstance();
     public final Shooter shooter = Shooter.getInstance();
     public final Arm arm = Arm.getInstance();
-    public final SwerveDrive swerve = SwerveDrive.getInstance();
+    // public final SwerveDrive swerve = SwerveDrive.getInstance();
 
     public final LEDController leds = LEDController.getInstance();
 
     private final Telemetry logger = new Telemetry();
+
+    public final CommandSwerveDrivetrain swerve1 = TunerConstants.DriveTrain;
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -105,27 +110,27 @@ public class RobotContainer {
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
+    
+    //     if (Utils.isSimulation()) {
+    //         swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
+    //     }
+    //     swerve.registerTelemetry(logger::telemeterize);
 
-        if (Utils.isSimulation()) {
-            swerve.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(0)));
-        }
-        swerve.registerTelemetry(logger::telemeterize);
+    //     LiveWindow.disableAllTelemetry();
 
-        LiveWindow.disableAllTelemetry();
+    //     new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote()
+    //                 || ((driver.getLeftTriggerPressed() || driver.getRightTriggerPressed()) && (Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())))
+    //         .onTrue(new BuzzController(driver, 1, 1));
 
-        new Trigger(() -> Intake.getInstance().getState() == Intake.State.ACQUIRING && Intake.getInstance().hasNote()
-                    || ((driver.getLeftTriggerPressed() || driver.getRightTriggerPressed()) && (Intake.getInstance().hasNote() || Shooter.getInstance().hasNote())))
-            .onTrue(new BuzzController(driver, 1, 1));
-
-        // new VisionDisable();
-    }
+    //     // new VisionDisable();
+     }
 
     /****************/
     /*** DEFAULTS ***/
     /****************/
 
     private void configureDefaultCommands() {
-        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        // swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         leds.setDefaultCommand(new LEDDefaultMode());
     }
 
@@ -175,56 +180,56 @@ public class RobotContainer {
         
         // speaker align and score 
         // score amp
-        driver.getRightBumper()
-            .onTrue(new ConditionalCommand(
-                new VisionChangeWhiteList(7, 8), 
-                new VisionChangeWhiteList(3, 4), 
-                () -> Robot.isBlue()))
-            .whileTrue(new ConditionalCommand(
-                new SwerveDriveDrive(driver)
-                    .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                        .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE)))),
-                new SwerveDriveDriveAlignedSpeaker(driver)
-                    .alongWith(new ArmToSpeaker()
-                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET))
-                                .alongWith(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker())))
-                        .andThen(new ShooterFeederShoot())
-                    )
-                    .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
-                () -> Arm.getInstance().getState() == Arm.State.AMP))
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed().onlyIf(() -> arm.getState() == Arm.State.SPEAKER))
-            .onFalse(new VisionReloadWhiteList());
+        // driver.getRightBumper()
+        //     .onTrue(new ConditionalCommand(
+        //         new VisionChangeWhiteList(7, 8), 
+        //         new VisionChangeWhiteList(3, 4), 
+        //         () -> Robot.isBlue()))
+        //     .whileTrue(new ConditionalCommand(
+        //         new SwerveDriveDrive(driver)
+        //             .alongWith(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                 .andThen(new ShooterFeederDeacquire().alongWith(new LEDSet(LEDInstructions.AMP_SCORE)))),
+        //         new SwerveDriveDriveAlignedSpeaker(driver)
+        //             .alongWith(new ArmToSpeaker()
+        //                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET))
+        //                         .alongWith(new WaitUntilCommand(() -> swerve.isAlignedToSpeaker())))
+        //                 .andThen(new ShooterFeederShoot())
+        //             )
+        //             .alongWith(new LEDSet(LEDInstructions.SPEAKER_ALIGN)),
+        //         () -> Arm.getInstance().getState() == Arm.State.AMP))
+        //     .onFalse(new ShooterFeederStop())
+        //     .onFalse(new ArmToFeed().onlyIf(() -> arm.getState() == Arm.State.SPEAKER))
+        //     .onFalse(new VisionReloadWhiteList());
 
         // lob ferry align and shoot
-        driver.getLeftStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
-                    .alongWith(new ArmToLobFerry()
-                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
-                        .andThen(new ShooterFeederShoot())
-                    )
-                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
-            )
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed());
+        // driver.getLeftStickButton()
+        //     .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
+        //             .alongWith(new ArmToLobFerry()
+        //                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+        //                 .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
+        //                 .andThen(new ShooterFeederShoot())
+        //             )
+        //             .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN))
+        //     )
+        //     .onFalse(new ShooterFeederStop())
+        //     .onFalse(new ArmToFeed());
 
 
         // low ferry align and shoot
-        driver.getRightStickButton()
-            .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
-                    .alongWith(new ArmToLowFerry()
-                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
-                        .andThen(new ShooterFeederShoot())
-                    )
-                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
-            )
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed());
+        // driver.getRightStickButton()
+        //     .whileTrue(new SwerveDriveDriveAlignedFerry(driver)
+        //             .alongWith(new ArmToLowFerry()
+        //                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+        //                 .andThen(new WaitUntilCommand(() -> swerve.isAlignedToFerry()))
+        //                 .andThen(new ShooterFeederShoot())
+        //             )
+        //             .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN))
+        //     )
+        //     .onFalse(new ShooterFeederStop())
+        //     .onFalse(new ArmToFeed());
 
         // arm to amp
         driver.getLeftBumper().onTrue(new ArmToAmp());
@@ -241,32 +246,32 @@ public class RobotContainer {
             .onFalse(new ArmToFeed());
         
         // manual lob ferry
-        driver.getTopButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
-                    .alongWith(new ArmToLobFerryManual()
-                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
-                        .andThen(new ShooterFeederShoot())
-                    )
-                    .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
-            )
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed());
+        // driver.getTopButton()
+        //     .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
+        //             .alongWith(new ArmToLobFerryManual()
+        //                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+        //                 .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
+        //                 .andThen(new ShooterFeederShoot())
+        //             )
+        //             .alongWith(new LEDSet(LEDInstructions.LOB_FERRY_ALIGN_MANUAL))
+        //     )
+        //     .onFalse(new ShooterFeederStop())
+        //     .onFalse(new ArmToFeed());
 
-        // manual low ferry
-        driver.getLeftButton()
-            .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
-                    .alongWith(new ArmToLowFerryManual()
-                        .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
-                                .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
-                        .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
-                        .andThen(new ShooterFeederShoot())
-                    )
-                    .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
-            )
-            .onFalse(new ShooterFeederStop())
-            .onFalse(new ArmToFeed());
+        // // manual low ferry
+        // driver.getLeftButton()
+        //     .whileTrue(new SwerveDriveDriveAlignedManualFerry(driver)
+        //             .alongWith(new ArmToLowFerryManual()
+        //                 .andThen(new ArmWaitUntilAtTarget().withTimeout(Settings.Arm.MAX_WAIT_TO_REACH_TARGET)
+        //                         .alongWith(new ShooterWaitForTarget().withTimeout(Settings.Shooter.MAX_WAIT_TO_REACH_TARGET)))
+        //                 .andThen(new WaitUntilCommand(() -> swerve.isAlignedToManualFerry()))
+        //                 .andThen(new ShooterFeederShoot())
+        //             )
+        //             .alongWith(new LEDSet(LEDInstructions.LOW_FERRY_ALIGN_MANUAL))
+        //     )
+        //     .onFalse(new ShooterFeederStop())
+        //     .onFalse(new ArmToFeed());
         
         // human player attention button
         // driver.getRightButton().whileTrue(new LEDSet(LEDInstructions.ATTENTION));
@@ -292,6 +297,14 @@ public class RobotContainer {
 
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
+
+        autonChooser.addOption("Quasistatic Forward", swerve1.runDriveQuasiTest(SysIdRoutine.Direction.kForward));
+        autonChooser.addOption("DynanmicDrive Test", swerve1.runDriveDynamTest(SysIdRoutine.Direction.kForward));
+        autonChooser.addOption("Quaistatic Steer", swerve1.runSteerQuasiTest(SysIdRoutine.Direction.kForward));
+        autonChooser.addOption("DynanmicSteer Test", swerve1.runSteerDynamTest(SysIdRoutine.Direction.kForward));
+        autonChooser.addOption("DriveSlipTest", swerve1.runDriveSlipTest());
+
+
         
         // Mobility
         AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
