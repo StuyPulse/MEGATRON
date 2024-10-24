@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -119,7 +120,20 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         new SysIdRoutine.Config(Volts.of(0.25).per(Seconds.of(1)), null, null, ModifiedSignalLogger.logState()),
         new SysIdRoutine.Mechanism(
             (Measure<Voltage> volts) -> setControl(driveVoltageRequest.withVoltage(volts.in(Volts))),
-            null,
+            (log) -> {
+                for (SwerveModule module : modules) {
+                        log.motor(module.getID())
+                            .voltage(Units.Volts.of(module.getDriveVoltage()))
+                                .linearPosition(
+                                        Units.Meters.of(
+                                        module.getModulePosition()
+                                        .distanceMeters))
+                                        .linearVelocity(
+                                        Units.MetersPerSecond.of(
+                                        module.getModuleState()
+                                        .speedMetersPerSecond));
+                                    }
+                                },,
             this));
     
     public Command runDriveQuasiTest(Direction direction)
