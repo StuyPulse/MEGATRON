@@ -2,12 +2,7 @@ package com.stuypulse.robot.util;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
-/** Interpolation based on ferry angle of 50 degrees */
 public class ShooterLobFerryInterpolation {
-
-    public static void main(String[] args) {
-        System.out.println(getRPM(450));
-    }
     
     private static final InterpolatingDoubleTreeMap interpolatingDoubleTreeMap;
 

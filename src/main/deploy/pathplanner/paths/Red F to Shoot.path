@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.974337717193953,
-        "y": 4.201266592348
+        "x": 5.861319337035996,
+        "y": 4.176807197550407
       },
       "isLocked": false,
       "linkedName": "Red F"
@@ -20,15 +20,20 @@
         "y": 4.993335426485668
       },
       "prevControl": {
-        "x": 4.908506900347135,
-        "y": 3.754696069577325
+        "x": 4.909695637843657,
+        "y": 3.9358125219226627
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Red F to Shoot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

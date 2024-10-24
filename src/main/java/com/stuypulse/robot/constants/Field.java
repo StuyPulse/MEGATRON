@@ -151,17 +151,17 @@ public interface Field {
 
     /*** SPEAKER ***/
 
+    double SPEAKER_OPENING_X = Units.inchesToMeters(9.952119); 
+
     public static Pose2d getAllianceSpeakerPose() {
         return (Robot.isBlue() ? NamedTags.BLUE_SPEAKER : NamedTags.RED_SPEAKER)
-            .getLocation().toPose2d();
+            .getLocation().toPose2d().transformBy(new Transform2d(SPEAKER_OPENING_X, 0, new Rotation2d()));
     }
 
     public static Pose2d getSpeakerPathFindPose() {
         return getAllianceSpeakerPose().transformBy(
             new Transform2d(0, Units.inchesToMeters(200), new Rotation2d()));
     }
-
-    double SPEAKER_OPENING_X = Units.inchesToMeters(13.6);
 
     /*** AMP ***/
 

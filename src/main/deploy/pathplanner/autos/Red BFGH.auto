@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Center to B"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red B to F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red F to Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red F Shoot to G"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red G to F Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red GF Shoot to H"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red H to F Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Red Autons",
+  "choreoAuto": false
+}

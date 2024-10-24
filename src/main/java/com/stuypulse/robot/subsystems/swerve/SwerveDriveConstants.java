@@ -46,9 +46,9 @@ public class SwerveDriveConstants {
             .withPigeon2Configs(pigeonConfigs);
 
     private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
-            .withDriveMotorGearRatio(1 / Settings.Swerve.Drive.L4)
+            .withDriveMotorGearRatio(Settings.Swerve.Drive.GEAR_RATIO)
             .withSteerMotorGearRatio(Settings.Swerve.Turn.GEAR_RATIO)
-            .withWheelRadius(Settings.Swerve.Encoder.Drive.WHEEL_DIAMETER / 2)
+            .withWheelRadius(Settings.Swerve.Drive.WHEEL_DIAMETER / 2)
             .withSlipCurrent(Settings.Swerve.SLIP_CURRENT)
             .withSteerMotorGains(steerGains)
             .withDriveMotorGains(driveGains)
@@ -101,6 +101,6 @@ public class SwerveDriveConstants {
         Settings.Swerve.BackRight.MODULE_OFFSET.getY(), 
         Settings.Swerve.BackRight.DRIVE_INVERTED)
         .withSteerMotorInverted(Settings.Swerve.Turn.INVERTED);
-        
+
     public static final double UpdateOdometryFrequency = 50 /* hz */;
 }

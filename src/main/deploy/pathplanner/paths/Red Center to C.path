@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5243146663748686,
-        "y": 4.364968609959541
+        "x": 2.62397646657746,
+        "y": 4.229222674810491
       },
       "isLocked": false,
       "linkedName": "Red BCA B Shoot Pose"
     },
     {
       "anchor": {
-        "x": 2.8441688792209487,
-        "y": 4.081259900411539
+        "x": 2.6088286579474946,
+        "y": 4.298674642736191
       },
       "prevControl": {
-        "x": 2.238629494779084,
-        "y": 5.244264726421192
+        "x": 1.9319651290827706,
+        "y": 5.399632142610049
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,6 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -39,11 +40,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -32.73734304607968,
-    "rotateFast": false
+    "rotation": -32.73734304607968
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
+  "folder": "Red To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }

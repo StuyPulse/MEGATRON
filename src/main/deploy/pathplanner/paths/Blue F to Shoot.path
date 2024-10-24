@@ -3,38 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.740726041637269,
-        "y": 3.815446288299984
+        "x": 8.288957304291097,
+        "y": 4.0969083044936925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.196688322758893,
-        "y": 3.6211883147034643
+        "x": 4.677883085304861,
+        "y": 4.005135147547081
       },
       "isLocked": false,
       "linkedName": "Blue F"
     },
     {
       "anchor": {
-        "x": 4.24738092686751,
-        "y": 5.167803455956615
+        "x": 4.412562994582834,
+        "y": 4.983968698406147
       },
       "prevControl": {
-        "x": 5.436537977800659,
-        "y": 4.006336996118933
+        "x": 5.074637335844613,
+        "y": 4.2721378262697005
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Blue F Shoot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.25,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

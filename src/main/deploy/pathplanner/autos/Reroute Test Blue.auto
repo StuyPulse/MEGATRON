@@ -1,6 +1,5 @@
 {
   "version": 1.0,
-  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -20,6 +19,7 @@
       ]
     }
   },
-  "folder": null,
+  "resetOdom": true,
+  "folder": "Blue Autons",
   "choreoAuto": false
 }

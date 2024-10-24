@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.4348734737355513,
+        "y": 6.583808951093687
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.528789634291087,
+        "y": 6.807664830940864
+      },
+      "isLocked": false,
+      "linkedName": "Red BCA A Shoot Pose"
+    },
+    {
+      "anchor": {
+        "x": 8.281950694955519,
+        "y": 7.472564688719121
+      },
+      "prevControl": {
+        "x": 7.281950694955519,
+        "y": 7.472564688719121
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red D"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Red To Note",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 28.731253180883208
+  },
+  "useDefaultConstraints": true
+}

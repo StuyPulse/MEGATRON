@@ -24,8 +24,8 @@ public interface Settings {
 
     boolean SAFE_MODE_ENABLED = false;
 
-    double WIDTH = Units.inchesToMeters(36); // intake side 
-    double LENGTH = Units.inchesToMeters(32);
+    double WIDTH = Units.inchesToMeters(39.4); // intake side 
+    double LENGTH = Units.inchesToMeters(34.3);
 
     double CENTER_TO_FRONT_OF_INTAKE = Units.inchesToMeters(13.0);
 
@@ -198,22 +198,6 @@ public interface Settings {
             PIDConstants THETA = new PIDConstants(5.0, 0, 0.2);
         }
 
-        public interface Encoder {
-            public interface Drive {
-                double WHEEL_DIAMETER = Units.inchesToMeters(4);
-                double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-                double GEAR_RATIO = 1.0 / Swerve.Drive.L3;
-
-                double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
-                double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
-            }
-
-            public interface Turn {
-                double POSITION_CONVERSION = 1;
-                double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
-            }
-        }
-
         public interface Turn {
             SmartNumber kP = new SmartNumber("Swerve/Turn/PID/kP", Robot.isReal() ? 9.0 : 9.0);
             SmartNumber kI = new SmartNumber("Swerve/Turn/PID/kI", Robot.isReal() ? 0.0 : 0.0);
@@ -240,6 +224,11 @@ public interface Settings {
             double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
             double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
             double L4 = ((50.0 / 16.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 5.35714285714
+
+            double WHEEL_DIAMETER = 4;
+            double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
+            double GEAR_RATIO = Swerve.Drive.L4;
         }
 
         public interface FrontRight {
