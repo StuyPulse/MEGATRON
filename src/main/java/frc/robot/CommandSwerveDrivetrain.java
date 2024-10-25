@@ -16,6 +16,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -38,12 +39,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
-        configNeutralMode(NeutralModeValue.Coast);
+        configNeutralMode(NeutralModeValue.Brake);
         configurePathPlanner();
     }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
-        configNeutralMode(NeutralModeValue.Coast);
+        configNeutralMode(NeutralModeValue.Brake);
         configurePathPlanner();
     }
 
@@ -121,19 +122,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         new SysIdRoutine.Mechanism(
             (Measure<Voltage> volts) -> setControl(driveVoltageRequest.withVoltage(volts.in(Volts))),
             (log) -> {
-                for (SwerveModule module : modules) {
-                        log.motor(module.getID())
-                            .voltage(Units.Volts.of(module.getDriveVoltage()))
+                for (SwerveModule module : Modules) {
+                        log.motor(module.getDriveMotor().toString())
+                            .voltage(Units.Volts.of(module.getDriveMotor().getMotorVoltage().getValueAsDouble()))
                                 .linearPosition(
                                         Units.Meters.of(
-                                        module.getModulePosition()
-                                        .distanceMeters))
+                                        module.getDriveMotor().getPosition().getValueAsDouble()
+                                        ))
                                         .linearVelocity(
                                         Units.MetersPerSecond.of(
-                                        module.getModuleState()
-                                        .speedMetersPerSecond));
+                                        module.getDriveMotor().getVelocity().getValueAsDouble()
+                                        ));
                                     }
-                                },,
+                                },
             this));
     
     public Command runDriveQuasiTest(Direction direction)

@@ -271,7 +271,10 @@ public class RobotContainer {
     public void configureAutons() {
         autonChooser.addOption("Do Nothing", new DoNothingAuton());
         
-        autonChooser.addOption("QuasiDriveTest", swerve1.runDriveQuasiTest(Direction.kForward));
+        autonChooser.addOption("QuasiDriveTestF", swerve1.runDriveQuasiTest(Direction.kForward));
+        autonChooser.addOption("QuasiDriveTestB", swerve1.runDriveQuasiTest(Direction.kReverse));
+        autonChooser.addOption("DynamicDriveTestF", swerve1.runDriveDynamTest(Direction.kForward));
+        autonChooser.addOption("DynamicDriveTestB", swerve1.runDriveDynamTest(Direction.kReverse));
         
         // Mobility
         AutonConfig MOBILITY_BLUE = new AutonConfig("Mobility", Mobility::new, "Mobility");
